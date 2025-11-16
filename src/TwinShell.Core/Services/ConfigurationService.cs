@@ -13,6 +13,7 @@ public class ConfigurationService : IConfigurationService
     private readonly IFavoritesRepository _favoritesRepository;
     private readonly ICommandHistoryRepository _historyRepository;
     private readonly IActionRepository _actionRepository;
+    private readonly string _baseExportDirectory;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -28,6 +29,18 @@ public class ConfigurationService : IConfigurationService
         _favoritesRepository = favoritesRepository;
         _historyRepository = historyRepository;
         _actionRepository = actionRepository;
+
+        // Configure base directory for exports (sandbox all file operations)
+        _baseExportDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "TwinShell",
+            "Exports");
+
+        // Ensure base directory exists
+        if (!Directory.Exists(_baseExportDirectory))
+        {
+            Directory.CreateDirectory(_baseExportDirectory);
+        }
     }
 
     public async Task<(bool Success, string? ErrorMessage)> ExportToJsonAsync(
@@ -37,6 +50,18 @@ public class ConfigurationService : IConfigurationService
     {
         try
         {
+            // SECURITY: Validate file path to prevent path traversal
+            if (!IsPathSecure(filePath))
+            {
+                return (false, "Invalid file path: path must be within the allowed directory");
+            }
+
+            // SECURITY: Validate file extension
+            if (!filePath.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+            {
+                return (false, "Invalid file extension: file must be a .json file");
+            }
+
             var config = new UserConfigurationDto
             {
                 Version = "1.0",
@@ -90,7 +115,7 @@ public class ConfigurationService : IConfigurationService
         }
         catch (Exception ex)
         {
-            return (false, $"Export failed: {ex.Message}");
+            return (false, "Export operation failed");
         }
     }
 
@@ -101,14 +126,35 @@ public class ConfigurationService : IConfigurationService
     {
         try
         {
+            // SECURITY: Validate file path to prevent path traversal
+            if (!IsPathSecure(filePath))
+            {
+                return (false, "Invalid file path: path must be within the allowed directory", 0, 0);
+            }
+
             // Validate file exists
             if (!File.Exists(filePath))
             {
                 return (false, "File not found", 0, 0);
             }
 
+            // SECURITY: Validate file size (max 10MB)
+            var fileInfo = new FileInfo(filePath);
+            const long maxSize = 10 * 1024 * 1024; // 10 MB
+            if (fileInfo.Length > maxSize)
+            {
+                return (false, "File too large: maximum size is 10MB", 0, 0);
+            }
+
             // Read and parse JSON
             var json = await File.ReadAllTextAsync(filePath);
+
+            // SECURITY: Validate JSON schema before deserialization
+            if (!ValidateJsonSchema(json))
+            {
+                return (false, "Invalid JSON structure", 0, 0);
+            }
+
             var config = JsonSerializer.Deserialize<UserConfigurationDto>(json, JsonOptions);
 
             if (config == null)
@@ -254,7 +300,86 @@ public class ConfigurationService : IConfigurationService
         }
         catch (Exception ex)
         {
-            return (false, $"Validation error: {ex.Message}", null);
+            return (false, "Validation error", null);
+        }
+    }
+
+    /// <summary>
+    /// Validates that a file path is within the allowed directory (prevents path traversal)
+    /// </summary>
+    private bool IsPathSecure(string filePath)
+    {
+        try
+        {
+            // Get the absolute path
+            var fullPath = Path.GetFullPath(filePath);
+            var baseDirectory = Path.GetFullPath(_baseExportDirectory);
+
+            // Check that the path starts with the base directory
+            if (!fullPath.StartsWith(baseDirectory + Path.DirectorySeparatorChar) &&
+                fullPath != baseDirectory)
+            {
+                return false;
+            }
+
+            // Check for path traversal sequences
+            if (fullPath.Contains("..") || fullPath.Contains("~"))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Validates JSON structure before deserialization (prevents malicious JSON)
+    /// </summary>
+    private bool ValidateJsonSchema(string json)
+    {
+        try
+        {
+            using (var doc = JsonDocument.Parse(json))
+            {
+                var root = doc.RootElement;
+
+                // Verify root is an object
+                if (root.ValueKind != JsonValueKind.Object)
+                    return false;
+
+                // Verify required properties exist
+                if (!root.TryGetProperty("Version", out _))
+                    return false;
+
+                if (!root.TryGetProperty("Favorites", out var favorites))
+                    return false;
+
+                if (favorites.ValueKind != JsonValueKind.Array)
+                    return false;
+
+                if (!root.TryGetProperty("History", out var history))
+                    return false;
+
+                if (history.ValueKind != JsonValueKind.Array)
+                    return false;
+
+                // Validate array lengths (prevent DoS via huge arrays)
+                if (favorites.GetArrayLength() > 1000)
+                    return false;
+
+                if (history.GetArrayLength() > 10000)
+                    return false;
+
+                return true;
+            }
+        }
+        catch
+        {
+            return false;
         }
     }
 }

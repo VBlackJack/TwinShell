@@ -433,8 +433,9 @@ public partial class MainViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            // SECURITY: Don't expose exception details to users
             System.Windows.MessageBox.Show(
-                $"An error occurred: {ex.Message}",
+                "An error occurred during export",
                 "Export Error",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Error);
@@ -513,8 +514,9 @@ public partial class MainViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            // SECURITY: Don't expose exception details to users
             System.Windows.MessageBox.Show(
-                $"An error occurred: {ex.Message}",
+                "An error occurred during import",
                 "Import Error",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Error);

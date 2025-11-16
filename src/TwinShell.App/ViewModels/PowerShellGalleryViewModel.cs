@@ -84,7 +84,8 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Search failed: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Search failed");
             StatusMessage = "Search failed";
         }
         finally
@@ -132,7 +133,8 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Failed to load commands: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Failed to load commands");
             StatusMessage = "Failed to load commands";
         }
         finally
@@ -171,7 +173,8 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Installation failed: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Installation failed");
             StatusMessage = "Installation failed";
         }
         finally
@@ -210,7 +213,8 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Import failed: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Import failed");
             StatusMessage = "Import failed";
         }
     }
