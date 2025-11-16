@@ -9,6 +9,7 @@ namespace TwinShell.Core.Services;
 public class FavoritesService : IFavoritesService
 {
     private readonly IFavoritesRepository _repository;
+    private readonly SemaphoreSlim _favoritesLock = new SemaphoreSlim(1, 1);
     private const int MaxFavorites = 50;
 
     public FavoritesService(IFavoritesRepository repository)
@@ -18,31 +19,40 @@ public class FavoritesService : IFavoritesService
 
     public async Task<(bool Success, string? ErrorMessage)> AddFavoriteAsync(string actionId, string? userId = null)
     {
-        // Check if already favorited
-        if (await _repository.IsFavoriteAsync(actionId, userId))
+        // Use lock to ensure atomicity of check and add operations
+        await _favoritesLock.WaitAsync();
+        try
         {
-            return (false, "This action is already in your favorites.");
+            // Check if already favorited
+            if (await _repository.IsFavoriteAsync(actionId, userId))
+            {
+                return (false, "This action is already in your favorites.");
+            }
+
+            // Check limit
+            var currentCount = await _repository.GetCountAsync(userId);
+            if (currentCount >= MaxFavorites)
+            {
+                return (false, $"You have reached the maximum limit of {MaxFavorites} favorites. Please remove some favorites before adding new ones.");
+            }
+
+            // Add favorite
+            var favorite = new UserFavorite
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = userId,
+                ActionId = actionId,
+                CreatedAt = DateTime.UtcNow,
+                DisplayOrder = currentCount // Add at the end
+            };
+
+            await _repository.AddAsync(favorite);
+            return (true, null);
         }
-
-        // Check limit
-        var currentCount = await _repository.GetCountAsync(userId);
-        if (currentCount >= MaxFavorites)
+        finally
         {
-            return (false, $"You have reached the maximum limit of {MaxFavorites} favorites. Please remove some favorites before adding new ones.");
+            _favoritesLock.Release();
         }
-
-        // Add favorite
-        var favorite = new UserFavorite
-        {
-            Id = Guid.NewGuid().ToString(),
-            UserId = userId,
-            ActionId = actionId,
-            CreatedAt = DateTime.UtcNow,
-            DisplayOrder = currentCount // Add at the end
-        };
-
-        await _repository.AddAsync(favorite);
-        return (true, null);
     }
 
     public async Task RemoveFavoriteAsync(string actionId, string? userId = null)
@@ -52,17 +62,42 @@ public class FavoritesService : IFavoritesService
 
     public async Task<bool> ToggleFavoriteAsync(string actionId, string? userId = null)
     {
-        var isFavorite = await _repository.IsFavoriteAsync(actionId, userId);
+        // Use lock to ensure atomicity of toggle operation
+        await _favoritesLock.WaitAsync();
+        try
+        {
+            var isFavorite = await _repository.IsFavoriteAsync(actionId, userId);
 
-        if (isFavorite)
-        {
-            await RemoveFavoriteAsync(actionId, userId);
-            return false;
+            if (isFavorite)
+            {
+                await _repository.RemoveByActionIdAsync(actionId, userId);
+                return false;
+            }
+            else
+            {
+                // Check limit before adding
+                var currentCount = await _repository.GetCountAsync(userId);
+                if (currentCount >= MaxFavorites)
+                {
+                    return false;
+                }
+
+                var favorite = new UserFavorite
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = userId,
+                    ActionId = actionId,
+                    CreatedAt = DateTime.UtcNow,
+                    DisplayOrder = currentCount
+                };
+
+                await _repository.AddAsync(favorite);
+                return true;
+            }
         }
-        else
+        finally
         {
-            var result = await AddFavoriteAsync(actionId, userId);
-            return result.Success;
+            _favoritesLock.Release();
         }
     }
 

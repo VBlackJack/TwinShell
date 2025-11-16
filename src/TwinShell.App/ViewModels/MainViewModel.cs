@@ -16,6 +16,7 @@ public partial class MainViewModel : ObservableObject
     private readonly ICommandHistoryService _commandHistoryService;
     private readonly IFavoritesService _favoritesService;
     private readonly IConfigurationService _configurationService;
+    private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
 
     private List<Action> _allActions = new();
     private HashSet<string> _favoriteActionIds = new();
@@ -125,21 +126,21 @@ public partial class MainViewModel : ObservableObject
 
     partial void OnSearchTextChanged(string value)
     {
-        _ = ApplyFiltersAsync();
+        SafeExecuteAsync(ApplyFiltersAsync);
     }
 
     partial void OnSelectedCategoryChanged(string? value)
     {
-        _ = ApplyFiltersAsync();
+        SafeExecuteAsync(ApplyFiltersAsync);
     }
 
-    partial void OnFilterWindowsChanged(bool value) => _ = ApplyFiltersAsync();
-    partial void OnFilterLinuxChanged(bool value) => _ = ApplyFiltersAsync();
-    partial void OnFilterBothChanged(bool value) => _ = ApplyFiltersAsync();
-    partial void OnFilterInfoChanged(bool value) => _ = ApplyFiltersAsync();
-    partial void OnFilterRunChanged(bool value) => _ = ApplyFiltersAsync();
-    partial void OnFilterDangerousChanged(bool value) => _ = ApplyFiltersAsync();
-    partial void OnShowFavoritesOnlyChanged(bool value) => _ = ApplyFiltersAsync();
+    partial void OnFilterWindowsChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+    partial void OnFilterLinuxChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+    partial void OnFilterBothChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+    partial void OnFilterInfoChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+    partial void OnFilterRunChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+    partial void OnFilterDangerousChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+    partial void OnShowFavoritesOnlyChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
 
     partial void OnSelectedActionChanged(Action? value)
     {
@@ -151,54 +152,63 @@ public partial class MainViewModel : ObservableObject
 
     private async Task ApplyFiltersAsync()
     {
-        var filtered = _allActions.AsEnumerable();
-
-        // Favorites filter (special category)
-        if (SelectedCategory == "⭐ Favorites")
+        // Use semaphore to prevent concurrent filter operations
+        await _filterSemaphore.WaitAsync();
+        try
         {
-            filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
+            var filtered = _allActions.AsEnumerable();
+
+            // Favorites filter (special category)
+            if (SelectedCategory == "⭐ Favorites")
+            {
+                filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
+            }
+            // Category filter
+            else if (!string.IsNullOrEmpty(SelectedCategory))
+            {
+                filtered = filtered.Where(a => a.Category == SelectedCategory);
+            }
+
+            // Show favorites only filter
+            if (ShowFavoritesOnly)
+            {
+                filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
+            }
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                filtered = await _searchService.SearchAsync(filtered, SearchText);
+            }
+
+            // Platform filter
+            var platformFilters = new List<Platform>();
+            if (FilterWindows) platformFilters.Add(Platform.Windows);
+            if (FilterLinux) platformFilters.Add(Platform.Linux);
+            if (FilterBoth) platformFilters.Add(Platform.Both);
+
+            if (platformFilters.Count > 0 && platformFilters.Count < 3)
+            {
+                filtered = filtered.Where(a => platformFilters.Contains(a.Platform));
+            }
+
+            // Level filter
+            var levelFilters = new List<CriticalityLevel>();
+            if (FilterInfo) levelFilters.Add(CriticalityLevel.Info);
+            if (FilterRun) levelFilters.Add(CriticalityLevel.Run);
+            if (FilterDangerous) levelFilters.Add(CriticalityLevel.Dangerous);
+
+            if (levelFilters.Count > 0 && levelFilters.Count < 3)
+            {
+                filtered = filtered.Where(a => levelFilters.Contains(a.Level));
+            }
+
+            FilteredActions = new ObservableCollection<Action>(filtered);
         }
-        // Category filter
-        else if (!string.IsNullOrEmpty(SelectedCategory))
+        finally
         {
-            filtered = filtered.Where(a => a.Category == SelectedCategory);
+            _filterSemaphore.Release();
         }
-
-        // Show favorites only filter
-        if (ShowFavoritesOnly)
-        {
-            filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
-        }
-
-        // Search filter
-        if (!string.IsNullOrWhiteSpace(SearchText))
-        {
-            filtered = await _searchService.SearchAsync(filtered, SearchText);
-        }
-
-        // Platform filter
-        var platformFilters = new List<Platform>();
-        if (FilterWindows) platformFilters.Add(Platform.Windows);
-        if (FilterLinux) platformFilters.Add(Platform.Linux);
-        if (FilterBoth) platformFilters.Add(Platform.Both);
-
-        if (platformFilters.Count > 0 && platformFilters.Count < 3)
-        {
-            filtered = filtered.Where(a => platformFilters.Contains(a.Platform));
-        }
-
-        // Level filter
-        var levelFilters = new List<CriticalityLevel>();
-        if (FilterInfo) levelFilters.Add(CriticalityLevel.Info);
-        if (FilterRun) levelFilters.Add(CriticalityLevel.Run);
-        if (FilterDangerous) levelFilters.Add(CriticalityLevel.Dangerous);
-
-        if (levelFilters.Count > 0 && levelFilters.Count < 3)
-        {
-            filtered = filtered.Where(a => levelFilters.Contains(a.Level));
-        }
-
-        FilteredActions = new ObservableCollection<Action>(filtered);
     }
 
     private void LoadCommandGenerator()
@@ -359,27 +369,58 @@ public partial class MainViewModel : ObservableObject
     {
         if (SelectedAction == null) return;
 
-        var result = await _favoritesService.ToggleFavoriteAsync(SelectedAction.Id);
-
-        // Reload favorites
-        var favorites = await _favoritesService.GetAllFavoritesAsync();
-        _favoriteActionIds = favorites.Select(f => f.ActionId).ToHashSet();
-
-        // Refresh the filtered list
-        await ApplyFiltersAsync();
-
-        // Show notification if limit reached
-        if (!result)
+        try
         {
-            var count = await _favoritesService.GetFavoriteCountAsync();
-            if (count >= 50)
+            // Check if currently a favorite before toggling
+            var wasFavorite = _favoriteActionIds.Contains(SelectedAction.Id);
+
+            // Toggle and get the result (true if added, false if removed or limit reached)
+            var result = await _favoritesService.ToggleFavoriteAsync(SelectedAction.Id);
+
+            // Reload favorites to get current state
+            var favorites = await _favoritesService.GetAllFavoritesAsync();
+            _favoriteActionIds = favorites.Select(f => f.ActionId).ToHashSet();
+
+            // Determine actual action taken based on result
+            var isFavoriteNow = _favoriteActionIds.Contains(SelectedAction.Id);
+
+            // Refresh the filtered list
+            await ApplyFiltersAsync();
+
+            // Show appropriate notification based on actual state change
+            if (wasFavorite && !isFavoriteNow)
             {
-                System.Windows.MessageBox.Show(
-                    $"You have reached the maximum limit of 50 favorites ({count}/50). Please remove some favorites before adding new ones.",
-                    "Favorites Limit Reached",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Warning);
+                // Successfully removed from favorites
+                StatusMessage = $"Removed '{SelectedAction.Title}' from favorites";
             }
+            else if (!wasFavorite && isFavoriteNow)
+            {
+                // Successfully added to favorites
+                StatusMessage = $"Added '{SelectedAction.Title}' to favorites";
+            }
+            else if (!wasFavorite && !isFavoriteNow && !result)
+            {
+                // Failed to add - check if limit reached
+                var count = await _favoritesService.GetFavoriteCountAsync();
+                if (count >= 50)
+                {
+                    System.Windows.MessageBox.Show(
+                        $"You have reached the maximum limit of 50 favorites ({count}/50). Please remove some favorites before adding new ones.",
+                        "Favorites Limit Reached",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // SECURITY: Don't expose exception details to users
+            StatusMessage = "Failed to toggle favorite status";
+            System.Windows.MessageBox.Show(
+                "An error occurred while updating favorites",
+                "Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
         }
     }
 
@@ -389,6 +430,22 @@ public partial class MainViewModel : ObservableObject
     public bool IsSelectedActionFavorite()
     {
         return SelectedAction != null && _favoriteActionIds.Contains(SelectedAction.Id);
+    }
+
+    /// <summary>
+    /// Safely executes async methods from synchronous event handlers
+    /// </summary>
+    private async void SafeExecuteAsync(Func<Task> asyncMethod)
+    {
+        try
+        {
+            await asyncMethod();
+        }
+        catch (Exception ex)
+        {
+            // SECURITY: Don't expose exception details to users
+            StatusMessage = "An error occurred while processing your request";
+        }
     }
 
     /// <summary>

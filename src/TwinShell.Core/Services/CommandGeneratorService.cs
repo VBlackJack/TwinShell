@@ -12,10 +12,37 @@ public class CommandGeneratorService : ICommandGeneratorService
 {
     public string GenerateCommand(CommandTemplate template, Dictionary<string, string> parameterValues)
     {
+        // Validate input parameters
+        if (template == null)
+        {
+            throw new ArgumentNullException(nameof(template), "Command template cannot be null");
+        }
+
+        if (string.IsNullOrWhiteSpace(template.CommandPattern))
+        {
+            throw new ArgumentException("Command template pattern cannot be null or empty", nameof(template));
+        }
+
+        if (parameterValues == null)
+        {
+            throw new ArgumentNullException(nameof(parameterValues), "Parameter values dictionary cannot be null");
+        }
+
+        if (template.Parameters == null)
+        {
+            // If no parameters defined, return the pattern as-is
+            return template.CommandPattern;
+        }
+
         var command = template.CommandPattern;
 
         foreach (var parameter in template.Parameters)
         {
+            if (parameter == null)
+            {
+                continue; // Skip null parameters
+            }
+
             var value = parameterValues.ContainsKey(parameter.Name)
                 ? parameterValues[parameter.Name]
                 : parameter.DefaultValue ?? string.Empty;
@@ -39,10 +66,25 @@ public class CommandGeneratorService : ICommandGeneratorService
 
     public Dictionary<string, string> GetDefaultParameterValues(CommandTemplate template)
     {
+        if (template == null)
+        {
+            throw new ArgumentNullException(nameof(template), "Command template cannot be null");
+        }
+
         var defaults = new Dictionary<string, string>();
+
+        if (template.Parameters == null)
+        {
+            return defaults; // Return empty dictionary if no parameters
+        }
 
         foreach (var parameter in template.Parameters)
         {
+            if (parameter == null)
+            {
+                continue; // Skip null parameters
+            }
+
             if (!string.IsNullOrEmpty(parameter.DefaultValue))
             {
                 defaults[parameter.Name] = parameter.DefaultValue;
@@ -58,6 +100,23 @@ public class CommandGeneratorService : ICommandGeneratorService
         out List<string> errors)
     {
         errors = new List<string>();
+
+        if (template == null)
+        {
+            errors.Add("Command template cannot be null");
+            return false;
+        }
+
+        if (parameterValues == null)
+        {
+            errors.Add("Parameter values cannot be null");
+            return false;
+        }
+
+        if (template.Parameters == null || template.Parameters.Count == 0)
+        {
+            return true; // No parameters to validate
+        }
 
         foreach (var parameter in template.Parameters)
         {

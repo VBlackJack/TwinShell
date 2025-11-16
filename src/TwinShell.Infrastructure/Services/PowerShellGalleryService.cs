@@ -48,33 +48,39 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             return Enumerable.Empty<PowerShellModule>();
         }
 
+        var modules = new List<PowerShellModule>();
+
+        // Try to parse as array first
         try
         {
-            var modules = new List<PowerShellModule>();
-
-            // Try to parse as array first
+            var jsonModules = JsonSerializer.Deserialize<List<PowerShellGalleryModuleDto>>(result.Stdout);
+            if (jsonModules != null)
+            {
+                modules.AddRange(jsonModules.Select(MapToModule));
+            }
+            return modules;
+        }
+        catch (JsonException)
+        {
+            // If array parsing fails, try parsing as single object
             try
             {
-                var jsonModules = JsonSerializer.Deserialize<List<PowerShellGalleryModuleDto>>(result.Stdout);
-                if (jsonModules != null)
-                {
-                    modules.AddRange(jsonModules.Select(MapToModule));
-                }
-            }
-            catch
-            {
-                // If it's a single object, parse as single module
                 var jsonModule = JsonSerializer.Deserialize<PowerShellGalleryModuleDto>(result.Stdout);
                 if (jsonModule != null)
                 {
                     modules.Add(MapToModule(jsonModule));
                 }
+                return modules;
             }
-
-            return modules;
+            catch (JsonException)
+            {
+                // Failed to parse JSON - return empty
+                return Enumerable.Empty<PowerShellModule>();
+            }
         }
-        catch
+        catch (Exception)
         {
+            // Unexpected error during mapping
             return Enumerable.Empty<PowerShellModule>();
         }
     }
@@ -109,8 +115,14 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             var jsonModule = JsonSerializer.Deserialize<PowerShellGalleryModuleDto>(result.Stdout);
             return jsonModule == null ? null : MapToModule(jsonModule);
         }
-        catch
+        catch (JsonException)
         {
+            // Failed to parse JSON
+            return null;
+        }
+        catch (Exception)
+        {
+            // Unexpected error during mapping
             return null;
         }
     }
@@ -141,24 +153,27 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             return Enumerable.Empty<PowerShellCommand>();
         }
 
+        var commands = new List<PowerShellCommand>();
+
+        // Try to parse as array first
         try
         {
-            var commands = new List<PowerShellCommand>();
-
-            try
+            var jsonCommands = JsonSerializer.Deserialize<List<PowerShellCommandDto>>(result.Stdout);
+            if (jsonCommands != null)
             {
-                var jsonCommands = JsonSerializer.Deserialize<List<PowerShellCommandDto>>(result.Stdout);
-                if (jsonCommands != null)
+                commands.AddRange(jsonCommands.Select(c => new PowerShellCommand
                 {
-                    commands.AddRange(jsonCommands.Select(c => new PowerShellCommand
-                    {
-                        Name = c.Name ?? string.Empty,
-                        ModuleName = c.ModuleName ?? string.Empty,
-                        CommandType = c.CommandType ?? string.Empty
-                    }));
-                }
+                    Name = c.Name ?? string.Empty,
+                    ModuleName = c.ModuleName ?? string.Empty,
+                    CommandType = c.CommandType ?? string.Empty
+                }));
             }
-            catch
+            return commands;
+        }
+        catch (JsonException)
+        {
+            // If array parsing fails, try parsing as single object
+            try
             {
                 var jsonCommand = JsonSerializer.Deserialize<PowerShellCommandDto>(result.Stdout);
                 if (jsonCommand != null)
@@ -170,12 +185,17 @@ public class PowerShellGalleryService : IPowerShellGalleryService
                         CommandType = jsonCommand.CommandType ?? string.Empty
                     });
                 }
+                return commands;
             }
-
-            return commands;
+            catch (JsonException)
+            {
+                // Failed to parse JSON - return empty
+                return Enumerable.Empty<PowerShellCommand>();
+            }
         }
-        catch
+        catch (Exception)
         {
+            // Unexpected error during mapping
             return Enumerable.Empty<PowerShellCommand>();
         }
     }
@@ -239,8 +259,14 @@ public class PowerShellGalleryService : IPowerShellGalleryService
                 Examples = helpDto.Examples?.ToList() ?? new List<string>()
             };
         }
-        catch
+        catch (JsonException)
         {
+            // Failed to parse JSON
+            return null;
+        }
+        catch (Exception)
+        {
+            // Unexpected error during mapping
             return null;
         }
     }

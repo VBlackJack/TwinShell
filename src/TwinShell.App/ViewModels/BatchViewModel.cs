@@ -53,7 +53,7 @@ public partial class BatchViewModel : ObservableObject
     {
         try
         {
-            var batches = await _batchService.GetAllBatchesAsync();
+            var batches = await _batchService.GetAllBatchesAsync().ConfigureAwait(false);
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -125,7 +125,7 @@ public partial class BatchViewModel : ObservableObject
                             Timestamp = output.Timestamp
                         });
                     });
-                });
+                }).ConfigureAwait(false);
 
             if (result.Success)
             {
@@ -136,7 +136,7 @@ public partial class BatchViewModel : ObservableObject
                 _notificationService.ShowWarning($"Batch completed with errors. {result.SuccessCount}/{result.ExecutedCount} commands succeeded, {result.FailureCount} failed.");
             }
 
-            await LoadBatchesAsync();
+            await LoadBatchesAsync().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -161,9 +161,9 @@ public partial class BatchViewModel : ObservableObject
 
         try
         {
-            await _batchService.DeleteBatchAsync(SelectedBatch.Id);
+            await _batchService.DeleteBatchAsync(SelectedBatch.Id).ConfigureAwait(false);
             _notificationService.ShowSuccess("Batch deleted successfully");
-            await LoadBatchesAsync();
+            await LoadBatchesAsync().ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -192,7 +192,7 @@ public partial class BatchViewModel : ObservableObject
 
             if (dialog.ShowDialog() == true)
             {
-                await File.WriteAllTextAsync(dialog.FileName, json);
+                await File.WriteAllTextAsync(dialog.FileName, json).ConfigureAwait(false);
                 _notificationService.ShowSuccess("Batch exported successfully");
             }
         }
@@ -215,11 +215,11 @@ public partial class BatchViewModel : ObservableObject
 
             if (dialog.ShowDialog() == true)
             {
-                var json = await File.ReadAllTextAsync(dialog.FileName);
+                var json = await File.ReadAllTextAsync(dialog.FileName).ConfigureAwait(false);
                 var batch = _batchService.ImportBatchFromJson(json);
-                await _batchService.CreateBatchAsync(batch);
+                await _batchService.CreateBatchAsync(batch).ConfigureAwait(false);
                 _notificationService.ShowSuccess("Batch imported successfully");
-                await LoadBatchesAsync();
+                await LoadBatchesAsync().ConfigureAwait(false);
             }
         }
         catch (Exception ex)
