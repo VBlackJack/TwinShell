@@ -11,13 +11,14 @@
             CornerRadius="8"
             Padding="12">
         <StackPanel>
-            <!-- Header -->
+            <!-- UX: Header with professional text-only label -->
             <Grid Margin="0,0,0,12">
-                <TextBlock Text="📜 Recent Commands"
+                <TextBlock Text="Recent Commands"
                            FontSize="14"
-                           FontWeight="Bold"
+                           FontWeight="SemiBold"
                            HorizontalAlignment="Left"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource TextPrimaryBrush}"/>
             </Grid>
 
             <!-- Recent Commands List -->

@@ -100,13 +100,13 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Focus Visual Style -->
+    <!-- UX: Improved Focus Visual Style - overlay instead of border thickness change -->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Rectangle Margin="2"
-                               StrokeThickness="3"
+                    <Rectangle Margin="-1"
+                               StrokeThickness="2"
                                Stroke="#2196F3"
                                StrokeDashArray="1 2"
                                SnapsToDevicePixels="True"
@@ -117,7 +117,7 @@
         </Setter>
     </Style>
 
-    <!-- TextBox Style -->
+    <!-- UX: Improved TextBox Style - smooth focus state without jarring border thickness change -->
     <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
         <Setter Property="Padding" Value="8"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
@@ -141,7 +141,7 @@
         <Style.Triggers>
             <Trigger Property="IsFocused" Value="True">
                 <Setter Property="BorderBrush" Value="{StaticResource FocusBorderBrush}"/>
-                <Setter Property="BorderThickness" Value="3"/>
+                <Setter Property="BorderThickness" Value="2"/>
             </Trigger>
         </Style.Triggers>
     </Style>

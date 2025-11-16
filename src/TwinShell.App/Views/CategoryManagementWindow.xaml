@@ -52,17 +52,18 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- List Header -->
+                    <!-- UX: List Header with cleaner button label -->
                     <StackPanel Grid.Row="0" Margin="0,0,0,12">
                         <TextBlock Text="Categories"
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Foreground="{StaticResource TextPrimaryBrush}"/>
-                        <Button Content="+ Add New Category"
+                        <Button Content="Add New Category"
                                 Command="{Binding StartAddCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 HorizontalAlignment="Stretch"
-                                Margin="0,8,0,0"/>
+                                Margin="0,8,0,0"
+                                MinHeight="36"/>
                     </StackPanel>
 
                     <!-- Categories ListBox -->
