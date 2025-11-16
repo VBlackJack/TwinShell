@@ -26,7 +26,9 @@ public class AuditLogRepository : IAuditLogRepository
 
     public async Task<IEnumerable<AuditLog>> GetRecentAsync(int count = 100)
     {
+        // PERFORMANCE: AsNoTracking for read-only queries
         var entities = await _context.AuditLogs
+            .AsNoTracking()
             .OrderByDescending(a => a.Timestamp)
             .Take(count)
             .ToListAsync();
@@ -36,7 +38,9 @@ public class AuditLogRepository : IAuditLogRepository
 
     public async Task<IEnumerable<AuditLog>> GetByDateRangeAsync(DateTime from, DateTime to)
     {
+        // PERFORMANCE: AsNoTracking for read-only queries
         var entities = await _context.AuditLogs
+            .AsNoTracking()
             .Where(a => a.Timestamp >= from && a.Timestamp <= to)
             .OrderByDescending(a => a.Timestamp)
             .ToListAsync();
@@ -55,7 +59,8 @@ public class AuditLogRepository : IAuditLogRepository
             .Where(a => a.Timestamp < date)
             .ToListAsync();
 
-        if (entities.Any())
+        // PERFORMANCE: Use Count for List instead of Any()
+        if (entities.Count > 0)
         {
             _context.AuditLogs.RemoveRange(entities);
             await _context.SaveChangesAsync();

@@ -172,6 +172,10 @@ public class ConfigurationService : IConfigurationService
             int favoritesImported = 0;
             int historyImported = 0;
 
+            // PERFORMANCE: Load all valid action IDs once to avoid N+1 queries
+            var allActions = await _actionRepository.GetAllAsync();
+            var validActionIds = allActions.Select(a => a.Id).ToHashSet();
+
             // Get existing favorites if in merge mode
             HashSet<string> existingFavoriteActionIds = new();
             if (mergeMode)
@@ -179,6 +183,9 @@ public class ConfigurationService : IConfigurationService
                 var existingFavorites = await _favoritesRepository.GetAllAsync(userId);
                 existingFavoriteActionIds = existingFavorites.Select(f => f.ActionId).ToHashSet();
             }
+
+            // PERFORMANCE: Get initial count once instead of in loop
+            var currentFavoritesCount = await _favoritesRepository.GetCountAsync(userId);
 
             // Import favorites
             foreach (var favoriteDto in config.Favorites)
@@ -189,15 +196,14 @@ public class ConfigurationService : IConfigurationService
                     continue;
                 }
 
-                // Verify action exists
-                if (!await _actionRepository.ExistsAsync(favoriteDto.ActionId))
+                // PERFORMANCE: Check existence in memory instead of database query
+                if (!validActionIds.Contains(favoriteDto.ActionId))
                 {
                     continue; // Skip invalid action IDs
                 }
 
-                // Check limit
-                var currentCount = await _favoritesRepository.GetCountAsync(userId);
-                if (currentCount >= 50)
+                // PERFORMANCE: Check limit with local counter
+                if (currentFavoritesCount >= 50)
                 {
                     break; // Stop if limit reached
                 }
@@ -213,13 +219,14 @@ public class ConfigurationService : IConfigurationService
 
                 await _favoritesRepository.AddAsync(favorite);
                 favoritesImported++;
+                currentFavoritesCount++; // Increment local counter
             }
 
             // Import history
             foreach (var historyDto in config.History)
             {
-                // Verify action exists
-                if (!await _actionRepository.ExistsAsync(historyDto.ActionId))
+                // PERFORMANCE: Check existence in memory instead of database query
+                if (!validActionIds.Contains(historyDto.ActionId))
                 {
                     continue; // Skip invalid action IDs
                 }
