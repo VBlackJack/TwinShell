@@ -22,6 +22,7 @@ public class TwinShellDbContext : DbContext
     public DbSet<ActionCategoryMappingEntity> ActionCategoryMappings => Set<ActionCategoryMappingEntity>();
     public DbSet<ActionTranslationEntity> ActionTranslations => Set<ActionTranslationEntity>();
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
+    public DbSet<CommandBatchEntity> CommandBatches => Set<CommandBatchEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,5 +36,6 @@ public class TwinShellDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ActionCategoryMappingConfiguration());
         modelBuilder.ApplyConfiguration(new ActionTranslationConfiguration());
         modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
+        modelBuilder.ApplyConfiguration(new CommandBatchConfiguration());
     }
 }
