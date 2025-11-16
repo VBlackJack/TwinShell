@@ -8,6 +8,8 @@
     <converters:CriticalityToColorConverter x:Key="CriticalityToColorConverter"/>
     <converters:CriticalityToTextConverter x:Key="CriticalityToTextConverter"/>
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
 
     <!-- Note: Colors and Styles are now defined in Themes/LightTheme.xaml and Themes/DarkTheme.xaml -->
     <!-- The active theme is merged at runtime by ThemeService -->

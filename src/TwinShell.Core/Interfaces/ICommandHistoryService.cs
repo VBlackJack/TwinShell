@@ -17,13 +17,27 @@ public interface ICommandHistoryService
     /// <param name="platform">Platform for which the command was generated</param>
     /// <param name="actionTitle">Title of the action (for denormalization)</param>
     /// <param name="category">Category of the action (for denormalization)</param>
-    Task AddCommandAsync(
+    /// <returns>The ID of the created history entry</returns>
+    Task<string> AddCommandAsync(
         string actionId,
         string generatedCommand,
         Dictionary<string, string> parameters,
         Platform platform,
         string actionTitle,
         string category);
+
+    /// <summary>
+    /// Update a command history entry with execution results
+    /// </summary>
+    /// <param name="historyId">ID of the history entry to update</param>
+    /// <param name="exitCode">Exit code from the command execution</param>
+    /// <param name="duration">Execution duration</param>
+    /// <param name="success">Whether the execution was successful</param>
+    Task UpdateWithExecutionResultsAsync(
+        string historyId,
+        int exitCode,
+        TimeSpan duration,
+        bool success);
 
     /// <summary>
     /// Get the most recent command history entries

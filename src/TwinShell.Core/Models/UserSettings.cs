@@ -50,6 +50,12 @@ public class UserSettings
     public int RecentCommandsCount { get; set; } = 5;
 
     /// <summary>
+    /// Command execution timeout in seconds.
+    /// Default: 30 seconds, Maximum: 300 seconds (5 minutes).
+    /// </summary>
+    public int ExecutionTimeoutSeconds { get; set; } = 30;
+
+    /// <summary>
     /// Creates a new instance with default values.
     /// </summary>
     public UserSettings()
@@ -69,7 +75,8 @@ public class UserSettings
             DefaultPlatformFilter = this.DefaultPlatformFilter,
             ShowRecentCommandsWidget = this.ShowRecentCommandsWidget,
             ConfirmDangerousActions = this.ConfirmDangerousActions,
-            RecentCommandsCount = this.RecentCommandsCount
+            RecentCommandsCount = this.RecentCommandsCount,
+            ExecutionTimeoutSeconds = this.ExecutionTimeoutSeconds
         };
     }
 
