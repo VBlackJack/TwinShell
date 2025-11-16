@@ -28,9 +28,12 @@ public class JsonSeedService : ISeedService
             return;
         }
 
+        // BUGFIX: Return early with warning instead of throwing FileNotFoundException
+        // This allows the application to start even if the seed file is missing
         if (!File.Exists(_seedFilePath))
         {
-            throw new FileNotFoundException($"Seed file not found: {_seedFilePath}");
+            Console.WriteLine($"Warning: Seed file not found: {_seedFilePath}. Skipping data seeding.");
+            return;
         }
 
         var json = await File.ReadAllTextAsync(_seedFilePath);

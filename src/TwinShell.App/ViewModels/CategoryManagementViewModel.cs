@@ -243,7 +243,8 @@ public partial class CategoryManagementViewModel : ObservableObject
             catch (Exception ex)
             {
                 // SECURITY: Don't expose exception details to users
-            ErrorMessage = "An error occurred while saving the category";
+                // BUGFIX: Corrected error message from "saving" to "deleting"
+                ErrorMessage = "An error occurred while deleting the category";
             }
         }
     }

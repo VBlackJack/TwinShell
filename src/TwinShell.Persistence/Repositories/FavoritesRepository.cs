@@ -24,6 +24,16 @@ public class FavoritesRepository : IFavoritesRepository
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// PERFORMANCE: Add multiple favorites at once to avoid N+1 queries
+    /// </summary>
+    public async Task AddRangeAsync(IEnumerable<UserFavorite> favorites)
+    {
+        var entities = favorites.Select(UserFavoriteMapper.ToEntity);
+        _context.UserFavorites.AddRange(entities);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<UserFavorite>> GetAllAsync(string? userId = null)
     {
         // PERFORMANCE: AsNoTracking for read-only queries

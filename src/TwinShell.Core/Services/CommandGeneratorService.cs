@@ -169,10 +169,11 @@ public class CommandGeneratorService : ICommandGeneratorService
                         break;
 
                     case "string":
-                        if (value.Length > 255)
+                        // PERFORMANCE: Use constant instead of magic number
+                        if (value.Length > ValidationConstants.MaxParameterLength)
                         {
                             // BUGFIX: Replace hardcoded French message with localization
-                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterMaxLength, parameter.Label, "255"));
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterMaxLength, parameter.Label, ValidationConstants.MaxParameterLength.ToString()));
                         }
                         if (ContainsDangerousCharacters(value))
                         {
@@ -259,9 +260,10 @@ public class CommandGeneratorService : ICommandGeneratorService
                     error = "Required field";
                     return false;
                 }
-                if (value.Length > 255)
+                // PERFORMANCE: Use constant instead of magic number
+                if (value.Length > ValidationConstants.MaxParameterLength)
                 {
-                    error = "String exceeds maximum length of 255";
+                    error = $"String exceeds maximum length of {ValidationConstants.MaxParameterLength}";
                     return false;
                 }
                 if (ContainsDangerousCharacters(value))
@@ -321,6 +323,7 @@ public class CommandGeneratorService : ICommandGeneratorService
 
     /// <summary>
     /// Validates path format and prevents path traversal
+    /// SECURITY FIX: Now validates that path is within allowed base directories
     /// </summary>
     private bool IsValidPath(string value)
     {
@@ -329,6 +332,14 @@ public class CommandGeneratorService : ICommandGeneratorService
 
         try
         {
+            // SECURITY: Check for tilde expansion attempts (shell-specific)
+            if (value.Contains("~"))
+                return false;
+
+            // SECURITY: Check for Windows environment variables that could be exploited
+            if (value.Contains("%"))
+                return false;
+
             // SECURITY: Improved path traversal validation
             // Get the full normalized path
             var fullPath = Path.GetFullPath(value);
@@ -339,12 +350,29 @@ public class CommandGeneratorService : ICommandGeneratorService
             if (!fullPath.Equals(normalizedInput, StringComparison.OrdinalIgnoreCase))
                 return false;
 
-            // Check for tilde expansion attempts (shell-specific)
-            if (value.Contains("~"))
+            // Verify path is rooted (absolute path)
+            if (!Path.IsPathRooted(fullPath))
                 return false;
 
-            // Verify path is rooted (absolute path)
-            return Path.IsPathRooted(fullPath);
+            // SECURITY FIX: Validate that path is within allowed base directories
+            // Only allow paths within user's AppData or LocalAppData folders
+            var allowedBases = new[]
+            {
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+            };
+
+            var isInAllowedDirectory = allowedBases.Any(baseDir =>
+            {
+                var normalizedBase = Path.GetFullPath(baseDir);
+                return fullPath.StartsWith(normalizedBase, StringComparison.OrdinalIgnoreCase) &&
+                       (fullPath.Length == normalizedBase.Length ||
+                        fullPath[normalizedBase.Length] == Path.DirectorySeparatorChar ||
+                        fullPath[normalizedBase.Length] == Path.AltDirectorySeparatorChar);
+            });
+
+            return isInAllowedDirectory;
         }
         catch
         {

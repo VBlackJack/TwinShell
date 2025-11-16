@@ -10,7 +10,7 @@ public static class TemplateHelper
 {
     /// <summary>
     /// Gets the active command template for an action based on the current platform.
-    /// Prefers Windows template, falls back to Linux template.
+    /// Returns the template matching the current platform, with fallback logic.
     /// </summary>
     /// <param name="action">The action to get the template from</param>
     /// <returns>The active template, or null if no template is available</returns>
@@ -19,7 +19,18 @@ public static class TemplateHelper
         if (action == null)
             return null;
 
-        return action.WindowsCommandTemplate ?? action.LinuxCommandTemplate;
+        // BUGFIX: Use PlatformHelper to get the current platform instead of hardcoding preference
+        var currentPlatform = PlatformHelper.GetCurrentPlatform();
+
+        // Return the template for the current platform, with fallback to the other platform
+        if (currentPlatform == Platform.Windows)
+        {
+            return action.WindowsCommandTemplate ?? action.LinuxCommandTemplate;
+        }
+        else
+        {
+            return action.LinuxCommandTemplate ?? action.WindowsCommandTemplate;
+        }
     }
 
     /// <summary>

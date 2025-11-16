@@ -13,6 +13,11 @@ public interface IFavoritesRepository
     Task AddAsync(UserFavorite favorite);
 
     /// <summary>
+    /// PERFORMANCE: Add multiple favorites at once
+    /// </summary>
+    Task AddRangeAsync(IEnumerable<UserFavorite> favorites);
+
+    /// <summary>
     /// Get all favorites for a user, ordered by DisplayOrder
     /// </summary>
     /// <param name="userId">User ID (nullable for single-user mode)</param>

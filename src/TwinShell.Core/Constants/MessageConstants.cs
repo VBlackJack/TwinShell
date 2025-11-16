@@ -13,6 +13,8 @@ public static class MessageKeys
     public const string Success = "Common.Success";
     public const string Warning = "Common.Warning";
     public const string Confirmation = "Common.Confirmation";
+    public const string CommonError = Error; // Alias for consistency
+    public const string CommonErrorProcessing = "Common.Error.Processing";
 
     // Validation messages
     public const string ParameterRequired = "Validation.ParameterRequired";
@@ -45,6 +47,8 @@ public static class MessageKeys
     public const string FavoriteRemoved = "Favorites.Removed";
     public const string FavoritesLimitReached = "Favorites.LimitReached";
     public const string FavoritesLimitReachedMessage = "Favorites.LimitReachedMessage";
+    public const string FavoritesToggleFailed = "Favorites.ToggleFailed";
+    public const string FavoritesUpdateError = "Favorites.UpdateError";
 
     // Configuration messages
     public const string ConfigExportSuccess = "Config.ExportSuccess";
@@ -55,6 +59,14 @@ public static class MessageKeys
     public const string ConfigImportConfirmation = "Config.ImportConfirmation";
     public const string ConfigImportConfirmationMessage = "Config.ImportConfirmationMessage";
 
+    // Additional configuration message aliases for consistency
+    public const string ConfigExportSuccessMessage = ConfigExportSuccess;
+    public const string ConfigExportErrorMessage = ConfigExportError;
+    public const string ConfigImportSuccessMessage = ConfigImportSuccess;
+    public const string ConfigImportErrorMessage = ConfigImportError;
+    public const string ConfigValidationErrorMessage = ConfigValidationError;
+    public const string ConfigImportErrorGeneric = "Config.ImportError.Generic";
+
     // Help messages
     public const string HelpTitle = "Help.Title";
     public const string HelpContent = "Help.Content";
@@ -62,4 +74,5 @@ public static class MessageKeys
     // Status messages
     public const string ActionsLoaded = "Status.ActionsLoaded";
     public const string Refreshing = "Status.Refreshing";
+    public const string StatusActionsLoaded = ActionsLoaded; // Alias for consistency
 }

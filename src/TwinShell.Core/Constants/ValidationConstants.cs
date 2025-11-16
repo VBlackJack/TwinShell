@@ -16,6 +16,11 @@ public static class ValidationConstants
     public const int MaxCommandLength = 1024;
 
     /// <summary>
+    /// Maximum length for a file path (260 characters, standard Windows MAX_PATH).
+    /// </summary>
+    public const int MaxPathLength = 260;
+
+    /// <summary>
     /// Minimum search text length before triggering search.
     /// </summary>
     public const int MinSearchLength = 3;
