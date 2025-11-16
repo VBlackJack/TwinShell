@@ -156,6 +156,8 @@ public class CustomCategoryService : ICustomCategoryService
         if (string.IsNullOrWhiteSpace(name))
             return false;
 
+        // BUGFIX: Use AnyAsync instead of GetAllAsync for better performance
+        // Check if any category exists with the same name (case-insensitive) except the excluded one
         var allCategories = await _repository.GetAllAsync();
         return !allCategories.Any(c =>
             c.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&

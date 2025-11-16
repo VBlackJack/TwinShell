@@ -16,6 +16,8 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     private readonly ICommandExecutionService _commandExecutionService;
     private readonly ICommandHistoryService _commandHistoryService;
     private readonly ISettingsService _settingsService;
+    // BUGFIX: Added lock object for thread-safe access to _executionCts and _executionTimer
+    private readonly object _lock = new object();
     private CancellationTokenSource? _executionCts;
     private bool _disposed;
 
@@ -36,6 +38,8 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
 
     private System.Timers.Timer? _executionTimer;
     private DateTime _executionStartTime;
+    // BUGFIX: Replace fragile OutputLines.Count == 4 check with explicit flag
+    private bool _outputReceivedViaCallbacks;
 
     public ExecutionViewModel(
         ICommandExecutionService commandExecutionService,
@@ -83,16 +87,23 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         IsExecuting = true;
         StatusMessage = "Executing...";
         ExecutionProgress = 0;
+        _outputReceivedViaCallbacks = false;
 
         // Create cancellation token source
-        _executionCts = new CancellationTokenSource();
+        lock (_lock)
+        {
+            _executionCts = new CancellationTokenSource();
+        }
 
         // Start execution timer
         _executionStartTime = DateTime.Now;
-        // PERFORMANCE: Reduced from 100ms to 250ms (60% CPU reduction, no UX impact)
-        _executionTimer = new System.Timers.Timer(250); // Update every 250ms
-        _executionTimer.Elapsed += OnTimerElapsed;
-        _executionTimer.Start();
+        lock (_lock)
+        {
+            // PERFORMANCE: Reduced from 100ms to 250ms (60% CPU reduction, no UX impact)
+            _executionTimer = new System.Timers.Timer(250); // Update every 250ms
+            _executionTimer.Elapsed += OnTimerElapsed;
+            _executionTimer.Start();
+        }
 
         try
         {
@@ -106,13 +117,20 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
             AddOutputLine("", false);
 
             // Execute the command
+            CancellationToken token;
+            lock (_lock)
+            {
+                token = _executionCts!.Token;
+            }
+
             var result = await _commandExecutionService.ExecuteAsync(
                 parameter.Command,
                 parameter.Platform,
-                _executionCts.Token,
+                token,
                 timeout,
                 onOutputReceived: (outputLine) =>
                 {
+                    _outputReceivedViaCallbacks = true;
                     // Add output line to UI on UI thread (async to prevent deadlocks)
                     Application.Current.Dispatcher.InvokeAsync(() =>
                     {
@@ -121,13 +139,17 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
                 });
 
             // Stop timer (will be fully disposed in finally block)
-            if (_executionTimer != null)
+            lock (_lock)
             {
-                _executionTimer.Stop();
+                if (_executionTimer != null)
+                {
+                    _executionTimer.Stop();
+                }
             }
 
+            // BUGFIX: Use explicit flag instead of fragile OutputLines.Count == 4 check
             // Add final output if not already added via callbacks
-            if (!string.IsNullOrEmpty(result.Stdout) && OutputLines.Count == 4) // Only initial lines
+            if (!string.IsNullOrEmpty(result.Stdout) && !_outputReceivedViaCallbacks)
             {
                 foreach (var line in result.Stdout.Split('\n', StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -182,9 +204,12 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         }
         catch (Exception ex)
         {
-            if (_executionTimer != null)
+            lock (_lock)
             {
-                _executionTimer.Stop();
+                if (_executionTimer != null)
+                {
+                    _executionTimer.Stop();
+                }
             }
             AddOutputLine("", false);
             // SECURITY: Don't expose exception details to users
@@ -194,16 +219,19 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         finally
         {
             IsExecuting = false;
-            _executionCts?.Dispose();
-            _executionCts = null;
-
-            // Properly dispose timer and detach event handler
-            if (_executionTimer != null)
+            lock (_lock)
             {
-                _executionTimer.Stop();
-                _executionTimer.Elapsed -= OnTimerElapsed;
-                _executionTimer.Dispose();
-                _executionTimer = null;
+                _executionCts?.Dispose();
+                _executionCts = null;
+
+                // Properly dispose timer and detach event handler
+                if (_executionTimer != null)
+                {
+                    _executionTimer.Stop();
+                    _executionTimer.Elapsed -= OnTimerElapsed;
+                    _executionTimer.Dispose();
+                    _executionTimer = null;
+                }
             }
         }
     }
@@ -226,10 +254,13 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void StopExecution()
     {
-        if (_executionCts != null && !_executionCts.IsCancellationRequested)
+        lock (_lock)
         {
-            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Cancelling execution...", true);
-            _executionCts.Cancel();
+            if (_executionCts != null && !_executionCts.IsCancellationRequested)
+            {
+                AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Cancelling execution...", true);
+                _executionCts.Cancel();
+            }
         }
     }
 
@@ -295,21 +326,24 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         if (_disposed)
             return;
 
-        // Stop and dispose timer
-        if (_executionTimer != null)
+        lock (_lock)
         {
-            _executionTimer.Stop();
-            _executionTimer.Elapsed -= OnTimerElapsed;
-            _executionTimer.Dispose();
-            _executionTimer = null;
-        }
+            // Stop and dispose timer
+            if (_executionTimer != null)
+            {
+                _executionTimer.Stop();
+                _executionTimer.Elapsed -= OnTimerElapsed;
+                _executionTimer.Dispose();
+                _executionTimer = null;
+            }
 
-        // Cancel and dispose cancellation token source
-        if (_executionCts != null)
-        {
-            _executionCts.Cancel();
-            _executionCts.Dispose();
-            _executionCts = null;
+            // Cancel and dispose cancellation token source
+            if (_executionCts != null)
+            {
+                _executionCts.Cancel();
+                _executionCts.Dispose();
+                _executionCts = null;
+            }
         }
 
         _disposed = true;

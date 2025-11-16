@@ -30,8 +30,11 @@ public static class TemplateHelper
     /// <returns>The platform (Windows or Linux)</returns>
     public static Platform GetPlatformForTemplate(Action action, CommandTemplate template)
     {
-        if (action == null || template == null)
-            throw new ArgumentNullException();
+        // BUGFIX: Specify parameter name in ArgumentNullException
+        if (action == null)
+            throw new ArgumentNullException(nameof(action));
+        if (template == null)
+            throw new ArgumentNullException(nameof(template));
 
         return template == action.WindowsCommandTemplate ? Platform.Windows : Platform.Linux;
     }

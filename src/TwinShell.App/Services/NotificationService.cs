@@ -91,13 +91,18 @@ public class NotificationService : INotificationService, IDisposable
         stackPanel.Children.Add(messageBlock);
         border.Child = stackPanel;
 
+        // BUGFIX: Check if MainWindow is not null before creating popup
+        var mainWindow = Application.Current.MainWindow;
+        if (mainWindow == null)
+            return; // Cannot show popup without main window
+
         // Create popup
         _currentPopup = new Popup
         {
             Child = border,
-            PlacementTarget = Application.Current.MainWindow,
+            PlacementTarget = mainWindow,
             Placement = PlacementMode.Top,
-            HorizontalOffset = (Application.Current.MainWindow?.ActualWidth ?? 800) - 420,
+            HorizontalOffset = (mainWindow.ActualWidth) - 420,
             VerticalOffset = 60,
             AllowsTransparency = true,
             StaysOpen = true

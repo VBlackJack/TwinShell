@@ -8,11 +8,13 @@ using TwinShell.Core.Models;
 
 namespace TwinShell.App.ViewModels;
 
-public partial class HistoryViewModel : ObservableObject
+// BUGFIX: Implement IDisposable to properly dispose SemaphoreSlim
+public partial class HistoryViewModel : ObservableObject, IDisposable
 {
     private readonly ICommandHistoryService _historyService;
     private readonly IClipboardService _clipboardService;
     private readonly SemaphoreSlim _historyLock = new SemaphoreSlim(1, 1);
+    private bool _disposed;
 
     private List<CommandHistory> _allHistory = new();
 
@@ -225,6 +227,18 @@ public partial class HistoryViewModel : ObservableObject
             // SECURITY: Don't expose exception details to users
             StatusMessage = "Error deleting entry";
         }
+    }
+
+    /// <summary>
+    /// Dispose resources to prevent memory leaks
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _historyLock?.Dispose();
+        _disposed = true;
     }
 }
 
