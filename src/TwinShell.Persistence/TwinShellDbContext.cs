@@ -16,6 +16,7 @@ public class TwinShellDbContext : DbContext
 
     public DbSet<ActionEntity> Actions => Set<ActionEntity>();
     public DbSet<CommandTemplateEntity> CommandTemplates => Set<CommandTemplateEntity>();
+    public DbSet<CommandHistoryEntity> CommandHistories => Set<CommandHistoryEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,5 +24,6 @@ public class TwinShellDbContext : DbContext
 
         modelBuilder.ApplyConfiguration(new ActionConfiguration());
         modelBuilder.ApplyConfiguration(new CommandTemplateConfiguration());
+        modelBuilder.ApplyConfiguration(new CommandHistoryConfiguration());
     }
 }
