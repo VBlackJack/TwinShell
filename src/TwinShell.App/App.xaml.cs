@@ -57,6 +57,8 @@ public partial class App : Application
         services.AddScoped<ICommandHistoryRepository, CommandHistoryRepository>();
         services.AddScoped<IFavoritesRepository, FavoritesRepository>();
         services.AddScoped<ICustomCategoryRepository, CustomCategoryRepository>();
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IBatchRepository, BatchRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
@@ -66,14 +68,20 @@ public partial class App : Application
         services.AddScoped<IFavoritesService, FavoritesService>();
         services.AddScoped<IConfigurationService, ConfigurationService>();
         services.AddScoped<ICustomCategoryService, CustomCategoryService>();
+        services.AddScoped<IAuditLogService, AuditLogService>();
+        services.AddScoped<IBatchService, BatchService>();
+        services.AddScoped<IBatchExecutionService, BatchExecutionService>();
+        services.AddScoped<IPowerShellGalleryService, PowerShellGalleryService>();
 
         // Theme and Settings Services (Singletons to maintain state)
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<ILocalizationService, LocalizationService>();
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
         services.AddSingleton<INotificationService, TwinShell.App.Services.NotificationService>();
+        services.AddScoped<ICommandExecutionService, CommandExecutionService>();
 
         // Seed Service
         var seedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
@@ -86,10 +94,16 @@ public partial class App : Application
         services.AddTransient<RecentCommandsViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<CategoryManagementViewModel>();
+        services.AddTransient<ExecutionViewModel>();
+        services.AddTransient<BatchViewModel>();
+        services.AddTransient<PowerShellGalleryViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
         services.AddTransient<RecentCommandsWidget>();
+        services.AddTransient<OutputPanel>();
+        services.AddTransient<BatchPanel>();
+        services.AddTransient<PowerShellGalleryPanel>();
 
         // Windows
         services.AddTransient<MainWindow>();
@@ -101,12 +115,24 @@ public partial class App : Application
     {
         var settingsService = _serviceProvider!.GetRequiredService<ISettingsService>();
         var themeService = _serviceProvider!.GetRequiredService<IThemeService>();
+        var localizationService = _serviceProvider!.GetRequiredService<ILocalizationService>();
 
         // Load user settings
         var settings = await settingsService.LoadSettingsAsync();
 
         // Apply the saved theme
         themeService.ApplyTheme(settings.Theme);
+
+        // Apply the saved language
+        try
+        {
+            localizationService.ChangeLanguage(settings.CultureCode);
+        }
+        catch
+        {
+            // Fallback to French if culture is invalid
+            localizationService.ChangeLanguage("fr");
+        }
     }
 
     private async Task InitializeDatabaseAsync()

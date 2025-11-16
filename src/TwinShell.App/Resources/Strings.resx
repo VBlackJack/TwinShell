@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Application Title -->
+  <data name="AppTitle" xml:space="preserve">
+    <value>TwinShell</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>Gestionnaire de commandes PowerShell &amp; Bash pour administrateurs système</value>
+  </data>
+
+  <!-- Menu Items -->
+  <data name="MenuFile" xml:space="preserve">
+    <value>_Fichier</value>
+  </data>
+  <data name="MenuExport" xml:space="preserve">
+    <value>_Exporter la configuration...</value>
+  </data>
+  <data name="MenuImport" xml:space="preserve">
+    <value>_Importer la configuration...</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>_Paramètres...</value>
+  </data>
+  <data name="MenuExit" xml:space="preserve">
+    <value>_Quitter</value>
+  </data>
+  <data name="MenuCategories" xml:space="preserve">
+    <value>_Catégories</value>
+  </data>
+  <data name="MenuManageCategories" xml:space="preserve">
+    <value>_Gérer les catégories...</value>
+  </data>
+  <data name="MenuHelp" xml:space="preserve">
+    <value>_Aide</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>_À propos de TwinShell</value>
+  </data>
+  <data name="MenuKeyboardShortcuts" xml:space="preserve">
+    <value>_Raccourcis clavier</value>
+  </data>
+
+  <!-- Tab Headers -->
+  <data name="TabActions" xml:space="preserve">
+    <value>📋 Actions</value>
+  </data>
+  <data name="TabHistory" xml:space="preserve">
+    <value>📜 Historique</value>
+  </data>
+  <data name="TabExecution" xml:space="preserve">
+    <value>▶ Exécution</value>
+  </data>
+
+  <!-- Buttons -->
+  <data name="ButtonCopy" xml:space="preserve">
+    <value>📋 Copier dans le presse-papiers</value>
+  </data>
+  <data name="ButtonExecute" xml:space="preserve">
+    <value>▶ Exécuter</value>
+  </data>
+  <data name="ButtonStop" xml:space="preserve">
+    <value>⏹ Arrêter</value>
+  </data>
+  <data name="ButtonClear" xml:space="preserve">
+    <value>🗑 Effacer</value>
+  </data>
+  <data name="ButtonRefresh" xml:space="preserve">
+    <value>🔄 Actualiser</value>
+  </data>
+  <data name="ButtonDelete" xml:space="preserve">
+    <value>🗑️ Supprimer</value>
+  </data>
+  <data name="ButtonClearAll" xml:space="preserve">
+    <value>🗑️ Tout effacer</value>
+  </data>
+  <data name="ButtonClearFilters" xml:space="preserve">
+    <value>Effacer les filtres</value>
+  </data>
+
+  <!-- Labels -->
+  <data name="LabelSearch" xml:space="preserve">
+    <value>Rechercher...</value>
+  </data>
+  <data name="LabelFilters" xml:space="preserve">
+    <value>Filtres</value>
+  </data>
+  <data name="LabelPlatform" xml:space="preserve">
+    <value>Plateforme :</value>
+  </data>
+  <data name="LabelLevel" xml:space="preserve">
+    <value>Niveau :</value>
+  </data>
+  <data name="LabelCategory" xml:space="preserve">
+    <value>Catégorie :</value>
+  </data>
+  <data name="LabelDate" xml:space="preserve">
+    <value>Date :</value>
+  </data>
+  <data name="LabelDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="LabelExamples" xml:space="preserve">
+    <value>Exemples</value>
+  </data>
+  <data name="LabelNotes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="LabelCommandGenerator" xml:space="preserve">
+    <value>Générateur de commande</value>
+  </data>
+  <data name="LabelGeneratedCommand" xml:space="preserve">
+    <value>Commande générée</value>
+  </data>
+  <data name="LabelStatus" xml:space="preserve">
+    <value>État</value>
+  </data>
+  <data name="LabelLanguage" xml:space="preserve">
+    <value>Langue :</value>
+  </data>
+
+  <!-- Platforms -->
+  <data name="PlatformWindows" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="PlatformLinux" xml:space="preserve">
+    <value>Linux</value>
+  </data>
+  <data name="PlatformBoth" xml:space="preserve">
+    <value>Les deux</value>
+  </data>
+  <data name="PlatformAll" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+
+  <!-- Levels -->
+  <data name="LevelInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="LevelRun" xml:space="preserve">
+    <value>Exécution</value>
+  </data>
+  <data name="LevelDangerous" xml:space="preserve">
+    <value>Dangereux</value>
+  </data>
+
+  <!-- Messages -->
+  <data name="MessageNoActionSelected" xml:space="preserve">
+    <value>Sélectionnez une action pour voir les détails</value>
+  </data>
+  <data name="MessageNoCommandTemplate" xml:space="preserve">
+    <value>Aucun modèle de commande disponible.</value>
+  </data>
+  <data name="MessageValidationErrors" xml:space="preserve">
+    <value>Erreurs de validation :</value>
+  </data>
+  <data name="MessageDangerousCommand" xml:space="preserve">
+    <value>⚠️ ATTENTION : Cette commande peut causer des modifications importantes du système</value>
+  </data>
+  <data name="MessageExecutionCancelled" xml:space="preserve">
+    <value>Exécution annulée par l'utilisateur</value>
+  </data>
+  <data name="MessageExecutionSuccess" xml:space="preserve">
+    <value>Exécution terminée avec succès</value>
+  </data>
+  <data name="MessageExecutionFailed" xml:space="preserve">
+    <value>Échec de l'exécution</value>
+  </data>
+  <data name="MessageReady" xml:space="preserve">
+    <value>Prêt</value>
+  </data>
+  <data name="MessageExecuting" xml:space="preserve">
+    <value>Exécution en cours...</value>
+  </data>
+
+  <!-- Dialog Titles -->
+  <data name="DialogTitleConfirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="DialogTitleError" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="DialogTitleWarning" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
+  <data name="DialogTitleSuccess" xml:space="preserve">
+    <value>Succès</value>
+  </data>
+  <data name="DialogTitleDangerousCommand" xml:space="preserve">
+    <value>Confirmation de commande dangereuse</value>
+  </data>
+
+  <!-- Settings -->
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="SettingsTheme" xml:space="preserve">
+    <value>Thème :</value>
+  </data>
+  <data name="SettingsThemeLight" xml:space="preserve">
+    <value>Clair</value>
+  </data>
+  <data name="SettingsThemeDark" xml:space="preserve">
+    <value>Sombre</value>
+  </data>
+  <data name="SettingsThemeSystem" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="SettingsAutoCleanup" xml:space="preserve">
+    <value>Nettoyage automatique (jours) :</value>
+  </data>
+  <data name="SettingsExecutionTimeout" xml:space="preserve">
+    <value>Délai d'exécution (secondes) :</value>
+  </data>
+  <data name="SettingsConfirmDangerous" xml:space="preserve">
+    <value>Confirmer les commandes dangereuses</value>
+  </data>
+  <data name="SettingsShowRecentCommands" xml:space="preserve">
+    <value>Afficher les commandes récentes</value>
+  </data>
+
+  <!-- History -->
+  <data name="HistoryTitle" xml:space="preserve">
+    <value>Historique des commandes</value>
+  </data>
+  <data name="HistorySubtitle" xml:space="preserve">
+    <value>Parcourez et réutilisez votre historique de commandes</value>
+  </data>
+  <data name="HistoryEntries" xml:space="preserve">
+    <value>Entrées d'historique ({0})</value>
+  </data>
+
+  <!-- Execution -->
+  <data name="ExecutionOutputPanel" xml:space="preserve">
+    <value>Panneau de sortie</value>
+  </data>
+  <data name="ExecutionExitCode" xml:space="preserve">
+    <value>Code de sortie : {0}</value>
+  </data>
+  <data name="ExecutionDuration" xml:space="preserve">
+    <value>Durée : {0}s</value>
+  </data>
+  <data name="ExecutionStatusSuccess" xml:space="preserve">
+    <value>✓ SUCCÈS</value>
+  </data>
+  <data name="ExecutionStatusFailed" xml:space="preserve">
+    <value>✗ ÉCHEC</value>
+  </data>
+
+  <!-- Time Filters -->
+  <data name="FilterToday" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="FilterLast7Days" xml:space="preserve">
+    <value>7 derniers jours</value>
+  </data>
+  <data name="FilterLast30Days" xml:space="preserve">
+    <value>30 derniers jours</value>
+  </data>
+  <data name="FilterAllTime" xml:space="preserve">
+    <value>Tout le temps</value>
+  </data>
+</root>

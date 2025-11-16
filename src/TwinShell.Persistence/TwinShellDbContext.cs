@@ -20,6 +20,9 @@ public class TwinShellDbContext : DbContext
     public DbSet<UserFavoriteEntity> UserFavorites => Set<UserFavoriteEntity>();
     public DbSet<CustomCategoryEntity> CustomCategories => Set<CustomCategoryEntity>();
     public DbSet<ActionCategoryMappingEntity> ActionCategoryMappings => Set<ActionCategoryMappingEntity>();
+    public DbSet<ActionTranslationEntity> ActionTranslations => Set<ActionTranslationEntity>();
+    public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
+    public DbSet<CommandBatchEntity> CommandBatches => Set<CommandBatchEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,5 +34,8 @@ public class TwinShellDbContext : DbContext
         modelBuilder.ApplyConfiguration(new UserFavoriteConfiguration());
         modelBuilder.ApplyConfiguration(new CustomCategoryConfiguration());
         modelBuilder.ApplyConfiguration(new ActionCategoryMappingConfiguration());
+        modelBuilder.ApplyConfiguration(new ActionTranslationConfiguration());
+        modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
+        modelBuilder.ApplyConfiguration(new CommandBatchConfiguration());
     }
 }

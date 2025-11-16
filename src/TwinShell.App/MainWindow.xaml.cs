@@ -8,11 +8,13 @@ namespace TwinShell.App;
 public partial class MainWindow : Window
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly MainViewModel _mainViewModel;
 
-    public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, RecentCommandsWidget recentCommandsWidget, IServiceProvider serviceProvider)
+    public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, RecentCommandsWidget recentCommandsWidget, OutputPanel outputPanel, IServiceProvider serviceProvider)
     {
         InitializeComponent();
         DataContext = viewModel;
+        _mainViewModel = viewModel;
         _serviceProvider = serviceProvider;
 
         // Set the history panel (will be accessed by name in XAML)
@@ -20,6 +22,15 @@ public partial class MainWindow : Window
 
         // Set the recent commands widget
         RecentCommandsContainer.Child = recentCommandsWidget;
+
+        // Set the execution output panel (Sprint 4)
+        ExecutionTabContent.Content = outputPanel;
+
+        // Wire up the ExecutionViewModel to MainViewModel
+        if (outputPanel.DataContext is ExecutionViewModel executionViewModel)
+        {
+            _mainViewModel.ExecutionViewModel = executionViewModel;
+        }
 
         Loaded += async (s, e) => await viewModel.InitializeAsync();
     }
@@ -75,8 +86,9 @@ public partial class MainWindow : Window
             "TwinShell v1.0\n\n" +
             "PowerShell & Bash Command Manager\n" +
             "For System Administrators\n\n" +
-            "Sprint 3: UI/UX & Customization\n\n" +
+            "Sprint 4: Advanced Features & Integration\n\n" +
             "Features:\n" +
+            "• Direct PowerShell/Bash Execution\n" +
             "• Dark Mode Support\n" +
             "• Command History Tracking\n" +
             "• Favorites System\n" +

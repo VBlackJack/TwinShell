@@ -16,7 +16,7 @@ public class CommandHistoryService : ICommandHistoryService
         _repository = repository;
     }
 
-    public async Task AddCommandAsync(
+    public async Task<string> AddCommandAsync(
         string actionId,
         string generatedCommand,
         Dictionary<string, string> parameters,
@@ -37,6 +37,24 @@ public class CommandHistoryService : ICommandHistoryService
         };
 
         await _repository.AddAsync(history);
+        return history.Id;
+    }
+
+    public async Task UpdateWithExecutionResultsAsync(
+        string historyId,
+        int exitCode,
+        TimeSpan duration,
+        bool success)
+    {
+        var history = await _repository.GetByIdAsync(historyId);
+        if (history != null)
+        {
+            history.IsExecuted = true;
+            history.ExitCode = exitCode;
+            history.ExecutionDuration = duration;
+            history.ExecutionSuccess = success;
+            await _repository.UpdateAsync(history);
+        }
     }
 
     public async Task<IEnumerable<CommandHistory>> GetRecentAsync(int count = 50)
