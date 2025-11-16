@@ -103,7 +103,8 @@ public partial class HistoryViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error loading history: {ex.Message}";
+            // SECURITY: Don't expose exception details to users
+            StatusMessage = "Error loading history";
         }
     }
 
@@ -193,7 +194,8 @@ public partial class HistoryViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                StatusMessage = $"Error clearing history: {ex.Message}";
+                // SECURITY: Don't expose exception details to users
+                StatusMessage = "Error clearing history";
             }
         }
     }
@@ -217,7 +219,8 @@ public partial class HistoryViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error deleting entry: {ex.Message}";
+            // SECURITY: Don't expose exception details to users
+            StatusMessage = "Error deleting entry";
         }
     }
 }
