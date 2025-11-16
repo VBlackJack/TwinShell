@@ -26,7 +26,9 @@ public class FavoritesRepository : IFavoritesRepository
 
     public async Task<IEnumerable<UserFavorite>> GetAllAsync(string? userId = null)
     {
+        // PERFORMANCE: AsNoTracking for read-only queries
         var query = _context.UserFavorites
+            .AsNoTracking()
             .Include(f => f.Action)
                 .ThenInclude(a => a!.WindowsCommandTemplate)
             .Include(f => f.Action)
@@ -51,7 +53,9 @@ public class FavoritesRepository : IFavoritesRepository
 
     public async Task<UserFavorite?> GetByActionIdAsync(string actionId, string? userId = null)
     {
+        // PERFORMANCE: AsNoTracking for read-only queries
         var query = _context.UserFavorites
+            .AsNoTracking()
             .Include(f => f.Action)
             .AsQueryable();
 
@@ -149,7 +153,8 @@ public class FavoritesRepository : IFavoritesRepository
         }
 
         var entities = await query.ToListAsync();
-        if (entities.Any())
+        // PERFORMANCE: Use Count for List instead of Any()
+        if (entities.Count > 0)
         {
             _context.UserFavorites.RemoveRange(entities);
             await _context.SaveChangesAsync();

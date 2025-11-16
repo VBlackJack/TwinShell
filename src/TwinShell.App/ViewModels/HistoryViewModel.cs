@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TwinShell.App.Collections;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -16,7 +17,7 @@ public partial class HistoryViewModel : ObservableObject
     private List<CommandHistory> _allHistory = new();
 
     [ObservableProperty]
-    private ObservableCollection<CommandHistoryViewModel> _historyItems = new();
+    private ObservableRangeCollection<CommandHistoryViewModel> _historyItems = new();
 
     [ObservableProperty]
     private string _searchText = string.Empty;
@@ -115,63 +116,55 @@ public partial class HistoryViewModel : ObservableObject
         await _historyLock.WaitAsync();
         try
         {
-            await Task.Run(() =>
+            // PERFORMANCE: Filtering is fast and synchronous - no need for Task.Run()
+            var filtered = _allHistory.AsEnumerable();
+
+            // Search filter
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                var filtered = _allHistory.AsEnumerable();
+                var search = SearchText.ToLower();
+                filtered = filtered.Where(h =>
+                    h.GeneratedCommand.ToLower().Contains(search) ||
+                    h.ActionTitle.ToLower().Contains(search));
+            }
 
-                // Search filter
-                if (!string.IsNullOrWhiteSpace(SearchText))
-                {
-                    var search = SearchText.ToLower();
-                    filtered = filtered.Where(h =>
-                        h.GeneratedCommand.ToLower().Contains(search) ||
-                        h.ActionTitle.ToLower().Contains(search));
-                }
+            // Date filter
+            var now = DateTime.UtcNow;
+            switch (SelectedDateFilter)
+            {
+                case "Today":
+                    var todayStart = now.Date;
+                    filtered = filtered.Where(h => h.CreatedAt >= todayStart);
+                    break;
+                case "Last 7 days":
+                    var weekAgo = now.AddDays(-7);
+                    filtered = filtered.Where(h => h.CreatedAt >= weekAgo);
+                    break;
+                case "Last 30 days":
+                    var monthAgo = now.AddDays(-30);
+                    filtered = filtered.Where(h => h.CreatedAt >= monthAgo);
+                    break;
+            }
 
-                // Date filter
-                var now = DateTime.UtcNow;
-                switch (SelectedDateFilter)
-                {
-                    case "Today":
-                        var todayStart = now.Date;
-                        filtered = filtered.Where(h => h.CreatedAt >= todayStart);
-                        break;
-                    case "Last 7 days":
-                        var weekAgo = now.AddDays(-7);
-                        filtered = filtered.Where(h => h.CreatedAt >= weekAgo);
-                        break;
-                    case "Last 30 days":
-                        var monthAgo = now.AddDays(-30);
-                        filtered = filtered.Where(h => h.CreatedAt >= monthAgo);
-                        break;
-                }
+            // Category filter
+            if (!string.IsNullOrWhiteSpace(SelectedCategory))
+            {
+                filtered = filtered.Where(h => h.Category == SelectedCategory);
+            }
 
-                // Category filter
-                if (!string.IsNullOrWhiteSpace(SelectedCategory))
-                {
-                    filtered = filtered.Where(h => h.Category == SelectedCategory);
-                }
+            // Platform filter
+            if (SelectedPlatform.HasValue)
+            {
+                filtered = filtered.Where(h => h.Platform == SelectedPlatform.Value);
+            }
 
-                // Platform filter
-                if (SelectedPlatform.HasValue)
-                {
-                    filtered = filtered.Where(h => h.Platform == SelectedPlatform.Value);
-                }
+            var filteredList = filtered.ToList();
+            TotalCount = filteredList.Count;
 
-                var filteredList = filtered.ToList();
-                TotalCount = filteredList.Count;
-
-                // Update UI on main thread
-                System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    HistoryItems.Clear();
-                    foreach (var history in filteredList)
-                    {
-                        var viewModel = new CommandHistoryViewModel(history, _clipboardService, this);
-                        HistoryItems.Add(viewModel);
-                    }
-                });
-            });
+            // PERFORMANCE: Use ReplaceRange for batch update - single UI notification
+            var viewModels = filteredList.Select(h =>
+                new CommandHistoryViewModel(h, _clipboardService, this));
+            HistoryItems.ReplaceRange(viewModels);
         }
         finally
         {
