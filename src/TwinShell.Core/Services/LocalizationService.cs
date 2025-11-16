@@ -14,21 +14,19 @@ public class LocalizationService : ILocalizationService
 
     public LocalizationService()
     {
-        // Default to French
-        _currentCulture = new CultureInfo("fr");
+        // Default to English (en)
+        _currentCulture = new CultureInfo("en");
 
-        // Note: Resource manager will be configured when resources are added
-        // For now, using a placeholder
-        _resourceManager = new ResourceManager("TwinShell.App.Resources.Strings", typeof(LocalizationService).Assembly);
+        // Use the correct namespace for the resource files
+        _resourceManager = new ResourceManager("TwinShell.Core.Resources.Strings", typeof(LocalizationService).Assembly);
     }
 
     public CultureInfo CurrentCulture => _currentCulture;
 
     public CultureInfo[] SupportedCultures => new[]
     {
-        new CultureInfo("fr"),  // French (default)
-        new CultureInfo("en"),  // English
-        new CultureInfo("es")   // Spanish
+        new CultureInfo("en"),  // English (default)
+        new CultureInfo("fr")   // French
     };
 
     public event EventHandler? LanguageChanged;
@@ -86,6 +84,22 @@ public class LocalizationService : ILocalizationService
         catch
         {
             return fallback;
+        }
+    }
+
+    public string GetFormattedString(string key, params object[] args)
+    {
+        try
+        {
+            var format = _resourceManager.GetString(key, _currentCulture);
+            if (format == null)
+                return key;
+
+            return string.Format(format, args);
+        }
+        catch
+        {
+            return key;
         }
     }
 }
