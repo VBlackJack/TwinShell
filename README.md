@@ -4,7 +4,9 @@
 
 TwinShell est une application Windows WPF (.NET 8) qui aide les administrateurs système à trouver rapidement les bonnes commandes PowerShell et Bash pour gérer une infrastructure mixte Windows/Linux.
 
-## 🚀 Fonctionnalités (MVP - Sprint 1)
+## 🚀 Fonctionnalités
+
+### Sprint 1 : MVP (Fonctionnalités de base)
 
 - ✅ **Référentiel de 30+ actions** couvrant :
   - Active Directory (utilisateurs, GPO, diagnostics)
@@ -19,6 +21,33 @@ TwinShell est une application Windows WPF (.NET 8) qui aide les administrateurs 
 - 🛠️ **Générateur de commandes** avec paramètres dynamiques
 - 📋 **Copie vers presse-papiers** en un clic
 - ⚠️ **Alertes de sécurité** pour les commandes dangereuses
+
+### Sprint 2 : Personnalisation & Historique
+
+- 📜 **Historique des commandes** avec:
+  - Tracking automatique de chaque commande générée
+  - Recherche et filtrage (par texte, date, catégorie, plateforme)
+  - Visualisation avec horodatage et détails d'action
+  - Nettoyage automatique (90 jours de rétention par défaut)
+  - Copie et suppression d'entrées individuelles
+
+- ⭐ **Système de favoris** avec:
+  - Marquer jusqu'à 50 actions comme favorites
+  - Bouton étoile (☆/★) avec effet hover doré
+  - Catégorie spéciale "⭐ Favorites" pour accès rapide
+  - Gestion des limites avec messages explicites
+
+- 💾 **Export/Import de configuration** :
+  - Export au format JSON (favorites + historique)
+  - Import avec validation et mode fusion
+  - Préservation des données existantes
+  - Validation de l'intégrité des fichiers
+
+- 🕐 **Widget Commandes Récentes** :
+  - Affichage des 5 dernières commandes sur la page d'accueil
+  - Temps relatif ("5 min ago", "2h ago")
+  - Copie en un clic via click sur l'entrée
+  - Message d'état vide élégant
 
 ## 🏗️ Architecture
 
@@ -64,9 +93,22 @@ TwinShell/
 
 3. Restaurer les packages NuGet (automatique)
 
-4. Compiler la solution (F6)
+4. **Appliquer les migrations EF Core** (requis pour Sprint 2) :
+   ```powershell
+   # Dans la Console du Gestionnaire de Package
+   Add-Migration AddCommandHistoryAndFavorites -Project TwinShell.Persistence -StartupProject TwinShell.App
+   Update-Database -Project TwinShell.Persistence -StartupProject TwinShell.App
+   ```
 
-5. Lancer l'application (F5)
+   Ou via dotnet CLI :
+   ```bash
+   dotnet ef migrations add AddCommandHistoryAndFavorites --project src/TwinShell.Persistence --startup-project src/TwinShell.App
+   dotnet ef database update --project src/TwinShell.Persistence --startup-project src/TwinShell.App
+   ```
+
+5. Compiler la solution (F6)
+
+6. Lancer l'application (F5)
 
 ### Option 2 : Ligne de commande
 
@@ -78,12 +120,18 @@ cd TwinShell
 # Restaurer les packages
 dotnet restore
 
+# Appliquer les migrations EF Core (requis pour Sprint 2)
+dotnet ef migrations add AddCommandHistoryAndFavorites --project src/TwinShell.Persistence --startup-project src/TwinShell.App
+dotnet ef database update --project src/TwinShell.Persistence --startup-project src/TwinShell.App
+
 # Compiler
 dotnet build
 
 # Lancer l'application
 dotnet run --project src/TwinShell.App
 ```
+
+> **Note** : Les migrations sont automatiquement appliquées au premier lancement de l'application. L'étape manuelle ci-dessus est optionnelle mais recommandée pour détecter les erreurs de migration avant le lancement.
 
 ## 🧪 Tests
 
@@ -99,6 +147,8 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ## 📖 Utilisation
 
+### Fonctionnalités de base
+
 1. **Rechercher une action** : Tapez dans la barre de recherche (ex: "gpo", "dns", "service")
 
 2. **Filtrer** : Utilisez les checkboxes Platform/Level pour affiner les résultats
@@ -111,6 +161,27 @@ dotnet test --collect:"XPlat Code Coverage"
    - La commande se génère automatiquement
 
 5. **Copier** : Cliquez sur "Copier dans le presse-papiers"
+
+### Nouvelles fonctionnalités (Sprint 2)
+
+6. **Favoris** :
+   - Cliquez sur l'étoile (☆) à côté du titre de l'action pour l'ajouter aux favoris
+   - Accédez rapidement à vos favoris via la catégorie "⭐ Favorites"
+   - Maximum de 50 favoris par utilisateur
+
+7. **Historique** :
+   - Consultez l'onglet "📜 History" pour voir toutes vos commandes générées
+   - Recherchez par texte, filtrez par date, catégorie ou plateforme
+   - Copiez ou supprimez des entrées individuelles
+
+8. **Commandes récentes** :
+   - Widget en haut de la page d'accueil affichant les 5 dernières commandes
+   - Cliquez sur une entrée pour copier la commande
+
+9. **Export/Import** :
+   - Menu **File → Export Configuration** pour sauvegarder vos favoris et historique
+   - Menu **File → Import Configuration** pour restaurer ou fusionner une configuration
+   - Format JSON pour faciliter le partage et le versioning
 
 ## 🗄️ Base de données
 
@@ -154,15 +225,58 @@ Exemples : `Clear-EventLog`, `Disable-ADAccount`, `Stop-Process -Force`
 - Parameters: List<TemplateParameter>
 ```
 
-## 🎯 Roadmap (Sprints futurs)
+### CommandHistory (Sprint 2)
+```csharp
+- Id: string
+- UserId: string? (nullable pour mode single-user)
+- ActionId: string
+- GeneratedCommand: string
+- Parameters: Dictionary<string, string>
+- Platform: enum
+- CreatedAt: DateTime
+- Category: string (dénormalisé pour performance)
+- ActionTitle: string (dénormalisé pour performance)
+```
 
-- [ ] Export/Import de configurations
-- [ ] Historique des commandes exécutées
-- [ ] Favoris utilisateur
+### UserFavorite (Sprint 2)
+```csharp
+- Id: string
+- UserId: string? (nullable pour mode single-user)
+- ActionId: string
+- CreatedAt: DateTime
+- DisplayOrder: int (pour réorganisation future)
+```
+
+## 🎯 Roadmap
+
+### ✅ Complété
+
+**Sprint 1 - MVP** (Janvier 2025)
+- Référentiel d'actions avec templates de commandes
+- Recherche et filtrage avancés
+- Générateur de commandes avec paramètres dynamiques
+- Copie vers presse-papiers
+
+**Sprint 2 - Personnalisation & Historique** (Janvier 2025)
+- Historique des commandes avec recherche et filtrage
+- Système de favoris (max 50)
+- Export/Import de configuration JSON
+- Widget des commandes récentes
+
+### 🔮 Sprints futurs
+
+**Sprint 3 - Collaboration & Productivité**
 - [ ] Catégories personnalisées
+- [ ] Partage d'actions entre utilisateurs
+- [ ] Templates de commandes personnalisés
+- [ ] Notes et annotations sur les actions
+
+**Sprint 4 - Avancé**
 - [ ] Mode sombre
-- [ ] Support multi-langues
-- [ ] Intégration PowerShell/Bash direct
+- [ ] Support multi-langues (EN/FR)
+- [ ] Intégration PowerShell/Bash direct (exécution)
+- [ ] Statistiques d'utilisation
+- [ ] Synchronisation cloud (optionnelle)
 
 ## 🤝 Contribution
 
