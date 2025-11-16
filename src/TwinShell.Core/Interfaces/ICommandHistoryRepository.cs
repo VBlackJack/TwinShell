@@ -14,6 +14,11 @@ public interface ICommandHistoryRepository
     Task AddAsync(CommandHistory history);
 
     /// <summary>
+    /// PERFORMANCE: Add multiple command history entries at once
+    /// </summary>
+    Task AddRangeAsync(IEnumerable<CommandHistory> histories);
+
+    /// <summary>
     /// Update an existing command history entry
     /// </summary>
     Task UpdateAsync(CommandHistory history);
