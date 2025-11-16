@@ -58,6 +58,7 @@ public partial class App : Application
         services.AddScoped<IFavoritesRepository, FavoritesRepository>();
         services.AddScoped<ICustomCategoryRepository, CustomCategoryRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        services.AddScoped<IBatchRepository, BatchRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
@@ -68,6 +69,9 @@ public partial class App : Application
         services.AddScoped<IConfigurationService, ConfigurationService>();
         services.AddScoped<ICustomCategoryService, CustomCategoryService>();
         services.AddScoped<IAuditLogService, AuditLogService>();
+        services.AddScoped<IBatchService, BatchService>();
+        services.AddScoped<IBatchExecutionService, BatchExecutionService>();
+        services.AddScoped<IPowerShellGalleryService, PowerShellGalleryService>();
 
         // Theme and Settings Services (Singletons to maintain state)
         services.AddSingleton<IThemeService, ThemeService>();
@@ -91,11 +95,15 @@ public partial class App : Application
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<CategoryManagementViewModel>();
         services.AddTransient<ExecutionViewModel>();
+        services.AddTransient<BatchViewModel>();
+        services.AddTransient<PowerShellGalleryViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
         services.AddTransient<RecentCommandsWidget>();
         services.AddTransient<OutputPanel>();
+        services.AddTransient<BatchPanel>();
+        services.AddTransient<PowerShellGalleryPanel>();
 
         // Windows
         services.AddTransient<MainWindow>();
