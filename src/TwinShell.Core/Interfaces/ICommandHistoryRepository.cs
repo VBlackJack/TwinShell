@@ -14,6 +14,11 @@ public interface ICommandHistoryRepository
     Task AddAsync(CommandHistory history);
 
     /// <summary>
+    /// Update an existing command history entry
+    /// </summary>
+    Task UpdateAsync(CommandHistory history);
+
+    /// <summary>
     /// Get the most recent command history entries
     /// </summary>
     /// <param name="count">Number of entries to retrieve</param>

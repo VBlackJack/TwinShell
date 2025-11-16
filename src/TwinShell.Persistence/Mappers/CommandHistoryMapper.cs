@@ -27,7 +27,11 @@ public static class CommandHistoryMapper
             Platform = history.Platform,
             CreatedAt = history.CreatedAt,
             Category = history.Category,
-            ActionTitle = history.ActionTitle
+            ActionTitle = history.ActionTitle,
+            IsExecuted = history.IsExecuted,
+            ExitCode = history.ExitCode,
+            ExecutionDurationTicks = history.ExecutionDuration?.Ticks,
+            ExecutionSuccess = history.ExecutionSuccess
         };
     }
 
@@ -44,7 +48,13 @@ public static class CommandHistoryMapper
             Platform = entity.Platform,
             CreatedAt = entity.CreatedAt,
             Category = entity.Category,
-            ActionTitle = entity.ActionTitle
+            ActionTitle = entity.ActionTitle,
+            IsExecuted = entity.IsExecuted,
+            ExitCode = entity.ExitCode,
+            ExecutionDuration = entity.ExecutionDurationTicks.HasValue
+                ? TimeSpan.FromTicks(entity.ExecutionDurationTicks.Value)
+                : null,
+            ExecutionSuccess = entity.ExecutionSuccess
         };
 
         if (entity.Action != null)
