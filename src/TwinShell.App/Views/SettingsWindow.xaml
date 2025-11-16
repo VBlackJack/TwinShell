@@ -109,7 +109,13 @@
                                 Command="{Binding PreviewThemeCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 HorizontalAlignment="Left"
-                                Margin="0,12,0,0"/>
+                                Padding="12,10"
+                                MinWidth="44"
+                                MinHeight="44"
+                                Margin="0,12,0,0"
+                                ToolTip="Preview the selected theme"
+                                AutomationProperties.Name="Preview theme"
+                                AutomationProperties.HelpText="Preview how the selected theme will look"/>
                     </StackPanel>
                 </Border>
 
@@ -206,12 +212,18 @@
             <Button Grid.Column="0"
                     Content="Reset to Defaults"
                     Command="{Binding ResetToDefaultCommand}"
-                    Padding="12,8"
+                    Padding="12,10"
+                    MinWidth="44"
+                    MinHeight="44"
                     Margin="0,0,8,0"
+                    TabIndex="9"
                     Background="{StaticResource DangerBrush}"
                     Foreground="White"
                     BorderThickness="0"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    ToolTip="Reset all settings to default values"
+                    AutomationProperties.Name="Reset to defaults"
+                    AutomationProperties.HelpText="Reset all settings to their default values">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
