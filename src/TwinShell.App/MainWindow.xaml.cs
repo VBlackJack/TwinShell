@@ -1,5 +1,6 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using TwinShell.App.Services;
 using TwinShell.App.ViewModels;
 using TwinShell.App.Views;
 
@@ -31,6 +32,9 @@ public partial class MainWindow : Window
         {
             _mainViewModel.ExecutionViewModel = executionViewModel;
         }
+
+        // Initialize SnackBar Service for visual feedback
+        SnackBarService.Instance.Initialize(RootGrid);
 
         // BUGFIX: Extract async initialization to proper async method to prevent unhandled exceptions
         Loaded += MainWindow_Loaded;

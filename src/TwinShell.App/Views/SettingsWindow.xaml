@@ -92,7 +92,10 @@
                         <TextBlock Text="Choose your preferred color theme. System theme follows your Windows settings."
                                    Style="{StaticResource DescriptionStyle}"/>
                         <ComboBox SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
-                                  SelectionChanged="ThemeComboBox_SelectionChanged">
+                                  SelectionChanged="ThemeComboBox_SelectionChanged"
+                                  TabIndex="1"
+                                  AutomationProperties.Name="Theme selection"
+                                  AutomationProperties.HelpText="Choose your preferred color theme: Light, Dark, or System">
                             <ComboBox.ItemsSource>
                                 <x:Array Type="{x:Type enums:Theme}">
                                     <enums:Theme>Light</enums:Theme>
@@ -123,31 +126,47 @@
                                    Style="{StaticResource SettingsLabelStyle}"/>
                         <TextBlock Text="Number of days to keep command history (1-3650 days)."
                                    Style="{StaticResource DescriptionStyle}"/>
-                        <TextBox Text="{Binding AutoCleanupDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource NumberTextBoxStyle}"/>
+                        <TextBox x:Name="AutoCleanupDaysTextBox"
+                                 Text="{Binding AutoCleanupDays, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource NumberTextBoxStyle}"
+                                 TabIndex="2"
+                                 AutomationProperties.Name="Command history retention days"
+                                 AutomationProperties.HelpText="Number of days to keep command history, between 1 and 3650 days"/>
 
                         <TextBlock Text="Maximum History Items"
                                    Style="{StaticResource SettingsLabelStyle}"
                                    Margin="0,16,0,4"/>
                         <TextBlock Text="Maximum number of items to display in history views (10-100,000)."
                                    Style="{StaticResource DescriptionStyle}"/>
-                        <TextBox Text="{Binding MaxHistoryItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource NumberTextBoxStyle}"/>
+                        <TextBox x:Name="MaxHistoryItemsTextBox"
+                                 Text="{Binding MaxHistoryItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource NumberTextBoxStyle}"
+                                 TabIndex="3"
+                                 AutomationProperties.Name="Maximum history items"
+                                 AutomationProperties.HelpText="Maximum number of items to display in history views, between 10 and 100000"/>
 
                         <TextBlock Text="Recent Commands Count"
                                    Style="{StaticResource SettingsLabelStyle}"
                                    Margin="0,16,0,4"/>
                         <TextBlock Text="Number of recent commands to display in the widget (1-50)."
                                    Style="{StaticResource DescriptionStyle}"/>
-                        <TextBox Text="{Binding RecentCommandsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource NumberTextBoxStyle}"/>
+                        <TextBox x:Name="RecentCommandsCountTextBox"
+                                 Text="{Binding RecentCommandsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource NumberTextBoxStyle}"
+                                 TabIndex="4"
+                                 AutomationProperties.Name="Recent commands count"
+                                 AutomationProperties.HelpText="Number of recent commands to display in the widget, between 1 and 50"/>
 
                         <CheckBox Content="Show Recent Commands Widget on startup"
                                   IsChecked="{Binding ShowRecentCommandsWidget, Mode=TwoWay}"
-                                  Margin="0,16,0,0"/>
+                                  Margin="0,16,0,0"
+                                  TabIndex="5"
+                                  AutomationProperties.Name="Show recent commands widget on startup"/>
 
                         <CheckBox Content="Confirm before executing dangerous commands"
-                                  IsChecked="{Binding ConfirmDangerousActions, Mode=TwoWay}"/>
+                                  IsChecked="{Binding ConfirmDangerousActions, Mode=TwoWay}"
+                                  TabIndex="6"
+                                  AutomationProperties.Name="Confirm before executing dangerous commands"/>
                     </StackPanel>
                 </Border>
 
@@ -158,7 +177,9 @@
                         CornerRadius="4"
                         Padding="12"
                         Margin="0,0,0,16"
-                        Visibility="{Binding ValidationError, Converter={StaticResource BoolToVisibilityConverter}}">
+                        Visibility="{Binding ValidationError, Converter={StaticResource BoolToVisibilityConverter}}"
+                        AutomationProperties.LiveSetting="Assertive"
+                        AutomationProperties.Name="Validation error">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="⚠ "
                                    FontSize="16"
@@ -217,18 +238,29 @@
                     Command="{Binding SaveCommand}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     IsEnabled="{Binding HasChanges}"
-                    Margin="0,0,8,0"/>
+                    Margin="0,0,8,0"
+                    Padding="12,10"
+                    MinWidth="44"
+                    MinHeight="44"
+                    TabIndex="7"
+                    AutomationProperties.Name="Save settings"
+                    AutomationProperties.HelpText="Save your changes and close the settings window"/>
 
             <Button Grid.Column="3"
                     Content="Cancel"
                     Command="{Binding CancelCommand}"
                     Click="Cancel_Click"
-                    Padding="16,8"
+                    Padding="12,10"
+                    MinWidth="44"
+                    MinHeight="44"
+                    TabIndex="8"
                     Background="{StaticResource SurfaceBrush}"
                     Foreground="{StaticResource TextPrimaryBrush}"
                     BorderBrush="{StaticResource BorderBrush}"
                     BorderThickness="1"
-                    Cursor="Hand">
+                    Cursor="Hand"
+                    AutomationProperties.Name="Cancel"
+                    AutomationProperties.HelpText="Close settings without saving changes">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"

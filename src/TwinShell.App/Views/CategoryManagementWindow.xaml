@@ -71,7 +71,10 @@
                              SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
                              Background="Transparent"
                              BorderThickness="0"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             TabIndex="1"
+                             AutomationProperties.Name="Categories list"
+                             AutomationProperties.HelpText="List of all categories. Select one to view details or edit.">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="{StaticResource SurfaceBrush}"
@@ -183,8 +186,12 @@
                                        Foreground="{StaticResource TextPrimaryBrush}"
                                        FontWeight="Medium"
                                        Margin="0,8,0,4"/>
-                            <TextBox Text="{Binding NewCategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource ModernTextBoxStyle}"/>
+                            <TextBox x:Name="CategoryNameTextBox"
+                                     Text="{Binding NewCategoryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBoxStyle}"
+                                     TabIndex="2"
+                                     AutomationProperties.Name="Category name"
+                                     AutomationProperties.HelpText="Enter a unique name for the category"/>
 
                             <TextBlock Text="Icon"
                                        Foreground="{StaticResource TextPrimaryBrush}"
@@ -193,7 +200,10 @@
                             <ComboBox ItemsSource="{Binding AvailableIcons}"
                                       SelectedItem="{Binding NewCategoryIcon, Mode=TwoWay}"
                                       Padding="8"
-                                      BorderBrush="{StaticResource BorderBrush}"/>
+                                      BorderBrush="{StaticResource BorderBrush}"
+                                      TabIndex="3"
+                                      AutomationProperties.Name="Category icon"
+                                      AutomationProperties.HelpText="Select an icon for the category"/>
 
                             <TextBlock Text="Color"
                                        Foreground="{StaticResource TextPrimaryBrush}"
@@ -202,7 +212,10 @@
                             <ComboBox ItemsSource="{Binding AvailableColors}"
                                       SelectedItem="{Binding NewCategoryColor, Mode=TwoWay}"
                                       Padding="8"
-                                      BorderBrush="{StaticResource BorderBrush}">
+                                      BorderBrush="{StaticResource BorderBrush}"
+                                      TabIndex="4"
+                                      AutomationProperties.Name="Category color"
+                                      AutomationProperties.HelpText="Select a color for the category">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -229,7 +242,10 @@
                                      Style="{StaticResource ModernTextBoxStyle}"
                                      TextWrapping="Wrap"
                                      Height="80"
-                                     AcceptsReturn="True"/>
+                                     AcceptsReturn="True"
+                                     TabIndex="5"
+                                     AutomationProperties.Name="Category description"
+                                     AutomationProperties.HelpText="Optional description for the category"/>
 
                             <!-- Error Message -->
                             <Border Background="{StaticResource DangerBackgroundBrush}"
@@ -238,7 +254,9 @@
                                     CornerRadius="4"
                                     Padding="12"
                                     Margin="0,16,0,0"
-                                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    AutomationProperties.LiveSetting="Assertive"
+                                    AutomationProperties.Name="Error message">
                                 <TextBlock Text="{Binding ErrorMessage}"
                                            Foreground="{StaticResource DangerBrush}"
                                            TextWrapping="Wrap"/>
@@ -249,14 +267,25 @@
                                 <Button Content="Save Category"
                                         Command="{Binding SaveNewCommand}"
                                         Style="{StaticResource PrimaryButtonStyle}"
-                                        Margin="0,0,8,0"/>
+                                        Margin="0,0,8,0"
+                                        Padding="12,10"
+                                        MinWidth="44"
+                                        MinHeight="44"
+                                        TabIndex="6"
+                                        AutomationProperties.Name="Save category"
+                                        AutomationProperties.HelpText="Save the new category"/>
                                 <Button Content="Cancel"
                                         Command="{Binding CancelEditCommand}"
-                                        Padding="16,8"
+                                        Padding="12,10"
+                                        MinWidth="44"
+                                        MinHeight="44"
+                                        TabIndex="7"
                                         Background="{StaticResource SurfaceBrush}"
                                         Foreground="{StaticResource TextPrimaryBrush}"
                                         BorderBrush="{StaticResource BorderBrush}"
-                                        BorderThickness="1"/>
+                                        BorderThickness="1"
+                                        AutomationProperties.Name="Cancel"
+                                        AutomationProperties.HelpText="Cancel editing and return to list"/>
                             </StackPanel>
                         </StackPanel>
 
