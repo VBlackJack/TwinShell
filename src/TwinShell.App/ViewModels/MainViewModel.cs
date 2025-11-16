@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -16,6 +18,8 @@ public partial class MainViewModel : ObservableObject
     private readonly ICommandHistoryService _commandHistoryService;
     private readonly IFavoritesService _favoritesService;
     private readonly IConfigurationService _configurationService;
+    private readonly IDialogService _dialogService;
+    private readonly ILocalizationService _localizationService;
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
 
     private List<Action> _allActions = new();
@@ -67,7 +71,7 @@ public partial class MainViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _statusMessage = "Ready";
+    private string _statusMessage = UIConstants.DefaultStatusMessage;
 
     /// <summary>
     /// Reference to the ExecutionViewModel (set from MainWindow)
@@ -81,7 +85,9 @@ public partial class MainViewModel : ObservableObject
         IClipboardService clipboardService,
         ICommandHistoryService commandHistoryService,
         IFavoritesService favoritesService,
-        IConfigurationService configurationService)
+        IConfigurationService configurationService,
+        IDialogService dialogService,
+        ILocalizationService localizationService)
     {
         _actionService = actionService;
         _searchService = searchService;
@@ -90,16 +96,18 @@ public partial class MainViewModel : ObservableObject
         _commandHistoryService = commandHistoryService;
         _favoritesService = favoritesService;
         _configurationService = configurationService;
+        _dialogService = dialogService;
+        _localizationService = localizationService;
     }
 
     public async Task InitializeAsync()
     {
         IsLoading = true;
-        StatusMessage = "Loading actions...";
+        StatusMessage = _localizationService.GetString(MessageKeys.Loading);
         try
         {
             await LoadActionsAsync();
-            StatusMessage = $"{_allActions.Count} actions loaded";
+            StatusMessage = _localizationService.GetFormattedString(MessageKeys.StatusActionsLoaded, _allActions.Count);
         }
         finally
         {
@@ -118,7 +126,7 @@ public partial class MainViewModel : ObservableObject
         var categories = (await _actionService.GetAllCategoriesAsync()).ToList();
 
         // Add "Favorites" as first category
-        categories.Insert(0, "⭐ Favorites");
+        categories.Insert(0, UIConstants.FavoritesCategoryDisplay);
         Categories = new ObservableCollection<string>(categories);
 
         await ApplyFiltersAsync();
@@ -159,7 +167,7 @@ public partial class MainViewModel : ObservableObject
             var filtered = _allActions.AsEnumerable();
 
             // Favorites filter (special category)
-            if (SelectedCategory == "⭐ Favorites")
+            if (SelectedCategory == UIConstants.FavoritesCategoryDisplay)
             {
                 filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
             }
@@ -221,12 +229,12 @@ public partial class MainViewModel : ObservableObject
         }
 
         // Determine which template to use (prefer Windows for now)
-        var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
+        var template = TemplateHelper.GetActiveTemplate(SelectedAction);
 
-        if (template == null)
+        if (!TemplateHelper.IsValidTemplate(template))
         {
             CommandParameters.Clear();
-            GeneratedCommand = "Aucun modèle de commande disponible.";
+            GeneratedCommand = _localizationService.GetString(MessageKeys.ValidationNoCommandTemplate);
             return;
         }
 
@@ -261,30 +269,34 @@ public partial class MainViewModel : ObservableObject
             return;
         }
 
-        var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
-        if (template == null)
+        var template = TemplateHelper.GetActiveTemplate(SelectedAction);
+        if (!TemplateHelper.IsValidTemplate(template))
         {
             return;
         }
 
         var paramValues = CommandParameters.ToDictionary(p => p.Name, p => p.Value);
 
-        if (_commandGeneratorService.ValidateParameters(template, paramValues, out var errors))
+        if (_commandGeneratorService.ValidateParameters(template!, paramValues, out var errors))
         {
-            GeneratedCommand = _commandGeneratorService.GenerateCommand(template, paramValues);
+            GeneratedCommand = _commandGeneratorService.GenerateCommand(template!, paramValues);
         }
         else
         {
-            GeneratedCommand = $"Erreurs de validation:\n{string.Join("\n", errors)}";
+            var validationHeader = _localizationService.GetString(MessageKeys.ValidationErrors);
+            GeneratedCommand = $"{validationHeader}\n{string.Join("\n", errors)}";
         }
     }
 
     [RelayCommand]
     private async Task CopyCommandAsync()
     {
+        var validationErrorsText = _localizationService.GetString(MessageKeys.ValidationErrors);
+        var noTemplateText = _localizationService.GetString(MessageKeys.ValidationNoCommandTemplate);
+
         if (!string.IsNullOrWhiteSpace(GeneratedCommand) &&
-            !GeneratedCommand.StartsWith("Erreurs") &&
-            !GeneratedCommand.StartsWith("Aucun") &&
+            !GeneratedCommand.StartsWith(validationErrorsText) &&
+            !GeneratedCommand.StartsWith(noTemplateText) &&
             SelectedAction != null)
         {
             _clipboardService.SetText(GeneratedCommand);
@@ -311,23 +323,24 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task ExecuteCommandAsync()
     {
+        var validationErrorsText = _localizationService.GetString(MessageKeys.ValidationErrors);
+        var noTemplateText = _localizationService.GetString(MessageKeys.ValidationNoCommandTemplate);
+
         if (string.IsNullOrWhiteSpace(GeneratedCommand) ||
-            GeneratedCommand.StartsWith("Erreurs") ||
-            GeneratedCommand.StartsWith("Aucun") ||
+            GeneratedCommand.StartsWith(validationErrorsText) ||
+            GeneratedCommand.StartsWith(noTemplateText) ||
             SelectedAction == null ||
             ExecutionViewModel == null)
         {
-            System.Windows.MessageBox.Show(
-                "No valid command to execute",
-                "Execution Error",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Warning);
+            _dialogService.ShowWarning(
+                _localizationService.GetString(MessageKeys.ValidationNoValidCommand),
+                _localizationService.GetString(MessageKeys.ExecutionError));
             return;
         }
 
         // Determine platform
-        var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
-        var platform = template == SelectedAction.WindowsCommandTemplate ? Platform.Windows : Platform.Linux;
+        var template = TemplateHelper.GetActiveTemplate(SelectedAction);
+        var platform = TemplateHelper.GetPlatformForTemplate(SelectedAction, template!);
         var parameters = CommandParameters.ToDictionary(p => p.Name, p => p.Value);
 
         // Create execution parameter
@@ -391,36 +404,32 @@ public partial class MainViewModel : ObservableObject
             if (wasFavorite && !isFavoriteNow)
             {
                 // Successfully removed from favorites
-                StatusMessage = $"Removed '{SelectedAction.Title}' from favorites";
+                StatusMessage = _localizationService.GetFormattedString(MessageKeys.FavoriteRemoved, SelectedAction.Title);
             }
             else if (!wasFavorite && isFavoriteNow)
             {
                 // Successfully added to favorites
-                StatusMessage = $"Added '{SelectedAction.Title}' to favorites";
+                StatusMessage = _localizationService.GetFormattedString(MessageKeys.FavoriteAdded, SelectedAction.Title);
             }
             else if (!wasFavorite && !isFavoriteNow && !result)
             {
                 // Failed to add - check if limit reached
                 var count = await _favoritesService.GetFavoriteCountAsync();
-                if (count >= 50)
+                if (count >= UIConstants.MaxFavoritesCount)
                 {
-                    System.Windows.MessageBox.Show(
-                        $"You have reached the maximum limit of 50 favorites ({count}/50). Please remove some favorites before adding new ones.",
-                        "Favorites Limit Reached",
-                        System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Warning);
+                    _dialogService.ShowWarning(
+                        _localizationService.GetFormattedString(MessageKeys.FavoritesLimitReachedMessage, UIConstants.MaxFavoritesCount, count),
+                        _localizationService.GetString(MessageKeys.FavoritesLimitReached));
                 }
             }
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
-            StatusMessage = "Failed to toggle favorite status";
-            System.Windows.MessageBox.Show(
-                "An error occurred while updating favorites",
-                "Error",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Error);
+            StatusMessage = _localizationService.GetString(MessageKeys.FavoritesToggleFailed);
+            _dialogService.ShowError(
+                _localizationService.GetString(MessageKeys.FavoritesUpdateError),
+                _localizationService.GetString(MessageKeys.CommonError));
         }
     }
 
@@ -456,46 +465,38 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
-            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                DefaultExt = ".json",
-                FileName = $"TwinShell-Config-{DateTime.Now:yyyy-MM-dd}.json"
-            };
+            var fileName = _dialogService.ShowSaveFileDialog(
+                DatabaseConstants.JsonFileFilter,
+                DatabaseConstants.JsonFileExtension,
+                $"{DatabaseConstants.ConfigurationFileName}-{DateTime.Now:yyyy-MM-dd}{DatabaseConstants.JsonFileExtension}");
 
-            if (saveFileDialog.ShowDialog() == true)
+            if (fileName != null)
             {
                 var result = await _configurationService.ExportToJsonAsync(
-                    saveFileDialog.FileName,
+                    fileName,
                     userId: null,
                     includeHistory: true);
 
                 if (result.Success)
                 {
-                    System.Windows.MessageBox.Show(
-                        $"Configuration exported successfully to:\n{saveFileDialog.FileName}",
-                        "Export Successful",
-                        System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Information);
+                    _dialogService.ShowSuccess(
+                        _localizationService.GetFormattedString(MessageKeys.ConfigExportSuccessMessage, fileName),
+                        _localizationService.GetString(MessageKeys.ConfigExportSuccess));
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show(
-                        $"Export failed: {result.ErrorMessage}",
-                        "Export Error",
-                        System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Error);
+                    _dialogService.ShowError(
+                        _localizationService.GetFormattedString(MessageKeys.ConfigExportErrorMessage, result.ErrorMessage),
+                        _localizationService.GetString(MessageKeys.ConfigExportError));
                 }
             }
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
-            System.Windows.MessageBox.Show(
-                "An error occurred during export",
-                "Export Error",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Error);
+            _dialogService.ShowError(
+                _localizationService.GetString(MessageKeys.ConfigExportErrorGeneric),
+                _localizationService.GetString(MessageKeys.ConfigExportError));
         }
     }
 
@@ -507,64 +508,49 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                DefaultExt = ".json"
-            };
+            var fileName = _dialogService.ShowOpenFileDialog(
+                DatabaseConstants.JsonFileFilter,
+                DatabaseConstants.JsonFileExtension);
 
-            if (openFileDialog.ShowDialog() == true)
+            if (fileName != null)
             {
                 // Validate file first
-                var validation = await _configurationService.ValidateConfigurationFileAsync(openFileDialog.FileName);
+                var validation = await _configurationService.ValidateConfigurationFileAsync(fileName);
 
                 if (!validation.IsValid)
                 {
-                    System.Windows.MessageBox.Show(
-                        $"Invalid configuration file: {validation.ErrorMessage}",
-                        "Validation Error",
-                        System.Windows.MessageBoxButton.OK,
-                        System.Windows.MessageBoxImage.Warning);
+                    _dialogService.ShowWarning(
+                        _localizationService.GetFormattedString(MessageKeys.ConfigValidationErrorMessage, validation.ErrorMessage),
+                        _localizationService.GetString(MessageKeys.ConfigValidationError));
                     return;
                 }
 
                 // Confirm import
-                var confirmResult = System.Windows.MessageBox.Show(
-                    $"This will import favorites and history from the selected file.\n" +
-                    $"Existing data will be preserved (merge mode).\n\n" +
-                    $"Configuration Version: {validation.Version}\n\n" +
-                    $"Do you want to continue?",
-                    "Confirm Import",
-                    System.Windows.MessageBoxButton.YesNo,
-                    System.Windows.MessageBoxImage.Question);
+                var confirmed = _dialogService.ShowQuestion(
+                    _localizationService.GetFormattedString(MessageKeys.ConfigImportConfirmationMessage, validation.Version),
+                    _localizationService.GetString(MessageKeys.ConfigImportConfirmation));
 
-                if (confirmResult == System.Windows.MessageBoxResult.Yes)
+                if (confirmed)
                 {
                     var result = await _configurationService.ImportFromJsonAsync(
-                        openFileDialog.FileName,
+                        fileName,
                         userId: null,
                         mergeMode: true);
 
                     if (result.Success)
                     {
-                        System.Windows.MessageBox.Show(
-                            $"Configuration imported successfully!\n\n" +
-                            $"Favorites imported: {result.FavoritesImported}\n" +
-                            $"History entries imported: {result.HistoryImported}",
-                            "Import Successful",
-                            System.Windows.MessageBoxButton.OK,
-                            System.Windows.MessageBoxImage.Information);
+                        _dialogService.ShowSuccess(
+                            _localizationService.GetFormattedString(MessageKeys.ConfigImportSuccessMessage, result.FavoritesImported, result.HistoryImported),
+                            _localizationService.GetString(MessageKeys.ConfigImportSuccess));
 
                         // Reload data
                         await LoadActionsAsync();
                     }
                     else
                     {
-                        System.Windows.MessageBox.Show(
-                            $"Import failed: {result.ErrorMessage}",
-                            "Import Error",
-                            System.Windows.MessageBoxButton.OK,
-                            System.Windows.MessageBoxImage.Error);
+                        _dialogService.ShowError(
+                            _localizationService.GetFormattedString(MessageKeys.ConfigImportErrorMessage, result.ErrorMessage),
+                            _localizationService.GetString(MessageKeys.ConfigImportError));
                     }
                 }
             }
@@ -572,11 +558,9 @@ public partial class MainViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
-            System.Windows.MessageBox.Show(
-                "An error occurred during import",
-                "Import Error",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Error);
+            _dialogService.ShowError(
+                _localizationService.GetString(MessageKeys.ConfigImportErrorGeneric),
+                _localizationService.GetString(MessageKeys.ConfigImportError));
         }
     }
 }
