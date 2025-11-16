@@ -13,7 +13,6 @@
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -28,8 +27,17 @@
                        Foreground="{StaticResource TextSecondaryBrush}"/>
         </StackPanel>
 
+        <!-- Tab Control -->
+        <TabControl Grid.Row="1">
+            <TabItem Header="📋 Actions">
+                <Grid Margin="0,16,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
         <!-- Search and Filters -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="0"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -99,7 +107,7 @@
         </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="16"/>
@@ -396,5 +404,13 @@
                 </ScrollViewer>
             </Border>
         </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- History Tab -->
+            <TabItem Header="📜 History">
+                <ContentControl x:Name="HistoryTabContent"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

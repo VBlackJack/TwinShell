@@ -13,6 +13,7 @@ public partial class MainViewModel : ObservableObject
     private readonly ISearchService _searchService;
     private readonly ICommandGeneratorService _commandGeneratorService;
     private readonly IClipboardService _clipboardService;
+    private readonly ICommandHistoryService _commandHistoryService;
 
     private List<Action> _allActions = new();
 
@@ -59,12 +60,14 @@ public partial class MainViewModel : ObservableObject
         IActionService actionService,
         ISearchService searchService,
         ICommandGeneratorService commandGeneratorService,
-        IClipboardService clipboardService)
+        IClipboardService clipboardService,
+        ICommandHistoryService commandHistoryService)
     {
         _actionService = actionService;
         _searchService = searchService;
         _commandGeneratorService = commandGeneratorService;
         _clipboardService = clipboardService;
+        _commandHistoryService = commandHistoryService;
     }
 
     public async Task InitializeAsync()
@@ -217,13 +220,28 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void CopyCommand()
+    private async Task CopyCommandAsync()
     {
         if (!string.IsNullOrWhiteSpace(GeneratedCommand) &&
             !GeneratedCommand.StartsWith("Erreurs") &&
-            !GeneratedCommand.StartsWith("Aucun"))
+            !GeneratedCommand.StartsWith("Aucun") &&
+            SelectedAction != null)
         {
             _clipboardService.SetText(GeneratedCommand);
+
+            // Save to history
+            var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
+            var platform = template == SelectedAction.WindowsCommandTemplate ? Platform.Windows : Platform.Linux;
+            var parameters = CommandParameters.ToDictionary(p => p.Name, p => p.Value);
+
+            await _commandHistoryService.AddCommandAsync(
+                SelectedAction.Id,
+                GeneratedCommand,
+                parameters,
+                platform,
+                SelectedAction.Title,
+                SelectedAction.Category
+            );
         }
     }
 
