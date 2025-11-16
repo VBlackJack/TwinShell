@@ -59,28 +59,42 @@ public class ActionRepository : IActionRepository
 
     public async Task AddAsync(Core.Models.Action action)
     {
-        // Add command templates first if they exist
-        if (action.WindowsCommandTemplate != null)
+        // Use transaction to ensure atomicity of multi-table operations
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try
         {
-            var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
-            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == windowsTemplateEntity.Id))
+            // Add command templates first if they exist
+            if (action.WindowsCommandTemplate != null)
             {
-                _context.CommandTemplates.Add(windowsTemplateEntity);
+                var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
+                if (!await _context.CommandTemplates.AnyAsync(t => t.Id == windowsTemplateEntity.Id))
+                {
+                    _context.CommandTemplates.Add(windowsTemplateEntity);
+                }
             }
-        }
 
-        if (action.LinuxCommandTemplate != null)
+            if (action.LinuxCommandTemplate != null)
+            {
+                var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
+                if (!await _context.CommandTemplates.AnyAsync(t => t.Id == linuxTemplateEntity.Id))
+                {
+                    _context.CommandTemplates.Add(linuxTemplateEntity);
+                }
+            }
+
+            var entity = ActionMapper.ToEntity(action);
+            _context.Actions.Add(entity);
+            await _context.SaveChangesAsync();
+
+            // Commit transaction if all operations succeed
+            await transaction.CommitAsync();
+        }
+        catch
         {
-            var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
-            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == linuxTemplateEntity.Id))
-            {
-                _context.CommandTemplates.Add(linuxTemplateEntity);
-            }
+            // Rollback transaction on error
+            await transaction.RollbackAsync();
+            throw;
         }
-
-        var entity = ActionMapper.ToEntity(action);
-        _context.Actions.Add(entity);
-        await _context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Core.Models.Action action)
