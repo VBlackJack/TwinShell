@@ -6,7 +6,15 @@
              xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000"
-             Background="{StaticResource BackgroundBrush}">
+             Background="{StaticResource BackgroundBrush}"
+             Focusable="True">
+    <!-- UX: Keyboard shortcuts for power users -->
+    <UserControl.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding RefreshCommand}"/>
+        <KeyBinding Key="Delete" Command="{Binding DeleteSelectedCommand}"/>
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopySelectedCommand}"/>
+    </UserControl.InputBindings>
+
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -272,6 +280,30 @@
                 </ScrollViewer>
             </DockPanel>
         </Border>
+
+        <!-- UX: Empty state when no history exists -->
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding HistoryItems.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
+            <TextBlock Text="No Command History"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Margin="0,0,0,8"/>
+            <TextBlock FontSize="12"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       TextAlignment="Center"
+                       MaxWidth="400"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,16">
+                <Run Text="Commands you generate will appear here automatically."/>
+                <LineBreak/>
+                <Run Text="Go to the Actions tab to start generating commands."/>
+            </TextBlock>
+        </StackPanel>
 
         <!-- Status Bar -->
         <Border Grid.Row="3"
