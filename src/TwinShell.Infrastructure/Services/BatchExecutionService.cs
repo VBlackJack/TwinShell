@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -12,13 +13,16 @@ public class BatchExecutionService : IBatchExecutionService
 {
     private readonly ICommandExecutionService _commandExecutionService;
     private readonly IAuditLogService _auditLogService;
+    private readonly ILogger<BatchExecutionService>? _logger;
 
     public BatchExecutionService(
         ICommandExecutionService commandExecutionService,
-        IAuditLogService auditLogService)
+        IAuditLogService auditLogService,
+        ILogger<BatchExecutionService>? logger = null)
     {
         _commandExecutionService = commandExecutionService ?? throw new ArgumentNullException(nameof(commandExecutionService));
         _auditLogService = auditLogService ?? throw new ArgumentNullException(nameof(auditLogService));
+        _logger = logger;
     }
 
     /// <summary>
@@ -183,7 +187,9 @@ public class BatchExecutionService : IBatchExecutionService
         {
             stopwatch.Stop();
             result.Success = false;
-            result.ErrorMessage = $"Batch execution failed: {ex.Message}";
+            // SECURITY: Don't expose exception details to users
+            _logger?.LogError(ex, "Batch execution failed for batch {BatchId}", batch.Id);
+            result.ErrorMessage = "Batch execution failed";
             result.TotalDuration = stopwatch.Elapsed;
             result.CompletedAt = DateTime.UtcNow;
             return result;

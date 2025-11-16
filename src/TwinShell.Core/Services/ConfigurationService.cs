@@ -258,11 +258,13 @@ public class ConfigurationService : IConfigurationService
         }
         catch (JsonException ex)
         {
-            return (false, $"Invalid JSON format: {ex.Message}", 0, 0);
+            // SECURITY: Don't expose exception details to users
+            return (false, "Invalid JSON format", 0, 0);
         }
         catch (Exception ex)
         {
-            return (false, $"Import failed: {ex.Message}", 0, 0);
+            // SECURITY: Don't expose exception details to users
+            return (false, "Import failed", 0, 0);
         }
     }
 
@@ -318,21 +320,56 @@ public class ConfigurationService : IConfigurationService
     {
         try
         {
-            // Get the absolute path
-            var fullPath = Path.GetFullPath(filePath);
-            var baseDirectory = Path.GetFullPath(_baseExportDirectory);
-
-            // Check that the path starts with the base directory
-            if (!fullPath.StartsWith(baseDirectory + Path.DirectorySeparatorChar) &&
-                fullPath != baseDirectory)
+            // SECURITY: Check for path traversal in input before normalization
+            if (filePath.Contains("..") || filePath.Contains("~"))
             {
                 return false;
             }
 
-            // Check for path traversal sequences
-            if (fullPath.Contains("..") || fullPath.Contains("~"))
+            // SECURITY: Reject UNC paths (network paths)
+            if (filePath.StartsWith(@"\\") || filePath.StartsWith("//"))
             {
                 return false;
+            }
+
+            // Get the absolute path
+            var fullPath = Path.GetFullPath(filePath);
+            var baseDirectory = Path.GetFullPath(_baseExportDirectory);
+
+            // SECURITY: Check for symbolic links
+            if (File.Exists(fullPath))
+            {
+                var fileInfo = new FileInfo(fullPath);
+                if (fileInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                {
+                    return false; // Reject symbolic links and junctions
+                }
+            }
+            else if (Directory.Exists(fullPath))
+            {
+                var dirInfo = new DirectoryInfo(fullPath);
+                if (dirInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                {
+                    return false; // Reject symbolic links and junctions
+                }
+            }
+
+            // SECURITY: Improved path traversal validation
+            // Check that the normalized path starts with the base directory
+            if (!fullPath.StartsWith(baseDirectory, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            // Ensure the path is within the base directory (not just starts with it)
+            // e.g., prevent /base/exports/../etc/passwd
+            if (fullPath.Length > baseDirectory.Length)
+            {
+                var nextChar = fullPath[baseDirectory.Length];
+                if (nextChar != Path.DirectorySeparatorChar && nextChar != Path.AltDirectorySeparatorChar)
+                {
+                    return false;
+                }
             }
 
             return true;

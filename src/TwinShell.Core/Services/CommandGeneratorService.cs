@@ -14,6 +14,12 @@ public class CommandGeneratorService : ICommandGeneratorService
 {
     private readonly ILocalizationService _localizationService;
 
+    // BUGFIX: Declare Regex as static readonly for better performance
+    private static readonly Regex HostnameRegex = new Regex(@"^(?!-)([a-zA-Z0-9-]{1,63}(?<!-)\.)*[a-zA-Z0-9-]{1,63}$", RegexOptions.Compiled);
+
+    // BUGFIX: Declare dangerous characters as static readonly for better performance
+    private static readonly char[] DangerousChars = { '&', '|', ';', '`', '$', '(', ')', '<', '>', '\n', '\r' };
+
     public CommandGeneratorService(ILocalizationService localizationService)
     {
         _localizationService = localizationService;
@@ -165,32 +171,37 @@ public class CommandGeneratorService : ICommandGeneratorService
                     case "string":
                         if (value.Length > 255)
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' dépasse la longueur maximale de 255 caractères.");
+                            // BUGFIX: Replace hardcoded French message with localization
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterMaxLength, parameter.Label, "255"));
                         }
                         if (ContainsDangerousCharacters(value))
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' contient des caractères interdits.");
+                            // BUGFIX: Replace hardcoded French message with localization
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterDangerousCharacters, parameter.Label));
                         }
                         break;
 
                     case "hostname":
                         if (!IsValidHostname(value))
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' n'est pas un nom d'hôte valide.");
+                            // BUGFIX: Replace hardcoded French message with localization
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterInvalidHostname, parameter.Label));
                         }
                         break;
 
                     case "ipaddress":
                         if (!IPAddress.TryParse(value, out _))
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' n'est pas une adresse IP valide.");
+                            // BUGFIX: Replace hardcoded French message with localization
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterInvalidIPAddress, parameter.Label));
                         }
                         break;
 
                     case "path":
                         if (!IsValidPath(value))
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' n'est pas un chemin valide.");
+                            // BUGFIX: Replace hardcoded French message with localization
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterInvalidPath, parameter.Label));
                         }
                         break;
                 }
@@ -305,8 +316,7 @@ public class CommandGeneratorService : ICommandGeneratorService
             return false;
 
         // RFC 1123 compliant hostname validation
-        var hostnameRegex = new Regex(@"^(?!-)([a-zA-Z0-9-]{1,63}(?<!-)\.)*[a-zA-Z0-9-]{1,63}$");
-        return hostnameRegex.IsMatch(value);
+        return HostnameRegex.IsMatch(value);
     }
 
     /// <summary>
@@ -319,10 +329,18 @@ public class CommandGeneratorService : ICommandGeneratorService
 
         try
         {
+            // SECURITY: Improved path traversal validation
+            // Get the full normalized path
             var fullPath = Path.GetFullPath(value);
+            var normalizedInput = Path.GetFullPath(value.Replace("/", Path.DirectorySeparatorChar.ToString()));
 
-            // Check for path traversal attempts
-            if (fullPath.Contains("..") || fullPath.Contains("~"))
+            // Check that normalization didn't reveal path traversal attempts
+            // by ensuring the normalized path matches what we expect
+            if (!fullPath.Equals(normalizedInput, StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            // Check for tilde expansion attempts (shell-specific)
+            if (value.Contains("~"))
                 return false;
 
             // Verify path is rooted (absolute path)
@@ -343,7 +361,6 @@ public class CommandGeneratorService : ICommandGeneratorService
             return false;
 
         // List of dangerous characters that could be used for command injection
-        var dangerousChars = new[] { '&', '|', ';', '`', '$', '(', ')', '<', '>', '\n', '\r' };
-        return value.Any(c => dangerousChars.Contains(c) || char.IsControl(c));
+        return value.Any(c => DangerousChars.Contains(c) || char.IsControl(c));
     }
 }

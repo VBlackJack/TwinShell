@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Resources;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 
 namespace TwinShell.Core.Services;
@@ -11,9 +12,11 @@ public class LocalizationService : ILocalizationService
 {
     private CultureInfo _currentCulture;
     private readonly ResourceManager _resourceManager;
+    private readonly ILogger<LocalizationService>? _logger;
 
-    public LocalizationService()
+    public LocalizationService(ILogger<LocalizationService>? logger = null)
     {
+        _logger = logger;
         // Default to English (en)
         _currentCulture = new CultureInfo("en");
 
@@ -68,8 +71,10 @@ public class LocalizationService : ILocalizationService
             var value = _resourceManager.GetString(key, _currentCulture);
             return value ?? key; // Return key if not found
         }
-        catch
+        catch (Exception ex)
         {
+            // BUGFIX: Log exceptions instead of swallowing them
+            _logger?.LogWarning(ex, "Failed to get localized string for key: {Key}", key);
             return key;
         }
     }
@@ -81,8 +86,10 @@ public class LocalizationService : ILocalizationService
             var value = _resourceManager.GetString(key, _currentCulture);
             return value ?? fallback;
         }
-        catch
+        catch (Exception ex)
         {
+            // BUGFIX: Log exceptions instead of swallowing them
+            _logger?.LogWarning(ex, "Failed to get localized string for key: {Key}", key);
             return fallback;
         }
     }
@@ -97,8 +104,10 @@ public class LocalizationService : ILocalizationService
 
             return string.Format(format, args);
         }
-        catch
+        catch (Exception ex)
         {
+            // BUGFIX: Log exceptions instead of swallowing them
+            _logger?.LogWarning(ex, "Failed to get formatted string for key: {Key}", key);
             return key;
         }
     }

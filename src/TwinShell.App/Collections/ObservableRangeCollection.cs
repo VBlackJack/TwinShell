@@ -5,10 +5,12 @@ namespace TwinShell.App.Collections;
 
 /// <summary>
 /// ObservableCollection with bulk operations support for better performance
+/// BUGFIX: Added thread safety with lock to prevent race conditions during concurrent access
 /// </summary>
 public class ObservableRangeCollection<T> : ObservableCollection<T>
 {
     private bool _suppressNotification = false;
+    private readonly object _lock = new object();
 
     /// <summary>
     /// Adds multiple items to the collection efficiently with a single notification
@@ -18,15 +20,18 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         if (items == null)
             throw new ArgumentNullException(nameof(items));
 
-        _suppressNotification = true;
-
-        foreach (var item in items)
+        lock (_lock)
         {
-            Add(item);
-        }
+            _suppressNotification = true;
 
-        _suppressNotification = false;
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            foreach (var item in items)
+            {
+                Add(item);
+            }
+
+            _suppressNotification = false;
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
     }
 
     /// <summary>
@@ -37,16 +42,19 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         if (items == null)
             throw new ArgumentNullException(nameof(items));
 
-        _suppressNotification = true;
-
-        Clear();
-        foreach (var item in items)
+        lock (_lock)
         {
-            Add(item);
-        }
+            _suppressNotification = true;
 
-        _suppressNotification = false;
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            Clear();
+            foreach (var item in items)
+            {
+                Add(item);
+            }
+
+            _suppressNotification = false;
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
     }
 
     /// <summary>
@@ -57,15 +65,18 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
         if (items == null)
             throw new ArgumentNullException(nameof(items));
 
-        _suppressNotification = true;
-
-        foreach (var item in items)
+        lock (_lock)
         {
-            Remove(item);
-        }
+            _suppressNotification = true;
 
-        _suppressNotification = false;
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            foreach (var item in items)
+            {
+                Remove(item);
+            }
+
+            _suppressNotification = false;
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
     }
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)

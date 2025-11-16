@@ -37,6 +37,11 @@ public class CommandExecutionService : ICommandExecutionService
         var stdoutBuilder = new StringBuilder();
         var stderrBuilder = new StringBuilder();
 
+        // Declare event handlers outside to allow detachment in finally block
+        DataReceivedEventHandler? outputHandler = null;
+        DataReceivedEventHandler? errorHandler = null;
+        Process? process = null;
+
         try
         {
             // Determine executable and arguments based on platform
@@ -54,10 +59,10 @@ public class CommandExecutionService : ICommandExecutionService
                 StandardErrorEncoding = Encoding.UTF8
             };
 
-            using var process = new Process { StartInfo = processStartInfo };
+            process = new Process { StartInfo = processStartInfo };
 
-            // Event handlers for real-time output capture
-            process.OutputDataReceived += (sender, e) =>
+            // BUGFIX: Declare event handlers for detachment in finally block
+            outputHandler = (sender, e) =>
             {
                 if (!string.IsNullOrEmpty(e.Data))
                 {
@@ -71,7 +76,7 @@ public class CommandExecutionService : ICommandExecutionService
                 }
             };
 
-            process.ErrorDataReceived += (sender, e) =>
+            errorHandler = (sender, e) =>
             {
                 if (!string.IsNullOrEmpty(e.Data))
                 {
@@ -84,6 +89,10 @@ public class CommandExecutionService : ICommandExecutionService
                     });
                 }
             };
+
+            // Attach event handlers
+            process.OutputDataReceived += outputHandler;
+            process.ErrorDataReceived += errorHandler;
 
             // Start the process
             process.Start();
@@ -150,6 +159,22 @@ public class CommandExecutionService : ICommandExecutionService
             result.ErrorMessage = "Command execution failed";
             result.ExitCode = -1;
             result.Stderr = string.Empty; // Do not expose exception details
+        }
+        finally
+        {
+            // BUGFIX: Detach event handlers to prevent memory leaks
+            if (process != null)
+            {
+                if (outputHandler != null)
+                {
+                    process.OutputDataReceived -= outputHandler;
+                }
+                if (errorHandler != null)
+                {
+                    process.ErrorDataReceived -= errorHandler;
+                }
+                process.Dispose();
+            }
         }
 
         return result;

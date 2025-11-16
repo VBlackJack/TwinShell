@@ -9,7 +9,8 @@ using TwinShell.Core.Models;
 
 namespace TwinShell.App.ViewModels;
 
-public partial class MainViewModel : ObservableObject
+// BUGFIX: Implemented IDisposable to properly dispose of SemaphoreSlim and prevent resource leaks
+public partial class MainViewModel : ObservableObject, IDisposable
 {
     private readonly IActionService _actionService;
     private readonly ISearchService _searchService;
@@ -21,6 +22,7 @@ public partial class MainViewModel : ObservableObject
     private readonly IDialogService _dialogService;
     private readonly ILocalizationService _localizationService;
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
+    private bool _disposed = false;
 
     private List<Action> _allActions = new();
     private HashSet<string> _favoriteActionIds = new();
@@ -443,6 +445,7 @@ public partial class MainViewModel : ObservableObject
 
     /// <summary>
     /// Safely executes async methods from synchronous event handlers
+    /// BUGFIX: Changed hardcoded error message to use localization service
     /// </summary>
     private async void SafeExecuteAsync(Func<Task> asyncMethod)
     {
@@ -453,7 +456,32 @@ public partial class MainViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
-            StatusMessage = "An error occurred while processing your request";
+            StatusMessage = _localizationService.GetString(MessageKeys.CommonErrorProcessing);
+        }
+    }
+
+    /// <summary>
+    /// Disposes resources used by the MainViewModel
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Protected implementation of Dispose pattern
+    /// </summary>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Dispose managed resources
+                _filterSemaphore?.Dispose();
+            }
+            _disposed = true;
         }
     }
 

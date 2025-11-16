@@ -53,6 +53,12 @@ public class ThemeService : IThemeService
     /// <inheritdoc/>
     public Theme DetectSystemTheme()
     {
+        // BUGFIX: Check if running on Windows before accessing registry
+        if (!OperatingSystem.IsWindows())
+        {
+            return Theme.Light; // Default to Light on non-Windows platforms
+        }
+
         try
         {
             // Check Windows Registry for system theme preference
