@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using TwinShell.Core.Constants;
 
 namespace TwinShell.App.ViewModels;
 
@@ -34,20 +35,9 @@ public partial class MainViewModel
     [RelayCommand]
     private void ShowHelp()
     {
-        MessageBox.Show(
-            "TwinShell - Help\n\n" +
-            "Keyboard Shortcuts:\n" +
-            "  Ctrl+,       - Open Settings\n" +
-            "  Ctrl+M       - Manage Categories\n" +
-            "  Ctrl+E       - Export Configuration\n" +
-            "  Ctrl+I       - Import Configuration\n" +
-            "  F1           - Show this Help\n" +
-            "  F5           - Refresh Actions\n" +
-            "  Esc          - Clear Search\n\n" +
-            "For more information, visit the documentation.",
-            "Help",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        _dialogService.ShowInfo(
+            _localizationService.GetString(MessageKeys.HelpContent),
+            _localizationService.GetString(MessageKeys.HelpTitle));
     }
 
     /// <summary>
@@ -57,11 +47,11 @@ public partial class MainViewModel
     private async Task RefreshAsync()
     {
         IsLoading = true;
-        StatusMessage = "Refreshing...";
+        StatusMessage = _localizationService.GetString(MessageKeys.StatusRefreshing);
         try
         {
             await LoadActionsAsync();
-            StatusMessage = $"{_allActions.Count} actions loaded";
+            StatusMessage = _localizationService.GetFormattedString(MessageKeys.StatusActionsLoaded, _allActions.Count);
         }
         finally
         {

@@ -45,6 +45,14 @@ public interface ILocalizationService
     string GetString(string key, string fallback);
 
     /// <summary>
+    /// Gets a formatted localized string with parameters
+    /// </summary>
+    /// <param name="key">The resource key</param>
+    /// <param name="args">Format arguments</param>
+    /// <returns>Formatted localized string</returns>
+    string GetFormattedString(string key, params object[] args);
+
+    /// <summary>
     /// Event raised when the language changes
     /// </summary>
     event EventHandler? LanguageChanged;

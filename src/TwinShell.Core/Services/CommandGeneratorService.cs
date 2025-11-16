@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.RegularExpressions;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -10,6 +11,12 @@ namespace TwinShell.Core.Services;
 /// </summary>
 public class CommandGeneratorService : ICommandGeneratorService
 {
+    private readonly ILocalizationService _localizationService;
+
+    public CommandGeneratorService(ILocalizationService localizationService)
+    {
+        _localizationService = localizationService;
+    }
     public string GenerateCommand(CommandTemplate template, Dictionary<string, string> parameterValues)
     {
         // Validate input parameters
@@ -125,7 +132,7 @@ public class CommandGeneratorService : ICommandGeneratorService
                 if (!parameterValues.ContainsKey(parameter.Name) ||
                     string.IsNullOrWhiteSpace(parameterValues[parameter.Name]))
                 {
-                    errors.Add($"Le paramètre '{parameter.Label}' est requis.");
+                    errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterRequired, parameter.Label));
                 }
             }
 
@@ -141,7 +148,7 @@ public class CommandGeneratorService : ICommandGeneratorService
                     case "integer":
                         if (!int.TryParse(value, out _))
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' doit être un nombre entier.");
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterMustBeInteger, parameter.Label));
                         }
                         break;
 
@@ -149,7 +156,7 @@ public class CommandGeneratorService : ICommandGeneratorService
                     case "boolean":
                         if (!bool.TryParse(value, out _))
                         {
-                            errors.Add($"Le paramètre '{parameter.Label}' doit être true ou false.");
+                            errors.Add(_localizationService.GetFormattedString(MessageKeys.ValidationParameterMustBeBoolean, parameter.Label));
                         }
                         break;
 
