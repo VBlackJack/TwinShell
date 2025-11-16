@@ -11,12 +11,13 @@ namespace TwinShell.App.ViewModels;
 /// <summary>
 /// ViewModel for command execution panel
 /// </summary>
-public partial class ExecutionViewModel : ObservableObject
+public partial class ExecutionViewModel : ObservableObject, IDisposable
 {
     private readonly ICommandExecutionService _commandExecutionService;
     private readonly ICommandHistoryService _commandHistoryService;
     private readonly ISettingsService _settingsService;
     private CancellationTokenSource? _executionCts;
+    private bool _disposed;
 
     [ObservableProperty]
     private ObservableCollection<OutputLineViewModel> _outputLines = new();
@@ -89,14 +90,7 @@ public partial class ExecutionViewModel : ObservableObject
         // Start execution timer
         _executionStartTime = DateTime.Now;
         _executionTimer = new System.Timers.Timer(100); // Update every 100ms
-        _executionTimer.Elapsed += (s, e) =>
-        {
-            var elapsed = DateTime.Now - _executionStartTime;
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                ExecutionTime = $"{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
-            });
-        };
+        _executionTimer.Elapsed += OnTimerElapsed;
         _executionTimer.Start();
 
         try
@@ -118,15 +112,18 @@ public partial class ExecutionViewModel : ObservableObject
                 timeout,
                 onOutputReceived: (outputLine) =>
                 {
-                    // Add output line to UI on UI thread
-                    Application.Current.Dispatcher.Invoke(() =>
+                    // Add output line to UI on UI thread (async to prevent deadlocks)
+                    Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         AddOutputLine(outputLine.Text, outputLine.IsError);
                     });
                 });
 
-            // Stop timer
-            _executionTimer?.Stop();
+            // Stop timer (will be fully disposed in finally block)
+            if (_executionTimer != null)
+            {
+                _executionTimer.Stop();
+            }
 
             // Add final output if not already added via callbacks
             if (!string.IsNullOrEmpty(result.Stdout) && OutputLines.Count == 4) // Only initial lines
@@ -184,7 +181,10 @@ public partial class ExecutionViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _executionTimer?.Stop();
+            if (_executionTimer != null)
+            {
+                _executionTimer.Stop();
+            }
             AddOutputLine("", false);
             // SECURITY: Don't expose exception details to users
             AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ✗ ERROR: Command execution failed", true);
@@ -195,10 +195,28 @@ public partial class ExecutionViewModel : ObservableObject
             IsExecuting = false;
             _executionCts?.Dispose();
             _executionCts = null;
-            _executionTimer?.Stop();
-            _executionTimer?.Dispose();
-            _executionTimer = null;
+
+            // Properly dispose timer and detach event handler
+            if (_executionTimer != null)
+            {
+                _executionTimer.Stop();
+                _executionTimer.Elapsed -= OnTimerElapsed;
+                _executionTimer.Dispose();
+                _executionTimer = null;
+            }
         }
+    }
+
+    /// <summary>
+    /// Timer elapsed event handler
+    /// </summary>
+    private void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        var elapsed = DateTime.Now - _executionStartTime;
+        Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            ExecutionTime = $"{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
+        });
     }
 
     /// <summary>
@@ -266,6 +284,34 @@ public partial class ExecutionViewModel : ObservableObject
             result.ExitCode,
             result.Duration,
             result.Success);
+    }
+
+    /// <summary>
+    /// Dispose resources to prevent memory leaks
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        // Stop and dispose timer
+        if (_executionTimer != null)
+        {
+            _executionTimer.Stop();
+            _executionTimer.Elapsed -= OnTimerElapsed;
+            _executionTimer.Dispose();
+            _executionTimer = null;
+        }
+
+        // Cancel and dispose cancellation token source
+        if (_executionCts != null)
+        {
+            _executionCts.Cancel();
+            _executionCts.Dispose();
+            _executionCts = null;
+        }
+
+        _disposed = true;
     }
 }
 
