@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TwinShell.App"
         xmlns:vm="clr-namespace:TwinShell.App.ViewModels"
+        xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
         mc:Ignorable="d"
         Title="TwinShell - PowerShell &amp; Bash Command Manager"
         Height="700" Width="1200"
@@ -28,6 +29,7 @@
         <KeyBinding Key="F5" Command="{Binding RefreshCommand}"/>
     </Window.InputBindings>
 
+    <Grid x:Name="RootGrid">
     <DockPanel>
         <!-- Menu Bar -->
         <Menu DockPanel.Dock="Top">
@@ -113,7 +115,11 @@
                     <TextBox Grid.Column="0"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBoxStyle}"
-                             FontSize="14">
+                             FontSize="14"
+                             TabIndex="1"
+                             behaviors:TextBoxPlaceholderBehavior.Placeholder="Search actions by name, description or category..."
+                             AutomationProperties.Name="Search actions"
+                             AutomationProperties.HelpText="Search for actions by name, description or category. Press Ctrl+K to clear.">
                         <TextBox.InputBindings>
                             <KeyBinding Key="K" Modifiers="Control"
                                       Command="{Binding DataContext.ClearFiltersCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
@@ -140,9 +146,15 @@
                                    VerticalAlignment="Center"
                                    Margin="0,0,12,0"
                                    FontWeight="SemiBold"/>
-                        <CheckBox Content="Windows" IsChecked="{Binding FilterWindows}" Margin="0,0,12,0"/>
-                        <CheckBox Content="Linux" IsChecked="{Binding FilterLinux}" Margin="0,0,12,0"/>
-                        <CheckBox Content="Both" IsChecked="{Binding FilterBoth}"/>
+                        <CheckBox Content="Windows" IsChecked="{Binding FilterWindows}" Margin="0,0,12,0"
+                                  TabIndex="2"
+                                  AutomationProperties.Name="Filter by Windows platform"/>
+                        <CheckBox Content="Linux" IsChecked="{Binding FilterLinux}" Margin="0,0,12,0"
+                                  TabIndex="3"
+                                  AutomationProperties.Name="Filter by Linux platform"/>
+                        <CheckBox Content="Both" IsChecked="{Binding FilterBoth}"
+                                  TabIndex="4"
+                                  AutomationProperties.Name="Filter by cross-platform actions"/>
                     </StackPanel>
 
                     <!-- Level Filters -->
@@ -151,9 +163,15 @@
                                    VerticalAlignment="Center"
                                    Margin="0,0,12,0"
                                    FontWeight="SemiBold"/>
-                        <CheckBox Content="Info" IsChecked="{Binding FilterInfo}" Margin="0,0,12,0"/>
-                        <CheckBox Content="Run" IsChecked="{Binding FilterRun}" Margin="0,0,12,0"/>
-                        <CheckBox Content="Dangerous" IsChecked="{Binding FilterDangerous}"/>
+                        <CheckBox Content="Info" IsChecked="{Binding FilterInfo}" Margin="0,0,12,0"
+                                  TabIndex="5"
+                                  AutomationProperties.Name="Filter by informational commands"/>
+                        <CheckBox Content="Run" IsChecked="{Binding FilterRun}" Margin="0,0,12,0"
+                                  TabIndex="6"
+                                  AutomationProperties.Name="Filter by executable commands"/>
+                        <CheckBox Content="Dangerous" IsChecked="{Binding FilterDangerous}"
+                                  TabIndex="7"
+                                  AutomationProperties.Name="Filter by dangerous commands"/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -185,7 +203,10 @@
                     <ListBox ItemsSource="{Binding Categories}"
                              SelectedItem="{Binding SelectedCategory}"
                              BorderThickness="0"
-                             Background="Transparent">
+                             Background="Transparent"
+                             TabIndex="8"
+                             AutomationProperties.Name="Categories list"
+                             AutomationProperties.HelpText="Select a category to filter actions">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding}" Padding="4"/>
@@ -213,7 +234,10 @@
                              SelectedItem="{Binding SelectedAction}"
                              BorderThickness="0"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             ItemContainerStyle="{StaticResource ActionListBoxItemStyle}">
+                             ItemContainerStyle="{StaticResource ActionListBoxItemStyle}"
+                             TabIndex="9"
+                             AutomationProperties.Name="Actions list"
+                             AutomationProperties.HelpText="Select an action to view details and generate commands">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
@@ -297,16 +321,20 @@
                                            VerticalAlignment="Center"/>
 
                                 <Button Grid.Column="1"
-                                        Content="☆"
-                                        FontSize="24"
-                                        Padding="8,4"
+                                        Content="☆ Favorite"
+                                        FontSize="14"
+                                        Padding="12,10"
                                         Margin="8,0,0,0"
                                         Background="Transparent"
-                                        BorderThickness="0"
+                                        BorderThickness="1"
+                                        BorderBrush="{StaticResource BorderBrush}"
                                         Cursor="Hand"
                                         ToolTip="Add to / Remove from Favorites"
                                         Command="{Binding DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                        VerticalAlignment="Center">
+                                        VerticalAlignment="Center"
+                                        TabIndex="11"
+                                        AutomationProperties.Name="Toggle favorite"
+                                        AutomationProperties.HelpText="Add or remove this action from favorites">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Foreground" Value="#666"/>
@@ -450,7 +478,9 @@
                                                     </TextBlock>
                                                     <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource ModernTextBoxStyle}"
-                                                             Margin="0,4,0,0"/>
+                                                             Margin="0,4,0,0"
+                                                             AutomationProperties.LabeledBy="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=Children[0]}"
+                                                             AutomationProperties.HelpText="{Binding Description}"/>
                                                     <TextBlock Text="{Binding Description}"
                                                                FontSize="10"
                                                                Foreground="{StaticResource TextSecondaryBrush}"
@@ -477,18 +507,26 @@
 
                                     <!-- Action Buttons -->
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-                                        <Button Content="▶ Exécuter"
+                                        <Button Content="▶ Execute"
                                                 Command="{Binding ExecuteCommandCommand}"
                                                 Style="{StaticResource PrimaryButtonStyle}"
                                                 Margin="0,0,8,0"
-                                                Padding="12,6"
+                                                Padding="12,10"
+                                                MinWidth="44"
+                                                MinHeight="44"
+                                                TabIndex="12"
                                                 ToolTip="Execute command directly (Sprint 4)"
                                                 AutomationProperties.Name="Execute Command"
                                                 AutomationProperties.HelpText="Execute the generated command directly"/>
-                                        <Button Content="📋 Copier dans le presse-papiers"
+                                        <Button Content="📋 Copy to Clipboard"
                                                 Command="{Binding CopyCommandCommand}"
                                                 Style="{StaticResource PrimaryButtonStyle}"
-                                                Padding="12,6"/>
+                                                Padding="12,10"
+                                                MinWidth="44"
+                                                MinHeight="44"
+                                                TabIndex="13"
+                                                AutomationProperties.Name="Copy command to clipboard"
+                                                AutomationProperties.HelpText="Copy the generated command to clipboard for use in terminal"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
@@ -512,4 +550,5 @@
         </TabControl>
         </Grid>
     </DockPanel>
+    </Grid>
 </Window>
