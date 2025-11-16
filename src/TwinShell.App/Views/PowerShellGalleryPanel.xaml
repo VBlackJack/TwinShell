@@ -22,11 +22,12 @@
         <!-- Search -->
         <GroupBox Grid.Row="1" Header="Search" Margin="0,0,0,10">
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <!-- UX: Search box with text-only button -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                     <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                             Width="300" Margin="0,0,10,0"
+                             Width="300" Margin="0,0,12,0"
                              IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBooleanConverter}}"/>
-                    <Button Content="🔍 Search" Command="{Binding SearchModulesCommand}" MinWidth="100"/>
+                    <Button Content="Search" Command="{Binding SearchModulesCommand}" MinWidth="100" MinHeight="32"/>
                 </StackPanel>
                 <TextBlock Text="{Binding StatusMessage}" Opacity="0.7" FontSize="11"/>
             </StackPanel>
@@ -73,9 +74,10 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,0">
-                        <Button Content="Install Module" Command="{Binding InstallModuleCommand}" MinWidth="100" Margin="0,0,5,0"/>
-                        <Button Content="Load Commands" Command="{Binding LoadModuleCommandsCommand}" MinWidth="100"/>
+                    <!-- UX: Consistent button styling -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Content="Install Module" Command="{Binding InstallModuleCommand}" MinWidth="100" Margin="0,0,8,0" MinHeight="32"/>
+                        <Button Content="Load Commands" Command="{Binding LoadModuleCommandsCommand}" MinWidth="100" MinHeight="32"/>
                     </StackPanel>
                 </Grid>
             </GroupBox>
@@ -106,8 +108,9 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,0">
-                        <Button Content="➕ Import as Action" Command="{Binding ImportCommandAsActionCommand}" MinWidth="120"/>
+                    <!-- UX: Import button with text-only label -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Content="Import as Action" Command="{Binding ImportCommandAsActionCommand}" MinWidth="120" MinHeight="32"/>
                     </StackPanel>
                 </Grid>
             </GroupBox>

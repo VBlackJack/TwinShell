@@ -43,12 +43,12 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <!-- Buttons -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,5,0,0">
-                    <Button Content="▶ Execute" Command="{Binding ExecuteBatchCommand}" MinWidth="100" Margin="0,0,5,0"/>
-                    <Button Content="Import" Command="{Binding ImportBatchCommand}" MinWidth="80" Margin="0,0,5,0"/>
-                    <Button Content="Export" Command="{Binding ExportBatchCommand}" MinWidth="80" Margin="0,0,5,0"/>
-                    <Button Content="Delete" Command="{Binding DeleteBatchCommand}" MinWidth="80"/>
+                <!-- UX: Buttons with text-only labels and consistent sizing -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                    <Button Content="Execute" Command="{Binding ExecuteBatchCommand}" MinWidth="100" Margin="0,0,8,0" MinHeight="32"/>
+                    <Button Content="Import" Command="{Binding ImportBatchCommand}" MinWidth="80" Margin="0,0,8,0" MinHeight="32"/>
+                    <Button Content="Export" Command="{Binding ExportBatchCommand}" MinWidth="80" Margin="0,0,8,0" MinHeight="32"/>
+                    <Button Content="Delete" Command="{Binding DeleteBatchCommand}" MinWidth="80" MinHeight="32"/>
                 </StackPanel>
             </Grid>
         </GroupBox>

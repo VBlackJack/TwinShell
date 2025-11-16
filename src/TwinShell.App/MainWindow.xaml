@@ -15,46 +15,61 @@
         AutomationProperties.HelpText="PowerShell and Bash command manager application">
 
     <Window.InputBindings>
-        <!-- Settings: Ctrl+, -->
-        <KeyBinding Key="OemComma" Modifiers="Control" Command="{Binding OpenSettingsCommand}"/>
-        <!-- Manage Categories: Ctrl+M -->
-        <KeyBinding Key="M" Modifiers="Control" Command="{Binding OpenCategoriesCommand}"/>
+        <!-- UX: Standard Windows keyboard shortcuts for better discoverability -->
+        <!-- Search: Ctrl+F -->
+        <KeyBinding Key="F" Modifiers="Control" Command="{Binding FocusSearchCommand}"/>
+        <!-- Copy: Ctrl+C (on generated command) -->
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyCommandCommand}"/>
         <!-- Export: Ctrl+E -->
         <KeyBinding Key="E" Modifiers="Control" Command="{Binding ExportConfigurationCommand}"/>
         <!-- Import: Ctrl+I -->
         <KeyBinding Key="I" Modifiers="Control" Command="{Binding ImportConfigurationCommand}"/>
-        <!-- Help: F1 -->
-        <KeyBinding Key="F1" Command="{Binding ShowHelpCommand}"/>
         <!-- Refresh: F5 -->
         <KeyBinding Key="F5" Command="{Binding RefreshCommand}"/>
+        <!-- Help: F1 -->
+        <KeyBinding Key="F1" Command="{Binding ShowHelpCommand}"/>
+        <!-- Clear filters: Ctrl+K -->
+        <KeyBinding Key="K" Modifiers="Control" Command="{Binding ClearFiltersCommand}"/>
     </Window.InputBindings>
 
     <Grid x:Name="RootGrid">
     <DockPanel>
-        <!-- Menu Bar -->
+        <!-- UX: Menu reorganized following Windows standards (File/Edit/View/Tools/Help) -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Export Configuration..."
+                <MenuItem Header="_Export Configuration..." InputGestureText="Ctrl+E"
                           Command="{Binding ExportConfigurationCommand}"
                           ToolTip="Export your favorites and history to a JSON file"/>
-                <MenuItem Header="_Import Configuration..."
+                <MenuItem Header="_Import Configuration..." InputGestureText="Ctrl+I"
                           Command="{Binding ImportConfigurationCommand}"
                           ToolTip="Import favorites and history from a JSON file"/>
                 <Separator/>
-                <MenuItem Header="_Settings..."
+                <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Find..." InputGestureText="Ctrl+F"
+                          Command="{Binding FocusSearchCommand}"
+                          ToolTip="Focus the search box"/>
+                <MenuItem Header="C_lear Filters" InputGestureText="Ctrl+K"
+                          Command="{Binding ClearFiltersCommand}"
+                          ToolTip="Reset all search filters"/>
+                <Separator/>
+                <MenuItem Header="_Preferences..."
                           Click="Settings_Click"
                           ToolTip="Configure application settings and theme"/>
-                <Separator/>
-                <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Categories">
+            <MenuItem Header="_Tools">
                 <MenuItem Header="_Manage Categories..."
                           Click="ManageCategories_Click"
                           ToolTip="Create and organize custom categories"/>
+                <MenuItem Header="_Refresh" InputGestureText="F5"
+                          Command="{Binding RefreshCommand}"
+                          ToolTip="Reload actions and data"/>
             </MenuItem>
             <MenuItem Header="_Help">
+                <MenuItem Header="_Keyboard Shortcuts" InputGestureText="F1" Click="KeyboardShortcuts_Click"/>
+                <Separator/>
                 <MenuItem Header="_About TwinShell" Click="About_Click"/>
-                <MenuItem Header="_Keyboard Shortcuts" Click="KeyboardShortcuts_Click"/>
             </MenuItem>
         </Menu>
 
@@ -65,20 +80,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="TwinShell"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource PrimaryBrush}"/>
-            <TextBlock Text="Gestionnaire de commandes PowerShell &amp; Bash pour administrateurs système"
-                       FontSize="12"
-                       Foreground="{StaticResource TextSecondaryBrush}"/>
-        </StackPanel>
+            <!-- UX: Simplified header - removed redundant app title (already in window title bar) -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                <TextBlock Text="PowerShell &amp; Bash Command Reference"
+                           FontSize="20"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource PrimaryBrush}"/>
+            </StackPanel>
 
-        <!-- Tab Control -->
+        <!-- UX: Tabs with text-only headers (professional, accessible, language-unified) -->
         <TabControl Grid.Row="1">
-            <TabItem Header="📋 Actions">
+            <TabItem Header="Actions">
                 <Grid Margin="0,16,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -105,19 +117,20 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Search Box -->
+                <!-- UX: Simplified search box with cleaner helper text -->
                 <Grid Grid.Row="0" Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0"
+                    <TextBox x:Name="SearchTextBox"
+                             Grid.Column="0"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBoxStyle}"
                              FontSize="14"
                              TabIndex="1"
-                             behaviors:TextBoxPlaceholderBehavior.Placeholder="Search actions by name, description or category..."
+                             behaviors:TextBoxPlaceholderBehavior.Placeholder="Search actions by name, description, or category..."
                              AutomationProperties.Name="Search actions"
                              AutomationProperties.HelpText="Search for actions by name, description or category. Press Ctrl+K to clear.">
                         <TextBox.InputBindings>
@@ -126,14 +139,15 @@
                         </TextBox.InputBindings>
                     </TextBox>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12,0,0,0">
-                        <TextBlock Text="🔍 Recherche (Ctrl+K pour effacer)"
-                                   VerticalAlignment="Center"
-                                   Foreground="{StaticResource TextSecondaryBrush}"/>
-                    </StackPanel>
+                    <TextBlock Grid.Column="1"
+                               Text="Ctrl+K to clear"
+                               VerticalAlignment="Center"
+                               Margin="12,0,0,0"
+                               FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
                 </Grid>
 
-                <!-- Filters -->
+                <!-- UX: Filters with consistent English labels and lighter weight -->
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -142,27 +156,29 @@
 
                     <!-- Platform Filters -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,24,0">
-                        <TextBlock Text="Plateforme:"
+                        <TextBlock Text="Platform:"
                                    VerticalAlignment="Center"
                                    Margin="0,0,12,0"
-                                   FontWeight="SemiBold"/>
+                                   FontWeight="Medium"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
                         <CheckBox Content="Windows" IsChecked="{Binding FilterWindows}" Margin="0,0,12,0"
                                   TabIndex="2"
                                   AutomationProperties.Name="Filter by Windows platform"/>
                         <CheckBox Content="Linux" IsChecked="{Binding FilterLinux}" Margin="0,0,12,0"
                                   TabIndex="3"
                                   AutomationProperties.Name="Filter by Linux platform"/>
-                        <CheckBox Content="Both" IsChecked="{Binding FilterBoth}"
+                        <CheckBox Content="Cross-platform" IsChecked="{Binding FilterBoth}"
                                   TabIndex="4"
                                   AutomationProperties.Name="Filter by cross-platform actions"/>
                     </StackPanel>
 
                     <!-- Level Filters -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <TextBlock Text="Niveau:"
+                        <TextBlock Text="Level:"
                                    VerticalAlignment="Center"
                                    Margin="0,0,12,0"
-                                   FontWeight="SemiBold"/>
+                                   FontWeight="Medium"
+                                   Foreground="{StaticResource TextPrimaryBrush}"/>
                         <CheckBox Content="Info" IsChecked="{Binding FilterInfo}" Margin="0,0,12,0"
                                   TabIndex="5"
                                   AutomationProperties.Name="Filter by informational commands"/>
@@ -177,26 +193,26 @@
             </Grid>
         </Border>
 
-        <!-- Main Content -->
+        <!-- UX: Rebalanced 3-column layout (250px | 350px | *) for better proportions -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="16"/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="16"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Categories TreeView -->
+            <!-- Categories Panel -->
             <Border Grid.Column="0"
                     Background="{StaticResource SurfaceBrush}"
                     BorderBrush="{StaticResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                 <StackPanel>
-                    <TextBlock Text="Catégories"
+                    <TextBlock Text="Categories"
                                FontSize="14"
-                               FontWeight="Bold"
+                               FontWeight="SemiBold"
                                Padding="12"
                                Background="{StaticResource PrimaryBrush}"
                                Foreground="White"/>
@@ -209,7 +225,7 @@
                              AutomationProperties.HelpText="Select a category to filter actions">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" Padding="4"/>
+                                <TextBlock Text="{Binding}" Padding="8,4"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -274,13 +290,14 @@
                     CornerRadius="8">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="16" DataContext="{Binding SelectedAction}">
-                        <!-- Show message when no action selected -->
-                        <TextBlock Text="Sélectionnez une action pour voir les détails"
+                        <!-- UX: Empty state with better positioning -->
+                        <TextBlock Text="Select an action to view details"
                                    FontStyle="Italic"
+                                   FontSize="14"
                                    Foreground="{StaticResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Margin="0,100,0,0">
+                                   VerticalAlignment="Top"
+                                   Margin="0,40,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -306,8 +323,8 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <!-- Title and Favorite Button -->
-                            <Grid Margin="0,0,0,8">
+                            <!-- UX: Title with improved Favorite button (clear visual state) -->
+                            <Grid Margin="0,0,0,12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -316,32 +333,38 @@
                                 <TextBlock Grid.Column="0"
                                            Text="{Binding Title}"
                                            FontSize="20"
-                                           FontWeight="Bold"
+                                           FontWeight="SemiBold"
                                            TextWrapping="Wrap"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center"
+                                           Foreground="{StaticResource TextPrimaryBrush}"/>
 
                                 <Button Grid.Column="1"
-                                        Content="☆ Favorite"
-                                        FontSize="14"
-                                        Padding="12,10"
+                                        x:Name="FavoriteButton"
+                                        Content="☆"
+                                        FontSize="20"
+                                        Padding="10,6"
                                         Margin="8,0,0,0"
                                         Background="Transparent"
                                         BorderThickness="1"
                                         BorderBrush="{StaticResource BorderBrush}"
                                         Cursor="Hand"
-                                        ToolTip="Add to / Remove from Favorites"
+                                        ToolTip="Add to Favorites"
                                         Command="{Binding DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                         VerticalAlignment="Center"
                                         TabIndex="11"
+                                        MinWidth="44"
+                                        MinHeight="44"
                                         AutomationProperties.Name="Toggle favorite"
                                         AutomationProperties.HelpText="Add or remove this action from favorites">
                                     <Button.Style>
                                         <Style TargetType="Button">
-                                            <Setter Property="Foreground" Value="#666"/>
+                                            <Setter Property="Foreground" Value="#9E9E9E"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Foreground" Value="#FFD700"/>
+                                                    <Setter Property="Background" Value="#FFFEF5"/>
                                                 </Trigger>
+                                                <!-- TODO: Add DataTrigger for IsFavorite property to show filled star ★ -->
                                             </Style.Triggers>
                                         </Style>
                                     </Button.Style>
@@ -368,7 +391,7 @@
                                 </Border>
                             </StackPanel>
 
-                            <!-- Danger Banner -->
+                            <!-- UX: Danger banner with clearer English wording -->
                             <Border Style="{StaticResource DangerBannerStyle}">
                                 <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource DangerBannerStyle}">
@@ -381,9 +404,9 @@
                                     </Style>
                                 </Border.Style>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="⚠️" FontSize="16" Margin="0,0,8,0"/>
-                                    <TextBlock Text="ATTENTION : Cette commande peut causer des modifications importantes du système"
-                                               Foreground="#D32F2F"
+                                    <TextBlock Text="⚠" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="WARNING: This command can cause significant system changes"
+                                               Foreground="{StaticResource DangerBrush}"
                                                FontWeight="SemiBold"
                                                TextWrapping="Wrap"/>
                                 </StackPanel>
@@ -391,15 +414,18 @@
 
                             <!-- Description -->
                             <TextBlock Text="Description"
-                                       FontWeight="Bold"
+                                       FontWeight="SemiBold"
+                                       FontSize="14"
                                        Margin="0,0,0,4"/>
                             <TextBlock Text="{Binding Description}"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,16"/>
+                                       Margin="0,0,0,16"
+                                       Foreground="{StaticResource TextPrimaryBrush}"/>
 
                             <!-- Examples -->
-                            <TextBlock Text="Exemples"
-                                       FontWeight="Bold"
+                            <TextBlock Text="Examples"
+                                       FontWeight="SemiBold"
+                                       FontSize="14"
                                        Margin="0,0,0,4"/>
                             <ItemsControl ItemsSource="{Binding Examples}" Margin="0,0,0,16">
                                 <ItemsControl.ItemTemplate>
@@ -444,7 +470,7 @@
                                            Margin="0,0,0,16"/>
                             </StackPanel>
 
-                            <!-- Command Generator -->
+                            <!-- UX: Command Generator with English labels and clearer structure -->
                             <Border Background="#E8F5E9"
                                     BorderBrush="#4CAF50"
                                     BorderThickness="1"
@@ -452,8 +478,9 @@
                                     Padding="12"
                                     Margin="0,8,0,0">
                                 <StackPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
-                                    <TextBlock Text="Générateur de commande"
-                                               FontWeight="Bold"
+                                    <TextBlock Text="Command Generator"
+                                               FontWeight="SemiBold"
+                                               FontSize="14"
                                                Margin="0,0,0,8"/>
 
                                     <!-- Parameters -->
@@ -492,39 +519,43 @@
                                     </ItemsControl>
 
                                     <!-- Generated Command -->
-                                    <TextBlock Text="Commande générée"
-                                               FontWeight="Bold"
+                                    <TextBlock Text="Generated Command"
+                                               FontWeight="SemiBold"
                                                Margin="0,8,0,4"/>
                                     <Border Background="White"
                                             BorderBrush="{StaticResource BorderBrush}"
                                             BorderThickness="1"
                                             CornerRadius="4"
                                             Padding="8">
-                                        <TextBlock Text="{Binding GeneratedCommand}"
+                                        <TextBlock x:Name="GeneratedCommandText"
+                                                   Text="{Binding GeneratedCommand}"
                                                    FontFamily="Consolas"
+                                                   FontSize="12"
                                                    TextWrapping="Wrap"/>
                                     </Border>
 
-                                    <!-- Action Buttons -->
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-                                        <Button Content="▶ Execute"
+                                    <!-- UX: Action buttons with clear text, proper states, and keyboard support -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                                        <Button Content="Execute"
                                                 Command="{Binding ExecuteCommandCommand}"
+                                                IsEnabled="False"
                                                 Style="{StaticResource PrimaryButtonStyle}"
                                                 Margin="0,0,8,0"
-                                                Padding="12,10"
+                                                Padding="16,10"
                                                 MinWidth="44"
                                                 MinHeight="44"
                                                 TabIndex="12"
-                                                ToolTip="Execute command directly (Sprint 4)"
+                                                ToolTip="Execute command directly (Coming in Sprint 4)"
                                                 AutomationProperties.Name="Execute Command"
-                                                AutomationProperties.HelpText="Execute the generated command directly"/>
-                                        <Button Content="📋 Copy to Clipboard"
+                                                AutomationProperties.HelpText="Execute the generated command directly - feature coming soon"/>
+                                        <Button Content="Copy to Clipboard"
                                                 Command="{Binding CopyCommandCommand}"
                                                 Style="{StaticResource PrimaryButtonStyle}"
-                                                Padding="12,10"
+                                                Padding="16,10"
                                                 MinWidth="44"
                                                 MinHeight="44"
                                                 TabIndex="13"
+                                                ToolTip="Copy command to clipboard (Ctrl+C)"
                                                 AutomationProperties.Name="Copy command to clipboard"
                                                 AutomationProperties.HelpText="Copy the generated command to clipboard for use in terminal"/>
                                     </StackPanel>
@@ -539,13 +570,44 @@
             </TabItem>
 
             <!-- History Tab -->
-            <TabItem Header="📜 History">
+            <TabItem Header="History">
                 <ContentControl x:Name="HistoryTabContent"/>
             </TabItem>
 
-            <!-- Execution Output Tab (Sprint 4) -->
-            <TabItem Header="▶ Execution">
-                <ContentControl x:Name="ExecutionTabContent"/>
+            <!-- UX: Execution Tab with empty state (feature not yet implemented) -->
+            <TabItem Header="Execution">
+                <Grid Margin="24">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="⏳"
+                                   FontSize="48"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,16"/>
+                        <TextBlock Text="Command Execution"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource PrimaryBrush}"
+                                   Margin="0,0,0,8"/>
+                        <TextBlock Text="Direct command execution will be available in Sprint 4."
+                                   FontSize="14"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   MaxWidth="400"
+                                   Margin="0,0,0,16"/>
+                        <TextBlock FontSize="12"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   MaxWidth="500">
+                            <Run Text="Meanwhile, use the "/>
+                            <Run Text="'Copy to Clipboard'" FontWeight="SemiBold"/>
+                            <Run Text=" button to copy commands and execute them in your terminal."/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
             </TabItem>
         </TabControl>
         </Grid>
