@@ -1165,6 +1165,599 @@
       ],
       "notes": "Sur Windows, calculer la différence avec Get-Date pour obtenir la durée. Sur Linux, 'uptime' sans option donne plus d'infos.",
       "links": []
+    },
+    {
+      "id": "WIN-PKG-001",
+      "title": "Installer une application via Winget",
+      "description": "Installe une application Windows à l'aide du gestionnaire de packages Winget.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["winget", "package", "installation", "software", "windows"],
+      "windowsCommandTemplateId": "winget-install-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-install-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget install {packageName} --silent --accept-package-agreements --accept-source-agreements",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom ou ID du package à installer (ex: Microsoft.PowerToys)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "winget install Microsoft.PowerToys --silent",
+          "description": "Installe PowerToys de manière silencieuse"
+        },
+        {
+          "command": "winget install Git.Git --silent",
+          "description": "Installe Git pour Windows"
+        }
+      ],
+      "notes": "Nécessite Windows 10 1809 ou supérieur. L'option --silent évite les interactions utilisateur.",
+      "links": [
+        {
+          "title": "Documentation officielle Winget",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-002",
+      "title": "Lister les applications installées via Winget",
+      "description": "Affiche la liste de toutes les applications installées et gérées par Winget.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 0,
+      "tags": ["winget", "package", "list", "inventory", "windows"],
+      "windowsCommandTemplateId": "winget-list-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-list-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget list",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "winget list",
+          "description": "Liste toutes les applications installées"
+        },
+        {
+          "command": "winget list --source winget",
+          "description": "Liste uniquement les applications du store Winget"
+        }
+      ],
+      "notes": "Affiche toutes les applications, même celles non installées via Winget.",
+      "links": [
+        {
+          "title": "Winget list documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/list"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-003",
+      "title": "Mettre à jour une application Winget",
+      "description": "Met à jour une application spécifique vers sa dernière version disponible via Winget.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["winget", "package", "update", "upgrade", "windows"],
+      "windowsCommandTemplateId": "winget-upgrade-package-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-upgrade-package-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget upgrade {packageName} --silent --accept-package-agreements --accept-source-agreements",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom ou ID du package à mettre à jour"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "winget upgrade Microsoft.PowerToys --silent",
+          "description": "Met à jour PowerToys vers la dernière version"
+        }
+      ],
+      "notes": "Vérifie d'abord si une mise à jour est disponible avant d'installer.",
+      "links": [
+        {
+          "title": "Winget upgrade documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/upgrade"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-004",
+      "title": "Mettre à jour toutes les applications Winget",
+      "description": "Met à jour toutes les applications installées vers leurs dernières versions disponibles.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["winget", "package", "update", "upgrade-all", "windows"],
+      "windowsCommandTemplateId": "winget-upgrade-all-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-upgrade-all-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget upgrade --all --silent --accept-package-agreements --accept-source-agreements",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "winget upgrade --all --silent",
+          "description": "Met à jour toutes les applications en mode silencieux"
+        }
+      ],
+      "notes": "Peut prendre du temps selon le nombre d'applications à mettre à jour.",
+      "links": [
+        {
+          "title": "Winget upgrade documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/upgrade"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-005",
+      "title": "Désinstaller une application Winget",
+      "description": "Désinstalle une application précédemment installée via Winget.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 2,
+      "tags": ["winget", "package", "uninstall", "remove", "windows"],
+      "windowsCommandTemplateId": "winget-uninstall-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-uninstall-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget uninstall {packageName} --silent",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom ou ID du package à désinstaller"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "winget uninstall Microsoft.PowerToys --silent",
+          "description": "Désinstalle PowerToys"
+        }
+      ],
+      "notes": "⚠️ ATTENTION : Cette action supprime l'application du système. Assurez-vous de sauvegarder vos données.",
+      "links": [
+        {
+          "title": "Winget uninstall documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/uninstall"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-006",
+      "title": "Rechercher un package Winget",
+      "description": "Recherche des packages disponibles dans les sources Winget configurées.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 0,
+      "tags": ["winget", "package", "search", "find", "windows"],
+      "windowsCommandTemplateId": "winget-search-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-search-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget search {searchTerm}",
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "label": "Terme de recherche",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Mot-clé ou nom du package à rechercher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "winget search vscode",
+          "description": "Recherche tous les packages contenant 'vscode'"
+        },
+        {
+          "command": "winget search --name 'Visual Studio Code'",
+          "description": "Recherche par nom exact"
+        }
+      ],
+      "notes": "Recherche dans toutes les sources configurées. Utiliser --exact pour une correspondance exacte.",
+      "links": [
+        {
+          "title": "Winget search documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/search"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-007",
+      "title": "Afficher les détails d'un package Winget",
+      "description": "Affiche les informations détaillées d'un package spécifique (version, éditeur, description, etc.).",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 0,
+      "tags": ["winget", "package", "info", "details", "windows"],
+      "windowsCommandTemplateId": "winget-show-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-show-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget show {packageName}",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom ou ID du package à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "winget show Microsoft.PowerToys",
+          "description": "Affiche les détails complets de PowerToys"
+        }
+      ],
+      "notes": "Affiche version, éditeur, licence, description et dépendances du package.",
+      "links": [
+        {
+          "title": "Winget show documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/show"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-008",
+      "title": "Ajouter une source Winget",
+      "description": "Ajoute une nouvelle source de packages Winget personnalisée.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["winget", "package", "source", "repository", "windows"],
+      "windowsCommandTemplateId": "winget-source-add-cmd",
+      "windowsCommandTemplate": {
+        "id": "winget-source-add-cmd",
+        "platform": 0,
+        "name": "winget",
+        "commandPattern": "winget source add --name {name} {url}",
+        "parameters": [
+          {
+            "name": "name",
+            "label": "Nom de la source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom à donner à la source"
+          },
+          {
+            "name": "url",
+            "label": "URL de la source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "URL du dépôt de packages"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "winget source add --name CustomRepo https://packages.example.com/winget",
+          "description": "Ajoute une source personnalisée"
+        }
+      ],
+      "notes": "Nécessite des droits administrateur. Vérifier la fiabilité de la source avant de l'ajouter.",
+      "links": [
+        {
+          "title": "Winget source documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/package-manager/winget/source"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-101",
+      "title": "Installer un package Chocolatey",
+      "description": "Installe un package Windows à l'aide du gestionnaire Chocolatey.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["chocolatey", "package", "installation", "software", "windows"],
+      "windowsCommandTemplateId": "choco-install-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-install-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco install {packageName} -y",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du package à installer (ex: googlechrome, vscode)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "choco install googlechrome -y",
+          "description": "Installe Google Chrome"
+        },
+        {
+          "command": "choco install vscode -y",
+          "description": "Installe Visual Studio Code"
+        }
+      ],
+      "notes": "Nécessite Chocolatey installé. L'option -y accepte automatiquement les prompts.",
+      "links": [
+        {
+          "title": "Documentation officielle Chocolatey",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/install"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-102",
+      "title": "Lister les packages Chocolatey installés",
+      "description": "Affiche la liste de tous les packages installés via Chocolatey.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 0,
+      "tags": ["chocolatey", "package", "list", "inventory", "windows"],
+      "windowsCommandTemplateId": "choco-list-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-list-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco list --local-only",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "choco list --local-only",
+          "description": "Liste tous les packages Chocolatey installés localement"
+        },
+        {
+          "command": "choco list --local-only --limit-output",
+          "description": "Liste avec sortie simplifiée (nom|version)"
+        }
+      ],
+      "notes": "L'option --local-only affiche uniquement les packages installés sur cette machine.",
+      "links": [
+        {
+          "title": "Chocolatey list documentation",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/list"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-103",
+      "title": "Mettre à jour un package Chocolatey",
+      "description": "Met à jour un package spécifique vers sa dernière version disponible via Chocolatey.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["chocolatey", "package", "update", "upgrade", "windows"],
+      "windowsCommandTemplateId": "choco-upgrade-package-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-upgrade-package-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco upgrade {packageName} -y",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du package à mettre à jour"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "choco upgrade googlechrome -y",
+          "description": "Met à jour Google Chrome vers la dernière version"
+        }
+      ],
+      "notes": "Vérifie automatiquement si une mise à jour est disponible avant d'installer.",
+      "links": [
+        {
+          "title": "Chocolatey upgrade documentation",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/upgrade"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-104",
+      "title": "Mettre à jour tous les packages Chocolatey",
+      "description": "Met à jour tous les packages installés vers leurs dernières versions disponibles.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["chocolatey", "package", "update", "upgrade-all", "windows"],
+      "windowsCommandTemplateId": "choco-upgrade-all-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-upgrade-all-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco upgrade all -y",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "choco upgrade all -y",
+          "description": "Met à jour tous les packages Chocolatey"
+        },
+        {
+          "command": "choco upgrade all -y --except=\"package1,package2\"",
+          "description": "Met à jour tous sauf certains packages"
+        }
+      ],
+      "notes": "Peut prendre du temps. L'option --except permet d'exclure certains packages.",
+      "links": [
+        {
+          "title": "Chocolatey upgrade documentation",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/upgrade"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-105",
+      "title": "Désinstaller un package Chocolatey",
+      "description": "Désinstalle un package précédemment installé via Chocolatey.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 2,
+      "tags": ["chocolatey", "package", "uninstall", "remove", "windows"],
+      "windowsCommandTemplateId": "choco-uninstall-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-uninstall-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco uninstall {packageName} -y",
+        "parameters": [
+          {
+            "name": "packageName",
+            "label": "Nom du package",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du package à désinstaller"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "choco uninstall googlechrome -y",
+          "description": "Désinstalle Google Chrome"
+        }
+      ],
+      "notes": "⚠️ ATTENTION : Cette action supprime le package du système. Assurez-vous de sauvegarder vos données.",
+      "links": [
+        {
+          "title": "Chocolatey uninstall documentation",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/uninstall"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-106",
+      "title": "Rechercher un package Chocolatey",
+      "description": "Recherche des packages disponibles dans le dépôt Chocolatey.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 0,
+      "tags": ["chocolatey", "package", "search", "find", "windows"],
+      "windowsCommandTemplateId": "choco-search-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-search-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco search {searchTerm}",
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "label": "Terme de recherche",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Mot-clé ou nom du package à rechercher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "choco search chrome",
+          "description": "Recherche tous les packages contenant 'chrome'"
+        },
+        {
+          "command": "choco search --exact googlechrome",
+          "description": "Recherche par nom exact"
+        }
+      ],
+      "notes": "Recherche dans le dépôt community.chocolatey.org par défaut. Utiliser --exact pour correspondance exacte.",
+      "links": [
+        {
+          "title": "Chocolatey search documentation",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/search"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PKG-107",
+      "title": "Ajouter une source Chocolatey",
+      "description": "Ajoute une nouvelle source de packages Chocolatey personnalisée.",
+      "category": "📦 Package Management",
+      "platform": 0,
+      "level": 1,
+      "tags": ["chocolatey", "package", "source", "repository", "windows"],
+      "windowsCommandTemplateId": "choco-source-add-cmd",
+      "windowsCommandTemplate": {
+        "id": "choco-source-add-cmd",
+        "platform": 0,
+        "name": "choco",
+        "commandPattern": "choco source add --name={name} --source={url}",
+        "parameters": [
+          {
+            "name": "name",
+            "label": "Nom de la source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom à donner à la source"
+          },
+          {
+            "name": "url",
+            "label": "URL de la source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "URL du dépôt de packages"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "choco source add --name=MyRepo --source=https://packages.example.com/chocolatey",
+          "description": "Ajoute une source personnalisée"
+        }
+      ],
+      "notes": "Nécessite des droits administrateur. Vérifier la fiabilité de la source avant de l'ajouter.",
+      "links": [
+        {
+          "title": "Chocolatey source documentation",
+          "url": "https://docs.chocolatey.org/en-us/choco/commands/source"
+        }
+      ]
     }
   ]
 }
