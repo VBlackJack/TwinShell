@@ -3119,6 +3119,762 @@
       ],
       "notes": "Désactive tous les services de télémétrie Nvidia et GeForce Experience. Stoppe les tâches planifiées de collecte de données. Améliore la confidentialité sans affecter les performances graphiques.",
       "links": []
+    },
+    {
+      "id": "WIN-PERF-001",
+      "title": "Configurer DNS Google (8.8.8.8)",
+      "description": "Configure les serveurs DNS Google (8.8.8.8 et 8.8.4.4) pour améliorer la vitesse de résolution DNS et la fiabilité.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "dns", "network", "google", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-001-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-001-cmd",
+        "platform": 0,
+        "name": "Set-DnsClientServerAddress",
+        "commandPattern": "$interface = Get-NetAdapter | Where-Object {$_.Status -eq 'Up' -and $_.Name -like '*{InterfaceName}*'} | Select-Object -First 1; if ($interface) { Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ServerAddresses ('8.8.8.8','8.8.4.4'); Write-Host \"DNS Google configuré sur l'interface $($interface.Name)\" -ForegroundColor Green; ipconfig /flushdns } else { Write-Host \"Interface réseau non trouvée\" -ForegroundColor Red }",
+        "parameters": [
+          {
+            "name": "InterfaceName",
+            "label": "Nom de l'interface réseau",
+            "type": "string",
+            "defaultValue": "Ethernet",
+            "required": false,
+            "description": "Nom de l'interface réseau (Ethernet, Wi-Fi, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('8.8.8.8','8.8.4.4')",
+          "description": "Configure DNS Google sur l'interface Ethernet"
+        }
+      ],
+      "notes": "DNS Google: rapide et fiable. Vitesse moyenne ~20ms. Vide automatiquement le cache DNS après configuration.",
+      "links": [
+        {
+          "title": "Google Public DNS",
+          "url": "https://developers.google.com/speed/public-dns"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-002",
+      "title": "Configurer DNS Cloudflare (1.1.1.1)",
+      "description": "Configure les serveurs DNS Cloudflare (1.1.1.1 et 1.0.0.1) pour une résolution DNS ultra-rapide et orientée confidentialité.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "dns", "network", "cloudflare", "privacy", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-002-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-002-cmd",
+        "platform": 0,
+        "name": "Set-DnsClientServerAddress",
+        "commandPattern": "$interface = Get-NetAdapter | Where-Object {$_.Status -eq 'Up' -and $_.Name -like '*{InterfaceName}*'} | Select-Object -First 1; if ($interface) { Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ServerAddresses ('1.1.1.1','1.0.0.1'); Write-Host \"DNS Cloudflare configuré sur l'interface $($interface.Name)\" -ForegroundColor Green; ipconfig /flushdns } else { Write-Host \"Interface réseau non trouvée\" -ForegroundColor Red }",
+        "parameters": [
+          {
+            "name": "InterfaceName",
+            "label": "Nom de l'interface réseau",
+            "type": "string",
+            "defaultValue": "Ethernet",
+            "required": false,
+            "description": "Nom de l'interface réseau (Ethernet, Wi-Fi, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('1.1.1.1','1.0.0.1')",
+          "description": "Configure DNS Cloudflare sur l'interface Ethernet"
+        }
+      ],
+      "notes": "DNS Cloudflare: le plus rapide (14ms en moyenne). Forte orientation confidentialité (ne vend pas vos données). Recommandé pour le gaming et la navigation générale.",
+      "links": [
+        {
+          "title": "Cloudflare DNS",
+          "url": "https://1.1.1.1/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-003",
+      "title": "Configurer DNS OpenDNS",
+      "description": "Configure les serveurs DNS OpenDNS (208.67.222.222 et 208.67.220.220) avec filtrage de contenu et protection contre le phishing.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "dns", "network", "opendns", "security", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-003-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-003-cmd",
+        "platform": 0,
+        "name": "Set-DnsClientServerAddress",
+        "commandPattern": "$interface = Get-NetAdapter | Where-Object {$_.Status -eq 'Up' -and $_.Name -like '*{InterfaceName}*'} | Select-Object -First 1; if ($interface) { Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ServerAddresses ('208.67.222.222','208.67.220.220'); Write-Host \"DNS OpenDNS configuré sur l'interface $($interface.Name)\" -ForegroundColor Green; ipconfig /flushdns } else { Write-Host \"Interface réseau non trouvée\" -ForegroundColor Red }",
+        "parameters": [
+          {
+            "name": "InterfaceName",
+            "label": "Nom de l'interface réseau",
+            "type": "string",
+            "defaultValue": "Ethernet",
+            "required": false,
+            "description": "Nom de l'interface réseau (Ethernet, Wi-Fi, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Wi-Fi' -ServerAddresses ('208.67.222.222','208.67.220.220')",
+          "description": "Configure DNS OpenDNS sur l'interface Wi-Fi"
+        }
+      ],
+      "notes": "DNS OpenDNS: protection contre phishing et malware intégrée. Filtrage de contenu optionnel (configuration via compte OpenDNS). Bon choix pour environnements familiaux ou professionnels.",
+      "links": [
+        {
+          "title": "OpenDNS",
+          "url": "https://www.opendns.com/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-004",
+      "title": "Configurer DNS Quad9",
+      "description": "Configure les serveurs DNS Quad9 (9.9.9.9 et 149.112.112.112) avec blocage automatique des domaines malveillants.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "dns", "network", "quad9", "security", "privacy", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-004-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-004-cmd",
+        "platform": 0,
+        "name": "Set-DnsClientServerAddress",
+        "commandPattern": "$interface = Get-NetAdapter | Where-Object {$_.Status -eq 'Up' -and $_.Name -like '*{InterfaceName}*'} | Select-Object -First 1; if ($interface) { Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ServerAddresses ('9.9.9.9','149.112.112.112'); Write-Host \"DNS Quad9 configuré sur l'interface $($interface.Name)\" -ForegroundColor Green; ipconfig /flushdns } else { Write-Host \"Interface réseau non trouvée\" -ForegroundColor Red }",
+        "parameters": [
+          {
+            "name": "InterfaceName",
+            "label": "Nom de l'interface réseau",
+            "type": "string",
+            "defaultValue": "Ethernet",
+            "required": false,
+            "description": "Nom de l'interface réseau (Ethernet, Wi-Fi, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('9.9.9.9','149.112.112.112')",
+          "description": "Configure DNS Quad9 sur l'interface Ethernet"
+        }
+      ],
+      "notes": "DNS Quad9: équilibre entre performance et sécurité. Blocage automatique des domaines malveillants. Ne conserve pas les données personnelles. Organisation à but non lucratif basée en Suisse.",
+      "links": [
+        {
+          "title": "Quad9 DNS",
+          "url": "https://www.quad9.net/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-005",
+      "title": "Configurer DNS personnalisé",
+      "description": "Configure des serveurs DNS personnalisés avec adresses primaire et secondaire au choix.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "dns", "network", "custom", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-005-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-005-cmd",
+        "platform": 0,
+        "name": "Set-DnsClientServerAddress",
+        "commandPattern": "$interface = Get-NetAdapter | Where-Object {$_.Status -eq 'Up' -and $_.Name -like '*{InterfaceName}*'} | Select-Object -First 1; if ($interface) { Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ServerAddresses ('{PrimaryDNS}','{SecondaryDNS}'); Write-Host \"DNS personnalisé configuré sur l'interface $($interface.Name)\" -ForegroundColor Green; ipconfig /flushdns } else { Write-Host \"Interface réseau non trouvée\" -ForegroundColor Red }",
+        "parameters": [
+          {
+            "name": "InterfaceName",
+            "label": "Nom de l'interface réseau",
+            "type": "string",
+            "defaultValue": "Ethernet",
+            "required": false,
+            "description": "Nom de l'interface réseau (Ethernet, Wi-Fi, etc.)"
+          },
+          {
+            "name": "PrimaryDNS",
+            "label": "DNS primaire",
+            "type": "string",
+            "defaultValue": "8.8.8.8",
+            "required": true,
+            "description": "Adresse IP du serveur DNS primaire"
+          },
+          {
+            "name": "SecondaryDNS",
+            "label": "DNS secondaire",
+            "type": "string",
+            "defaultValue": "8.8.4.4",
+            "required": true,
+            "description": "Adresse IP du serveur DNS secondaire"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('192.168.1.1','8.8.8.8')",
+          "description": "Configure un DNS personnalisé (routeur local + Google)"
+        }
+      ],
+      "notes": "Permet de configurer n'importe quels serveurs DNS. Utile pour DNS d'entreprise, serveurs locaux (pi-hole, AdGuard Home) ou combinaisons personnalisées.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-006",
+      "title": "Restaurer DNS automatique",
+      "description": "Restaure la configuration DNS automatique (DHCP) sur l'interface réseau.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "dns", "network", "restore", "dhcp", "windows"],
+      "windowsCommandTemplateId": "win-perf-006-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-006-cmd",
+        "platform": 0,
+        "name": "Set-DnsClientServerAddress",
+        "commandPattern": "$interface = Get-NetAdapter | Where-Object {$_.Status -eq 'Up' -and $_.Name -like '*{InterfaceName}*'} | Select-Object -First 1; if ($interface) { Set-DnsClientServerAddress -InterfaceIndex $interface.ifIndex -ResetServerAddresses; Write-Host \"DNS automatique restauré sur l'interface $($interface.Name)\" -ForegroundColor Green; ipconfig /flushdns } else { Write-Host \"Interface réseau non trouvée\" -ForegroundColor Red }",
+        "parameters": [
+          {
+            "name": "InterfaceName",
+            "label": "Nom de l'interface réseau",
+            "type": "string",
+            "defaultValue": "Ethernet",
+            "required": false,
+            "description": "Nom de l'interface réseau (Ethernet, Wi-Fi, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ResetServerAddresses",
+          "description": "Restaure le DNS automatique via DHCP"
+        }
+      ],
+      "notes": "Revient à la configuration DNS fournie par le routeur/DHCP. Utile pour annuler une configuration DNS personnalisée.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-101",
+      "title": "Activer le plan Ultimate Performance",
+      "description": "Active le plan d'alimentation Ultimate Performance de Windows pour maximiser les performances (déconseillé sur portable).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "power", "alimentation", "ultimate", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-101-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-101-cmd",
+        "platform": 0,
+        "name": "powercfg",
+        "commandPattern": "powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61; $ultimateGuid = (powercfg -list | Select-String 'Ultimate' | Select-Object -First 1) -replace '.*GUID: ([a-f0-9\\-]+).*','$1'; if ($ultimateGuid) { powercfg /setactive $ultimateGuid; Write-Host \"Plan Ultimate Performance activé\" -ForegroundColor Green } else { Write-Host \"Erreur: impossible de créer le plan Ultimate Performance\" -ForegroundColor Red }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61",
+          "description": "Crée le plan Ultimate Performance"
+        },
+        {
+          "command": "powercfg /setactive GUID",
+          "description": "Active le plan d'alimentation"
+        }
+      ],
+      "notes": "Plan Ultimate Performance: élimine les micro-latences, désactive les économies d'énergie. Augmente la consommation électrique de 5-10%. Recommandé uniquement pour PC fixes gaming/workstation. Sur portable: réduit considérablement l'autonomie.",
+      "links": [
+        {
+          "title": "Ultimate Performance Power Plan",
+          "url": "https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/customize-power-slider"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-102",
+      "title": "Activer le plan Hautes performances",
+      "description": "Active le plan d'alimentation Hautes performances (équilibre entre performance et consommation).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "power", "alimentation", "high-performance", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-102-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-102-cmd",
+        "platform": 0,
+        "name": "powercfg",
+        "commandPattern": "powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c; Write-Host \"Plan Hautes performances activé\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c",
+          "description": "Active le plan Hautes performances"
+        }
+      ],
+      "notes": "Plan Hautes performances: bon compromis entre performance et consommation. Maintient le CPU à fréquence maximale. Acceptable sur portables branchés sur secteur. Moins agressif que Ultimate Performance.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-103",
+      "title": "Désactiver l'hibernation",
+      "description": "Désactive l'hibernation Windows et supprime le fichier hiberfil.sys pour libérer de l'espace disque (souvent plusieurs Go).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "power", "hibernation", "disk-space", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-103-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-103-cmd",
+        "platform": 0,
+        "name": "powercfg",
+        "commandPattern": "powercfg /hibernate off; Write-Host \"Hibernation désactivée. Le fichier hiberfil.sys sera supprimé\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powercfg /hibernate off",
+          "description": "Désactive l'hibernation"
+        }
+      ],
+      "notes": "Désactiver l'hibernation: libère de l'espace disque égal à la RAM (8-32 Go typiquement). Supprime hiberfil.sys. Vous perdrez la fonctionnalité de mise en veille prolongée. La mise en veille normale (RAM) reste disponible.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-104",
+      "title": "Désactiver le mode veille hybride",
+      "description": "Désactive le mode veille hybride pour accélérer la mise en veille et le réveil du PC.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "power", "sleep", "hybrid", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-104-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-104-cmd",
+        "platform": 0,
+        "name": "powercfg",
+        "commandPattern": "powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setdcvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setactive SCHEME_CURRENT; Write-Host \"Mode veille hybride désactivé\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0",
+          "description": "Désactive la veille hybride sur secteur"
+        }
+      ],
+      "notes": "Veille hybride: combine veille et hibernation (écrit RAM sur disque). Désactiver améliore la vitesse de mise en veille/réveil sur PC avec SSD. Moins utile sur HDD. Pas de risque de perte de données avec un PC stable.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-201",
+      "title": "Désactiver les services non essentiels",
+      "description": "Désactive plus de 200 services Windows non essentiels pour maximiser les performances (ATTENTION: réservé aux utilisateurs avancés).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 2,
+      "tags": ["performance", "services", "advanced", "dangerous", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-201-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-201-cmd",
+        "platform": 0,
+        "name": "Disable-WindowsServices",
+        "commandPattern": "$servicesToDisable = @('DiagTrack','dmwappushservice','SysMain','WSearch','TabletInputService','RetailDemo','TapiSrv','PhoneSvc','MapsBroker','SharedAccess','lfsvc','WbioSrvc','WMPNetworkSvc','wisvc','icssvc','WerSvc','StorSvc','DusmSvc','OneSyncSvc','PimIndexMaintenanceSvc','UnistoreSvc','UserDataSvc','WalletService','XblAuthManager','XblGameSave','XboxNetApiSvc','XboxGipSvc','Fax','PrintWorkflowUserSvc','RemoteRegistry','RemoteAccess','SCPolicySvc','wercplsupport','WpcMonSvc','SEMgrSvc','PcaSvc','WdiServiceHost','WdiSystemHost','diagnosticshub.standardcollector.service','DPS','WiaRpc','stisvc','SCardSvr','ScDeviceEnum','SensorDataService','SensrSvc','SensorService','CDPSvc','CDPUserSvc','PushToInstallService','spectrum','WpnService','WpnUserService','DevicePickerUserSvc','DevicesFlowUserSvc','BcastDVRUserService','BluetoothUserService','CaptureService','ConsentUxUserSvc','CredentialEnrollmentManagerUserSvc','DeviceAssociationBrokerSvc','MessagingService','PrintWorkflowUserSvc','NPSMSvc','UdkUserSvc','UnistoreSvc','UserDataSvc','WalletService','FrameServer','FontCache','DoSvc','BITS','wuauserv','TrustedInstaller','InstallService','AppXSvc','ClipSVC','LicenseManager','NgcSvc','NgcCtnrSvc','TokenBroker','KeyIso','VaultSvc','Wecsvc','EventLog','EventSystem','SDRSVC','SENS','SystemEventsBroker','Schedule','TimeBrokerSvc','SstpSvc','RasMan','RasAuto','SessionEnv','TermService','UmRdpService','RpcLocator','seclogon','W3SVC','IISADMIN','AppHostSvc','MSDTC','NetTcpPortSharing','COMSysApp','VSS','swprv','MSMQ','MSMQTriggers','iprip','simptcp','MSiSCSI','fhsvc','SSDPSRV','upnphost','fdPHost','FDResPub','lltdsvc','p2pimsvc','p2psvc','PNRPsvc','PNRPAutoReg','HomeGroupListener','HomeGroupProvider','Browser','LanmanWorkstation','LanmanServer','SessionEnv','TermService','UmRdpService','AppReadiness','AppMgmt','BDESVC','EFS','SamSs','VaultSvc','KtmRm','CryptSvc','WbioSrvc','AxInstSV','AppIDSvc','PeerDistSvc','Netlogon','DFSR','DFS','CscService','Netman','NcdAutoSetup','NcbService','QWAVE','Wcmsvc','dot3svc','WwanSvc','WinHttpAutoProxySvc','iphlpsvc','IpxlatCfgSvc','PolicyAgent','IKEEXT','fhsvc','TrkWks','CscService','Themes','MMCSS','wscsvc','WinDefend','WdNisSvc','mpssvc','BFE','hidserv','HvHost','vmickvpexchange','vmicguestinterface','vmicshutdown','vmicheartbeat','vmicvmsession','vmicrdv','vmictimesync','vmicvss','HvHost','svsvc','AudioSrv','AudioEndpointBuilder','Audiosrv','RtkAudioUniversalService','NahimicService','LightingService','asus','asusm','ROG'); $count = 0; foreach ($svc in $servicesToDisable) { try { $service = Get-Service -Name $svc -ErrorAction SilentlyContinue; if ($service -and $service.StartType -ne 'Disabled') { Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue; Set-Service -Name $svc -StartupType Disabled -ErrorAction Stop; $count++ } } catch { Write-Warning \"Impossible de désactiver $svc\" } }; Write-Host \"$count services désactivés sur $($servicesToDisable.Count) ciblés\" -ForegroundColor Green; Write-Warning \"IMPORTANT: Redémarrage requis. Certaines fonctionnalités peuvent être affectées.\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Service | Where-Object {$_.Name -eq 'DiagTrack'} | Set-Service -StartupType Disabled",
+          "description": "Exemple de désactivation d'un service"
+        }
+      ],
+      "notes": "⚠️ DANGER: Désactive plus de 200 services (télémétrie, diagnostics, Bluetooth, impression, Xbox, biométrie, services réseau avancés, etc.). Réservé aux PC dédiés gaming/performance pure. CRÉE UN POINT DE RESTAURATION AVANT! Services critiques préservés: réseau de base, stockage, sécurité système.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-202",
+      "title": "Désactiver uniquement services de télémétrie",
+      "description": "Désactive uniquement les services de télémétrie et de collecte de données Windows (approche conservatrice).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "services", "telemetry", "privacy", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-202-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-202-cmd",
+        "platform": 0,
+        "name": "Disable-TelemetryServices",
+        "commandPattern": "$telemetryServices = @('DiagTrack','dmwappushservice','diagnosticshub.standardcollector.service','DPS','WerSvc','wercplsupport'); $count = 0; foreach ($svc in $telemetryServices) { try { $service = Get-Service -Name $svc -ErrorAction SilentlyContinue; if ($service) { Stop-Service -Name $svc -Force -ErrorAction SilentlyContinue; Set-Service -Name $svc -StartupType Disabled -ErrorAction Stop; $count++ } } catch { Write-Warning \"Service $svc non trouvé ou déjà désactivé\" } }; Write-Host \"$count services de télémétrie désactivés\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-Service -Name 'DiagTrack' -StartupType Disabled",
+          "description": "Désactive le service de télémétrie principal"
+        }
+      ],
+      "notes": "Approche sûre: désactive uniquement DiagTrack, dmwappushservice, WerSvc (rapports d'erreurs), DPS (diagnostics). Améliore confidentialité et performances sans affecter les fonctionnalités. Recommandé pour la plupart des utilisateurs.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-203",
+      "title": "Restaurer les services par défaut",
+      "description": "Restaure tous les services Windows à leur configuration par défaut (annule WIN-PERF-201).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "services", "restore", "rollback", "windows"],
+      "windowsCommandTemplateId": "win-perf-203-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-203-cmd",
+        "platform": 0,
+        "name": "Restore-DefaultServices",
+        "commandPattern": "Write-Host \"Restauration des services Windows par défaut...\" -ForegroundColor Yellow; $defaultServices = @{'DiagTrack'='Automatic';'dmwappushservice'='Manual';'SysMain'='Automatic';'WSearch'='Manual';'WerSvc'='Manual';'BITS'='Manual';'wuauserv'='Manual';'DoSvc'='Automatic';'Schedule'='Automatic';'EventLog'='Automatic';'AudioSrv'='Automatic';'AudioEndpointBuilder'='Automatic';'Themes'='Automatic';'MMCSS'='Automatic';'wscsvc'='Automatic';'WinDefend'='Automatic'}; $count = 0; foreach ($svc in $defaultServices.GetEnumerator()) { try { $service = Get-Service -Name $svc.Key -ErrorAction SilentlyContinue; if ($service) { $startType = switch($svc.Value) { 'Automatic' { 'Automatic' } 'Manual' { 'Manual' } 'Disabled' { 'Disabled' } default { 'Manual' } }; Set-Service -Name $svc.Key -StartupType $startType -ErrorAction Stop; $count++ } } catch { Write-Warning \"Impossible de restaurer $($svc.Key)\" } }; Write-Host \"$count services restaurés\" -ForegroundColor Green; Write-Host \"Redémarrage recommandé\" -ForegroundColor Yellow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-Service -Name 'DiagTrack' -StartupType Automatic",
+          "description": "Restaure un service à sa configuration par défaut"
+        }
+      ],
+      "notes": "Restaure les services les plus courants à leur état par défaut. Annule les modifications de WIN-PERF-201 et WIN-PERF-202. Redémarrage recommandé après restauration.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-204",
+      "title": "Lister les services désactivés",
+      "description": "Affiche la liste de tous les services Windows actuellement désactivés pour vérification.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "services", "diagnostic", "list", "info", "windows"],
+      "windowsCommandTemplateId": "win-perf-204-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-204-cmd",
+        "platform": 0,
+        "name": "Get-Service",
+        "commandPattern": "Get-Service | Where-Object {$_.StartType -eq 'Disabled'} | Select-Object Name,DisplayName,Status | Sort-Object Name | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Service | Where-Object {$_.StartType -eq 'Disabled'} | Measure-Object",
+          "description": "Compte le nombre de services désactivés"
+        }
+      ],
+      "notes": "Commande d'information uniquement. Permet de vérifier quels services ont été désactivés après l'exécution de WIN-PERF-201 ou autres optimisations. Aucune modification système.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-205",
+      "title": "Désactiver Windows Search Indexing",
+      "description": "Désactive le service d'indexation Windows Search pour libérer CPU et disque (la recherche de fichiers sera plus lente).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "services", "search", "indexing", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-205-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-205-cmd",
+        "platform": 0,
+        "name": "Disable-WindowsSearch",
+        "commandPattern": "Stop-Service -Name 'WSearch' -Force -ErrorAction SilentlyContinue; Set-Service -Name 'WSearch' -StartupType Disabled; Write-Host \"Windows Search Indexing désactivé\" -ForegroundColor Green; Write-Warning \"La recherche de fichiers sera plus lente mais le CPU/disque sera libéré\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-Service -Name 'WSearch' -StartupType Disabled",
+          "description": "Désactive le service d'indexation"
+        }
+      ],
+      "notes": "Windows Search Indexing: indexe en permanence vos fichiers pour accélérer la recherche. Consomme CPU/disque en arrière-plan. Désactiver libère des ressources mais rend la recherche Windows beaucoup plus lente. Recommandé si vous n'utilisez pas la recherche Windows ou préférez Everything/Listary.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-301",
+      "title": "Désactiver Superfetch/SysMain",
+      "description": "Désactive le service Superfetch (SysMain) qui précharge des applications en RAM. Utile sur SSD.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "services", "superfetch", "sysmain", "ssd", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-301-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-301-cmd",
+        "platform": 0,
+        "name": "Disable-Superfetch",
+        "commandPattern": "Stop-Service -Name 'SysMain' -Force -ErrorAction SilentlyContinue; Set-Service -Name 'SysMain' -StartupType Disabled; Write-Host \"Superfetch/SysMain désactivé\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-Service -Name 'SysMain' -StartupType Disabled",
+          "description": "Désactive Superfetch"
+        }
+      ],
+      "notes": "Superfetch (SysMain): précharge les applications fréquemment utilisées en RAM. Utile sur HDD, contre-productif sur SSD (les SSD sont déjà rapides). Désactiver sur SSD libère RAM et réduit les écritures disque. Garder actif sur HDD.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-302",
+      "title": "Désactiver Prefetch",
+      "description": "Désactive le Prefetch Windows via le registre pour réduire les accès disque.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "prefetch", "registry", "ssd", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-302-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-302-cmd",
+        "platform": 0,
+        "name": "Disable-Prefetch",
+        "commandPattern": "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters' -Name 'EnablePrefetcher' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters' -Name 'EnableSuperfetch' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Write-Host \"Prefetch désactivé\" -ForegroundColor Green; Write-Warning \"Redémarrage recommandé\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters' -Name 'EnablePrefetcher' -Value 0",
+          "description": "Désactive Prefetch via registre"
+        }
+      ],
+      "notes": "Prefetch: enregistre les fichiers chargés au démarrage pour accélérer les futurs lancements. Minimal sur SSD. Désactiver réduit les écritures disque et nettoie C:\\Windows\\Prefetch. Recommandé sur SSD, déconseillé sur HDD.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-303",
+      "title": "Vider le cache DNS",
+      "description": "Vide le cache DNS local de Windows pour résoudre les problèmes de résolution de noms.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "dns", "cache", "network", "diagnostic", "windows"],
+      "windowsCommandTemplateId": "win-perf-303-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-303-cmd",
+        "platform": 0,
+        "name": "ipconfig",
+        "commandPattern": "ipconfig /flushdns; Write-Host \"Cache DNS vidé\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "ipconfig /flushdns",
+          "description": "Vide le cache DNS"
+        }
+      ],
+      "notes": "Vider le cache DNS: résout les problèmes de résolution de noms (sites inaccessibles, DNS obsolètes). Aucun impact négatif, le cache se reconstruit automatiquement. Utile après changement de DNS ou problèmes de connexion.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-304",
+      "title": "Désactiver Storage Sense",
+      "description": "Désactive Storage Sense, la fonctionnalité automatique de nettoyage de disque de Windows.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "storage", "disk", "cleanup", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-304-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-304-cmd",
+        "platform": 0,
+        "name": "Disable-StorageSense",
+        "commandPattern": "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy' -Name '01' -Type DWord -Value 0 -ErrorAction SilentlyContinue; New-Item -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy' -Force -ErrorAction SilentlyContinue | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy' -Name '01' -Type DWord -Value 0; Write-Host \"Storage Sense désactivé\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\StorageSense\\Parameters\\StoragePolicy' -Name '01' -Value 0",
+          "description": "Désactive Storage Sense"
+        }
+      ],
+      "notes": "Storage Sense: nettoie automatiquement les fichiers temporaires, corbeille, téléchargements anciens. Peut supprimer des fichiers importants. Désactiver donne contrôle total sur le nettoyage. Recommandé si vous gérez manuellement votre espace disque.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-401",
+      "title": "Désactiver HAGS (Hardware Accelerated GPU Scheduling)",
+      "description": "Désactive l'ordonnancement GPU accéléré par matériel (peut causer des micro-stutters dans certains jeux).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "gpu", "gaming", "hags", "graphics", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-401-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-401-cmd",
+        "platform": 0,
+        "name": "Disable-HAGS",
+        "commandPattern": "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Force -ErrorAction SilentlyContinue | Out-Null; Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Name 'HwSchMode' -Type DWord -Value 1; Write-Host \"HAGS désactivé\" -ForegroundColor Green; Write-Warning \"Redémarrage requis pour appliquer les changements\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Name 'HwSchMode' -Value 1",
+          "description": "Désactive HAGS via registre"
+        }
+      ],
+      "notes": "HAGS (Windows 10 2004+): délègue l'ordonnancement GPU au matériel. Théoriquement améliore les perfs, mais cause des micro-stutters sur certaines configs (surtout Nvidia). Tester avec/sans pour voir l'impact. Désactiver souvent améliore la fluidité en jeu.",
+      "links": [
+        {
+          "title": "HAGS explanation",
+          "url": "https://devblogs.microsoft.com/directx/hardware-accelerated-gpu-scheduling/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-402",
+      "title": "Désactiver Core Isolation",
+      "description": "Désactive l'isolation des cœurs (Memory Integrity/VBS) pour améliorer les performances en jeu (perte de 5-10% FPS avec VBS actif).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "security", "vbs", "gaming", "core-isolation", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-402-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-402-cmd",
+        "platform": 0,
+        "name": "Disable-CoreIsolation",
+        "commandPattern": "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity' -Name 'Enabled' -Type DWord -Value 0 -ErrorAction SilentlyContinue; bcdedit /set hypervisorlaunchtype off; Write-Host \"Core Isolation désactivé\" -ForegroundColor Green; Write-Warning \"Redémarrage requis. Impact sécurité: protection contre exploits kernel réduite\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "bcdedit /set hypervisorlaunchtype off",
+          "description": "Désactive l'hyperviseur"
+        }
+      ],
+      "notes": "⚠️ Core Isolation (VBS/Memory Integrity): protection contre exploits kernel via virtualisation. Impact performances: -5 à -10% FPS en jeu. Désactiver améliore perfs mais réduit sécurité. Recommandé pour PC gaming dédié, déconseillé pour usage professionnel/sensible.",
+      "links": [
+        {
+          "title": "VBS Performance Impact",
+          "url": "https://www.tomshardware.com/news/windows-11-vbs-performance-impact"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PERF-403",
+      "title": "Réduire latence souris",
+      "description": "Optimise les paramètres de latence de la souris pour améliorer la réactivité (gaming).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "gaming", "mouse", "latency", "input", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-403-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-403-cmd",
+        "platform": 0,
+        "name": "Optimize-MouseLatency",
+        "commandPattern": "Set-ItemProperty -Path 'HKCU:\\Control Panel\\Mouse' -Name 'MouseSpeed' -Value '0' -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\Control Panel\\Mouse' -Name 'MouseThreshold1' -Value '0' -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\Control Panel\\Mouse' -Name 'MouseThreshold2' -Value '0' -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\Control Panel\\Mouse' -Name 'SmoothMouseXCurve' -Type Binary -Value ([byte[]](0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xC0,0xCC,0x0C,0x00,0x00,0x00,0x00,0x00,0x80,0x99,0x19,0x00,0x00,0x00,0x00,0x00,0x40,0x66,0x26,0x00,0x00,0x00,0x00,0x00,0x00,0x33,0x33,0x00,0x00,0x00,0x00,0x00)) -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\Control Panel\\Mouse' -Name 'SmoothMouseYCurve' -Type Binary -Value ([byte[]](0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x38,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x70,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xA8,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xE0,0x00,0x00,0x00,0x00,0x00)) -ErrorAction SilentlyContinue; New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters' -Force -ErrorAction SilentlyContinue | Out-Null; Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\mouclass\\Parameters' -Name 'MouseDataQueueSize' -Type DWord -Value 20 -ErrorAction SilentlyContinue; Write-Host \"Latence souris optimisée\" -ForegroundColor Green; Write-Warning \"Redémarrage recommandé\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\Control Panel\\Mouse' -Name 'MouseSpeed' -Value '0'",
+          "description": "Désactive l'accélération de la souris"
+        }
+      ],
+      "notes": "Optimisations: désactive accélération souris (enhance pointer precision), augmente buffer de données souris (moins de perte d'inputs), optimise courbes d'accélération. Améliore précision et réactivité pour FPS/compétitif. Redémarrage requis.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-404",
+      "title": "Optimiser performances jeux",
+      "description": "Active le Game Mode et optimise les paramètres Windows pour le gaming (priorité CPU/GPU aux jeux).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "gaming", "game-mode", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-404-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-404-cmd",
+        "platform": 0,
+        "name": "Optimize-GamingPerformance",
+        "commandPattern": "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\GameBar' -Name 'AutoGameModeEnabled' -Type DWord -Value 1 -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\GameBar' -Name 'AllowAutoGameMode' -Type DWord -Value 1 -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_Enabled' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_FSEBehaviorMode' -Type DWord -Value 2 -ErrorAction SilentlyContinue; New-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\PolicyManager\\default\\ApplicationManagement\\AllowGameDVR' -Force -ErrorAction SilentlyContinue | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\PolicyManager\\default\\ApplicationManagement\\AllowGameDVR' -Name 'value' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR' -Name 'AppCaptureEnabled' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Write-Host \"Optimisations gaming activées\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\GameBar' -Name 'AutoGameModeEnabled' -Value 1",
+          "description": "Active le Game Mode"
+        }
+      ],
+      "notes": "Active Game Mode (priorité ressources aux jeux), désactive Game DVR/enregistrement (économise CPU/GPU), optimise mode plein écran. Améliore FPS et stabilité. Aucun inconvénient, recommandé pour tous les gamers.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-405",
+      "title": "Limiter Windows Defender CPU à 25%",
+      "description": "Limite l'utilisation CPU de Windows Defender lors des analyses pour éviter les ralentissements.",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "defender", "antivirus", "cpu", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-405-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-405-cmd",
+        "platform": 0,
+        "name": "Set-MpPreference",
+        "commandPattern": "Set-MpPreference -ScanAvgCPULoadFactor 25; Write-Host \"Windows Defender limité à 25% CPU\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25",
+          "description": "Limite Defender à 25% CPU"
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 10",
+          "description": "Limite Defender à 10% CPU (analyses très lentes mais PC fluide)"
+        }
+      ],
+      "notes": "Par défaut Defender peut utiliser 50-100% CPU lors des analyses, ralentissant le PC. Limiter à 25% (ou 10-15% pour CPU faibles) améliore la fluidité pendant les scans. Les analyses seront plus longues mais moins intrusives.",
+      "links": []
+    },
+    {
+      "id": "WIN-PERF-406",
+      "title": "Configurer exclusions Windows Defender",
+      "description": "Ajoute des exclusions à Windows Defender pour améliorer les performances (dossiers de jeux, outils de dev, etc.).",
+      "category": "⚡ Optimisation des performances",
+      "platform": 0,
+      "level": 1,
+      "tags": ["performance", "defender", "antivirus", "exclusions", "optimisation", "windows"],
+      "windowsCommandTemplateId": "win-perf-406-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-perf-406-cmd",
+        "platform": 0,
+        "name": "Add-MpPreference",
+        "commandPattern": "Add-MpPreference -ExclusionPath '{Path}'; Write-Host \"Exclusion ajoutée: {Path}\" -ForegroundColor Green; Write-Warning \"Attention: n'excluez que des dossiers de confiance (jeux, dev tools)\"",
+        "parameters": [
+          {
+            "name": "Path",
+            "label": "Chemin à exclure",
+            "type": "string",
+            "defaultValue": "C:\\Program Files (x86)\\Steam\\steamapps\\common",
+            "required": true,
+            "description": "Chemin complet du dossier ou fichier à exclure (ex: C:\\Games, C:\\Dev)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Add-MpPreference -ExclusionPath 'C:\\Program Files (x86)\\Steam\\steamapps\\common'",
+          "description": "Exclut le dossier des jeux Steam"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionPath 'C:\\Dev'",
+          "description": "Exclut un dossier de développement"
+        }
+      ],
+      "notes": "⚠️ Exclusions Defender: améliore perfs en évitant le scan temps réel sur certains dossiers. Utile pour: jeux (Steam/Epic/GOG), outils dev (Visual Studio, Node.js), VMs. N'EXCLUEZ JAMAIS: Downloads, Documents, Desktop, AppData. Risque sécurité si mauvaise utilisation.",
+      "links": [
+        {
+          "title": "Defender Exclusions Best Practices",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-exclusions-microsoft-defender-antivirus"
+        }
+      ]
     }
   ]
 }
