@@ -475,12 +475,21 @@
                                                    TextWrapping="Wrap"/>
                                     </Border>
 
-                                    <!-- Copy Button -->
-                                    <Button Content="📋 Copier dans le presse-papiers"
-                                            Command="{Binding CopyCommandCommand}"
-                                            Style="{StaticResource PrimaryButtonStyle}"
-                                            HorizontalAlignment="Right"
-                                            Margin="0,8,0,0"/>
+                                    <!-- Action Buttons -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                                        <Button Content="▶ Exécuter"
+                                                Command="{Binding ExecuteCommandCommand}"
+                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                Margin="0,0,8,0"
+                                                Padding="12,6"
+                                                ToolTip="Execute command directly (Sprint 4)"
+                                                AutomationProperties.Name="Execute Command"
+                                                AutomationProperties.HelpText="Execute the generated command directly"/>
+                                        <Button Content="📋 Copier dans le presse-papiers"
+                                                Command="{Binding CopyCommandCommand}"
+                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                Padding="12,6"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -494,6 +503,11 @@
             <!-- History Tab -->
             <TabItem Header="📜 History">
                 <ContentControl x:Name="HistoryTabContent"/>
+            </TabItem>
+
+            <!-- Execution Output Tab (Sprint 4) -->
+            <TabItem Header="▶ Execution">
+                <ContentControl x:Name="ExecutionTabContent"/>
             </TabItem>
         </TabControl>
         </Grid>

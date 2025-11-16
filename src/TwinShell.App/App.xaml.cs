@@ -74,6 +74,7 @@ public partial class App : Application
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
         services.AddSingleton<INotificationService, TwinShell.App.Services.NotificationService>();
+        services.AddScoped<ICommandExecutionService, CommandExecutionService>();
 
         // Seed Service
         var seedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
@@ -86,10 +87,12 @@ public partial class App : Application
         services.AddTransient<RecentCommandsViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<CategoryManagementViewModel>();
+        services.AddTransient<ExecutionViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
         services.AddTransient<RecentCommandsWidget>();
+        services.AddTransient<OutputPanel>();
 
         // Windows
         services.AddTransient<MainWindow>();

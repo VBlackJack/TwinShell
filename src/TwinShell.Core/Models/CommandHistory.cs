@@ -56,4 +56,24 @@ public class CommandHistory
     /// Action title (denormalized for display without loading Action)
     /// </summary>
     public string ActionTitle { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Whether this command was executed (vs just copied)
+    /// </summary>
+    public bool IsExecuted { get; set; }
+
+    /// <summary>
+    /// Exit code from execution (null if not executed)
+    /// </summary>
+    public int? ExitCode { get; set; }
+
+    /// <summary>
+    /// Execution duration (null if not executed)
+    /// </summary>
+    public TimeSpan? ExecutionDuration { get; set; }
+
+    /// <summary>
+    /// Whether the execution was successful (null if not executed)
+    /// </summary>
+    public bool? ExecutionSuccess { get; set; }
 }

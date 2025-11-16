@@ -68,6 +68,11 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string _statusMessage = "Ready";
 
+    /// <summary>
+    /// Reference to the ExecutionViewModel (set from MainWindow)
+    /// </summary>
+    public ExecutionViewModel? ExecutionViewModel { get; set; }
+
     public MainViewModel(
         IActionService actionService,
         ISearchService searchService,
@@ -288,6 +293,48 @@ public partial class MainViewModel : ObservableObject
                 SelectedAction.Category
             );
         }
+    }
+
+    /// <summary>
+    /// Execute the generated command (Sprint 4)
+    /// </summary>
+    [RelayCommand]
+    private async Task ExecuteCommandAsync()
+    {
+        if (string.IsNullOrWhiteSpace(GeneratedCommand) ||
+            GeneratedCommand.StartsWith("Erreurs") ||
+            GeneratedCommand.StartsWith("Aucun") ||
+            SelectedAction == null ||
+            ExecutionViewModel == null)
+        {
+            System.Windows.MessageBox.Show(
+                "No valid command to execute",
+                "Execution Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Warning);
+            return;
+        }
+
+        // Determine platform
+        var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
+        var platform = template == SelectedAction.WindowsCommandTemplate ? Platform.Windows : Platform.Linux;
+        var parameters = CommandParameters.ToDictionary(p => p.Name, p => p.Value);
+
+        // Create execution parameter
+        var executeParameter = new ExecuteCommandParameter
+        {
+            Command = GeneratedCommand,
+            Platform = platform,
+            IsDangerous = SelectedAction.Level == CriticalityLevel.Dangerous,
+            RequireConfirmation = true,
+            ActionId = SelectedAction.Id,
+            ActionTitle = SelectedAction.Title,
+            Category = SelectedAction.Category,
+            Parameters = parameters
+        };
+
+        // Execute the command via ExecutionViewModel
+        await ExecutionViewModel.ExecuteCommandCommand.ExecuteAsync(executeParameter);
     }
 
     [RelayCommand]

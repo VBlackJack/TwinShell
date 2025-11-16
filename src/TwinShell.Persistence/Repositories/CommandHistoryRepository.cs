@@ -25,6 +25,13 @@ public class CommandHistoryRepository : ICommandHistoryRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task UpdateAsync(CommandHistory history)
+    {
+        var entity = CommandHistoryMapper.ToEntity(history);
+        _context.CommandHistories.Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<CommandHistory>> GetRecentAsync(int count = 50)
     {
         var entities = await _context.CommandHistories
