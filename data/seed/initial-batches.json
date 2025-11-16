@@ -58,6 +58,162 @@
           "description": "Désactiver la reconnaissance vocale cloud"
         }
       ]
+    },
+    {
+      "id": "perf-max-batch",
+      "name": "⚡ Performance maximale",
+      "description": "Configuration de performance maximale pour PC gaming/workstation. Désactive services non essentiels, active plan Ultimate Performance, optimise DNS Cloudflare et paramètres système. ATTENTION: Désactive 200+ services (WIN-PERF-201). Recommandé pour PC dédiés gaming/performance pure.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["performance", "gaming", "optimisation", "preset", "windows", "advanced"],
+      "commands": [
+        {
+          "actionId": "WIN-PERF-002",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Configurer DNS Cloudflare (le plus rapide)"
+        },
+        {
+          "actionId": "WIN-PERF-101",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Activer plan Ultimate Performance"
+        },
+        {
+          "actionId": "WIN-PERF-103",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Désactiver hibernation (libère espace disque)"
+        },
+        {
+          "actionId": "WIN-PERF-201",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Désactiver 200+ services non essentiels"
+        },
+        {
+          "actionId": "WIN-PERF-301",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Désactiver Superfetch/SysMain"
+        },
+        {
+          "actionId": "WIN-PERF-302",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Désactiver Prefetch"
+        },
+        {
+          "actionId": "WIN-PERF-404",
+          "order": 7,
+          "isExecuted": false,
+          "description": "Optimiser performances jeux"
+        },
+        {
+          "actionId": "WIN-PERF-405",
+          "order": 8,
+          "isExecuted": false,
+          "description": "Limiter Windows Defender CPU à 25%"
+        }
+      ]
+    },
+    {
+      "id": "gaming-perf-batch",
+      "name": "🎮 Optimisation Gaming",
+      "description": "Configuration optimisée pour le gaming. Active Ultimate Performance, Game Mode, optimise DNS Cloudflare, latence souris et paramètres GPU. Approche équilibrée: améliore les perfs sans désactiver massivement les services. Recommandé pour tous les gamers.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["performance", "gaming", "fps", "latency", "optimisation", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-PERF-002",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Configurer DNS Cloudflare (optimal pour gaming)"
+        },
+        {
+          "actionId": "WIN-PERF-101",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Activer plan Ultimate Performance"
+        },
+        {
+          "actionId": "WIN-PERF-401",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Désactiver HAGS (réduit micro-stutters)"
+        },
+        {
+          "actionId": "WIN-PERF-403",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Réduire latence souris"
+        },
+        {
+          "actionId": "WIN-PERF-404",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Optimiser performances jeux (Game Mode)"
+        },
+        {
+          "actionId": "WIN-PERF-405",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Limiter Windows Defender CPU à 25%"
+        }
+      ]
+    },
+    {
+      "id": "server-perf-batch",
+      "name": "🖥️ Performance serveur",
+      "description": "Configuration de performance pour serveurs Windows ou workstations. Désactive services non essentiels, indexation, hibernation. Active plan Ultimate Performance et DNS Cloudflare. Optimisé pour charge continue, sans fonctionnalités gaming inutiles.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["performance", "server", "workstation", "optimisation", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-PERF-002",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Configurer DNS Cloudflare"
+        },
+        {
+          "actionId": "WIN-PERF-101",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Activer plan Ultimate Performance"
+        },
+        {
+          "actionId": "WIN-PERF-103",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Désactiver hibernation"
+        },
+        {
+          "actionId": "WIN-PERF-201",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Désactiver services non essentiels"
+        },
+        {
+          "actionId": "WIN-PERF-205",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Désactiver Windows Search Indexing"
+        },
+        {
+          "actionId": "WIN-PERF-301",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Désactiver Superfetch/SysMain"
+        },
+        {
+          "actionId": "WIN-PERF-405",
+          "order": 7,
+          "isExecuted": false,
+          "description": "Limiter Windows Defender CPU à 25%"
+        }
+      ]
     }
   ]
 }
