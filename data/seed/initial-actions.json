@@ -1758,6 +1758,570 @@
           "url": "https://docs.chocolatey.org/en-us/choco/commands/source"
         }
       ]
+    },
+    {
+      "id": "WIN-DEBLOAT-001",
+      "title": "Supprimer tous les bloatwares tiers",
+      "description": "Supprime automatiquement tous les bloatwares tiers préinstallés (Candy Crush, Spotify, Disney+, etc.).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "bloatware", "cleanup", "third-party", "windows"],
+      "windowsCommandTemplateId": "win-debloat-001-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-001-cmd",
+        "platform": 0,
+        "name": "Remove-ThirdPartyBloatware",
+        "commandPattern": "$bloatware = @('CandyCrush', 'Spotify', 'Disney', 'Netflix', 'Twitter', 'Facebook'); Get-AppxPackage | Where-Object { $bloatware -match $_.Name } | Remove-AppxPackage -ErrorAction SilentlyContinue",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage *CandyCrush* | Remove-AppxPackage",
+          "description": "Supprime Candy Crush"
+        }
+      ],
+      "notes": "Supprime les applications tierces préinstallées. Peut nécessiter des droits administrateur.",
+      "links": [
+        {
+          "title": "Remove-AppxPackage Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/appx/remove-appxpackage"
+        }
+      ]
+    },
+    {
+      "id": "WIN-DEBLOAT-002",
+      "title": "Supprimer les extensions média",
+      "description": "Supprime les extensions média optionnelles (HEIF, VP9, WebP, AV1) pour libérer de l'espace.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "media", "codecs", "extensions", "windows"],
+      "windowsCommandTemplateId": "win-debloat-002-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-002-cmd",
+        "platform": 0,
+        "name": "Remove-MediaExtensions",
+        "commandPattern": "$extensions = @('*HEIF*', '*VP9*', '*WebP*', '*AV1*'); foreach ($ext in $extensions) { Get-AppxPackage $ext | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage *HEIF* | Remove-AppxPackage",
+          "description": "Supprime l'extension HEIF"
+        }
+      ],
+      "notes": "Supprime les codecs média optionnels. Vérifiez vos besoins avant de supprimer.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-003",
+      "title": "Lister les applications tierces installées",
+      "description": "Affiche une liste complète de toutes les applications tierces installées via AppX.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 0,
+      "tags": ["debloat", "list", "inventory", "third-party", "windows"],
+      "windowsCommandTemplateId": "win-debloat-003-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-003-cmd",
+        "platform": 0,
+        "name": "List-ThirdPartyApps",
+        "commandPattern": "Get-AppxPackage | Where-Object { $_.Publisher -notlike '*Microsoft*' } | Select-Object Name,Version,Publisher | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage | Where-Object { $_.Publisher -notlike '*Microsoft*' }",
+          "description": "Liste toutes les apps non-Microsoft"
+        }
+      ],
+      "notes": "Commande d'information uniquement, ne modifie pas le système.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-101",
+      "title": "Supprimer les apps Microsoft inutiles",
+      "description": "Supprime 38 applications Microsoft préinstallées considérées comme non essentielles (3D Viewer, Alarms, BingNews, etc.).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "microsoft-apps", "cleanup", "windows"],
+      "windowsCommandTemplateId": "win-debloat-101-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-101-cmd",
+        "platform": 0,
+        "name": "Remove-MicrosoftBloatware",
+        "commandPattern": "$apps = @('Microsoft.3DBuilder', 'Microsoft.BingNews', 'Microsoft.BingWeather', 'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.MicrosoftOfficeHub', 'Microsoft.MicrosoftSolitaire*', 'Microsoft.MixedReality.Portal', 'Microsoft.Office.OneNote', 'Microsoft.People', 'Microsoft.SkypeApp', 'Microsoft.Todos', 'Microsoft.Wallet', 'Microsoft.WindowsAlarms', 'Microsoft.WindowsCamera', 'Microsoft.WindowsFeedbackHub', 'Microsoft.WindowsMaps', 'Microsoft.WindowsSoundRecorder', 'Microsoft.YourPhone', 'Microsoft.ZuneMusic', 'Microsoft.ZuneVideo'); foreach ($app in $apps) { Get-AppxPackage $app | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage Microsoft.BingNews | Remove-AppxPackage",
+          "description": "Supprime Bing News"
+        }
+      ],
+      "notes": "Supprime les applications Microsoft non essentielles. Conserve les apps critiques système.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-102",
+      "title": "Supprimer uniquement les apps de jeux",
+      "description": "Supprime toutes les applications de jeux Microsoft (Solitaire, Candy Crush, Xbox Game Bar).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "games", "gaming", "cleanup", "windows"],
+      "windowsCommandTemplateId": "win-debloat-102-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-102-cmd",
+        "platform": 0,
+        "name": "Remove-GamingApps",
+        "commandPattern": "$games = @('Microsoft.MicrosoftSolitaire*', 'Microsoft.XboxApp', 'Microsoft.XboxGameOverlay', 'Microsoft.XboxGamingOverlay', 'Microsoft.Xbox.TCUI', '*CandyCrush*'); foreach ($game in $games) { Get-AppxPackage $game | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage Microsoft.MicrosoftSolitaire* | Remove-AppxPackage",
+          "description": "Supprime Solitaire"
+        }
+      ],
+      "notes": "Supprime uniquement les applications de jeux. N'affecte pas les autres composants Xbox.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-103",
+      "title": "Supprimer les apps de communication",
+      "description": "Supprime les applications de communication Microsoft (Skype, People, Mail, Calendar).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "communication", "skype", "mail", "windows"],
+      "windowsCommandTemplateId": "win-debloat-103-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-103-cmd",
+        "platform": 0,
+        "name": "Remove-CommunicationApps",
+        "commandPattern": "$comms = @('Microsoft.SkypeApp', 'Microsoft.People', 'microsoft.windowscommunicationsapps'); foreach ($comm in $comms) { Get-AppxPackage $comm | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage Microsoft.SkypeApp | Remove-AppxPackage",
+          "description": "Supprime Skype"
+        }
+      ],
+      "notes": "Supprime Mail, Calendar, People et Skype. Vérifiez vos besoins avant suppression.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-104",
+      "title": "Supprimer les apps météo/actualités",
+      "description": "Supprime les applications d'information Microsoft (Météo, Actualités, Sports).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "weather", "news", "info", "windows"],
+      "windowsCommandTemplateId": "win-debloat-104-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-104-cmd",
+        "platform": 0,
+        "name": "Remove-InfoApps",
+        "commandPattern": "$info = @('Microsoft.BingWeather', 'Microsoft.BingNews', 'Microsoft.BingSports', 'Microsoft.BingFinance'); foreach ($app in $info) { Get-AppxPackage $app | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage Microsoft.BingWeather | Remove-AppxPackage",
+          "description": "Supprime l'app Météo"
+        }
+      ],
+      "notes": "Supprime les apps d'actualités et météo Microsoft.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-105",
+      "title": "Supprimer une liste personnalisée d'apps",
+      "description": "Supprime une liste personnalisée d'applications spécifiée par l'utilisateur.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "custom", "selective", "windows"],
+      "windowsCommandTemplateId": "win-debloat-105-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-105-cmd",
+        "platform": 0,
+        "name": "Remove-CustomAppList",
+        "commandPattern": "$appList = '{appList}'.Split(','); foreach ($app in $appList) { Get-AppxPackage $app.Trim() | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": [
+          {
+            "name": "appList",
+            "label": "Liste d'applications",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Liste d'apps séparées par des virgules (ex: Microsoft.BingNews,Microsoft.SkypeApp)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage Microsoft.BingNews | Remove-AppxPackage",
+          "description": "Supprime une app spécifique"
+        }
+      ],
+      "notes": "Permet de supprimer uniquement les apps que vous spécifiez.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-201",
+      "title": "Désinstaller Microsoft Store",
+      "description": "⚠️ DANGEROUS: Désinstalle complètement le Microsoft Store. Cette action est difficilement réversible.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["debloat", "store", "dangerous", "system-component", "windows"],
+      "windowsCommandTemplateId": "win-debloat-201-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-201-cmd",
+        "platform": 0,
+        "name": "Remove-MicrosoftStore",
+        "commandPattern": "Get-AppxPackage *WindowsStore* | Remove-AppxPackage -ErrorAction SilentlyContinue; Get-AppxPackage *StorePurchaseApp* | Remove-AppxPackage -ErrorAction SilentlyContinue",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage *WindowsStore* | Remove-AppxPackage",
+          "description": "Supprime le Microsoft Store"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Vous ne pourrez plus installer d'apps du Store.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-202",
+      "title": "Désinstaller OneDrive (complet)",
+      "description": "⚠️ DANGEROUS: Désinstallation complète de OneDrive avec nettoyage du registre et des fichiers (30+ étapes).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["debloat", "onedrive", "dangerous", "registry", "windows"],
+      "windowsCommandTemplateId": "win-debloat-202-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-202-cmd",
+        "platform": 0,
+        "name": "Remove-OneDrive",
+        "commandPattern": "taskkill /f /im OneDrive.exe; Start-Sleep -Seconds 2; if (Test-Path \"$env:SystemRoot\\System32\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\System32\\OneDriveSetup.exe\" /uninstall } elseif (Test-Path \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\" /uninstall }; Start-Sleep -Seconds 5; Remove-Item -Path \"$env:USERPROFILE\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\Microsoft\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:PROGRAMDATA\\Microsoft OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "taskkill /f /im OneDrive.exe",
+          "description": "Arrête le processus OneDrive"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Désactive la synchronisation cloud OneDrive. Inclut nettoyage registre et fichiers.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-203",
+      "title": "Désinstaller Microsoft Edge",
+      "description": "⚠️ DANGEROUS: Désinstalle Microsoft Edge. Peut affecter certaines fonctionnalités Windows 11.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["debloat", "edge", "browser", "dangerous", "windows"],
+      "windowsCommandTemplateId": "win-debloat-203-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-203-cmd",
+        "platform": 0,
+        "name": "Remove-MicrosoftEdge",
+        "commandPattern": "$edgePath = \"${env:ProgramFiles(x86)}\\Microsoft\\Edge\\Application\"; if (Test-Path $edgePath) { $setupPath = Get-ChildItem -Path $edgePath -Filter 'setup.exe' -Recurse | Select-Object -First 1; if ($setupPath) { Start-Process -FilePath $setupPath.FullName -ArgumentList '--uninstall', '--system-level', '--verbose-logging', '--force-uninstall' -Wait } }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage *Edge* | Remove-AppxPackage",
+          "description": "Tente de supprimer Edge via AppX"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Windows 11 utilise Edge pour certaines fonctionnalités système.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-204",
+      "title": "Désinstaller Copilot",
+      "description": "⚠️ DANGEROUS: Désinstalle Windows Copilot AI.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["debloat", "copilot", "ai", "dangerous", "windows"],
+      "windowsCommandTemplateId": "win-debloat-204-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-204-cmd",
+        "platform": 0,
+        "name": "Remove-Copilot",
+        "commandPattern": "Get-AppxPackage *Copilot* | Remove-AppxPackage -ErrorAction SilentlyContinue; New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot' -Name 'TurnOffWindowsCopilot' -Type DWord -Value 1",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage *Copilot* | Remove-AppxPackage",
+          "description": "Supprime Copilot"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Désactive également Copilot via le registre.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-205",
+      "title": "Supprimer Xbox (tous composants)",
+      "description": "⚠️ DANGEROUS: Supprime tous les composants Xbox (App, Game Bar, Gaming Services).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["debloat", "xbox", "gaming", "dangerous", "windows"],
+      "windowsCommandTemplateId": "win-debloat-205-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-205-cmd",
+        "platform": 0,
+        "name": "Remove-XboxComponents",
+        "commandPattern": "$xbox = @('Microsoft.XboxApp', 'Microsoft.XboxGameOverlay', 'Microsoft.XboxGamingOverlay', 'Microsoft.XboxIdentityProvider', 'Microsoft.Xbox.TCUI', 'Microsoft.XboxSpeechToTextOverlay', 'Microsoft.GamingApp', 'Microsoft.GamingServices'); foreach ($app in $xbox) { Get-AppxPackage $app | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage Microsoft.XboxApp | Remove-AppxPackage",
+          "description": "Supprime l'app Xbox"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Supprime tous les composants Xbox incluant Game Bar.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-206",
+      "title": "Supprimer Widgets",
+      "description": "⚠️ DANGEROUS: Désinstalle le panneau Widgets de Windows 11.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["debloat", "widgets", "taskbar", "dangerous", "windows"],
+      "windowsCommandTemplateId": "win-debloat-206-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-206-cmd",
+        "platform": 0,
+        "name": "Remove-Widgets",
+        "commandPattern": "Get-AppxPackage *WebExperience* | Remove-AppxPackage -ErrorAction SilentlyContinue; New-Item -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced' -Name 'TaskbarDa' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-AppxPackage *WebExperience* | Remove-AppxPackage",
+          "description": "Supprime les Widgets"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Retire l'icône Widgets de la barre des tâches.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-301",
+      "title": "Désactiver Consumer Features",
+      "description": "Désactive l'installation automatique d'applications suggérées et de bloatware Microsoft.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "consumer-features", "suggestions", "registry", "windows"],
+      "windowsCommandTemplateId": "win-debloat-301-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-301-cmd",
+        "platform": 0,
+        "name": "Disable-ConsumerFeatures",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent' -Name 'DisableWindowsConsumerFeatures' -Type DWord -Value 1",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent' -Name 'DisableWindowsConsumerFeatures' -Value 1",
+          "description": "Désactive les Consumer Features"
+        }
+      ],
+      "notes": "Empêche Windows d'installer automatiquement des apps suggérées. Nécessite des droits administrateur.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-302",
+      "title": "Désactiver Recall",
+      "description": "Désactive la fonctionnalité Recall AI de Windows 11 (enregistrement de l'activité).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "recall", "ai", "privacy", "windows"],
+      "windowsCommandTemplateId": "win-debloat-302-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-302-cmd",
+        "platform": 0,
+        "name": "Disable-Recall",
+        "commandPattern": "New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Name 'DisableAIDataAnalysis' -Type DWord -Value 1",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Name 'DisableAIDataAnalysis' -Value 1",
+          "description": "Désactive Recall"
+        }
+      ],
+      "notes": "Désactive l'enregistrement de l'activité par Recall AI. Améliore la confidentialité.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-303",
+      "title": "Désactiver Internet Explorer",
+      "description": "Désactive le composant Internet Explorer (IE11) de Windows.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "internet-explorer", "ie11", "legacy", "windows"],
+      "windowsCommandTemplateId": "win-debloat-303-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-303-cmd",
+        "platform": 0,
+        "name": "Disable-InternetExplorer",
+        "commandPattern": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64'",
+          "description": "Désactive Internet Explorer 11"
+        }
+      ],
+      "notes": "Désactive IE11. Certaines applications legacy peuvent nécessiter IE. Nécessite des droits administrateur.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-304",
+      "title": "Désactiver Hyper-V",
+      "description": "Désactive la fonctionnalité Hyper-V de Windows (virtualisation).",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "hyper-v", "virtualization", "performance", "windows"],
+      "windowsCommandTemplateId": "win-debloat-304-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-304-cmd",
+        "platform": 0,
+        "name": "Disable-HyperV",
+        "commandPattern": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All' -NoRestart",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All'",
+          "description": "Désactive Hyper-V"
+        }
+      ],
+      "notes": "Désactive Hyper-V. Peut améliorer les performances de jeux. Nécessite un redémarrage. Incompatible avec certains émulateurs.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-401",
+      "title": "Désactiver les recommandations Edge",
+      "description": "Désactive les recommandations et suggestions dans Microsoft Edge.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "edge", "recommendations", "privacy", "windows"],
+      "windowsCommandTemplateId": "win-debloat-401-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-401-cmd",
+        "platform": 0,
+        "name": "Disable-EdgeRecommendations",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'ShowRecommendationsEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'HideFirstRunExperience' -Type DWord -Value 1",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'ShowRecommendationsEnabled' -Value 0",
+          "description": "Désactive les recommandations"
+        }
+      ],
+      "notes": "Désactive les suggestions de contenu dans Edge. Nécessite des droits administrateur.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-402",
+      "title": "Désactiver le shopping assistant Edge",
+      "description": "Désactive l'assistant shopping et les coupons dans Microsoft Edge.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "edge", "shopping", "assistant", "windows"],
+      "windowsCommandTemplateId": "win-debloat-402-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-402-cmd",
+        "platform": 0,
+        "name": "Disable-EdgeShopping",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'EdgeShoppingAssistantEnabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'EdgeShoppingAssistantEnabled' -Value 0",
+          "description": "Désactive le shopping assistant"
+        }
+      ],
+      "notes": "Désactive les notifications de coupons et l'assistant shopping. Nécessite des droits administrateur.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-403",
+      "title": "Désactiver la télémétrie Edge",
+      "description": "Désactive la collecte de données de diagnostic et d'utilisation dans Microsoft Edge.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "edge", "telemetry", "privacy", "windows"],
+      "windowsCommandTemplateId": "win-debloat-403-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-403-cmd",
+        "platform": 0,
+        "name": "Disable-EdgeTelemetry",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'MetricsReportingEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'SendSiteInfoToImproveServices' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'MetricsReportingEnabled' -Value 0",
+          "description": "Désactive la télémétrie"
+        }
+      ],
+      "notes": "Désactive la collecte de données d'utilisation et de diagnostic. Améliore la confidentialité. Nécessite des droits administrateur.",
+      "links": []
+    },
+    {
+      "id": "WIN-DEBLOAT-404",
+      "title": "Désactiver le crypto wallet Edge",
+      "description": "Désactive le portefeuille crypto et les fonctionnalités Web3 dans Microsoft Edge.",
+      "category": "🧹 Debloating Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["debloat", "edge", "crypto", "wallet", "windows"],
+      "windowsCommandTemplateId": "win-debloat-404-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-debloat-404-cmd",
+        "platform": 0,
+        "name": "Disable-EdgeCryptoWallet",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'CryptoWalletEnabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'CryptoWalletEnabled' -Value 0",
+          "description": "Désactive le crypto wallet"
+        }
+      ],
+      "notes": "Désactive les fonctionnalités crypto et Web3. Nécessite des droits administrateur.",
+      "links": []
     }
   ]
 }
