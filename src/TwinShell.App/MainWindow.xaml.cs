@@ -32,7 +32,28 @@ public partial class MainWindow : Window
             _mainViewModel.ExecutionViewModel = executionViewModel;
         }
 
-        Loaded += async (s, e) => await viewModel.InitializeAsync();
+        // BUGFIX: Extract async initialization to proper async method to prevent unhandled exceptions
+        Loaded += MainWindow_Loaded;
+    }
+
+    /// <summary>
+    /// BUGFIX: Proper async event handler to prevent unhandled exceptions from crashing the app
+    /// Wraps InitializeAsync in try-catch for error handling
+    /// </summary>
+    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await _mainViewModel.InitializeAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Failed to initialize the application: {ex.Message}",
+                "Initialization Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
 
     private void Settings_Click(object sender, RoutedEventArgs e)

@@ -115,7 +115,15 @@ public class CommandExecutionService : ICommandExecutionService
                 {
                     if (!process.HasExited)
                     {
-                        process.Kill(entireProcessTree: true);
+                        // BUGFIX: entireProcessTree parameter is Windows-only
+                        if (OperatingSystem.IsWindows())
+                        {
+                            process.Kill(entireProcessTree: true);
+                        }
+                        else
+                        {
+                            process.Kill();
+                        }
                     }
                 }
                 catch

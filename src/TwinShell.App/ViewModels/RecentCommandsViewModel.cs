@@ -39,9 +39,12 @@ public partial class RecentCommandsViewModel : ObservableObject
                 RecentCommands.Add(new RecentCommandItemViewModel(command, _clipboardService));
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Silently fail - widget is optional
+            // BUGFIX: Log exception instead of silently failing
+            // Widget is optional but we should track failures for debugging
+            System.Diagnostics.Debug.WriteLine($"Failed to load recent commands: {ex.Message}");
+            // Could also set a flag to display 'Recent commands unavailable' to user
         }
     }
 
