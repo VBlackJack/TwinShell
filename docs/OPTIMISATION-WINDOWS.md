@@ -5,9 +5,10 @@ Guide complet pour optimiser et nettoyer votre installation Windows à l'aide de
 ## Table des matières
 
 1. [Debloating Windows](#debloating-windows)
-2. [Précautions et recommandations](#précautions-et-recommandations)
-3. [Rollback et récupération](#rollback-et-récupération)
-4. [FAQ et troubleshooting](#faq-et-troubleshooting)
+2. [Confidentialité Windows](#confidentialité-windows)
+3. [Précautions et recommandations](#précautions-et-recommandations)
+4. [Rollback et récupération](#rollback-et-récupération)
+5. [FAQ et troubleshooting](#faq-et-troubleshooting)
 
 ---
 
@@ -103,6 +104,386 @@ Actions pour optimiser Microsoft Edge (si vous le conservez).
 | WIN-DEBLOAT-404 | Désactiver le crypto wallet | Désactive les fonctionnalités Web3 |
 
 **Recommandation:** Appliquez toutes les actions Edge si vous utilisez Edge mais souhaitez une expérience plus "propre".
+
+---
+
+## Confidentialité Windows
+
+La confidentialité Windows permet de contrôler la collecte de données, la télémétrie et les permissions des applications. Ces actions sont essentielles pour la conformité RGPD.
+
+### 🔒 Conformité RGPD et protection des données
+
+**TwinShell Sprint 7 - Confidentialité Windows** offre 28 actions organisées en 4 catégories pour une protection maximale de vos données personnelles conformément au RGPD (Règlement Général sur la Protection des Données).
+
+### ⚠️ AVERTISSEMENT IMPORTANT - RGPD
+
+Ces actions désactivent la collecte de données par Microsoft et des applications tierces. Elles sont particulièrement importantes pour:
+- **Entreprises européennes** soumises au RGPD
+- **Utilisateurs soucieux de leur vie privée**
+- **Organisations manipulant des données sensibles**
+- **Conformité aux réglementations de protection des données**
+
+### Catégories d'actions de confidentialité
+
+TwinShell propose 28 actions de confidentialité organisées en 4 catégories :
+
+#### 1. 🔐 Permissions Applications (10 actions - WIN-PRIVACY-001 à 010)
+
+Contrôle granulaire des permissions d'accès des applications Windows.
+
+| Action ID | Description | Scope | Impact RGPD |
+|-----------|-------------|-------|-------------|
+| WIN-PRIVACY-001 | Désactiver l'accès localisation | CurrentUser/AllUsers | RGPD Art. 6 - Données de localisation |
+| WIN-PRIVACY-002 | Désactiver l'accès caméra | CurrentUser/AllUsers | RGPD Art. 25 - Protection dès la conception |
+| WIN-PRIVACY-003 | Désactiver l'accès microphone | CurrentUser/AllUsers | Protection contre écoute non autorisée |
+| WIN-PRIVACY-004 | Désactiver l'accès système de fichiers | CurrentUser/AllUsers | Protection des documents sensibles |
+| WIN-PRIVACY-005 | Désactiver l'accès contacts | CurrentUser/AllUsers | Protection des données personnelles de tiers |
+| WIN-PRIVACY-006 | Désactiver l'accès calendrier | CurrentUser/AllUsers | Protection de la vie privée professionnelle |
+| WIN-PRIVACY-007 | Désactiver l'accès emails | CurrentUser/AllUsers | Confidentialité des communications |
+| WIN-PRIVACY-008 | Désactiver l'accès notifications | CurrentUser/AllUsers | Réduction du tracking |
+| WIN-PRIVACY-009 | **Désactiver TOUTES les permissions** | Run | ⚠️ Configuration maximale - Level Dangerous |
+| WIN-PRIVACY-010 | Restaurer les permissions par défaut | Run | Action de rollback |
+
+**Recommandation:**
+- Utilisez les actions 001-008 individuellement pour un contrôle précis
+- WIN-PRIVACY-009 pour une sécurité maximale (désactive tout)
+- WIN-PRIVACY-010 pour annuler si trop restrictif
+- Le paramètre `Scope` permet de choisir entre CurrentUser (utilisateur actuel) ou AllUsers (tous les utilisateurs)
+
+#### 2. ☁️ Synchronisation Cloud (6 actions - WIN-PRIVACY-101 à 106)
+
+Contrôle de la synchronisation avec le cloud Microsoft.
+
+| Action ID | Description | Level | Données concernées |
+|-----------|-------------|-------|-------------------|
+| WIN-PRIVACY-101 | Désactiver toute synchronisation cloud | Dangerous | TOUTES (paramètres, mots de passe, thèmes, navigateur) |
+| WIN-PRIVACY-102 | Désactiver sync des paramètres | Run | Préférences Windows, accessibilité |
+| WIN-PRIVACY-103 | Désactiver sync des thèmes | Run | Fonds d'écran, personnalisation |
+| WIN-PRIVACY-104 | Désactiver sync des mots de passe | Dangerous | Identifiants, credentials |
+| WIN-PRIVACY-105 | Désactiver sync du navigateur | Run | Favoris, historique, onglets Edge |
+| WIN-PRIVACY-106 | Restaurer la synchronisation | Run | Action de rollback |
+
+**Impact RGPD:**
+- **Article 44 RGPD:** Empêche le transfert de données vers les serveurs Microsoft (potentiellement hors UE)
+- **Article 5 RGPD:** Limitation de la collecte de données au strict nécessaire
+- WIN-PRIVACY-101 recommandée pour les entreprises soumises au RGPD strict
+
+**Recommandation:**
+- WIN-PRIVACY-101 pour désactiver toute synchronisation (entreprises RGPD)
+- Actions 102-105 pour un contrôle granulaire
+- WIN-PRIVACY-104 particulièrement critique pour la sécurité
+
+#### 3. 📊 Télémétrie et Tracking (8 actions - WIN-PRIVACY-201 à 208)
+
+Désactivation de la télémétrie Windows et des services de tracking.
+
+| Action ID | Description | Level | Clés registre modifiées |
+|-----------|-------------|-------|------------------------|
+| WIN-PRIVACY-201 | Désactiver Activity Feed | Run | 3+ clés (chronologie Windows) |
+| WIN-PRIVACY-202 | Désactiver Game DVR | Run | 4+ clés (Xbox, enregistrement) |
+| WIN-PRIVACY-203 | Désactiver notifications publicitaires | Run | 7+ clés (suggestions, ads) |
+| WIN-PRIVACY-204 | Désactiver suivi de localisation | Run | 5+ clés (GPS, capteurs) |
+| WIN-PRIVACY-205 | **Configuration minimale télémétrie** | Dangerous | **50+ clés + tâches planifiées** |
+| WIN-PRIVACY-206 | Désactiver reconnaissance vocale cloud | Run | 8+ clés (Cortana, dictée) |
+| WIN-PRIVACY-207 | Désactiver services biométriques | Dangerous | 3+ clés (Windows Hello, empreintes) |
+| WIN-PRIVACY-208 | Désactiver caméra écran verrouillage | Run | 1 clé (sécurité lockscreen) |
+
+**Détails WIN-PRIVACY-205 (Télémétrie minimale):**
+
+Cette action est **LA PLUS IMPORTANTE** pour la conformité RGPD stricte:
+- Configure la télémétrie au niveau **Security (0)** - le minimum absolu
+- Désactive **50+ clés de registre** dans HKLM et HKCU
+- Désactive **6+ tâches planifiées** de collecte de données:
+  - Microsoft Compatibility Appraiser
+  - ProgramDataUpdater
+  - Customer Experience Improvement Program
+  - Disk Diagnostic Data Collector
+  - Et plus...
+- **Niveau recommandé pour toutes les entreprises européennes**
+
+**Impact RGPD:**
+- **Article 5 RGPD:** Minimisation des données
+- **Article 25 RGPD:** Protection dès la conception
+- **Article 32 RGPD:** Sécurité du traitement
+
+**Recommandation:**
+- **WIN-PRIVACY-205 est OBLIGATOIRE** pour conformité RGPD entreprise
+- WIN-PRIVACY-201, 203, 204, 206 fortement recommandées
+- WIN-PRIVACY-207 si données biométriques sensibles (Article 9 RGPD)
+
+#### 4. 🔧 Télémétrie Applications Tierces (4 actions - WIN-PRIVACY-301 à 304)
+
+Désactivation de la télémétrie des applications tierces courantes.
+
+| Action ID | Description | Applications concernées | Services désactivés |
+|-----------|-------------|------------------------|---------------------|
+| WIN-PRIVACY-301 | Désactiver télémétrie Adobe | Creative Cloud, Acrobat | AdobeUpdateService, AGMService, Analytics |
+| WIN-PRIVACY-302 | Désactiver télémétrie VS Code | Visual Studio Code | Telemetry, Crash Reporter |
+| WIN-PRIVACY-303 | Désactiver télémétrie Google | Chrome, Google Update | gupdate, gupdatem, MetricsReporting |
+| WIN-PRIVACY-304 | Désactiver télémétrie Nvidia | GeForce Experience, pilotes | NvTelemetryContainer, tâches planifiées |
+
+**Détails par application:**
+
+**Adobe (WIN-PRIVACY-301):**
+- Désactive Adobe Analytics
+- Stoppe AdobeUpdateService, AGMService, AGSService
+- Configure OptOut pour SuiteCloud
+- Réduit utilisation réseau et CPU
+
+**VS Code (WIN-PRIVACY-302):**
+- Modifie `settings.json` utilisateur
+- `telemetry.telemetryLevel: off`
+- `telemetry.enableTelemetry: false`
+- `telemetry.enableCrashReporter: false`
+
+**Google Chrome (WIN-PRIVACY-303):**
+- Désactive MetricsReporting
+- Stoppe services gupdate/gupdatem
+- Bloque ChromeCleanup reporting
+- Désactive UserFeedback
+
+**Nvidia (WIN-PRIVACY-304):**
+- Stoppe NvTelemetryContainer
+- Désactive tâches planifiées (CrashReport, DriverUpdateCheck)
+- Configure `SendTelemetryData: 0`
+- N'affecte PAS les performances graphiques
+
+**Recommandation:**
+- Appliquez les actions pour les applications que vous avez installées
+- Ces actions améliorent aussi les performances (moins de services en arrière-plan)
+
+### 🎯 Batch Prédéfini: "🔒 Confidentialité maximale"
+
+TwinShell inclut un batch prédéfini combinant les actions les plus critiques:
+
+**Actions incluses (8 commandes):**
+1. WIN-PRIVACY-009 - Désactiver toutes les permissions applications
+2. WIN-PRIVACY-101 - Désactiver toute synchronisation cloud
+3. WIN-PRIVACY-205 - Configuration minimale de télémétrie (Security)
+4. WIN-PRIVACY-207 - Désactiver services biométriques
+5. WIN-PRIVACY-201 - Désactiver Activity Feed
+6. WIN-PRIVACY-203 - Désactiver notifications publicitaires
+7. WIN-PRIVACY-204 - Désactiver suivi de localisation
+8. WIN-PRIVACY-206 - Désactiver reconnaissance vocale cloud
+
+**Utilisation:**
+```powershell
+# Via TwinShell - Sélectionner le batch "🔒 Confidentialité maximale"
+# Exécution séquentielle avec mode StopOnError
+```
+
+**Recommandation:**
+- **Entreprises RGPD:** Exécutez ce batch sur tous les postes Windows
+- **Utilisateurs avancés:** Configuration optimale pour vie privée maximale
+- **Attention:** Certaines fonctionnalités seront désactivées (Windows Hello, synchronisation, etc.)
+
+### 📋 Clés de registre modifiées (Liste complète)
+
+Pour transparence et conformité RGPD, voici la liste complète des clés modifiées:
+
+#### Permissions Applications (001-009)
+```
+HKCU/HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\
+├── location
+├── webcam
+├── microphone
+├── documentsLibrary
+├── broadFileSystemAccess
+├── contacts
+├── appointments
+├── email
+├── userNotificationListener
+├── phoneCall
+├── radios
+└── chat
+```
+
+#### Synchronisation Cloud (101-106)
+```
+HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SettingSync\
+├── SyncPolicy
+└── Groups\
+    ├── Personalization
+    ├── BrowserSettings
+    ├── Credentials
+    ├── Accessibility
+    └── Windows
+```
+
+#### Télémétrie Windows (201-208)
+```
+HKLM:\SOFTWARE\Policies\Microsoft\Windows\
+├── System (ActivityFeed, PublishUserActivities)
+├── GameDVR (AllowGameDVR)
+├── LocationAndSensors (DisableLocation)
+├── DataCollection (AllowTelemetry, MaxTelemetryAllowed)
+├── InputPersonalization
+├── Biometrics
+└── Personalization (NoLockScreenCamera)
+
+HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager\
+├── SilentInstalledAppsEnabled
+├── SystemPaneSuggestionsEnabled
+├── SubscribedContent-*
+└── (7+ clés publicitaires)
+```
+
+#### Applications Tierces (301-304)
+```
+Adobe:
+HKLM:\SOFTWARE\Policies\Adobe\Adobe Acrobat\DC\FeatureLockDown
+HKLM:\SOFTWARE\Adobe\Adobe Desktop Common\ADS
+HKLM:\SOFTWARE\Adobe\SuiteCloud
+
+Google Chrome:
+HKLM:\SOFTWARE\Policies\Google\Chrome
+HKLM:\SOFTWARE\Policies\Google\Update
+
+Nvidia:
+HKLM:\SOFTWARE\NVIDIA Corporation\NvControlPanel2\Client
+HKLM:\SYSTEM\CurrentControlSet\Services\nvlddmkm\Global\Startup
+```
+
+### 🔄 Export de configuration avant/après
+
+Pour conformité RGPD, documentez vos changements:
+
+**Avant exécution:**
+```powershell
+# Export complet du registre de confidentialité
+$date = Get-Date -Format "yyyyMMdd_HHmmss"
+$backupPath = "C:\TwinShell_Backup\Privacy_$date"
+New-Item -Path $backupPath -ItemType Directory -Force
+
+# Export clés permissions
+reg export "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager" "$backupPath\permissions.reg" /y
+
+# Export clés synchronisation
+reg export "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\SettingSync" "$backupPath\sync.reg" /y
+
+# Export clés télémétrie
+reg export "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "$backupPath\telemetry.reg" /y
+
+# Liste des tâches planifiées actives
+Get-ScheduledTask | Where-Object {$_.State -eq 'Ready'} | Export-Csv "$backupPath\scheduled_tasks.csv"
+
+Write-Host "Backup créé dans: $backupPath"
+```
+
+**Après exécution:**
+```powershell
+# Vérification des modifications
+$verifyPath = "C:\TwinShell_Backup\Privacy_Verify_$date"
+New-Item -Path $verifyPath -ItemType Directory -Force
+
+# Export post-configuration
+reg export "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager" "$verifyPath\permissions_after.reg" /y
+reg export "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\SettingSync" "$verifyPath\sync_after.reg" /y
+reg export "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" "$verifyPath\telemetry_after.reg" /y
+
+# Comparaison avant/après
+Write-Host "Comparez les fichiers .reg dans $backupPath et $verifyPath"
+```
+
+### 📊 Tests de conformité RGPD
+
+**Tests recommandés après configuration:**
+
+1. **Vérifier télémétrie désactivée:**
+```powershell
+Get-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name AllowTelemetry
+# Résultat attendu: 0
+```
+
+2. **Vérifier services arrêtés:**
+```powershell
+Get-Service | Where-Object {$_.Name -like "*Telemetry*" -or $_.Name -like "*DiagTrack*"}
+# Résultat attendu: Stopped/Disabled
+```
+
+3. **Vérifier tâches planifiées désactivées:**
+```powershell
+Get-ScheduledTask | Where-Object {$_.TaskName -like "*Compatibility Appraiser*"}
+# Résultat attendu: Disabled
+```
+
+4. **Vérifier permissions applications:**
+```powershell
+Get-ItemProperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Name Value
+# Résultat attendu: "Deny"
+```
+
+### 🏢 Recommandations par type d'organisation
+
+#### Entreprises soumises au RGPD strict
+**Actions OBLIGATOIRES:**
+- WIN-PRIVACY-009 (Toutes permissions)
+- WIN-PRIVACY-101 (Toute synchronisation)
+- WIN-PRIVACY-205 (Télémétrie minimale)
+- WIN-PRIVACY-207 (Biométrie - si données sensibles Art. 9)
+
+**Actions RECOMMANDÉES:**
+- WIN-PRIVACY-201, 203, 204, 206 (Tracking)
+- WIN-PRIVACY-301-304 (Télémétrie apps tierces)
+
+**Batch à utiliser:** "🔒 Confidentialité maximale"
+
+#### Utilisateurs professionnels
+**Actions RECOMMANDÉES:**
+- WIN-PRIVACY-001, 002, 003 (Localisation, caméra, micro)
+- WIN-PRIVACY-101 ou 104 (Sync cloud ou mots de passe)
+- WIN-PRIVACY-205 (Télémétrie minimale)
+- WIN-PRIVACY-203 (Publicités)
+
+#### Utilisateurs personnels soucieux de leur vie privée
+**Actions SUGGÉRÉES:**
+- WIN-PRIVACY-001 (Localisation)
+- WIN-PRIVACY-203 (Publicités)
+- WIN-PRIVACY-204 (Tracking localisation)
+- WIN-PRIVACY-206 (Reconnaissance vocale)
+- Actions 301-304 selon apps installées
+
+### ⚠️ Impacts et limitations
+
+**Fonctionnalités désactivées par les actions de confidentialité:**
+
+| Action | Fonctionnalités affectées | Alternatives |
+|--------|--------------------------|--------------|
+| WIN-PRIVACY-001 | GPS, localisation dans apps | Activer manuellement si besoin |
+| WIN-PRIVACY-002 | Webcam pour toutes les apps | Activer pour apps spécifiques |
+| WIN-PRIVACY-003 | Micro pour toutes les apps | Activer pour Teams, Zoom, etc. |
+| WIN-PRIVACY-009 | TOUTES les permissions | Réactiver individuellement |
+| WIN-PRIVACY-101 | Sync entre appareils | Utiliser OneDrive manuel |
+| WIN-PRIVACY-104 | Sync mots de passe | Utiliser gestionnaire de mots de passe |
+| WIN-PRIVACY-205 | Certaines fonctionnalités Windows Update | Fonctionne quand même |
+| WIN-PRIVACY-206 | Cortana, dictée cloud | Dictée locale disponible |
+| WIN-PRIVACY-207 | Windows Hello | Utiliser PIN ou mot de passe |
+
+**Compatible avec:**
+- Windows 10 (build 1809+)
+- Windows 11 (toutes versions)
+- Environnements Active Directory
+- GPO existantes (les actions TwinShell peuvent être remplacées par GPO)
+
+### 🔐 Conformité réglementaire
+
+**RGPD (UE):**
+- Article 5: Minimisation des données ✅
+- Article 6: Licéité du traitement ✅
+- Article 25: Protection dès la conception ✅
+- Article 32: Sécurité du traitement ✅
+- Article 44: Transfert de données hors UE ✅
+
+**Autres réglementations:**
+- **CCPA (Californie):** Contrôle des données personnelles
+- **PIPEDA (Canada):** Protection des renseignements personnels
+- **DPA 2018 (UK):** UK Data Protection Act
+
+**Audit et traçabilité:**
+- Toutes les actions sont loggées
+- Export de configuration possible
+- Comparaison avant/après disponible
+- Conformité aux exigences d'audit RGPD
 
 ---
 
@@ -439,6 +820,16 @@ Pour un debloating plus avancé, considérez:
 
 ## Changelog
 
+### Sprint 7 - Novembre 2025
+- **Ajout de 28 actions de confidentialité Windows** (WIN-PRIVACY-001 à 304)
+- 4 catégories: Permissions apps, Synchronisation cloud, Télémétrie Windows, Télémétrie apps tierces
+- **Conformité RGPD:** Documentation complète des articles RGPD applicables
+- **Batch prédéfini:** "🔒 Confidentialité maximale" (8 actions critiques)
+- **50+ clés registre modifiées** pour télémétrie minimale (WIN-PRIVACY-205)
+- Tests de conformité RGPD inclus
+- Export de configuration avant/après pour audit
+- Support Windows 10/11, Active Directory, GPO
+
 ### Sprint 6 - Novembre 2025
 - Ajout de 22 actions de debloating Windows
 - 4 catégories: Bloatware, Apps Microsoft, Composants système, Fonctionnalités
@@ -447,6 +838,6 @@ Pour un debloating plus avancé, considérez:
 
 ---
 
-**Dernière mise à jour:** Novembre 2025
-**Version:** 1.0
+**Dernière mise à jour:** Novembre 2025 - Sprint 7
+**Version:** 2.0
 **Auteur:** TwinShell Team

@@ -2322,6 +2322,803 @@
       ],
       "notes": "Désactive les fonctionnalités crypto et Web3. Nécessite des droits administrateur.",
       "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-001",
+      "title": "Désactiver l'accès à la localisation",
+      "description": "Désactive l'accès des applications à la localisation de l'appareil pour protéger la vie privée. Conforme RGPD.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "localisation", "windows"],
+      "windowsCommandTemplateId": "win-privacy-001-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-001-cmd",
+        "platform": 0,
+        "name": "Disable-LocationAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location' -Name 'Value' -Value 'Deny'",
+          "description": "Désactive l'accès à la localisation pour l'utilisateur actuel"
+        }
+      ],
+      "notes": "Désactive l'accès à la localisation GPS. Améliore la confidentialité et la conformité RGPD. Les applications de navigation peuvent être affectées.",
+      "links": [
+        {
+          "title": "RGPD - Protection des données de localisation",
+          "url": "https://gdpr.eu/article-6-how-to-process-personal-data-legally/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PRIVACY-002",
+      "title": "Désactiver l'accès à la caméra",
+      "description": "Désactive l'accès des applications à la caméra de l'appareil pour renforcer la sécurité. Conforme RGPD.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "caméra", "windows"],
+      "windowsCommandTemplateId": "win-privacy-002-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-002-cmd",
+        "platform": 0,
+        "name": "Disable-CameraAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam' -Name 'Value' -Value 'Deny'",
+          "description": "Bloque l'accès à la caméra"
+        }
+      ],
+      "notes": "Empêche les applications d'accéder à la webcam. Conforme RGPD Article 25 (protection des données dès la conception). Les applications de visioconférence nécessiteront une réactivation.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-003",
+      "title": "Désactiver l'accès au microphone",
+      "description": "Désactive l'accès des applications au microphone pour éviter l'écoute non autorisée. Conforme RGPD.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "microphone", "windows"],
+      "windowsCommandTemplateId": "win-privacy-003-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-003-cmd",
+        "platform": 0,
+        "name": "Disable-MicrophoneAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\microphone' -Name 'Value' -Value 'Deny'",
+          "description": "Désactive l'accès micro"
+        }
+      ],
+      "notes": "Bloque l'accès au microphone. Protège contre l'enregistrement non autorisé. Les assistants vocaux seront désactivés.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-004",
+      "title": "Désactiver l'accès au système de fichiers",
+      "description": "Restreint l'accès des applications au système de fichiers complet. Protection des données sensibles.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "fichiers", "windows"],
+      "windowsCommandTemplateId": "win-privacy-004-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-004-cmd",
+        "platform": 0,
+        "name": "Disable-FileSystemAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'; $path2 = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\broadFileSystemAccess' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\broadFileSystemAccess' }; New-Item -Path $path2 -Force | Out-Null; Set-ItemProperty -Path $path2 -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\broadFileSystemAccess' -Name 'Value' -Value 'Deny'",
+          "description": "Restreint l'accès aux fichiers"
+        }
+      ],
+      "notes": "Limite l'accès aux bibliothèques de documents et au système de fichiers complet. Certaines applications peuvent nécessiter une réactivation.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-005",
+      "title": "Désactiver l'accès aux contacts",
+      "description": "Empêche les applications d'accéder à la liste de contacts Windows. Protection des données personnelles.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "contacts", "windows"],
+      "windowsCommandTemplateId": "win-privacy-005-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-005-cmd",
+        "platform": 0,
+        "name": "Disable-ContactsAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\contacts' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\contacts' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\contacts' -Name 'Value' -Value 'Deny'",
+          "description": "Bloque l'accès aux contacts"
+        }
+      ],
+      "notes": "Protège la liste de contacts. Conforme RGPD pour la protection des données personnelles de tiers.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-006",
+      "title": "Désactiver l'accès au calendrier",
+      "description": "Bloque l'accès des applications au calendrier Windows. Protection de la vie privée professionnelle.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "calendrier", "windows"],
+      "windowsCommandTemplateId": "win-privacy-006-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-006-cmd",
+        "platform": 0,
+        "name": "Disable-CalendarAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\appointments' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\appointments' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\appointments' -Name 'Value' -Value 'Deny'",
+          "description": "Bloque l'accès au calendrier"
+        }
+      ],
+      "notes": "Empêche l'accès aux rendez-vous et événements. Protège les informations professionnelles sensibles.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-007",
+      "title": "Désactiver l'accès aux emails",
+      "description": "Empêche les applications d'accéder aux emails Windows. Protection des communications.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "email", "windows"],
+      "windowsCommandTemplateId": "win-privacy-007-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-007-cmd",
+        "platform": 0,
+        "name": "Disable-EmailAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\email' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\email' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\email' -Name 'Value' -Value 'Deny'",
+          "description": "Bloque l'accès aux emails"
+        }
+      ],
+      "notes": "Protège l'accès aux emails. Important pour la confidentialité des communications professionnelles et personnelles.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-008",
+      "title": "Désactiver l'accès aux notifications",
+      "description": "Bloque l'accès des applications au système de notifications. Réduit les distractions et tracking.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "notifications", "windows"],
+      "windowsCommandTemplateId": "win-privacy-008-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-008-cmd",
+        "platform": 0,
+        "name": "Disable-NotificationsAccess",
+        "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\userNotificationListener' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\userNotificationListener' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'",
+        "parameters": [
+          {
+            "name": "Scope",
+            "label": "Portée",
+            "type": "string",
+            "defaultValue": "CurrentUser",
+            "required": false,
+            "description": "CurrentUser ou AllUsers"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\userNotificationListener' -Name 'Value' -Value 'Deny'",
+          "description": "Désactive l'accès aux notifications"
+        }
+      ],
+      "notes": "Empêche les applications de lire ou d'envoyer des notifications. Améliore la confidentialité et réduit les distractions.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-009",
+      "title": "Désactiver toutes les permissions applications",
+      "description": "Désactive TOUTES les permissions d'accès des applications en une seule action. Configuration maximale de confidentialité.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["privacy", "confidentialité", "rgpd", "permissions", "all", "windows"],
+      "windowsCommandTemplateId": "win-privacy-009-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-009-cmd",
+        "platform": 0,
+        "name": "Disable-AllAppPermissions",
+        "commandPattern": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny' -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\*' -Name 'Value' -Value 'Deny'",
+          "description": "Désactive toutes les permissions"
+        }
+      ],
+      "notes": "ATTENTION: Désactive toutes les permissions. Configuration ultra-sécurisée conforme RGPD. De nombreuses applications nécessiteront des autorisations manuelles après.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-010",
+      "title": "Restaurer les permissions par défaut",
+      "description": "Restaure toutes les permissions d'accès des applications à leurs valeurs par défaut Windows.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "restore", "permissions", "default", "windows"],
+      "windowsCommandTemplateId": "win-privacy-010-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-010-cmd",
+        "platform": 0,
+        "name": "Restore-DefaultAppPermissions",
+        "commandPattern": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Allow' -ErrorAction SilentlyContinue } }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam' -Name 'Value' -Value 'Allow'",
+          "description": "Réactive l'accès caméra"
+        }
+      ],
+      "notes": "Restaure les permissions par défaut. Utile après une configuration trop restrictive ou pour réinitialiser le système.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-101",
+      "title": "Désactiver toute synchronisation cloud",
+      "description": "Désactive TOUTE synchronisation Windows avec le cloud Microsoft (paramètres, mots de passe, thèmes, navigateur). Configuration RGPD maximale.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["privacy", "confidentialité", "rgpd", "sync", "cloud", "microsoft", "windows"],
+      "windowsCommandTemplateId": "win-privacy-101-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-101-cmd",
+        "platform": 0,
+        "name": "Disable-AllCloudSync",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Name 'SyncPolicy' -Type DWord -Value 5; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Accessibility' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Accessibility' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Name 'Enabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Name 'SyncPolicy' -Value 5",
+          "description": "Désactive toute la synchronisation"
+        }
+      ],
+      "notes": "ATTENTION: Désactive complètement la synchronisation avec le cloud Microsoft. Conforme RGPD - empêche le transfert de données vers les serveurs Microsoft. Les paramètres ne seront plus synchronisés entre appareils.",
+      "links": [
+        {
+          "title": "RGPD - Article 44 - Transfert de données",
+          "url": "https://gdpr.eu/article-44-transfer-of-personal-data/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PRIVACY-102",
+      "title": "Désactiver sync des paramètres",
+      "description": "Désactive uniquement la synchronisation des paramètres Windows (préférences, accessibilité, etc.).",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "sync", "settings", "windows"],
+      "windowsCommandTemplateId": "win-privacy-102-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-102-cmd",
+        "platform": 0,
+        "name": "Disable-SettingsSync",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Accessibility' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Accessibility' -Name 'Enabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Name 'Enabled' -Value 0",
+          "description": "Désactive la sync des paramètres Windows"
+        }
+      ],
+      "notes": "Désactive la synchronisation des préférences et paramètres Windows. Les autres éléments (thèmes, mots de passe) peuvent encore être synchronisés.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-103",
+      "title": "Désactiver sync des thèmes",
+      "description": "Désactive la synchronisation des thèmes, fonds d'écran et personnalisation Windows.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "sync", "themes", "personalization", "windows"],
+      "windowsCommandTemplateId": "win-privacy-103-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-103-cmd",
+        "platform": 0,
+        "name": "Disable-ThemesSync",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Name 'Enabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Name 'Enabled' -Value 0",
+          "description": "Désactive la sync des thèmes"
+        }
+      ],
+      "notes": "Empêche la synchronisation des thèmes et de la personnalisation. Les fonds d'écran personnels ne seront pas envoyés au cloud.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-104",
+      "title": "Désactiver sync des mots de passe",
+      "description": "Désactive la synchronisation des mots de passe et identifiants Windows. Sécurité maximale.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["privacy", "confidentialité", "rgpd", "sync", "passwords", "credentials", "security", "windows"],
+      "windowsCommandTemplateId": "win-privacy-104-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-104-cmd",
+        "platform": 0,
+        "name": "Disable-PasswordSync",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Name 'Enabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Name 'Enabled' -Value 0",
+          "description": "Désactive la sync des mots de passe"
+        }
+      ],
+      "notes": "IMPORTANT: Empêche la synchronisation des identifiants et mots de passe vers le cloud Microsoft. Améliore la sécurité mais nécessite de retenir ou stocker localement les mots de passe.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-105",
+      "title": "Désactiver sync du navigateur",
+      "description": "Désactive la synchronisation des paramètres de navigateur (favoris, historique, onglets).",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "sync", "browser", "edge", "windows"],
+      "windowsCommandTemplateId": "win-privacy-105-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-105-cmd",
+        "platform": 0,
+        "name": "Disable-BrowserSync",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Name 'Enabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Name 'Enabled' -Value 0",
+          "description": "Désactive la sync du navigateur"
+        }
+      ],
+      "notes": "Empêche la synchronisation des favoris, historique et onglets du navigateur. L'historique de navigation reste privé et local.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-106",
+      "title": "Restaurer la synchronisation cloud",
+      "description": "Réactive toute la synchronisation Windows avec le cloud Microsoft (annule WIN-PRIVACY-101).",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "restore", "sync", "cloud", "windows"],
+      "windowsCommandTemplateId": "win-privacy-106-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-106-cmd",
+        "platform": 0,
+        "name": "Restore-CloudSync",
+        "commandPattern": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Name 'SyncPolicy' -Type DWord -Value 1 -ErrorAction SilentlyContinue; $groups = @('Personalization', 'BrowserSettings', 'Credentials', 'Accessibility', 'Windows'); foreach ($group in $groups) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\$group\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Enabled' -Type DWord -Value 1 -ErrorAction SilentlyContinue } }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Name 'SyncPolicy' -Value 1",
+          "description": "Réactive la synchronisation"
+        }
+      ],
+      "notes": "Restaure la synchronisation cloud par défaut. Les paramètres, thèmes, mots de passe et navigateur seront à nouveau synchronisés.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-201",
+      "title": "Désactiver Activity Feed",
+      "description": "Désactive l'Activity Feed (chronologie) qui collecte l'historique des activités Windows.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "tracking", "activity", "windows"],
+      "windowsCommandTemplateId": "win-privacy-201-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-201-cmd",
+        "platform": 0,
+        "name": "Disable-ActivityFeed",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System' -Name 'EnableActivityFeed' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System' -Name 'PublishUserActivities' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System' -Name 'UploadUserActivities' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System' -Name 'EnableActivityFeed' -Value 0",
+          "description": "Désactive Activity Feed"
+        }
+      ],
+      "notes": "Désactive la chronologie Windows qui collecte l'historique de vos activités. Empêche l'envoi de ces données à Microsoft. Conforme RGPD.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-202",
+      "title": "Désactiver Game DVR",
+      "description": "Désactive Game DVR et les fonctionnalités d'enregistrement Xbox. Économise des ressources système.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "gaming", "xbox", "windows"],
+      "windowsCommandTemplateId": "win-privacy-202-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-202-cmd",
+        "platform": 0,
+        "name": "Disable-GameDVR",
+        "commandPattern": "New-Item -Path 'HKCU:\\System\\GameConfigStore' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_Enabled' -Type DWord -Value 0; New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR' -Name 'AllowGameDVR' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_Enabled' -Value 0",
+          "description": "Désactive Game DVR"
+        }
+      ],
+      "notes": "Désactive l'enregistrement de gameplay et les fonctionnalités Xbox Game Bar. Améliore les performances gaming et réduit la collecte de données.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-203",
+      "title": "Désactiver les notifications publicitaires",
+      "description": "Bloque les notifications publicitaires Windows et les suggestions d'applications dans le menu Démarrer.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "ads", "publicité", "windows"],
+      "windowsCommandTemplateId": "win-privacy-203-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-203-cmd",
+        "platform": 0,
+        "name": "Disable-AdsNotifications",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SilentInstalledAppsEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SystemPaneSuggestionsEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SubscribedContent-338388Enabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SubscribedContent-338389Enabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SubscribedContent-353694Enabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SubscribedContent-353696Enabled' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager' -Name 'SystemPaneSuggestionsEnabled' -Value 0",
+          "description": "Désactive les suggestions publicitaires"
+        }
+      ],
+      "notes": "Bloque toutes les suggestions et publicités Windows. Réduit le tracking publicitaire et améliore l'expérience utilisateur.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-204",
+      "title": "Désactiver le suivi de localisation",
+      "description": "Désactive complètement le service de localisation Windows et le suivi de position.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "localisation", "gps", "tracking", "windows"],
+      "windowsCommandTemplateId": "win-privacy-204-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-204-cmd",
+        "platform": 0,
+        "name": "Disable-LocationTracking",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\LocationAndSensors' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\LocationAndSensors' -Name 'DisableLocation' -Type DWord -Value 1; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\LocationAndSensors' -Name 'DisableLocationScripting' -Type DWord -Value 1; New-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}' -Name 'SensorPermissionState' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\LocationAndSensors' -Name 'DisableLocation' -Value 1",
+          "description": "Désactive la localisation"
+        }
+      ],
+      "notes": "Désactive totalement le service de localisation Windows. Protection maximale contre le tracking de position. Conforme RGPD Article 6.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-205",
+      "title": "Configuration minimale de télémétrie",
+      "description": "Configure la télémétrie Windows au niveau minimal (Security). Protection maximale des données. RGPD strict.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "diagnostic", "microsoft", "windows"],
+      "windowsCommandTemplateId": "win-privacy-205-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-205-cmd",
+        "platform": 0,
+        "name": "Set-MinimalTelemetry",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'AllowTelemetry' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'MaxTelemetryAllowed' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'DoNotShowFeedbackNotifications' -Type DWord -Value 1; New-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection' -Name 'AllowTelemetry' -Type DWord -Value 0; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Application Experience\\ProgramDataUpdater' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Autochk\\Proxy' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector' -ErrorAction SilentlyContinue",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'AllowTelemetry' -Value 0",
+          "description": "Télémétrie minimale (Security only)"
+        }
+      ],
+      "notes": "IMPORTANT: Configure la télémétrie au minimum absolu (niveau Security - 0). Désactive 50+ clés de registre et tâches planifiées. Conforme RGPD strict. Niveau recommandé pour entreprises européennes.",
+      "links": [
+        {
+          "title": "Microsoft - Configure Windows diagnostic data",
+          "url": "https://learn.microsoft.com/en-us/windows/privacy/configure-windows-diagnostic-data-in-your-organization"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PRIVACY-206",
+      "title": "Désactiver la reconnaissance vocale cloud",
+      "description": "Désactive la reconnaissance vocale en ligne (Cortana, dictée cloud). Les données vocales restent locales.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "cortana", "voice", "speech", "windows"],
+      "windowsCommandTemplateId": "win-privacy-206-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-206-cmd",
+        "platform": 0,
+        "name": "Disable-CloudSpeech",
+        "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy' -Name 'HasAccepted' -Type DWord -Value 0; New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\InputPersonalization' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\InputPersonalization' -Name 'AllowInputPersonalization' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization' -Name 'RestrictImplicitTextCollection' -Type DWord -Value 1; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization' -Name 'RestrictImplicitInkCollection' -Type DWord -Value 1; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization\\TrainedDataStore' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\InputPersonalization\\TrainedDataStore' -Name 'HarvestContacts' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy' -Name 'HasAccepted' -Value 0",
+          "description": "Désactive la reconnaissance vocale cloud"
+        }
+      ],
+      "notes": "Empêche l'envoi de données vocales vers les serveurs Microsoft. Désactive Cortana online et la dictée cloud. La reconnaissance vocale locale reste disponible.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-207",
+      "title": "Désactiver les services biométriques",
+      "description": "Désactive la collecte de données biométriques (empreintes digitales, reconnaissance faciale Windows Hello).",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 2,
+      "tags": ["privacy", "confidentialité", "rgpd", "télémétrie", "biometric", "hello", "fingerprint", "windows"],
+      "windowsCommandTemplateId": "win-privacy-207-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-207-cmd",
+        "platform": 0,
+        "name": "Disable-BiometricServices",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Biometrics' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Biometrics' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Biometrics\\FacialFeatures' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Biometrics\\FacialFeatures' -Name 'EnhancedAntiSpoofing' -Type DWord -Value 0",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Biometrics' -Name 'Enabled' -Value 0",
+          "description": "Désactive les services biométriques"
+        }
+      ],
+      "notes": "ATTENTION: Désactive Windows Hello et tous les services biométriques. Protège contre la collecte de données biométriques sensibles (RGPD Article 9 - données sensibles). Vous devrez utiliser PIN ou mot de passe.",
+      "links": [
+        {
+          "title": "RGPD - Article 9 - Traitement des données sensibles",
+          "url": "https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PRIVACY-208",
+      "title": "Désactiver la caméra écran de verrouillage",
+      "description": "Désactive l'accès à la caméra depuis l'écran de verrouillage Windows. Sécurité renforcée.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "rgpd", "security", "caméra", "lockscreen", "windows"],
+      "windowsCommandTemplateId": "win-privacy-208-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-208-cmd",
+        "platform": 0,
+        "name": "Disable-LockScreenCamera",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization' -Name 'NoLockScreenCamera' -Type DWord -Value 1",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization' -Name 'NoLockScreenCamera' -Value 1",
+          "description": "Bloque la caméra sur l'écran de verrouillage"
+        }
+      ],
+      "notes": "Empêche l'accès à la caméra depuis l'écran de verrouillage. Améliore la sécurité en empêchant la prise de photos sans déverrouillage.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-301",
+      "title": "Désactiver télémétrie Adobe",
+      "description": "Désactive la télémétrie et le reporting d'Adobe Creative Cloud (Photoshop, Illustrator, etc.).",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "télémétrie", "adobe", "third-party", "windows"],
+      "windowsCommandTemplateId": "win-privacy-301-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-301-cmd",
+        "platform": 0,
+        "name": "Disable-AdobeTelemetry",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Adobe\\Adobe Acrobat\\DC\\FeatureLockDown' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Adobe\\Adobe Acrobat\\DC\\FeatureLockDown' -Name 'bUsageMeasurement' -Type DWord -Value 0 -ErrorAction SilentlyContinue; New-Item -Path 'HKLM:\\SOFTWARE\\Adobe\\Adobe Desktop Common\\ADS' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Adobe\\Adobe Desktop Common\\ADS' -Name 'AdobeAnalyticsOptOut' -Type DWord -Value 1 -ErrorAction SilentlyContinue; New-Item -Path 'HKLM:\\SOFTWARE\\Adobe\\SuiteCloud' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Adobe\\SuiteCloud' -Name 'OptOut' -Type DWord -Value 1 -ErrorAction SilentlyContinue; $adobeServices = @('AdobeUpdateService', 'AGMService', 'AGSService', 'AdobeARMservice'); foreach ($service in $adobeServices) { Stop-Service -Name $service -Force -ErrorAction SilentlyContinue; Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Adobe\\Adobe Desktop Common\\ADS' -Name 'AdobeAnalyticsOptOut' -Value 1",
+          "description": "Désactive Adobe Analytics"
+        }
+      ],
+      "notes": "Désactive la collecte de données Adobe Creative Cloud, Analytics et services de mise à jour. Bloque les services de télémétrie Adobe. Réduit l'utilisation de ressources système.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-302",
+      "title": "Désactiver télémétrie VS Code",
+      "description": "Désactive la télémétrie de Visual Studio Code et les rapports d'erreurs Microsoft.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "télémétrie", "vscode", "microsoft", "third-party", "windows"],
+      "windowsCommandTemplateId": "win-privacy-302-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-302-cmd",
+        "platform": 0,
+        "name": "Disable-VSCodeTelemetry",
+        "commandPattern": "$vscodeSettings = \"$env:APPDATA\\Code\\User\\settings.json\"; if (Test-Path $vscodeSettings) { $settings = Get-Content $vscodeSettings -Raw | ConvertFrom-Json; $settings | Add-Member -MemberType NoteProperty -Name 'telemetry.telemetryLevel' -Value 'off' -Force; $settings | Add-Member -MemberType NoteProperty -Name 'telemetry.enableTelemetry' -Value $false -Force; $settings | Add-Member -MemberType NoteProperty -Name 'telemetry.enableCrashReporter' -Value $false -Force; $settings | ConvertTo-Json -Depth 100 | Set-Content $vscodeSettings } else { Write-Host 'VS Code settings not found. Install VS Code first.' }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "code --telemetry-level off",
+          "description": "Lance VS Code avec télémétrie désactivée"
+        }
+      ],
+      "notes": "Modifie les paramètres VS Code pour désactiver toute télémétrie. Empêche l'envoi de données d'utilisation à Microsoft. Nécessite VS Code installé.",
+      "links": [
+        {
+          "title": "VS Code - Disable telemetry reporting",
+          "url": "https://code.visualstudio.com/docs/getstarted/telemetry"
+        }
+      ]
+    },
+    {
+      "id": "WIN-PRIVACY-303",
+      "title": "Désactiver télémétrie Google",
+      "description": "Désactive la télémétrie de Google Update et Chrome (si installés). Bloque les services de tracking Google.",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "télémétrie", "google", "chrome", "third-party", "windows"],
+      "windowsCommandTemplateId": "win-privacy-303-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-303-cmd",
+        "platform": 0,
+        "name": "Disable-GoogleTelemetry",
+        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'MetricsReportingEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'ChromeCleanupEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'ChromeCleanupReportingEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'UserFeedbackAllowed' -Type DWord -Value 0; New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Update' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Update' -Name 'AutoUpdateCheckPeriodMinutes' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Stop-Service -Name 'gupdate' -Force -ErrorAction SilentlyContinue; Stop-Service -Name 'gupdatem' -Force -ErrorAction SilentlyContinue; Set-Service -Name 'gupdate' -StartupType Disabled -ErrorAction SilentlyContinue; Set-Service -Name 'gupdatem' -StartupType Disabled -ErrorAction SilentlyContinue",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'MetricsReportingEnabled' -Value 0",
+          "description": "Désactive la télémétrie Chrome"
+        }
+      ],
+      "notes": "Désactive toute télémétrie Google Chrome et Google Update. Arrête les services de mise à jour automatique Google. Améliore la confidentialité et réduit l'utilisation réseau.",
+      "links": []
+    },
+    {
+      "id": "WIN-PRIVACY-304",
+      "title": "Désactiver télémétrie Nvidia",
+      "description": "Désactive la télémétrie et les services de tracking des pilotes graphiques Nvidia (GeForce Experience).",
+      "category": "🔒 Confidentialité Windows",
+      "platform": 0,
+      "level": 1,
+      "tags": ["privacy", "confidentialité", "télémétrie", "nvidia", "geforce", "third-party", "windows"],
+      "windowsCommandTemplateId": "win-privacy-304-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-privacy-304-cmd",
+        "platform": 0,
+        "name": "Disable-NvidiaTelemetry",
+        "commandPattern": "$nvidiaTasks = @('NvTmRep_CrashReport*', 'NvDriverUpdateCheck*', 'NVIDIA GeForce Experience SelfUpdate*', 'NvTmMon*', 'NvProfileUpdater*'); foreach ($task in $nvidiaTasks) { Get-ScheduledTask -TaskName $task -ErrorAction SilentlyContinue | Disable-ScheduledTask -ErrorAction SilentlyContinue }; $nvidiaServices = @('NvTelemetryContainer', 'NvContainerLocalSystem'); foreach ($service in $nvidiaServices) { Stop-Service -Name $service -Force -ErrorAction SilentlyContinue; Set-Service -Name $service -StartupType Disabled -ErrorAction SilentlyContinue }; New-Item -Path 'HKLM:\\SOFTWARE\\NVIDIA Corporation\\NvControlPanel2\\Client' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\NVIDIA Corporation\\NvControlPanel2\\Client' -Name 'OptInOrOutPreference' -Type DWord -Value 0 -ErrorAction SilentlyContinue; New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\nvlddmkm\\Global\\Startup' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\nvlddmkm\\Global\\Startup' -Name 'SendTelemetryData' -Type DWord -Value 0 -ErrorAction SilentlyContinue",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Stop-Service -Name 'NvTelemetryContainer' -Force",
+          "description": "Arrête le service de télémétrie Nvidia"
+        }
+      ],
+      "notes": "Désactive tous les services de télémétrie Nvidia et GeForce Experience. Stoppe les tâches planifiées de collecte de données. Améliore la confidentialité sans affecter les performances graphiques.",
+      "links": []
     }
   ]
 }
