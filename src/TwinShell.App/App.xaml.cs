@@ -57,6 +57,7 @@ public partial class App : Application
         services.AddScoped<ICommandHistoryRepository, CommandHistoryRepository>();
         services.AddScoped<IFavoritesRepository, FavoritesRepository>();
         services.AddScoped<ICustomCategoryRepository, CustomCategoryRepository>();
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
@@ -66,10 +67,12 @@ public partial class App : Application
         services.AddScoped<IFavoritesService, FavoritesService>();
         services.AddScoped<IConfigurationService, ConfigurationService>();
         services.AddScoped<ICustomCategoryService, CustomCategoryService>();
+        services.AddScoped<IAuditLogService, AuditLogService>();
 
         // Theme and Settings Services (Singletons to maintain state)
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<ILocalizationService, LocalizationService>();
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
@@ -104,12 +107,24 @@ public partial class App : Application
     {
         var settingsService = _serviceProvider!.GetRequiredService<ISettingsService>();
         var themeService = _serviceProvider!.GetRequiredService<IThemeService>();
+        var localizationService = _serviceProvider!.GetRequiredService<ILocalizationService>();
 
         // Load user settings
         var settings = await settingsService.LoadSettingsAsync();
 
         // Apply the saved theme
         themeService.ApplyTheme(settings.Theme);
+
+        // Apply the saved language
+        try
+        {
+            localizationService.ChangeLanguage(settings.CultureCode);
+        }
+        catch
+        {
+            // Fallback to French if culture is invalid
+            localizationService.ChangeLanguage("fr");
+        }
     }
 
     private async Task InitializeDatabaseAsync()

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="AppSubtitle" xml:space="preserve"><value>PowerShell &amp; Bash Command Manager for System Administrators</value></data>
+  <data name="MenuFile" xml:space="preserve"><value>_File</value></data>
+  <data name="MenuExport" xml:space="preserve"><value>_Export Configuration...</value></data>
+  <data name="MenuImport" xml:space="preserve"><value>_Import Configuration...</value></data>
+  <data name="MenuSettings" xml:space="preserve"><value>_Settings...</value></data>
+  <data name="MenuExit" xml:space="preserve"><value>E_xit</value></data>
+  <data name="MenuCategories" xml:space="preserve"><value>_Categories</value></data>
+  <data name="MenuManageCategories" xml:space="preserve"><value>_Manage Categories...</value></data>
+  <data name="MenuHelp" xml:space="preserve"><value>_Help</value></data>
+  <data name="MenuAbout" xml:space="preserve"><value>_About TwinShell</value></data>
+  <data name="MenuKeyboardShortcuts" xml:space="preserve"><value>_Keyboard Shortcuts</value></data>
+
+  <data name="TabActions" xml:space="preserve"><value>📋 Actions</value></data>
+  <data name="TabHistory" xml:space="preserve"><value>📜 History</value></data>
+  <data name="TabExecution" xml:space="preserve"><value>▶ Execution</value></data>
+
+  <data name="ButtonCopy" xml:space="preserve"><value>📋 Copy to Clipboard</value></data>
+  <data name="ButtonExecute" xml:space="preserve"><value>▶ Execute</value></data>
+  <data name="ButtonStop" xml:space="preserve"><value>⏹ Stop</value></data>
+  <data name="ButtonClear" xml:space="preserve"><value>🗑 Clear</value></data>
+  <data name="ButtonRefresh" xml:space="preserve"><value>🔄 Refresh</value></data>
+  <data name="ButtonDelete" xml:space="preserve"><value>🗑️ Delete</value></data>
+  <data name="ButtonClearAll" xml:space="preserve"><value>🗑️ Clear All</value></data>
+  <data name="ButtonClearFilters" xml:space="preserve"><value>Clear Filters</value></data>
+
+  <data name="LabelSearch" xml:space="preserve"><value>Search...</value></data>
+  <data name="LabelFilters" xml:space="preserve"><value>Filters</value></data>
+  <data name="LabelPlatform" xml:space="preserve"><value>Platform:</value></data>
+  <data name="LabelLevel" xml:space="preserve"><value>Level:</value></data>
+  <data name="LabelCategory" xml:space="preserve"><value>Category:</value></data>
+  <data name="LabelDate" xml:space="preserve"><value>Date:</value></data>
+  <data name="LabelDescription" xml:space="preserve"><value>Description</value></data>
+  <data name="LabelExamples" xml:space="preserve"><value>Examples</value></data>
+  <data name="LabelNotes" xml:space="preserve"><value>Notes</value></data>
+  <data name="LabelCommandGenerator" xml:space="preserve"><value>Command Generator</value></data>
+  <data name="LabelGeneratedCommand" xml:space="preserve"><value>Generated Command</value></data>
+  <data name="LabelStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="LabelLanguage" xml:space="preserve"><value>Language:</value></data>
+
+  <data name="PlatformWindows" xml:space="preserve"><value>Windows</value></data>
+  <data name="PlatformLinux" xml:space="preserve"><value>Linux</value></data>
+  <data name="PlatformBoth" xml:space="preserve"><value>Both</value></data>
+  <data name="PlatformAll" xml:space="preserve"><value>All</value></data>
+
+  <data name="LevelInfo" xml:space="preserve"><value>Info</value></data>
+  <data name="LevelRun" xml:space="preserve"><value>Run</value></data>
+  <data name="LevelDangerous" xml:space="preserve"><value>Dangerous</value></data>
+
+  <data name="MessageNoActionSelected" xml:space="preserve"><value>Select an action to view details</value></data>
+  <data name="MessageNoCommandTemplate" xml:space="preserve"><value>No command template available.</value></data>
+  <data name="MessageValidationErrors" xml:space="preserve"><value>Validation errors:</value></data>
+  <data name="MessageDangerousCommand" xml:space="preserve"><value>⚠️ WARNING: This command may cause significant system changes</value></data>
+  <data name="MessageExecutionCancelled" xml:space="preserve"><value>Execution cancelled by user</value></data>
+  <data name="MessageExecutionSuccess" xml:space="preserve"><value>Execution completed successfully</value></data>
+  <data name="MessageExecutionFailed" xml:space="preserve"><value>Execution failed</value></data>
+  <data name="MessageReady" xml:space="preserve"><value>Ready</value></data>
+  <data name="MessageExecuting" xml:space="preserve"><value>Executing...</value></data>
+
+  <data name="DialogTitleConfirmation" xml:space="preserve"><value>Confirmation</value></data>
+  <data name="DialogTitleError" xml:space="preserve"><value>Error</value></data>
+  <data name="DialogTitleWarning" xml:space="preserve"><value>Warning</value></data>
+  <data name="DialogTitleSuccess" xml:space="preserve"><value>Success</value></data>
+  <data name="DialogTitleDangerousCommand" xml:space="preserve"><value>Dangerous Command Confirmation</value></data>
+
+  <data name="SettingsTitle" xml:space="preserve"><value>Settings</value></data>
+  <data name="SettingsTheme" xml:space="preserve"><value>Theme:</value></data>
+  <data name="SettingsThemeLight" xml:space="preserve"><value>Light</value></data>
+  <data name="SettingsThemeDark" xml:space="preserve"><value>Dark</value></data>
+  <data name="SettingsThemeSystem" xml:space="preserve"><value>System</value></data>
+  <data name="SettingsAutoCleanup" xml:space="preserve"><value>Auto-cleanup (days):</value></data>
+  <data name="SettingsExecutionTimeout" xml:space="preserve"><value>Execution timeout (seconds):</value></data>
+  <data name="SettingsConfirmDangerous" xml:space="preserve"><value>Confirm dangerous commands</value></data>
+  <data name="SettingsShowRecentCommands" xml:space="preserve"><value>Show recent commands</value></data>
+
+  <data name="HistoryTitle" xml:space="preserve"><value>Command History</value></data>
+  <data name="HistorySubtitle" xml:space="preserve"><value>Browse and reuse your command history</value></data>
+  <data name="HistoryEntries" xml:space="preserve"><value>History Entries ({0})</value></data>
+
+  <data name="ExecutionOutputPanel" xml:space="preserve"><value>Output Panel</value></data>
+  <data name="ExecutionExitCode" xml:space="preserve"><value>Exit Code: {0}</value></data>
+  <data name="ExecutionDuration" xml:space="preserve"><value>Duration: {0}s</value></data>
+  <data name="ExecutionStatusSuccess" xml:space="preserve"><value>✓ SUCCESS</value></data>
+  <data name="ExecutionStatusFailed" xml:space="preserve"><value>✗ FAILED</value></data>
+
+  <data name="FilterToday" xml:space="preserve"><value>Today</value></data>
+  <data name="FilterLast7Days" xml:space="preserve"><value>Last 7 days</value></data>
+  <data name="FilterLast30Days" xml:space="preserve"><value>Last 30 days</value></data>
+  <data name="FilterAllTime" xml:space="preserve"><value>All time</value></data>
+</root>
