@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -17,6 +18,7 @@ public partial class BatchViewModel : ObservableObject
     private readonly IBatchService _batchService;
     private readonly IBatchExecutionService _batchExecutionService;
     private readonly INotificationService _notificationService;
+    private readonly ILogger<BatchViewModel> _logger;
 
     [ObservableProperty]
     private ObservableCollection<CommandBatch> _batches = new();
@@ -39,13 +41,15 @@ public partial class BatchViewModel : ObservableObject
     public BatchViewModel(
         IBatchService batchService,
         IBatchExecutionService batchExecutionService,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        ILogger<BatchViewModel> logger)
     {
         _batchService = batchService ?? throw new ArgumentNullException(nameof(batchService));
         _batchExecutionService = batchExecutionService ?? throw new ArgumentNullException(nameof(batchExecutionService));
         _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-        LoadBatchesAsync().ConfigureAwait(false);
+        // BUGFIX: Removed async call from constructor - batches will be loaded on demand
     }
 
     [RelayCommand]
@@ -53,7 +57,8 @@ public partial class BatchViewModel : ObservableObject
     {
         try
         {
-            var batches = await _batchService.GetAllBatchesAsync().ConfigureAwait(false);
+            // BUGFIX: Removed ConfigureAwait(false) before Dispatcher calls
+            var batches = await _batchService.GetAllBatchesAsync();
 
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -67,6 +72,7 @@ public partial class BatchViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to load batches");
             _notificationService.ShowError("Failed to load batches");
         }
     }
@@ -92,6 +98,7 @@ public partial class BatchViewModel : ObservableObject
             ProgressPercentage = 0;
             OutputLines.Clear();
 
+            // BUGFIX: Removed ConfigureAwait(false) because callbacks use Dispatcher
             var result = await _batchExecutionService.ExecuteBatchAsync(
                 SelectedBatch,
                 CancellationToken.None,
@@ -125,7 +132,7 @@ public partial class BatchViewModel : ObservableObject
                             Timestamp = output.Timestamp
                         });
                     });
-                }).ConfigureAwait(false);
+                });
 
             if (result.Success)
             {
@@ -136,11 +143,12 @@ public partial class BatchViewModel : ObservableObject
                 _notificationService.ShowWarning($"Batch completed with errors. {result.SuccessCount}/{result.ExecutedCount} commands succeeded, {result.FailureCount} failed.");
             }
 
-            await LoadBatchesAsync().ConfigureAwait(false);
+            await LoadBatchesAsync();
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to execute batch");
             _notificationService.ShowError("Failed to execute batch");
         }
         finally
@@ -161,13 +169,14 @@ public partial class BatchViewModel : ObservableObject
 
         try
         {
-            await _batchService.DeleteBatchAsync(SelectedBatch.Id).ConfigureAwait(false);
+            await _batchService.DeleteBatchAsync(SelectedBatch.Id);
             _notificationService.ShowSuccess("Batch deleted successfully");
-            await LoadBatchesAsync().ConfigureAwait(false);
+            await LoadBatchesAsync();
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to delete batch");
             _notificationService.ShowError("Failed to delete batch");
         }
     }
@@ -192,13 +201,15 @@ public partial class BatchViewModel : ObservableObject
 
             if (dialog.ShowDialog() == true)
             {
-                await File.WriteAllTextAsync(dialog.FileName, json).ConfigureAwait(false);
+                // BUGFIX: Removed ConfigureAwait(false) before notification call
+                await File.WriteAllTextAsync(dialog.FileName, json);
                 _notificationService.ShowSuccess("Batch exported successfully");
             }
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to export batch");
             _notificationService.ShowError("Failed to export batch");
         }
     }
@@ -215,16 +226,18 @@ public partial class BatchViewModel : ObservableObject
 
             if (dialog.ShowDialog() == true)
             {
-                var json = await File.ReadAllTextAsync(dialog.FileName).ConfigureAwait(false);
+                // BUGFIX: Removed ConfigureAwait(false) before notification calls
+                var json = await File.ReadAllTextAsync(dialog.FileName);
                 var batch = _batchService.ImportBatchFromJson(json);
-                await _batchService.CreateBatchAsync(batch).ConfigureAwait(false);
+                await _batchService.CreateBatchAsync(batch);
                 _notificationService.ShowSuccess("Batch imported successfully");
-                await LoadBatchesAsync().ConfigureAwait(false);
+                await LoadBatchesAsync();
             }
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to import batch");
             _notificationService.ShowError("Failed to import batch");
         }
     }

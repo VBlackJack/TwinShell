@@ -22,6 +22,18 @@ public static class MessageKeys
     public const string NoCommandTemplate = "Validation.NoCommandTemplate";
     public const string NoValidCommand = "Validation.NoValidCommand";
 
+    // Additional validation messages (aliases for consistency)
+    public const string ValidationParameterRequired = ParameterRequired;
+    public const string ValidationParameterMustBeInteger = ParameterMustBeInteger;
+    public const string ValidationParameterMustBeBoolean = ParameterMustBeBoolean;
+
+    // New validation messages
+    public const string ValidationParameterMaxLength = "Validation.ParameterMaxLength";
+    public const string ValidationParameterDangerousCharacters = "Validation.ParameterDangerousCharacters";
+    public const string ValidationParameterInvalidHostname = "Validation.ParameterInvalidHostname";
+    public const string ValidationParameterInvalidIPAddress = "Validation.ParameterInvalidIPAddress";
+    public const string ValidationParameterInvalidPath = "Validation.ParameterInvalidPath";
+
     // Execution messages
     public const string ExecutionError = "Execution.Error";
     public const string ExecutionSuccess = "Execution.Success";

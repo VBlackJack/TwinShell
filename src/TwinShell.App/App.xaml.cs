@@ -24,11 +24,10 @@ public partial class App : Application
         ConfigureServices(services);
         _serviceProvider = services.BuildServiceProvider();
 
-        // Load user settings and apply theme
-        InitializeThemeAsync().ConfigureAwait(false);
-
-        // Apply migrations and seed data
-        InitializeDatabaseAsync().ConfigureAwait(false);
+        // BUGFIX: Initialize theme and database synchronously to ensure they complete before showing the main window
+        // This prevents race conditions where the UI might try to access uninitialized resources
+        InitializeThemeAsync().GetAwaiter().GetResult();
+        InitializeDatabaseAsync().GetAwaiter().GetResult();
 
         // Create and show main window
         var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
@@ -114,9 +113,15 @@ public partial class App : Application
 
     private async Task InitializeThemeAsync()
     {
-        var settingsService = _serviceProvider!.GetRequiredService<ISettingsService>();
-        var themeService = _serviceProvider!.GetRequiredService<IThemeService>();
-        var localizationService = _serviceProvider!.GetRequiredService<ILocalizationService>();
+        // BUGFIX: Added null-check to prevent NullReferenceException if OnStartup fails before _serviceProvider is initialized
+        if (_serviceProvider == null)
+        {
+            throw new InvalidOperationException("Service provider has not been initialized");
+        }
+
+        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+        var themeService = _serviceProvider.GetRequiredService<IThemeService>();
+        var localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
 
         // Load user settings
         var settings = await settingsService.LoadSettingsAsync();
@@ -138,7 +143,13 @@ public partial class App : Application
 
     private async Task InitializeDatabaseAsync()
     {
-        using var scope = _serviceProvider!.CreateScope();
+        // BUGFIX: Added null-check to prevent NullReferenceException if OnStartup fails before _serviceProvider is initialized
+        if (_serviceProvider == null)
+        {
+            throw new InvalidOperationException("Service provider has not been initialized");
+        }
+
+        using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<TwinShellDbContext>();
 
         // Apply migrations

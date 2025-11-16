@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -14,6 +15,7 @@ public partial class PowerShellGalleryViewModel : ObservableObject
 {
     private readonly IPowerShellGalleryService _galleryService;
     private readonly INotificationService _notificationService;
+    private readonly ILogger<PowerShellGalleryViewModel> _logger;
 
     [ObservableProperty]
     private string _searchQuery = string.Empty;
@@ -44,10 +46,12 @@ public partial class PowerShellGalleryViewModel : ObservableObject
 
     public PowerShellGalleryViewModel(
         IPowerShellGalleryService galleryService,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        ILogger<PowerShellGalleryViewModel> logger)
     {
         _galleryService = galleryService ?? throw new ArgumentNullException(nameof(galleryService));
         _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [RelayCommand]
@@ -85,6 +89,7 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to search PowerShell Gallery modules for query: {SearchQuery}", SearchQuery);
             _notificationService.ShowError("Search failed");
             StatusMessage = "Search failed";
         }
@@ -134,6 +139,7 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to load commands from module: {ModuleName}", SelectedModule?.Name);
             _notificationService.ShowError("Failed to load commands");
             StatusMessage = "Failed to load commands";
         }
@@ -174,6 +180,7 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to install module: {ModuleName}", SelectedModule?.Name);
             _notificationService.ShowError("Installation failed");
             StatusMessage = "Installation failed";
         }
@@ -214,6 +221,7 @@ public partial class PowerShellGalleryViewModel : ObservableObject
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Failed to import command as action: {CommandName}", SelectedCommand?.Name);
             _notificationService.ShowError("Import failed");
             StatusMessage = "Import failed";
         }
