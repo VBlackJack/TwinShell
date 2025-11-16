@@ -11,6 +11,7 @@ public partial class HistoryViewModel : ObservableObject
 {
     private readonly ICommandHistoryService _historyService;
     private readonly IClipboardService _clipboardService;
+    private readonly SemaphoreSlim _historyLock = new SemaphoreSlim(1, 1);
 
     private List<CommandHistory> _allHistory = new();
 
@@ -110,63 +111,72 @@ public partial class HistoryViewModel : ObservableObject
 
     private async Task ApplyFiltersAsync()
     {
-        await Task.Run(() =>
+        // Use semaphore to prevent concurrent filter operations
+        await _historyLock.WaitAsync();
+        try
         {
-            var filtered = _allHistory.AsEnumerable();
-
-            // Search filter
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            await Task.Run(() =>
             {
-                var search = SearchText.ToLower();
-                filtered = filtered.Where(h =>
-                    h.GeneratedCommand.ToLower().Contains(search) ||
-                    h.ActionTitle.ToLower().Contains(search));
-            }
+                var filtered = _allHistory.AsEnumerable();
 
-            // Date filter
-            var now = DateTime.UtcNow;
-            switch (SelectedDateFilter)
-            {
-                case "Today":
-                    var todayStart = now.Date;
-                    filtered = filtered.Where(h => h.CreatedAt >= todayStart);
-                    break;
-                case "Last 7 days":
-                    var weekAgo = now.AddDays(-7);
-                    filtered = filtered.Where(h => h.CreatedAt >= weekAgo);
-                    break;
-                case "Last 30 days":
-                    var monthAgo = now.AddDays(-30);
-                    filtered = filtered.Where(h => h.CreatedAt >= monthAgo);
-                    break;
-            }
-
-            // Category filter
-            if (!string.IsNullOrWhiteSpace(SelectedCategory))
-            {
-                filtered = filtered.Where(h => h.Category == SelectedCategory);
-            }
-
-            // Platform filter
-            if (SelectedPlatform.HasValue)
-            {
-                filtered = filtered.Where(h => h.Platform == SelectedPlatform.Value);
-            }
-
-            var filteredList = filtered.ToList();
-            TotalCount = filteredList.Count;
-
-            // Update UI on main thread
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                HistoryItems.Clear();
-                foreach (var history in filteredList)
+                // Search filter
+                if (!string.IsNullOrWhiteSpace(SearchText))
                 {
-                    var viewModel = new CommandHistoryViewModel(history, _clipboardService, this);
-                    HistoryItems.Add(viewModel);
+                    var search = SearchText.ToLower();
+                    filtered = filtered.Where(h =>
+                        h.GeneratedCommand.ToLower().Contains(search) ||
+                        h.ActionTitle.ToLower().Contains(search));
                 }
+
+                // Date filter
+                var now = DateTime.UtcNow;
+                switch (SelectedDateFilter)
+                {
+                    case "Today":
+                        var todayStart = now.Date;
+                        filtered = filtered.Where(h => h.CreatedAt >= todayStart);
+                        break;
+                    case "Last 7 days":
+                        var weekAgo = now.AddDays(-7);
+                        filtered = filtered.Where(h => h.CreatedAt >= weekAgo);
+                        break;
+                    case "Last 30 days":
+                        var monthAgo = now.AddDays(-30);
+                        filtered = filtered.Where(h => h.CreatedAt >= monthAgo);
+                        break;
+                }
+
+                // Category filter
+                if (!string.IsNullOrWhiteSpace(SelectedCategory))
+                {
+                    filtered = filtered.Where(h => h.Category == SelectedCategory);
+                }
+
+                // Platform filter
+                if (SelectedPlatform.HasValue)
+                {
+                    filtered = filtered.Where(h => h.Platform == SelectedPlatform.Value);
+                }
+
+                var filteredList = filtered.ToList();
+                TotalCount = filteredList.Count;
+
+                // Update UI on main thread
+                System.Windows.Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    HistoryItems.Clear();
+                    foreach (var history in filteredList)
+                    {
+                        var viewModel = new CommandHistoryViewModel(history, _clipboardService, this);
+                        HistoryItems.Add(viewModel);
+                    }
+                });
             });
-        });
+        }
+        finally
+        {
+            _historyLock.Release();
+        }
     }
 
     [RelayCommand]

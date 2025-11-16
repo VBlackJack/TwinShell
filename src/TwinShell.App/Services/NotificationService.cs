@@ -11,10 +11,11 @@ namespace TwinShell.App.Services;
 /// <summary>
 /// WPF implementation of notification service using toast-style popups.
 /// </summary>
-public class NotificationService : INotificationService
+public class NotificationService : INotificationService, IDisposable
 {
     private readonly DispatcherTimer _timer;
     private Popup? _currentPopup;
+    private bool _disposed;
 
     public NotificationService()
     {
@@ -139,14 +140,7 @@ public class NotificationService : INotificationService
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
             };
 
-            fadeOut.Completed += (s, e) =>
-            {
-                if (_currentPopup != null)
-                {
-                    _currentPopup.IsOpen = false;
-                    _currentPopup = null;
-                }
-            };
+            fadeOut.Completed += OnFadeOutCompleted;
 
             border.BeginAnimation(UIElement.OpacityProperty, fadeOut);
         }
@@ -155,5 +149,45 @@ public class NotificationService : INotificationService
             _currentPopup.IsOpen = false;
             _currentPopup = null;
         }
+    }
+
+    /// <summary>
+    /// Fade out animation completed handler
+    /// </summary>
+    private void OnFadeOutCompleted(object? sender, EventArgs e)
+    {
+        // Detach event handler to prevent memory leak
+        if (sender is DoubleAnimation animation)
+        {
+            animation.Completed -= OnFadeOutCompleted;
+        }
+
+        if (_currentPopup != null)
+        {
+            _currentPopup.IsOpen = false;
+            _currentPopup = null;
+        }
+    }
+
+    /// <summary>
+    /// Dispose resources to prevent memory leaks
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        // Stop and detach timer event handler
+        _timer.Stop();
+        _timer.Tick -= Timer_Tick;
+
+        // Close current popup if any
+        if (_currentPopup != null)
+        {
+            _currentPopup.IsOpen = false;
+            _currentPopup = null;
+        }
+
+        _disposed = true;
     }
 }
