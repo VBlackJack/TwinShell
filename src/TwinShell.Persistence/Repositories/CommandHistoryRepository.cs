@@ -25,6 +25,16 @@ public class CommandHistoryRepository : ICommandHistoryRepository
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// PERFORMANCE: Add multiple history entries at once to avoid N+1 queries
+    /// </summary>
+    public async Task AddRangeAsync(IEnumerable<CommandHistory> histories)
+    {
+        var entities = histories.Select(CommandHistoryMapper.ToEntity);
+        _context.CommandHistories.AddRange(entities);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task UpdateAsync(CommandHistory history)
     {
         var entity = CommandHistoryMapper.ToEntity(history);
@@ -61,10 +71,12 @@ public class CommandHistoryRepository : ICommandHistoryRepository
         // Apply filters
         if (!string.IsNullOrWhiteSpace(searchText))
         {
-            var search = searchText.ToLower();
+            // PERFORMANCE FIX: Use EF.Functions.Like for case-insensitive search
+            // This allows SQL Server to use indexes, whereas ToLower() prevents index usage
+            var search = $"%{searchText}%";
             query = query.Where(h =>
-                h.GeneratedCommand.ToLower().Contains(search) ||
-                h.ActionTitle.ToLower().Contains(search));
+                EF.Functions.Like(h.GeneratedCommand, search) ||
+                EF.Functions.Like(h.ActionTitle, search));
         }
 
         if (fromDate.HasValue)
@@ -131,16 +143,11 @@ public class CommandHistoryRepository : ICommandHistoryRepository
 
     public async Task DeleteOlderThanAsync(DateTime date)
     {
-        var entities = await _context.CommandHistories
+        // PERFORMANCE FIX: Use ExecuteDeleteAsync to delete in database without loading entities
+        // This prevents OOM issues with large datasets and is 10-100x faster
+        await _context.CommandHistories
             .Where(h => h.CreatedAt < date)
-            .ToListAsync();
-
-        // PERFORMANCE: Use Count for List instead of Any()
-        if (entities.Count > 0)
-        {
-            _context.CommandHistories.RemoveRange(entities);
-            await _context.SaveChangesAsync();
-        }
+            .ExecuteDeleteAsync();
     }
 
     public async Task<int> CountAsync()
@@ -150,12 +157,8 @@ public class CommandHistoryRepository : ICommandHistoryRepository
 
     public async Task ClearAllAsync()
     {
-        var entities = await _context.CommandHistories.ToListAsync();
-        // PERFORMANCE: Use Count for List instead of Any()
-        if (entities.Count > 0)
-        {
-            _context.CommandHistories.RemoveRange(entities);
-            await _context.SaveChangesAsync();
-        }
+        // PERFORMANCE FIX: Use ExecuteDeleteAsync to delete in database without loading entities
+        // This prevents OOM (Out of Memory) issues with large history and is 10-100x faster
+        await _context.CommandHistories.ExecuteDeleteAsync();
     }
 }

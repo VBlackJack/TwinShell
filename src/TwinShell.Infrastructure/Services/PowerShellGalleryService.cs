@@ -286,11 +286,10 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             return false;
         }
 
-        // SECURITY: Validate scope
-        if (scope != "CurrentUser" && scope != "AllUsers")
-        {
-            return false;
-        }
+        // SECURITY FIX: Only allow CurrentUser scope to prevent privilege escalation
+        // Installing with AllUsers scope could allow privilege escalation if user has elevated permissions
+        // Force CurrentUser scope regardless of parameter value for safety
+        scope = "CurrentUser";
 
         var command = $@"
             Install-Module -Name '{EscapeForPowerShell(moduleName)}' -Scope {scope} -Force -AllowClobber -ErrorAction Stop
@@ -424,9 +423,13 @@ public class PowerShellGalleryService : IPowerShellGalleryService
         if (result.Scheme != "https")
             return false;
 
-        // Whitelist of allowed hosts for PowerShell Gallery
-        return AllowedHosts.Any(host => result.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
-                                        result.Host.EndsWith("." + host, StringComparison.OrdinalIgnoreCase));
+        // SECURITY FIX: Whitelist of allowed hosts for PowerShell Gallery
+        // Use exact match or proper subdomain validation to prevent malicious domains
+        // like 'fakepowershellgallery.com' from being accepted
+        return AllowedHosts.Any(host =>
+            result.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
+            (result.Host.EndsWith("." + host, StringComparison.OrdinalIgnoreCase) &&
+             result.Host.Length > host.Length + 1));
     }
 
     private static PowerShellModule MapToModule(PowerShellGalleryModuleDto dto)

@@ -188,6 +188,9 @@ public class ConfigurationService : IConfigurationService
             var currentFavoritesCount = await _favoritesRepository.GetCountAsync(userId);
 
             // Import favorites
+            // PERFORMANCE FIX: Collect all favorites and batch insert instead of N+1 queries
+            var favoritesToAdd = new List<UserFavorite>();
+
             foreach (var favoriteDto in config.Favorites)
             {
                 // Skip if already exists in merge mode
@@ -217,12 +220,21 @@ public class ConfigurationService : IConfigurationService
                     DisplayOrder = favoriteDto.DisplayOrder
                 };
 
-                await _favoritesRepository.AddAsync(favorite);
+                favoritesToAdd.Add(favorite);
                 favoritesImported++;
                 currentFavoritesCount++; // Increment local counter
             }
 
+            // PERFORMANCE FIX: Batch insert all favorites at once
+            if (favoritesToAdd.Any())
+            {
+                await _favoritesRepository.AddRangeAsync(favoritesToAdd);
+            }
+
             // Import history
+            // PERFORMANCE FIX: Collect all history items and batch insert instead of N+1 queries
+            var historyToAdd = new List<CommandHistory>();
+
             foreach (var historyDto in config.History)
             {
                 // PERFORMANCE: Check existence in memory instead of database query
@@ -250,8 +262,14 @@ public class ConfigurationService : IConfigurationService
                     ActionTitle = historyDto.ActionTitle
                 };
 
-                await _historyRepository.AddAsync(history);
+                historyToAdd.Add(history);
                 historyImported++;
+            }
+
+            // PERFORMANCE FIX: Batch insert all history at once
+            if (historyToAdd.Any())
+            {
+                await _historyRepository.AddRangeAsync(historyToAdd);
             }
 
             return (true, null, favoritesImported, historyImported);
@@ -305,7 +323,8 @@ public class ConfigurationService : IConfigurationService
         }
         catch (JsonException ex)
         {
-            return (false, $"JSON parsing error: {ex.Message}", null);
+            // SECURITY FIX: Don't expose exception details that could leak path information
+            return (false, "JSON parsing error", null);
         }
         catch (Exception ex)
         {
