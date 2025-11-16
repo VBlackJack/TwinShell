@@ -37,7 +37,7 @@
 
     <!-- Disabled State -->
     <SolidColorBrush x:Key="DisabledBrush" Color="#555555"/>
-    <SolidColorBrush x:Key="DisabledTextBrush" Color="#6E6E6E"/>
+    <SolidColorBrush x:Key="DisabledTextBrush" Color="#909090"/>
 
     <!-- Badge Base Style -->
     <Style x:Key="BadgeStyle" TargetType="Border">
@@ -69,6 +69,23 @@
         <Setter Property="CornerRadius" Value="4"/>
     </Style>
 
+    <!-- Focus Visual Style -->
+    <Style x:Key="FocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2"
+                               StrokeThickness="3"
+                               Stroke="#1C97EA"
+                               StrokeDashArray="1 2"
+                               SnapsToDevicePixels="True"
+                               RadiusX="4"
+                               RadiusY="4"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Button Style -->
     <Style x:Key="PrimaryButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
@@ -76,6 +93,7 @@
         <Setter Property="Padding" Value="16,8"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -106,6 +124,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -122,7 +141,7 @@
         <Style.Triggers>
             <Trigger Property="IsFocused" Value="True">
                 <Setter Property="BorderBrush" Value="{StaticResource FocusBorderBrush}"/>
-                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="BorderThickness" Value="3"/>
             </Trigger>
         </Style.Triggers>
     </Style>

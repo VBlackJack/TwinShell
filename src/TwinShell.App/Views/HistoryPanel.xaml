@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000"
              Background="{StaticResource BackgroundBrush}">
@@ -49,18 +50,32 @@
                     <TextBox Grid.Column="0"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBoxStyle}"
-                             FontSize="14"/>
+                             FontSize="14"
+                             TabIndex="1"
+                             behaviors:TextBoxPlaceholderBehavior.Placeholder="Search command history..."
+                             AutomationProperties.Name="Search command history"
+                             AutomationProperties.HelpText="Search for commands in your history by name or command text"/>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12,0,0,0">
                         <Button Content="🔄 Refresh"
                                 Command="{Binding RefreshCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Margin="0,0,8,0"
-                                Padding="8,4"/>
+                                Padding="12,10"
+                                MinWidth="44"
+                                MinHeight="44"
+                                TabIndex="2"
+                                AutomationProperties.Name="Refresh history"
+                                AutomationProperties.HelpText="Reload command history from database"/>
                         <Button Content="🗑️ Clear All"
                                 Command="{Binding ClearAllCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
-                                Padding="8,4"/>
+                                Padding="12,10"
+                                MinWidth="44"
+                                MinHeight="44"
+                                TabIndex="3"
+                                AutomationProperties.Name="Clear all history"
+                                AutomationProperties.HelpText="Delete all command history entries"/>
                     </StackPanel>
                 </Grid>
 
@@ -81,7 +96,10 @@
                                    FontWeight="SemiBold"/>
                         <ComboBox ItemsSource="{Binding DateFilterOptions}"
                                   SelectedItem="{Binding SelectedDateFilter}"
-                                  MinWidth="120"/>
+                                  MinWidth="120"
+                                  TabIndex="4"
+                                  AutomationProperties.Name="Filter by date"
+                                  AutomationProperties.HelpText="Filter history entries by date range"/>
                     </StackPanel>
 
                     <!-- Category Filter -->
@@ -92,7 +110,10 @@
                                    FontWeight="SemiBold"/>
                         <ComboBox ItemsSource="{Binding Categories}"
                                   SelectedItem="{Binding SelectedCategory}"
-                                  MinWidth="120"/>
+                                  MinWidth="120"
+                                  TabIndex="5"
+                                  AutomationProperties.Name="Filter by category"
+                                  AutomationProperties.HelpText="Filter history entries by action category"/>
                     </StackPanel>
 
                     <!-- Platform Filter -->
@@ -102,7 +123,10 @@
                                    Margin="0,0,8,0"
                                    FontWeight="SemiBold"/>
                         <ComboBox SelectedItem="{Binding SelectedPlatform}"
-                                  MinWidth="100">
+                                  MinWidth="100"
+                                  TabIndex="6"
+                                  AutomationProperties.Name="Filter by platform"
+                                  AutomationProperties.HelpText="Filter history entries by platform">
                             <ComboBox.Items>
                                 <ComboBoxItem Content="All" Tag="{x:Null}"/>
                                 <ComboBoxItem Content="Windows" Tag="0"/>
@@ -117,7 +141,12 @@
                             Content="Clear Filters"
                             Command="{Binding ClearFiltersCommand}"
                             HorizontalAlignment="Right"
-                            Padding="8,4"/>
+                            Padding="12,10"
+                            MinWidth="44"
+                            MinHeight="44"
+                            TabIndex="7"
+                            AutomationProperties.Name="Clear filters"
+                            AutomationProperties.HelpText="Reset all history filters to default values"/>
                 </Grid>
             </Grid>
         </Border>
@@ -138,7 +167,9 @@
                            Foreground="White"/>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding HistoryItems}" Margin="8">
+                    <ItemsControl ItemsSource="{Binding HistoryItems}" Margin="8"
+                                  AutomationProperties.Name="History items"
+                                  AutomationProperties.HelpText="List of command history entries">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="White"

@@ -21,7 +21,9 @@
             </Grid>
 
             <!-- Recent Commands List -->
-            <ItemsControl ItemsSource="{Binding RecentCommands}">
+            <ItemsControl ItemsSource="{Binding RecentCommands}"
+                          AutomationProperties.Name="Recent commands"
+                          AutomationProperties.HelpText="List of your most recent commands. Click to copy to clipboard.">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Background="White"
