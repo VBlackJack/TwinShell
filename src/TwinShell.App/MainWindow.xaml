@@ -229,12 +229,43 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <!-- Title -->
-                            <TextBlock Text="{Binding Title}"
-                                       FontSize="20"
-                                       FontWeight="Bold"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,8"/>
+                            <!-- Title and Favorite Button -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Title}"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           TextWrapping="Wrap"
+                                           VerticalAlignment="Center"/>
+
+                                <Button Grid.Column="1"
+                                        Content="☆"
+                                        FontSize="24"
+                                        Padding="8,4"
+                                        Margin="8,0,0,0"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand"
+                                        ToolTip="Add to / Remove from Favorites"
+                                        Command="{Binding DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        VerticalAlignment="Center">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Foreground" Value="#666"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="#FFD700"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
 
                             <!-- Badges -->
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,16">

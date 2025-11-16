@@ -14,8 +14,10 @@ public partial class MainViewModel : ObservableObject
     private readonly ICommandGeneratorService _commandGeneratorService;
     private readonly IClipboardService _clipboardService;
     private readonly ICommandHistoryService _commandHistoryService;
+    private readonly IFavoritesService _favoritesService;
 
     private List<Action> _allActions = new();
+    private HashSet<string> _favoriteActionIds = new();
 
     [ObservableProperty]
     private ObservableCollection<string> _categories = new();
@@ -51,6 +53,9 @@ public partial class MainViewModel : ObservableObject
     private bool _filterDangerous = true;
 
     [ObservableProperty]
+    private bool _showFavoritesOnly;
+
+    [ObservableProperty]
     private string _generatedCommand = string.Empty;
 
     [ObservableProperty]
@@ -61,13 +66,15 @@ public partial class MainViewModel : ObservableObject
         ISearchService searchService,
         ICommandGeneratorService commandGeneratorService,
         IClipboardService clipboardService,
-        ICommandHistoryService commandHistoryService)
+        ICommandHistoryService commandHistoryService,
+        IFavoritesService favoritesService)
     {
         _actionService = actionService;
         _searchService = searchService;
         _commandGeneratorService = commandGeneratorService;
         _clipboardService = clipboardService;
         _commandHistoryService = commandHistoryService;
+        _favoritesService = favoritesService;
     }
 
     public async Task InitializeAsync()
@@ -79,7 +86,14 @@ public partial class MainViewModel : ObservableObject
     {
         _allActions = (await _actionService.GetAllActionsAsync()).ToList();
 
-        var categories = await _actionService.GetAllCategoriesAsync();
+        // Load favorites
+        var favorites = await _favoritesService.GetAllFavoritesAsync();
+        _favoriteActionIds = favorites.Select(f => f.ActionId).ToHashSet();
+
+        var categories = (await _actionService.GetAllCategoriesAsync()).ToList();
+
+        // Add "Favorites" as first category
+        categories.Insert(0, "⭐ Favorites");
         Categories = new ObservableCollection<string>(categories);
 
         await ApplyFiltersAsync();
@@ -101,6 +115,7 @@ public partial class MainViewModel : ObservableObject
     partial void OnFilterInfoChanged(bool value) => _ = ApplyFiltersAsync();
     partial void OnFilterRunChanged(bool value) => _ = ApplyFiltersAsync();
     partial void OnFilterDangerousChanged(bool value) => _ = ApplyFiltersAsync();
+    partial void OnShowFavoritesOnlyChanged(bool value) => _ = ApplyFiltersAsync();
 
     partial void OnSelectedActionChanged(Action? value)
     {
@@ -114,10 +129,21 @@ public partial class MainViewModel : ObservableObject
     {
         var filtered = _allActions.AsEnumerable();
 
+        // Favorites filter (special category)
+        if (SelectedCategory == "⭐ Favorites")
+        {
+            filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
+        }
         // Category filter
-        if (!string.IsNullOrEmpty(SelectedCategory))
+        else if (!string.IsNullOrEmpty(SelectedCategory))
         {
             filtered = filtered.Where(a => a.Category == SelectedCategory);
+        }
+
+        // Show favorites only filter
+        if (ShowFavoritesOnly)
+        {
+            filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
         }
 
         // Search filter
@@ -256,6 +282,47 @@ public partial class MainViewModel : ObservableObject
         FilterInfo = true;
         FilterRun = true;
         FilterDangerous = true;
+        ShowFavoritesOnly = false;
+    }
+
+    /// <summary>
+    /// Toggle favorite status for the selected action
+    /// </summary>
+    [RelayCommand]
+    private async Task ToggleFavoriteAsync()
+    {
+        if (SelectedAction == null) return;
+
+        var result = await _favoritesService.ToggleFavoriteAsync(SelectedAction.Id);
+
+        // Reload favorites
+        var favorites = await _favoritesService.GetAllFavoritesAsync();
+        _favoriteActionIds = favorites.Select(f => f.ActionId).ToHashSet();
+
+        // Refresh the filtered list
+        await ApplyFiltersAsync();
+
+        // Show notification if limit reached
+        if (!result)
+        {
+            var count = await _favoritesService.GetFavoriteCountAsync();
+            if (count >= 50)
+            {
+                System.Windows.MessageBox.Show(
+                    $"You have reached the maximum limit of 50 favorites ({count}/50). Please remove some favorites before adding new ones.",
+                    "Favorites Limit Reached",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Check if the selected action is a favorite
+    /// </summary>
+    public bool IsSelectedActionFavorite()
+    {
+        return SelectedAction != null && _favoriteActionIds.Contains(SelectedAction.Id);
     }
 }
 
