@@ -2,9 +2,67 @@
   "schemaVersion": "1.0",
   "batches": [
     {
+      "id": "gaming-perf-batch",
+      "name": "🎮 Optimisation Gaming",
+      "description": "Configuration optimisée pour le gaming. Supprime Xbox, désactive Game DVR, active Ultimate Performance, optimise DNS Cloudflare et performances jeux. Désactive 200+ services non essentiels pour maximiser les FPS. Recommandé pour tous les gamers exigeants.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["performance", "gaming", "fps", "latency", "optimisation", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-DEBLOAT-205",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Supprimer Xbox et tous composants Gaming"
+        },
+        {
+          "actionId": "WIN-PRIVACY-202",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Désactiver Game DVR (améliore FPS)"
+        },
+        {
+          "actionId": "WIN-PERF-002",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Configurer DNS Cloudflare (optimal pour gaming)"
+        },
+        {
+          "actionId": "WIN-PERF-101",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Activer plan Ultimate Performance"
+        },
+        {
+          "actionId": "WIN-PERF-201",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Désactiver 200+ services non essentiels"
+        },
+        {
+          "actionId": "WIN-PERF-401",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Désactiver HAGS (réduit micro-stutters)"
+        },
+        {
+          "actionId": "WIN-PERF-404",
+          "order": 7,
+          "isExecuted": false,
+          "description": "Optimiser performances jeux (Game Mode)"
+        },
+        {
+          "actionId": "WIN-PERF-405",
+          "order": 8,
+          "isExecuted": false,
+          "description": "Limiter Windows Defender CPU à 25%"
+        }
+      ]
+    },
+    {
       "id": "privacy-max-batch",
       "name": "🔒 Confidentialité maximale",
-      "description": "Configuration de confidentialité maximale combinant désactivation de toutes les permissions, synchronisation cloud, télémétrie minimale et services biométriques. Conforme RGPD strict - Recommandé pour entreprises européennes.",
+      "description": "Configuration de confidentialité maximale combinant désactivation de toutes les permissions, synchronisation cloud, télémétrie minimale et suppression des composants Microsoft cloud (OneDrive, Copilot). Désactive Consumer Features. Conforme RGPD strict - Recommandé pour entreprises européennes.",
       "executionMode": 1,
       "isUserCreated": false,
       "tags": ["privacy", "confidentialité", "rgpd", "security", "preset", "windows"],
@@ -28,41 +86,185 @@
           "description": "Configuration minimale de télémétrie (Security only)"
         },
         {
-          "actionId": "WIN-PRIVACY-207",
+          "actionId": "WIN-PRIVACY-206",
           "order": 4,
           "isExecuted": false,
-          "description": "Désactiver les services biométriques"
+          "description": "Désactiver la reconnaissance vocale cloud"
         },
         {
-          "actionId": "WIN-PRIVACY-201",
+          "actionId": "WIN-DEBLOAT-204",
           "order": 5,
           "isExecuted": false,
-          "description": "Désactiver Activity Feed"
+          "description": "Désinstaller Copilot (assistant IA)"
         },
         {
-          "actionId": "WIN-PRIVACY-203",
+          "actionId": "WIN-DEBLOAT-202",
           "order": 6,
           "isExecuted": false,
-          "description": "Désactiver les notifications publicitaires"
+          "description": "Désinstaller OneDrive (complet)"
         },
         {
-          "actionId": "WIN-PRIVACY-204",
+          "actionId": "WIN-DEBLOAT-301",
           "order": 7,
           "isExecuted": false,
-          "description": "Désactiver le suivi de localisation"
+          "description": "Désactiver Consumer Features (apps suggérées)"
+        }
+      ]
+    },
+    {
+      "id": "server-perf-batch",
+      "name": "⚡ Performance serveur",
+      "description": "Configuration de performance pour serveurs Windows ou workstations. Désactive 200+ services non essentiels, indexation, hibernation. Active plan Ultimate Performance et DNS Cloudflare. Limite Windows Defender CPU. Optimisé pour charge continue, sans fonctionnalités gaming ou desktop inutiles.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["performance", "server", "workstation", "optimisation", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-PERF-002",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Configurer DNS Cloudflare"
         },
         {
-          "actionId": "WIN-PRIVACY-206",
-          "order": 8,
+          "actionId": "WIN-PERF-101",
+          "order": 2,
           "isExecuted": false,
-          "description": "Désactiver la reconnaissance vocale cloud"
+          "description": "Activer plan Ultimate Performance"
+        },
+        {
+          "actionId": "WIN-PERF-103",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Désactiver hibernation"
+        },
+        {
+          "actionId": "WIN-PERF-201",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Désactiver 200+ services non essentiels"
+        },
+        {
+          "actionId": "WIN-PERF-205",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Désactiver Windows Search Indexing"
+        },
+        {
+          "actionId": "WIN-PERF-301",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Désactiver Superfetch/SysMain"
+        },
+        {
+          "actionId": "WIN-PERF-405",
+          "order": 7,
+          "isExecuted": false,
+          "description": "Limiter Windows Defender CPU à 25%"
+        }
+      ]
+    },
+    {
+      "id": "debloat-enterprise-batch",
+      "name": "🧹 Debloat complet entreprise",
+      "description": "Configuration de debloating complète pour environnements d'entreprise. Supprime bloatware tiers, apps Microsoft non essentielles, Copilot, Widgets. Désactive Consumer Features, synchronisation cloud et télémétrie. Recommandé pour déploiements en entreprise et organisations.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["debloat", "enterprise", "entreprise", "productivity", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-DEBLOAT-001",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Supprimer tous les bloatwares tiers"
+        },
+        {
+          "actionId": "WIN-DEBLOAT-101",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Supprimer les apps Microsoft inutiles"
+        },
+        {
+          "actionId": "WIN-DEBLOAT-204",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Désinstaller Copilot"
+        },
+        {
+          "actionId": "WIN-DEBLOAT-206",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Supprimer Widgets"
+        },
+        {
+          "actionId": "WIN-DEBLOAT-301",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Désactiver Consumer Features"
+        },
+        {
+          "actionId": "WIN-PRIVACY-101",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Désactiver synchronisation cloud"
+        },
+        {
+          "actionId": "WIN-PRIVACY-205",
+          "order": 7,
+          "isExecuted": false,
+          "description": "Télémétrie minimale (Security only)"
+        }
+      ]
+    },
+    {
+      "id": "workstation-standard-batch",
+      "name": "🏢 Configuration poste de travail standard",
+      "description": "Configuration équilibrée et sécurisée pour postes de travail professionnels. Supprime bloatware, limite permissions apps, configure télémétrie minimale, DNS optimisé et plan Hautes performances. Limite Windows Defender CPU. Recommandé pour la majorité des utilisateurs professionnels.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["workstation", "office", "professional", "productivity", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-DEBLOAT-001",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Supprimer bloatware tiers"
+        },
+        {
+          "actionId": "WIN-PRIVACY-009",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Limiter permissions applications"
+        },
+        {
+          "actionId": "WIN-PRIVACY-205",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Télémétrie minimale"
+        },
+        {
+          "actionId": "WIN-PERF-002",
+          "order": 4,
+          "isExecuted": false,
+          "description": "DNS Cloudflare (rapidité et sécurité)"
+        },
+        {
+          "actionId": "WIN-PERF-102",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Plan Hautes performances"
+        },
+        {
+          "actionId": "WIN-PERF-405",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Limiter Windows Defender CPU à 25%"
         }
       ]
     },
     {
       "id": "perf-max-batch",
       "name": "⚡ Performance maximale",
-      "description": "Configuration de performance maximale pour PC gaming/workstation. Désactive services non essentiels, active plan Ultimate Performance, optimise DNS Cloudflare et paramètres système. ATTENTION: Désactive 200+ services (WIN-PERF-201). Recommandé pour PC dédiés gaming/performance pure.",
+      "description": "Configuration de performance maximale pour PC gaming/workstation. Désactive 200+ services non essentiels, active plan Ultimate Performance, optimise DNS Cloudflare et paramètres système. Désactive Superfetch, Prefetch. ATTENTION: Désactive massivement les services. Recommandé pour PC dédiés gaming/performance pure.",
       "executionMode": 1,
       "isUserCreated": false,
       "tags": ["performance", "gaming", "optimisation", "preset", "windows", "advanced"],
@@ -112,104 +314,6 @@
         {
           "actionId": "WIN-PERF-405",
           "order": 8,
-          "isExecuted": false,
-          "description": "Limiter Windows Defender CPU à 25%"
-        }
-      ]
-    },
-    {
-      "id": "gaming-perf-batch",
-      "name": "🎮 Optimisation Gaming",
-      "description": "Configuration optimisée pour le gaming. Active Ultimate Performance, Game Mode, optimise DNS Cloudflare, latence souris et paramètres GPU. Approche équilibrée: améliore les perfs sans désactiver massivement les services. Recommandé pour tous les gamers.",
-      "executionMode": 1,
-      "isUserCreated": false,
-      "tags": ["performance", "gaming", "fps", "latency", "optimisation", "preset", "windows"],
-      "commands": [
-        {
-          "actionId": "WIN-PERF-002",
-          "order": 1,
-          "isExecuted": false,
-          "description": "Configurer DNS Cloudflare (optimal pour gaming)"
-        },
-        {
-          "actionId": "WIN-PERF-101",
-          "order": 2,
-          "isExecuted": false,
-          "description": "Activer plan Ultimate Performance"
-        },
-        {
-          "actionId": "WIN-PERF-401",
-          "order": 3,
-          "isExecuted": false,
-          "description": "Désactiver HAGS (réduit micro-stutters)"
-        },
-        {
-          "actionId": "WIN-PERF-403",
-          "order": 4,
-          "isExecuted": false,
-          "description": "Réduire latence souris"
-        },
-        {
-          "actionId": "WIN-PERF-404",
-          "order": 5,
-          "isExecuted": false,
-          "description": "Optimiser performances jeux (Game Mode)"
-        },
-        {
-          "actionId": "WIN-PERF-405",
-          "order": 6,
-          "isExecuted": false,
-          "description": "Limiter Windows Defender CPU à 25%"
-        }
-      ]
-    },
-    {
-      "id": "server-perf-batch",
-      "name": "🖥️ Performance serveur",
-      "description": "Configuration de performance pour serveurs Windows ou workstations. Désactive services non essentiels, indexation, hibernation. Active plan Ultimate Performance et DNS Cloudflare. Optimisé pour charge continue, sans fonctionnalités gaming inutiles.",
-      "executionMode": 1,
-      "isUserCreated": false,
-      "tags": ["performance", "server", "workstation", "optimisation", "preset", "windows"],
-      "commands": [
-        {
-          "actionId": "WIN-PERF-002",
-          "order": 1,
-          "isExecuted": false,
-          "description": "Configurer DNS Cloudflare"
-        },
-        {
-          "actionId": "WIN-PERF-101",
-          "order": 2,
-          "isExecuted": false,
-          "description": "Activer plan Ultimate Performance"
-        },
-        {
-          "actionId": "WIN-PERF-103",
-          "order": 3,
-          "isExecuted": false,
-          "description": "Désactiver hibernation"
-        },
-        {
-          "actionId": "WIN-PERF-201",
-          "order": 4,
-          "isExecuted": false,
-          "description": "Désactiver services non essentiels"
-        },
-        {
-          "actionId": "WIN-PERF-205",
-          "order": 5,
-          "isExecuted": false,
-          "description": "Désactiver Windows Search Indexing"
-        },
-        {
-          "actionId": "WIN-PERF-301",
-          "order": 6,
-          "isExecuted": false,
-          "description": "Désactiver Superfetch/SysMain"
-        },
-        {
-          "actionId": "WIN-PERF-405",
-          "order": 7,
           "isExecuted": false,
           "description": "Limiter Windows Defender CPU à 25%"
         }
