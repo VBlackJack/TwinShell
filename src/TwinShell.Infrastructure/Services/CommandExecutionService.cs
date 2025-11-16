@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -11,6 +12,12 @@ namespace TwinShell.Infrastructure.Services;
 /// </summary>
 public class CommandExecutionService : ICommandExecutionService
 {
+    private readonly ILogger<CommandExecutionService>? _logger;
+
+    public CommandExecutionService(ILogger<CommandExecutionService>? logger = null)
+    {
+        _logger = logger;
+    }
     /// <summary>
     /// Executes a command on the specified platform
     /// </summary>
@@ -135,9 +142,14 @@ public class CommandExecutionService : ICommandExecutionService
             stopwatch.Stop();
             result.Duration = stopwatch.Elapsed;
             result.Success = false;
-            result.ErrorMessage = $"Failed to execute command: {ex.Message}";
+
+            // Log the full exception details securely on the server side
+            _logger?.LogError(ex, "Command execution failed");
+
+            // Return only a generic error message to the user (no stack trace exposure)
+            result.ErrorMessage = "Command execution failed";
             result.ExitCode = -1;
-            result.Stderr = ex.ToString();
+            result.Stderr = string.Empty; // Do not expose exception details
         }
 
         return result;
@@ -157,27 +169,56 @@ public class CommandExecutionService : ICommandExecutionService
 
         return actualPlatform switch
         {
-            Platform.Windows => ("powershell.exe", $"-NoProfile -NonInteractive -Command \"{EscapeForPowerShell(command)}\""),
-            Platform.Linux => ("bash", $"-c \"{EscapeForBash(command)}\""),
+            Platform.Windows => ("powershell.exe", BuildPowerShellCommand(command)),
+            Platform.Linux => ("bash", BuildBashCommand(command)),
             _ => throw new NotSupportedException($"Platform {platform} is not supported for command execution")
         };
     }
 
     /// <summary>
-    /// Escapes command for PowerShell execution
+    /// Builds a safe PowerShell command using Base64 encoding to avoid escaping issues
     /// </summary>
-    private string EscapeForPowerShell(string command)
+    private string BuildPowerShellCommand(string command)
     {
-        // Escape double quotes by doubling them
-        return command.Replace("\"", "\"\"");
+        // Use base64 encoding to avoid all escaping issues
+        // This is the safest approach for PowerShell command execution
+        var bytes = Encoding.Unicode.GetBytes(command);
+        var encoded = Convert.ToBase64String(bytes);
+        return $"-NoProfile -NonInteractive -EncodedCommand {encoded}";
     }
 
     /// <summary>
-    /// Escapes command for Bash execution
+    /// Builds a safe Bash command using single quotes
+    /// </summary>
+    private string BuildBashCommand(string command)
+    {
+        // Use single quotes which treat everything as literal
+        // Only need to escape single quotes themselves
+        var escaped = "'" + command.Replace("'", "'\\''") + "'";
+        return $"-c {escaped}";
+    }
+
+    /// <summary>
+    /// Escapes command for PowerShell execution (legacy method, kept for compatibility)
+    /// </summary>
+    private string EscapeForPowerShell(string command)
+    {
+        // Comprehensive escaping for all PowerShell special characters
+        return command
+            .Replace("\\", "\\\\")
+            .Replace("\"", "`\"")
+            .Replace("$", "`$")
+            .Replace("`", "``")
+            .Replace("'", "''");
+    }
+
+    /// <summary>
+    /// Escapes command for Bash execution (legacy method, kept for compatibility)
     /// </summary>
     private string EscapeForBash(string command)
     {
-        // Escape double quotes with backslash
-        return command.Replace("\"", "\\\"").Replace("$", "\\$").Replace("`", "\\`");
+        // Use single quotes for literal interpretation
+        // Single quotes prevent all expansions except for single quotes themselves
+        return "'" + command.Replace("'", "'\\''") + "'";
     }
 }

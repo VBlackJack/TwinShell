@@ -137,7 +137,8 @@ public partial class CategoryManagementViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            // SECURITY: Don't expose exception details to users
+            ErrorMessage = "An error occurred while saving the category";
         }
     }
 
@@ -201,7 +202,8 @@ public partial class CategoryManagementViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            // SECURITY: Don't expose exception details to users
+            ErrorMessage = "An error occurred while saving the category";
         }
     }
 
@@ -240,7 +242,8 @@ public partial class CategoryManagementViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                // SECURITY: Don't expose exception details to users
+            ErrorMessage = "An error occurred while saving the category";
             }
         }
     }
@@ -264,7 +267,8 @@ public partial class CategoryManagementViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            // SECURITY: Don't expose exception details to users
+            ErrorMessage = "An error occurred while saving the category";
         }
     }
 
