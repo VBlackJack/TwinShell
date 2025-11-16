@@ -10,13 +10,32 @@
         Height="700" Width="1200"
         Background="{StaticResource BackgroundBrush}">
 
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <!-- Menu Bar -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Export Configuration..."
+                          Command="{Binding ExportConfigurationCommand}"
+                          ToolTip="Export your favorites and history to a JSON file"/>
+                <MenuItem Header="_Import Configuration..."
+                          Command="{Binding ImportConfigurationCommand}"
+                          ToolTip="Import favorites and history from a JSON file"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About TwinShell" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
 
-        <!-- Header -->
+        <!-- Main Content -->
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,16">
             <TextBlock Text="TwinShell"
                        FontSize="28"
@@ -33,11 +52,17 @@
                 <Grid Margin="0,16,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
+        <!-- Recent Commands Widget -->
+        <Border x:Name="RecentCommandsContainer"
+                Grid.Row="0"
+                Margin="0,0,0,16"/>
+
         <!-- Search and Filters -->
-        <Border Grid.Row="0"
+        <Border Grid.Row="1"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -107,7 +132,7 @@
         </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="16"/>
@@ -443,5 +468,6 @@
                 <ContentControl x:Name="HistoryTabContent"/>
             </TabItem>
         </TabControl>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

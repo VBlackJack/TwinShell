@@ -60,6 +60,7 @@ public partial class App : Application
         services.AddScoped<ICommandGeneratorService, CommandGeneratorService>();
         services.AddScoped<ICommandHistoryService, CommandHistoryService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
+        services.AddScoped<IConfigurationService, ConfigurationService>();
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
@@ -72,9 +73,11 @@ public partial class App : Application
         // ViewModels
         services.AddTransient<MainViewModel>();
         services.AddTransient<HistoryViewModel>();
+        services.AddTransient<RecentCommandsViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
+        services.AddTransient<RecentCommandsWidget>();
 
         // Windows
         services.AddTransient<MainWindow>();
