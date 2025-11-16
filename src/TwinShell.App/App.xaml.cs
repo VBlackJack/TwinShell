@@ -8,6 +8,7 @@ using TwinShell.Infrastructure.Services;
 using TwinShell.Persistence;
 using TwinShell.Persistence.Repositories;
 using TwinShell.App.ViewModels;
+using TwinShell.App.Views;
 
 namespace TwinShell.App;
 
@@ -50,11 +51,13 @@ public partial class App : Application
 
         // Repositories
         services.AddScoped<IActionRepository, ActionRepository>();
+        services.AddScoped<ICommandHistoryRepository, CommandHistoryRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
         services.AddScoped<ISearchService, SearchService>();
         services.AddScoped<ICommandGeneratorService, CommandGeneratorService>();
+        services.AddScoped<ICommandHistoryService, CommandHistoryService>();
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
@@ -66,6 +69,10 @@ public partial class App : Application
 
         // ViewModels
         services.AddTransient<MainViewModel>();
+        services.AddTransient<HistoryViewModel>();
+
+        // Views
+        services.AddTransient<HistoryPanel>();
 
         // Windows
         services.AddTransient<MainWindow>();
@@ -82,6 +89,10 @@ public partial class App : Application
         // Seed initial data
         var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
         await seedService.SeedAsync();
+
+        // Cleanup old history entries (90 days retention)
+        var historyService = scope.ServiceProvider.GetRequiredService<ICommandHistoryService>();
+        await historyService.CleanupOldEntriesAsync(90);
     }
 
     protected override void OnExit(ExitEventArgs e)
