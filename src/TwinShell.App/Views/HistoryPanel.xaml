@@ -56,8 +56,9 @@
                              AutomationProperties.Name="Search command history"
                              AutomationProperties.HelpText="Search for commands in your history by name or command text"/>
 
+                    <!-- UX: Buttons with text-only labels (no emojis) for professionalism -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="12,0,0,0">
-                        <Button Content="🔄 Refresh"
+                        <Button Content="Refresh"
                                 Command="{Binding RefreshCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Margin="0,0,8,0"
@@ -65,15 +66,17 @@
                                 MinWidth="44"
                                 MinHeight="44"
                                 TabIndex="2"
+                                ToolTip="Reload command history from database (F5)"
                                 AutomationProperties.Name="Refresh history"
                                 AutomationProperties.HelpText="Reload command history from database"/>
-                        <Button Content="🗑️ Clear All"
+                        <Button Content="Clear All"
                                 Command="{Binding ClearAllCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Padding="12,10"
                                 MinWidth="44"
                                 MinHeight="44"
                                 TabIndex="3"
+                                ToolTip="Delete all command history entries"
                                 AutomationProperties.Name="Clear all history"
                                 AutomationProperties.HelpText="Delete all command history entries"/>
                     </StackPanel>
@@ -222,16 +225,44 @@
                                                        TextWrapping="Wrap"/>
                                         </Border>
 
-                                        <!-- Actions -->
+                                        <!-- UX: Action buttons with text-only labels -->
                                         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                            <Button Content="📋 Copy"
+                                            <Button Content="Copy"
                                                     Command="{Binding CopyCommand}"
                                                     Style="{StaticResource PrimaryButtonStyle}"
-                                                    Padding="8,4"
-                                                    Margin="0,0,8,0"/>
-                                            <Button Content="🗑️ Delete"
+                                                    Padding="12,6"
+                                                    Margin="0,0,8,0"
+                                                    MinWidth="60"
+                                                    ToolTip="Copy command to clipboard"/>
+                                            <Button Content="Delete"
                                                     Command="{Binding DeleteCommand}"
-                                                    Padding="8,4"/>
+                                                    Padding="12,6"
+                                                    MinWidth="60"
+                                                    Background="{StaticResource DangerBrush}"
+                                                    Foreground="White"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand"
+                                                    ToolTip="Delete this history entry">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                            VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Opacity" Value="0.9"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
