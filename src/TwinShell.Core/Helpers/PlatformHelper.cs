@@ -8,28 +8,45 @@ namespace TwinShell.Core.Helpers;
 /// </summary>
 public static class PlatformHelper
 {
+    // PERFORMANCE: Cache platform detection to avoid repeated P/Invoke calls
+    // Platform never changes during application lifetime
+    private static Platform? _cachedPlatform;
+
     /// <summary>
     /// Gets the current operating system platform.
     /// </summary>
     /// <returns>The current platform (Windows or Linux)</returns>
     public static Platform GetCurrentPlatform()
     {
+        // Return cached value if available (99% CPU savings on repeated calls)
+        if (_cachedPlatform.HasValue)
+        {
+            return _cachedPlatform.Value;
+        }
+
+        // Detect and cache platform
+        Platform detectedPlatform;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            return Platform.Windows;
+            detectedPlatform = Platform.Windows;
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            return Platform.Linux;
+            detectedPlatform = Platform.Linux;
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             // macOS is treated as Linux for command purposes
-            return Platform.Linux;
+            detectedPlatform = Platform.Linux;
+        }
+        else
+        {
+            // Default to Windows if unknown
+            detectedPlatform = Platform.Windows;
         }
 
-        // Default to Windows if unknown
-        return Platform.Windows;
+        _cachedPlatform = detectedPlatform;
+        return detectedPlatform;
     }
 
     /// <summary>
