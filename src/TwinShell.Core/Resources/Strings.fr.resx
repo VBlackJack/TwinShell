@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Messages Communs -->
+  <data name="Common.Ready" xml:space="preserve">
+    <value>Prêt</value>
+  </data>
+  <data name="Common.Loading" xml:space="preserve">
+    <value>Chargement...</value>
+  </data>
+  <data name="Common.Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Common.Success" xml:space="preserve">
+    <value>Succès</value>
+  </data>
+  <data name="Common.Warning" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="Common.Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+
+  <!-- Messages de Validation -->
+  <data name="Validation.ParameterRequired" xml:space="preserve">
+    <value>Le paramètre '{0}' est requis.</value>
+  </data>
+  <data name="Validation.ParameterMustBeInteger" xml:space="preserve">
+    <value>Le paramètre '{0}' doit être un nombre entier.</value>
+  </data>
+  <data name="Validation.ParameterMustBeBoolean" xml:space="preserve">
+    <value>Le paramètre '{0}' doit être vrai ou faux.</value>
+  </data>
+  <data name="Validation.Errors" xml:space="preserve">
+    <value>Erreurs de validation :</value>
+  </data>
+  <data name="Validation.NoCommandTemplate" xml:space="preserve">
+    <value>Aucun modèle de commande disponible.</value>
+  </data>
+  <data name="Validation.NoValidCommand" xml:space="preserve">
+    <value>Aucune commande valide à exécuter</value>
+  </data>
+
+  <!-- Messages d'Exécution -->
+  <data name="Execution.Error" xml:space="preserve">
+    <value>Erreur d'Exécution</value>
+  </data>
+  <data name="Execution.Success" xml:space="preserve">
+    <value>Exécution Réussie</value>
+  </data>
+  <data name="Execution.Cancelled" xml:space="preserve">
+    <value>Exécution Annulée</value>
+  </data>
+  <data name="Execution.Timeout" xml:space="preserve">
+    <value>Délai d'Exécution Dépassé</value>
+  </data>
+  <data name="Execution.Failed" xml:space="preserve">
+    <value>Échec de l'exécution de la commande : {0}</value>
+  </data>
+  <data name="Execution.CommandCompleted" xml:space="preserve">
+    <value>Commande terminée en {0:F2} secondes</value>
+  </data>
+
+  <!-- Messages des Favoris -->
+  <data name="Favorites.Added" xml:space="preserve">
+    <value>'{0}' ajouté aux favoris</value>
+  </data>
+  <data name="Favorites.Removed" xml:space="preserve">
+    <value>'{0}' retiré des favoris</value>
+  </data>
+  <data name="Favorites.LimitReached" xml:space="preserve">
+    <value>Limite de Favoris Atteinte</value>
+  </data>
+  <data name="Favorites.LimitReachedMessage" xml:space="preserve">
+    <value>Vous avez atteint la limite maximale de {0} favoris ({1}/{0}). Veuillez supprimer certains favoris avant d'en ajouter de nouveaux.</value>
+  </data>
+  <data name="Favorites.ToggleFailed" xml:space="preserve">
+    <value>Échec du changement du statut de favori</value>
+  </data>
+  <data name="Favorites.UpdateError" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la mise à jour des favoris</value>
+  </data>
+
+  <!-- Messages de Configuration -->
+  <data name="Config.ExportSuccess" xml:space="preserve">
+    <value>Export Réussi</value>
+  </data>
+  <data name="Config.ExportSuccessMessage" xml:space="preserve">
+    <value>Configuration exportée avec succès vers :
+{0}</value>
+  </data>
+  <data name="Config.ExportError" xml:space="preserve">
+    <value>Erreur d'Export</value>
+  </data>
+  <data name="Config.ExportErrorMessage" xml:space="preserve">
+    <value>Échec de l'export : {0}</value>
+  </data>
+  <data name="Config.ExportErrorGeneric" xml:space="preserve">
+    <value>Une erreur s'est produite pendant l'export</value>
+  </data>
+  <data name="Config.ImportSuccess" xml:space="preserve">
+    <value>Import Réussi</value>
+  </data>
+  <data name="Config.ImportSuccessMessage" xml:space="preserve">
+    <value>Configuration importée avec succès !
+
+Favoris importés : {0}
+Entrées d'historique importées : {1}</value>
+  </data>
+  <data name="Config.ImportError" xml:space="preserve">
+    <value>Erreur d'Import</value>
+  </data>
+  <data name="Config.ImportErrorMessage" xml:space="preserve">
+    <value>Échec de l'import : {0}</value>
+  </data>
+  <data name="Config.ImportErrorGeneric" xml:space="preserve">
+    <value>Une erreur s'est produite pendant l'import</value>
+  </data>
+  <data name="Config.ValidationError" xml:space="preserve">
+    <value>Erreur de Validation</value>
+  </data>
+  <data name="Config.ValidationErrorMessage" xml:space="preserve">
+    <value>Fichier de configuration invalide : {0}</value>
+  </data>
+  <data name="Config.ImportConfirmation" xml:space="preserve">
+    <value>Confirmer l'Import</value>
+  </data>
+  <data name="Config.ImportConfirmationMessage" xml:space="preserve">
+    <value>Ceci importera les favoris et l'historique depuis le fichier sélectionné.
+Les données existantes seront préservées (mode fusion).
+
+Version de Configuration : {0}
+
+Voulez-vous continuer ?</value>
+  </data>
+
+  <!-- Messages d'Aide -->
+  <data name="Help.Title" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="Help.Content" xml:space="preserve">
+    <value>TwinShell - Aide
+
+Raccourcis Clavier :
+  Ctrl+,       - Ouvrir Paramètres
+  Ctrl+M       - Gérer Catégories
+  Ctrl+E       - Exporter Configuration
+  Ctrl+I       - Importer Configuration
+  F1           - Afficher cette Aide
+  F5           - Actualiser Actions
+  Échap        - Effacer Recherche
+
+Pour plus d'informations, consultez la documentation.</value>
+  </data>
+
+  <!-- Messages de Statut -->
+  <data name="Status.ActionsLoaded" xml:space="preserve">
+    <value>{0} actions chargées</value>
+  </data>
+  <data name="Status.LoadingActions" xml:space="preserve">
+    <value>Chargement des actions...</value>
+  </data>
+  <data name="Status.Refreshing" xml:space="preserve">
+    <value>Actualisation...</value>
+  </data>
+  <data name="Status.ProcessingRequest" xml:space="preserve">
+    <value>Une erreur s'est produite lors du traitement de votre demande</value>
+  </data>
+</root>

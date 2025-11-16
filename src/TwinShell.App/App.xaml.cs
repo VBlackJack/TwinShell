@@ -81,6 +81,7 @@ public partial class App : Application
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
         services.AddSingleton<INotificationService, TwinShell.App.Services.NotificationService>();
+        services.AddSingleton<IDialogService, TwinShell.App.Services.DialogService>();
         services.AddScoped<ICommandExecutionService, CommandExecutionService>();
 
         // Seed Service
