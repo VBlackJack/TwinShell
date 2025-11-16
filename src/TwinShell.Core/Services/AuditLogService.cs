@@ -57,6 +57,12 @@ public class AuditLogService : IAuditLogService
                           $"{log.WasDangerous}");
         }
 
+        // SECURITY: Validate file path before writing
+        if (string.IsNullOrWhiteSpace(filePath) || filePath.Contains(".."))
+        {
+            throw new ArgumentException("Invalid file path", nameof(filePath));
+        }
+
         await File.WriteAllTextAsync(filePath, csv.ToString());
     }
 

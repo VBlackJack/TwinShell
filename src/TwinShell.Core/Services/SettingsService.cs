@@ -239,14 +239,19 @@ public class SettingsService : ISettingsService
     /// </summary>
     private byte[] DeriveUserKey()
     {
-        // Use username + machine name as entropy for key derivation
+        // SECURITY: Use username + machine name as entropy for key derivation
         var entropy = Environment.UserName + Environment.MachineName;
-        var salt = Encoding.UTF8.GetBytes("TwinShell.Settings.v1");
 
+        // SECURITY: Improved salt generation - combine multiple entropy sources
+        // Create a deterministic but non-hardcoded salt
+        var saltInput = $"TwinShell.Settings.v1.{Environment.MachineName}.{Environment.UserName}";
+        var salt = System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(saltInput));
+
+        // SECURITY: Increased PBKDF2 iterations from 10,000 to 100,000 for better security
         using var pbkdf2 = new Rfc2898DeriveBytes(
             entropy,
             salt,
-            iterations: 10000,
+            iterations: 100000,
             HashAlgorithmName.SHA256);
 
         return pbkdf2.GetBytes(32); // 256-bit key

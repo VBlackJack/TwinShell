@@ -1,3 +1,4 @@
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -6,11 +7,12 @@ namespace TwinShell.Core.Services;
 /// <summary>
 /// Service for managing user favorites
 /// </summary>
-public class FavoritesService : IFavoritesService
+// BUGFIX: Implement IDisposable to properly dispose SemaphoreSlim
+public class FavoritesService : IFavoritesService, IDisposable
 {
     private readonly IFavoritesRepository _repository;
     private readonly SemaphoreSlim _favoritesLock = new SemaphoreSlim(1, 1);
-    private const int MaxFavorites = 50;
+    private bool _disposed;
 
     public FavoritesService(IFavoritesRepository repository)
     {
@@ -31,9 +33,10 @@ public class FavoritesService : IFavoritesService
 
             // Check limit
             var currentCount = await _repository.GetCountAsync(userId);
-            if (currentCount >= MaxFavorites)
+            // BUGFIX: Use UIConstants.MaxFavoritesCount instead of local constant
+            if (currentCount >= UIConstants.MaxFavoritesCount)
             {
-                return (false, $"You have reached the maximum limit of {MaxFavorites} favorites. Please remove some favorites before adding new ones.");
+                return (false, $"You have reached the maximum limit of {UIConstants.MaxFavoritesCount} favorites. Please remove some favorites before adding new ones.");
             }
 
             // Add favorite
@@ -77,7 +80,7 @@ public class FavoritesService : IFavoritesService
             {
                 // Check limit before adding
                 var currentCount = await _repository.GetCountAsync(userId);
-                if (currentCount >= MaxFavorites)
+                if (currentCount >= UIConstants.MaxFavoritesCount)
                 {
                     return false;
                 }
@@ -124,5 +127,17 @@ public class FavoritesService : IFavoritesService
     public async Task ClearAllFavoritesAsync(string? userId = null)
     {
         await _repository.ClearAllAsync(userId);
+    }
+
+    /// <summary>
+    /// Dispose resources to prevent memory leaks
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _favoritesLock?.Dispose();
+        _disposed = true;
     }
 }

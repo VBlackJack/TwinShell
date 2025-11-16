@@ -14,6 +14,13 @@ public class PowerShellGalleryService : IPowerShellGalleryService
     private readonly ICommandExecutionService _commandExecutionService;
     private readonly IActionService _actionService;
 
+    // BUGFIX: Declare Regex and dangerous characters as static readonly for better performance
+    private static readonly Regex ValidNameRegex = new Regex(@"^[a-zA-Z0-9._-]+$", RegexOptions.Compiled);
+    private static readonly char[] DangerousChars = { ';', '|', '&', '$', '`', '(', ')', '<', '>', '\n', '\r', '"' };
+
+    // BUGFIX: Externalize allowed hosts list for better configuration management
+    private static readonly string[] AllowedHosts = { "github.com", "www.github.com", "powershellgallery.com", "www.powershellgallery.com" };
+
     public PowerShellGalleryService(
         ICommandExecutionService commandExecutionService,
         IActionService actionService)
@@ -382,13 +389,11 @@ public class PowerShellGalleryService : IPowerShellGalleryService
         if (name.Length > 100)
             return false;
 
-        var validNameRegex = new Regex(@"^[a-zA-Z0-9._-]+$");
-        if (!validNameRegex.IsMatch(name))
+        if (!ValidNameRegex.IsMatch(name))
             return false;
 
         // Check for dangerous characters that could be used for injection
-        var dangerousChars = new[] { ';', '|', '&', '$', '`', '(', ')', '<', '>', '\n', '\r', '"' };
-        if (name.Any(c => dangerousChars.Contains(c)))
+        if (name.Any(c => DangerousChars.Contains(c)))
             return false;
 
         return true;
@@ -420,8 +425,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             return false;
 
         // Whitelist of allowed hosts for PowerShell Gallery
-        var allowedHosts = new[] { "github.com", "www.github.com", "powershellgallery.com", "www.powershellgallery.com" };
-        return allowedHosts.Any(host => result.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
+        return AllowedHosts.Any(host => result.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
                                         result.Host.EndsWith("." + host, StringComparison.OrdinalIgnoreCase));
     }
 
