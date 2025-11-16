@@ -52,12 +52,14 @@ public partial class App : Application
         // Repositories
         services.AddScoped<IActionRepository, ActionRepository>();
         services.AddScoped<ICommandHistoryRepository, CommandHistoryRepository>();
+        services.AddScoped<IFavoritesRepository, FavoritesRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
         services.AddScoped<ISearchService, SearchService>();
         services.AddScoped<ICommandGeneratorService, CommandGeneratorService>();
         services.AddScoped<ICommandHistoryService, CommandHistoryService>();
+        services.AddScoped<IFavoritesService, FavoritesService>();
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
