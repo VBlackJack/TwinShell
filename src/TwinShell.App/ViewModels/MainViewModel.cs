@@ -303,6 +303,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             _clipboardService.SetText(GeneratedCommand);
 
+            // Show success notification
+            Services.SnackBarService.Instance.ShowSuccess("✓ Command copied to clipboard");
+
             // Save to history
             var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
             var platform = template == SelectedAction.WindowsCommandTemplate ? Platform.Windows : Platform.Linux;
