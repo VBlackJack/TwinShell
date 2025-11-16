@@ -56,6 +56,7 @@ public partial class App : Application
         services.AddScoped<IActionRepository, ActionRepository>();
         services.AddScoped<ICommandHistoryRepository, CommandHistoryRepository>();
         services.AddScoped<IFavoritesRepository, FavoritesRepository>();
+        services.AddScoped<ICustomCategoryRepository, CustomCategoryRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
@@ -64,6 +65,7 @@ public partial class App : Application
         services.AddScoped<ICommandHistoryService, CommandHistoryService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
         services.AddScoped<IConfigurationService, ConfigurationService>();
+        services.AddScoped<ICustomCategoryService, CustomCategoryService>();
 
         // Theme and Settings Services (Singletons to maintain state)
         services.AddSingleton<IThemeService, ThemeService>();
@@ -82,6 +84,7 @@ public partial class App : Application
         services.AddTransient<HistoryViewModel>();
         services.AddTransient<RecentCommandsViewModel>();
         services.AddTransient<SettingsViewModel>();
+        services.AddTransient<CategoryManagementViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
@@ -90,6 +93,7 @@ public partial class App : Application
         // Windows
         services.AddTransient<MainWindow>();
         services.AddTransient<SettingsWindow>();
+        services.AddTransient<CategoryManagementWindow>();
     }
 
     private async Task InitializeThemeAsync()

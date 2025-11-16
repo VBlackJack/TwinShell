@@ -27,8 +27,14 @@
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
+            <MenuItem Header="_Categories">
+                <MenuItem Header="_Manage Categories..."
+                          Click="ManageCategories_Click"
+                          ToolTip="Create and organize custom categories"/>
+            </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About TwinShell" Click="About_Click"/>
+                <MenuItem Header="_Keyboard Shortcuts" Click="KeyboardShortcuts_Click"/>
             </MenuItem>
         </Menu>
 

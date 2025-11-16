@@ -32,6 +32,38 @@ public partial class MainWindow : Window
         settingsWindow.ShowDialog();
     }
 
+    private void ManageCategories_Click(object sender, RoutedEventArgs e)
+    {
+        // Create and show the Category Management window
+        var categoryWindow = _serviceProvider.GetRequiredService<CategoryManagementWindow>();
+        categoryWindow.Owner = this;
+        categoryWindow.ShowDialog();
+    }
+
+    private void KeyboardShortcuts_Click(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show(
+            "Keyboard Shortcuts:\n\n" +
+            "Search & Navigation:\n" +
+            "  Tab              - Navigate between controls\n" +
+            "  Ctrl+F           - Focus search box\n" +
+            "  Enter            - Execute selected action\n" +
+            "  Esc              - Clear search/filters\n\n" +
+            "Actions:\n" +
+            "  Ctrl+C           - Copy command to clipboard\n" +
+            "  Ctrl+E           - Export configuration\n" +
+            "  Ctrl+I           - Import configuration\n" +
+            "  F1               - Help\n\n" +
+            "Categories:\n" +
+            "  Ctrl+M           - Manage categories\n\n" +
+            "General:\n" +
+            "  Ctrl+,           - Open settings\n" +
+            "  Alt+F4           - Exit application",
+            "Keyboard Shortcuts",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+    }
+
     private void Exit_Click(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
