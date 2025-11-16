@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "batches": [
+    {
+      "id": "privacy-max-batch",
+      "name": "🔒 Confidentialité maximale",
+      "description": "Configuration de confidentialité maximale combinant désactivation de toutes les permissions, synchronisation cloud, télémétrie minimale et services biométriques. Conforme RGPD strict - Recommandé pour entreprises européennes.",
+      "executionMode": 1,
+      "isUserCreated": false,
+      "tags": ["privacy", "confidentialité", "rgpd", "security", "preset", "windows"],
+      "commands": [
+        {
+          "actionId": "WIN-PRIVACY-009",
+          "order": 1,
+          "isExecuted": false,
+          "description": "Désactiver toutes les permissions applications"
+        },
+        {
+          "actionId": "WIN-PRIVACY-101",
+          "order": 2,
+          "isExecuted": false,
+          "description": "Désactiver toute synchronisation cloud"
+        },
+        {
+          "actionId": "WIN-PRIVACY-205",
+          "order": 3,
+          "isExecuted": false,
+          "description": "Configuration minimale de télémétrie (Security only)"
+        },
+        {
+          "actionId": "WIN-PRIVACY-207",
+          "order": 4,
+          "isExecuted": false,
+          "description": "Désactiver les services biométriques"
+        },
+        {
+          "actionId": "WIN-PRIVACY-201",
+          "order": 5,
+          "isExecuted": false,
+          "description": "Désactiver Activity Feed"
+        },
+        {
+          "actionId": "WIN-PRIVACY-203",
+          "order": 6,
+          "isExecuted": false,
+          "description": "Désactiver les notifications publicitaires"
+        },
+        {
+          "actionId": "WIN-PRIVACY-204",
+          "order": 7,
+          "isExecuted": false,
+          "description": "Désactiver le suivi de localisation"
+        },
+        {
+          "actionId": "WIN-PRIVACY-206",
+          "order": 8,
+          "isExecuted": false,
+          "description": "Désactiver la reconnaissance vocale cloud"
+        }
+      ]
+    }
+  ]
+}
