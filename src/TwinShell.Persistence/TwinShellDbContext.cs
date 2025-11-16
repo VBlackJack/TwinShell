@@ -18,6 +18,8 @@ public class TwinShellDbContext : DbContext
     public DbSet<CommandTemplateEntity> CommandTemplates => Set<CommandTemplateEntity>();
     public DbSet<CommandHistoryEntity> CommandHistories => Set<CommandHistoryEntity>();
     public DbSet<UserFavoriteEntity> UserFavorites => Set<UserFavoriteEntity>();
+    public DbSet<CustomCategoryEntity> CustomCategories => Set<CustomCategoryEntity>();
+    public DbSet<ActionCategoryMappingEntity> ActionCategoryMappings => Set<ActionCategoryMappingEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,5 +29,7 @@ public class TwinShellDbContext : DbContext
         modelBuilder.ApplyConfiguration(new CommandTemplateConfiguration());
         modelBuilder.ApplyConfiguration(new CommandHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new UserFavoriteConfiguration());
+        modelBuilder.ApplyConfiguration(new CustomCategoryConfiguration());
+        modelBuilder.ApplyConfiguration(new ActionCategoryMappingConfiguration());
     }
 }

@@ -8,7 +8,25 @@
         mc:Ignorable="d"
         Title="TwinShell - PowerShell &amp; Bash Command Manager"
         Height="700" Width="1200"
-        Background="{StaticResource BackgroundBrush}">
+        MinHeight="600" MinWidth="800"
+        Background="{StaticResource BackgroundBrush}"
+        AutomationProperties.Name="TwinShell Main Window"
+        AutomationProperties.HelpText="PowerShell and Bash command manager application">
+
+    <Window.InputBindings>
+        <!-- Settings: Ctrl+, -->
+        <KeyBinding Key="OemComma" Modifiers="Control" Command="{Binding OpenSettingsCommand}"/>
+        <!-- Manage Categories: Ctrl+M -->
+        <KeyBinding Key="M" Modifiers="Control" Command="{Binding OpenCategoriesCommand}"/>
+        <!-- Export: Ctrl+E -->
+        <KeyBinding Key="E" Modifiers="Control" Command="{Binding ExportConfigurationCommand}"/>
+        <!-- Import: Ctrl+I -->
+        <KeyBinding Key="I" Modifiers="Control" Command="{Binding ImportConfigurationCommand}"/>
+        <!-- Help: F1 -->
+        <KeyBinding Key="F1" Command="{Binding ShowHelpCommand}"/>
+        <!-- Refresh: F5 -->
+        <KeyBinding Key="F5" Command="{Binding RefreshCommand}"/>
+    </Window.InputBindings>
 
     <DockPanel>
         <!-- Menu Bar -->
@@ -21,10 +39,20 @@
                           Command="{Binding ImportConfigurationCommand}"
                           ToolTip="Import favorites and history from a JSON file"/>
                 <Separator/>
+                <MenuItem Header="_Settings..."
+                          Click="Settings_Click"
+                          ToolTip="Configure application settings and theme"/>
+                <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Categories">
+                <MenuItem Header="_Manage Categories..."
+                          Click="ManageCategories_Click"
+                          ToolTip="Create and organize custom categories"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About TwinShell" Click="About_Click"/>
+                <MenuItem Header="_Keyboard Shortcuts" Click="KeyboardShortcuts_Click"/>
             </MenuItem>
         </Menu>
 

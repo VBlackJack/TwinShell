@@ -24,6 +24,9 @@ public partial class App : Application
         ConfigureServices(services);
         _serviceProvider = services.BuildServiceProvider();
 
+        // Load user settings and apply theme
+        InitializeThemeAsync().ConfigureAwait(false);
+
         // Apply migrations and seed data
         InitializeDatabaseAsync().ConfigureAwait(false);
 
@@ -53,6 +56,7 @@ public partial class App : Application
         services.AddScoped<IActionRepository, ActionRepository>();
         services.AddScoped<ICommandHistoryRepository, CommandHistoryRepository>();
         services.AddScoped<IFavoritesRepository, FavoritesRepository>();
+        services.AddScoped<ICustomCategoryRepository, CustomCategoryRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
@@ -61,9 +65,15 @@ public partial class App : Application
         services.AddScoped<ICommandHistoryService, CommandHistoryService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
         services.AddScoped<IConfigurationService, ConfigurationService>();
+        services.AddScoped<ICustomCategoryService, CustomCategoryService>();
+
+        // Theme and Settings Services (Singletons to maintain state)
+        services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<ISettingsService, SettingsService>();
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
+        services.AddSingleton<INotificationService, TwinShell.App.Services.NotificationService>();
 
         // Seed Service
         var seedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
@@ -74,6 +84,8 @@ public partial class App : Application
         services.AddTransient<MainViewModel>();
         services.AddTransient<HistoryViewModel>();
         services.AddTransient<RecentCommandsViewModel>();
+        services.AddTransient<SettingsViewModel>();
+        services.AddTransient<CategoryManagementViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
@@ -81,6 +93,20 @@ public partial class App : Application
 
         // Windows
         services.AddTransient<MainWindow>();
+        services.AddTransient<SettingsWindow>();
+        services.AddTransient<CategoryManagementWindow>();
+    }
+
+    private async Task InitializeThemeAsync()
+    {
+        var settingsService = _serviceProvider!.GetRequiredService<ISettingsService>();
+        var themeService = _serviceProvider!.GetRequiredService<IThemeService>();
+
+        // Load user settings
+        var settings = await settingsService.LoadSettingsAsync();
+
+        // Apply the saved theme
+        themeService.ApplyTheme(settings.Theme);
     }
 
     private async Task InitializeDatabaseAsync()
@@ -95,9 +121,10 @@ public partial class App : Application
         var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
         await seedService.SeedAsync();
 
-        // Cleanup old history entries (90 days retention)
+        // Cleanup old history entries using user's configured retention days
+        var settingsService = _serviceProvider!.GetRequiredService<ISettingsService>();
         var historyService = scope.ServiceProvider.GetRequiredService<ICommandHistoryService>();
-        await historyService.CleanupOldEntriesAsync(90);
+        await historyService.CleanupOldEntriesAsync(settingsService.CurrentSettings.AutoCleanupDays);
     }
 
     protected override void OnExit(ExitEventArgs e)
