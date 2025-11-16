@@ -1,0 +1,1170 @@
+{
+  "schemaVersion": "1.0",
+  "actions": [
+    {
+      "id": "ad-list-users",
+      "title": "Lister tous les utilisateurs Active Directory",
+      "description": "Affiche une liste complète de tous les comptes utilisateurs dans Active Directory avec leurs propriétés principales.",
+      "category": "Active Directory",
+      "platform": 0,
+      "level": 0,
+      "tags": ["ad", "users", "list", "diagnostic"],
+      "windowsCommandTemplateId": "ad-list-users-cmd",
+      "windowsCommandTemplate": {
+        "id": "ad-list-users-cmd",
+        "platform": 0,
+        "name": "Get-ADUser",
+        "commandPattern": "Get-ADUser -Filter * -Properties DisplayName,EmailAddress,Enabled | Select-Object Name,DisplayName,EmailAddress,Enabled | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-ADUser -Filter * -Properties DisplayName,EmailAddress,Enabled | Select-Object Name,DisplayName,EmailAddress,Enabled | Format-Table -AutoSize",
+          "description": "Liste tous les utilisateurs avec leurs informations essentielles"
+        }
+      ],
+      "notes": "Nécessite le module Active Directory PowerShell. Peut être lent sur de gros domaines.",
+      "links": [
+        {
+          "title": "Documentation Get-ADUser",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-aduser"
+        }
+      ]
+    },
+    {
+      "id": "ad-search-user",
+      "title": "Rechercher un utilisateur AD par nom",
+      "description": "Recherche un utilisateur spécifique dans Active Directory par son nom ou prénom.",
+      "category": "Active Directory",
+      "platform": 0,
+      "level": 0,
+      "tags": ["ad", "search", "user"],
+      "windowsCommandTemplateId": "ad-search-user-cmd",
+      "windowsCommandTemplate": {
+        "id": "ad-search-user-cmd",
+        "platform": 0,
+        "name": "Get-ADUser",
+        "commandPattern": "Get-ADUser -Filter \"Name -like '*{searchTerm}*'\" -Properties DisplayName,EmailAddress,Department",
+        "parameters": [
+          {
+            "name": "searchTerm",
+            "label": "Terme de recherche",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom ou partie du nom à rechercher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-ADUser -Filter \"Name -like '*Dupont*'\" -Properties DisplayName,EmailAddress,Department",
+          "description": "Recherche tous les utilisateurs dont le nom contient 'Dupont'"
+        }
+      ],
+      "notes": "Utilise une recherche avec wildcard (*). Pour une recherche exacte, retirer les astérisques.",
+      "links": []
+    },
+    {
+      "id": "ad-unlock-account",
+      "title": "Déverrouiller un compte utilisateur AD",
+      "description": "Déverrouille un compte utilisateur qui a été verrouillé suite à des tentatives de connexion échouées.",
+      "category": "Active Directory",
+      "platform": 0,
+      "level": 1,
+      "tags": ["ad", "unlock", "account", "user"],
+      "windowsCommandTemplateId": "ad-unlock-account-cmd",
+      "windowsCommandTemplate": {
+        "id": "ad-unlock-account-cmd",
+        "platform": 0,
+        "name": "Unlock-ADAccount",
+        "commandPattern": "Unlock-ADAccount -Identity {username}",
+        "parameters": [
+          {
+            "name": "username",
+            "label": "Nom d'utilisateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "SamAccountName de l'utilisateur à déverrouiller"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Unlock-ADAccount -Identity jdupont",
+          "description": "Déverrouille le compte de jdupont"
+        }
+      ],
+      "notes": "Nécessite des droits d'administration AD. Vérifier la cause du verrouillage avant de déverrouiller.",
+      "links": []
+    },
+    {
+      "id": "ad-reset-password",
+      "title": "Réinitialiser le mot de passe d'un utilisateur AD",
+      "description": "Force la réinitialisation du mot de passe d'un utilisateur Active Directory.",
+      "category": "Active Directory",
+      "platform": 0,
+      "level": 1,
+      "tags": ["ad", "password", "reset", "security"],
+      "windowsCommandTemplateId": "ad-reset-password-cmd",
+      "windowsCommandTemplate": {
+        "id": "ad-reset-password-cmd",
+        "platform": 0,
+        "name": "Set-ADAccountPassword",
+        "commandPattern": "Set-ADAccountPassword -Identity {username} -Reset -NewPassword (ConvertTo-SecureString -AsPlainText \"{newPassword}\" -Force)",
+        "parameters": [
+          {
+            "name": "username",
+            "label": "Nom d'utilisateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "SamAccountName de l'utilisateur"
+          },
+          {
+            "name": "newPassword",
+            "label": "Nouveau mot de passe",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Le nouveau mot de passe (respecter la politique de mots de passe)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ADAccountPassword -Identity jdupont -Reset -NewPassword (ConvertTo-SecureString -AsPlainText \"P@ssw0rd123!\" -Force)",
+          "description": "Réinitialise le mot de passe de jdupont"
+        }
+      ],
+      "notes": "Nécessite des droits élevés. Le nouveau mot de passe doit respecter la politique de sécurité du domaine.",
+      "links": []
+    },
+    {
+      "id": "ad-disable-account",
+      "title": "Désactiver un compte utilisateur AD",
+      "description": "Désactive un compte utilisateur Active Directory sans le supprimer.",
+      "category": "Active Directory",
+      "platform": 0,
+      "level": 2,
+      "tags": ["ad", "disable", "account", "user"],
+      "windowsCommandTemplateId": "ad-disable-account-cmd",
+      "windowsCommandTemplate": {
+        "id": "ad-disable-account-cmd",
+        "platform": 0,
+        "name": "Disable-ADAccount",
+        "commandPattern": "Disable-ADAccount -Identity {username}",
+        "parameters": [
+          {
+            "name": "username",
+            "label": "Nom d'utilisateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "SamAccountName de l'utilisateur à désactiver"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Disable-ADAccount -Identity jdupont",
+          "description": "Désactive le compte de jdupont"
+        }
+      ],
+      "notes": "L'utilisateur ne pourra plus se connecter. Le compte peut être réactivé avec Enable-ADAccount.",
+      "links": []
+    },
+    {
+      "id": "gpo-list-all",
+      "title": "Lister toutes les GPO du domaine",
+      "description": "Affiche la liste complète des stratégies de groupe (GPO) configurées dans le domaine.",
+      "category": "GPO",
+      "platform": 0,
+      "level": 0,
+      "tags": ["gpo", "list", "group-policy"],
+      "windowsCommandTemplateId": "gpo-list-all-cmd",
+      "windowsCommandTemplate": {
+        "id": "gpo-list-all-cmd",
+        "platform": 0,
+        "name": "Get-GPO",
+        "commandPattern": "Get-GPO -All | Select-Object DisplayName,Id,GpoStatus,CreationTime | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-GPO -All | Select-Object DisplayName,Id,GpoStatus,CreationTime | Format-Table -AutoSize",
+          "description": "Liste toutes les GPO avec leurs détails"
+        }
+      ],
+      "notes": "Nécessite le module Group Policy PowerShell.",
+      "links": []
+    },
+    {
+      "id": "gpo-applied-machine",
+      "title": "Lister les GPO appliquées à une machine",
+      "description": "Affiche toutes les stratégies de groupe appliquées à un ordinateur spécifique.",
+      "category": "GPO",
+      "platform": 0,
+      "level": 1,
+      "tags": ["gpo", "diagnostic", "windows", "gpresult"],
+      "windowsCommandTemplateId": "gpo-applied-machine-cmd",
+      "windowsCommandTemplate": {
+        "id": "gpo-applied-machine-cmd",
+        "platform": 0,
+        "name": "gpresult",
+        "commandPattern": "gpresult /R /S {targetHost}",
+        "parameters": [
+          {
+            "name": "targetHost",
+            "label": "Machine cible",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": false,
+            "description": "Nom de la machine cible (localhost par défaut)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "gpresult /R /S FRPANSI001PC",
+          "description": "Affiche les GPO appliquées sur FRPANSI001PC"
+        },
+        {
+          "command": "gpresult /R",
+          "description": "Affiche les GPO appliquées sur la machine locale"
+        }
+      ],
+      "notes": "À lancer avec droits administrateur. Utiliser /H pour générer un rapport HTML.",
+      "links": []
+    },
+    {
+      "id": "gpo-force-update",
+      "title": "Forcer la mise à jour des GPO",
+      "description": "Force l'application immédiate des stratégies de groupe sans attendre le délai de rafraîchissement.",
+      "category": "GPO",
+      "platform": 0,
+      "level": 1,
+      "tags": ["gpo", "update", "refresh", "gpupdate"],
+      "windowsCommandTemplateId": "gpo-force-update-cmd",
+      "windowsCommandTemplate": {
+        "id": "gpo-force-update-cmd",
+        "platform": 0,
+        "name": "gpupdate",
+        "commandPattern": "gpupdate /force",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "gpupdate /force",
+          "description": "Force la mise à jour des GPO sur la machine locale"
+        }
+      ],
+      "notes": "Peut nécessiter un redémarrage selon les paramètres de GPO. Utiliser /boot ou /logoff pour forcer.",
+      "links": []
+    },
+    {
+      "id": "dns-query-record",
+      "title": "Interroger un enregistrement DNS",
+      "description": "Effectue une requête DNS pour résoudre un nom de domaine ou interroger un type d'enregistrement spécifique.",
+      "category": "DNS",
+      "platform": 2,
+      "level": 0,
+      "tags": ["dns", "query", "nslookup", "diagnostic"],
+      "windowsCommandTemplateId": "dns-query-record-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "dns-query-record-windows-cmd",
+        "platform": 0,
+        "name": "Resolve-DnsName",
+        "commandPattern": "Resolve-DnsName -Name {domainName} -Type {recordType}",
+        "parameters": [
+          {
+            "name": "domainName",
+            "label": "Nom de domaine",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Le nom de domaine à interroger"
+          },
+          {
+            "name": "recordType",
+            "label": "Type d'enregistrement",
+            "type": "string",
+            "defaultValue": "A",
+            "required": false,
+            "description": "Type d'enregistrement DNS (A, AAAA, MX, TXT, etc.)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "dns-query-record-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "dns-query-record-linux-cmd",
+        "platform": 1,
+        "name": "dig",
+        "commandPattern": "dig {domainName} {recordType}",
+        "parameters": [
+          {
+            "name": "domainName",
+            "label": "Nom de domaine",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Le nom de domaine à interroger"
+          },
+          {
+            "name": "recordType",
+            "label": "Type d'enregistrement",
+            "type": "string",
+            "defaultValue": "A",
+            "required": false,
+            "description": "Type d'enregistrement DNS (A, AAAA, MX, TXT, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Resolve-DnsName -Name example.com -Type A",
+          "description": "Requête pour l'adresse IP (enregistrement A) de example.com"
+        },
+        {
+          "command": "dig example.com MX",
+          "description": "Requête Linux pour les serveurs mail (MX) de example.com"
+        }
+      ],
+      "notes": "Sur Linux, installer bind-utils pour utiliser dig. Alternative : nslookup disponible sur les deux plateformes.",
+      "links": []
+    },
+    {
+      "id": "dns-flush-cache",
+      "title": "Vider le cache DNS",
+      "description": "Efface le cache DNS local pour forcer la résolution fraîche des noms de domaine.",
+      "category": "DNS",
+      "platform": 2,
+      "level": 1,
+      "tags": ["dns", "cache", "flush", "clear"],
+      "windowsCommandTemplateId": "dns-flush-cache-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "dns-flush-cache-windows-cmd",
+        "platform": 0,
+        "name": "ipconfig",
+        "commandPattern": "ipconfig /flushdns",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "dns-flush-cache-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "dns-flush-cache-linux-cmd",
+        "platform": 1,
+        "name": "systemd-resolve",
+        "commandPattern": "sudo systemd-resolve --flush-caches",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "ipconfig /flushdns",
+          "description": "Vide le cache DNS sur Windows"
+        },
+        {
+          "command": "sudo systemd-resolve --flush-caches",
+          "description": "Vide le cache DNS sur Linux (systemd)"
+        }
+      ],
+      "notes": "Utile après modification d'enregistrements DNS. Sur certaines distributions Linux, utiliser 'sudo systemctl restart nscd'.",
+      "links": []
+    },
+    {
+      "id": "dns-show-cache",
+      "title": "Afficher le cache DNS",
+      "description": "Affiche le contenu actuel du cache DNS local.",
+      "category": "DNS",
+      "platform": 0,
+      "level": 0,
+      "tags": ["dns", "cache", "view"],
+      "windowsCommandTemplateId": "dns-show-cache-cmd",
+      "windowsCommandTemplate": {
+        "id": "dns-show-cache-cmd",
+        "platform": 0,
+        "name": "ipconfig",
+        "commandPattern": "ipconfig /displaydns",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "ipconfig /displaydns",
+          "description": "Affiche tous les enregistrements en cache DNS"
+        }
+      ],
+      "notes": "Commande Windows uniquement. Sortie volumineuse, pensez à filtrer avec | findstr.",
+      "links": []
+    },
+    {
+      "id": "logs-eventlog-errors",
+      "title": "Afficher les erreurs récentes du journal d'événements",
+      "description": "Liste les erreurs récentes du journal d'événements Windows (System ou Application).",
+      "category": "Logs",
+      "platform": 0,
+      "level": 0,
+      "tags": ["logs", "eventlog", "errors", "diagnostic"],
+      "windowsCommandTemplateId": "logs-eventlog-errors-cmd",
+      "windowsCommandTemplate": {
+        "id": "logs-eventlog-errors-cmd",
+        "platform": 0,
+        "name": "Get-EventLog",
+        "commandPattern": "Get-EventLog -LogName {logName} -EntryType Error -Newest {count}",
+        "parameters": [
+          {
+            "name": "logName",
+            "label": "Journal",
+            "type": "string",
+            "defaultValue": "System",
+            "required": false,
+            "description": "Nom du journal (System, Application, Security)"
+          },
+          {
+            "name": "count",
+            "label": "Nombre d'entrées",
+            "type": "int",
+            "defaultValue": "50",
+            "required": false,
+            "description": "Nombre d'erreurs à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-EventLog -LogName System -EntryType Error -Newest 50",
+          "description": "Affiche les 50 dernières erreurs système"
+        },
+        {
+          "command": "Get-EventLog -LogName Application -EntryType Error -Newest 100",
+          "description": "Affiche les 100 dernières erreurs applicatives"
+        }
+      ],
+      "notes": "Nécessite des droits administrateur. Peut être lent sur de gros journaux.",
+      "links": []
+    },
+    {
+      "id": "logs-clear-eventlog",
+      "title": "Vider un journal d'événements",
+      "description": "Efface tous les événements d'un journal Windows spécifique.",
+      "category": "Logs",
+      "platform": 0,
+      "level": 2,
+      "tags": ["logs", "eventlog", "clear", "delete"],
+      "windowsCommandTemplateId": "logs-clear-eventlog-cmd",
+      "windowsCommandTemplate": {
+        "id": "logs-clear-eventlog-cmd",
+        "platform": 0,
+        "name": "Clear-EventLog",
+        "commandPattern": "Clear-EventLog -LogName {logName}",
+        "parameters": [
+          {
+            "name": "logName",
+            "label": "Journal",
+            "type": "string",
+            "defaultValue": "Application",
+            "required": true,
+            "description": "Nom du journal à vider (System, Application, Security)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Clear-EventLog -LogName Application",
+          "description": "Vide le journal Application"
+        }
+      ],
+      "notes": "⚠️ ATTENTION : Cette action est irréversible ! Envisager d'exporter le journal avant de le vider.",
+      "links": []
+    },
+    {
+      "id": "logs-tail-syslog",
+      "title": "Suivre les logs système en temps réel (Linux)",
+      "description": "Affiche en continu les nouvelles entrées du journal système Linux.",
+      "category": "Logs",
+      "platform": 1,
+      "level": 0,
+      "tags": ["logs", "syslog", "tail", "monitoring", "linux"],
+      "linuxCommandTemplateId": "logs-tail-syslog-cmd",
+      "linuxCommandTemplate": {
+        "id": "logs-tail-syslog-cmd",
+        "platform": 1,
+        "name": "tail",
+        "commandPattern": "tail -f /var/log/syslog",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "tail -f /var/log/syslog",
+          "description": "Suit le syslog en temps réel"
+        },
+        {
+          "command": "tail -n 100 /var/log/syslog",
+          "description": "Affiche les 100 dernières lignes du syslog"
+        }
+      ],
+      "notes": "Sur certaines distributions, le fichier peut être /var/log/messages. Utiliser Ctrl+C pour arrêter.",
+      "links": []
+    },
+    {
+      "id": "logs-journalctl-errors",
+      "title": "Afficher les erreurs journald (Linux)",
+      "description": "Liste les erreurs récentes du journal systemd journald.",
+      "category": "Logs",
+      "platform": 1,
+      "level": 0,
+      "tags": ["logs", "journald", "systemd", "errors", "linux"],
+      "linuxCommandTemplateId": "logs-journalctl-errors-cmd",
+      "linuxCommandTemplate": {
+        "id": "logs-journalctl-errors-cmd",
+        "platform": 1,
+        "name": "journalctl",
+        "commandPattern": "journalctl -p {priority} -n {count}",
+        "parameters": [
+          {
+            "name": "priority",
+            "label": "Priorité",
+            "type": "string",
+            "defaultValue": "err",
+            "required": false,
+            "description": "Niveau de priorité (emerg, alert, crit, err, warning, notice, info, debug)"
+          },
+          {
+            "name": "count",
+            "label": "Nombre d'entrées",
+            "type": "int",
+            "defaultValue": "50",
+            "required": false,
+            "description": "Nombre d'entrées à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "journalctl -p err -n 50",
+          "description": "Affiche les 50 dernières erreurs"
+        },
+        {
+          "command": "journalctl -p warning -n 100",
+          "description": "Affiche les 100 derniers avertissements"
+        }
+      ],
+      "notes": "journalctl nécessite généralement sudo. Utiliser -f pour suivre en temps réel.",
+      "links": []
+    },
+    {
+      "id": "linux-service-status",
+      "title": "Vérifier le statut d'un service (Linux)",
+      "description": "Affiche l'état actuel d'un service systemd.",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 0,
+      "tags": ["linux", "systemd", "service", "status"],
+      "linuxCommandTemplateId": "linux-service-status-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-service-status-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "systemctl status {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service systemd (ex: nginx, apache2, ssh)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "systemctl status nginx",
+          "description": "Vérifie le statut du service nginx"
+        },
+        {
+          "command": "systemctl status sshd",
+          "description": "Vérifie le statut du service SSH"
+        }
+      ],
+      "notes": "La plupart des commandes systemctl nécessitent sudo pour les actions de modification.",
+      "links": []
+    },
+    {
+      "id": "linux-service-start",
+      "title": "Démarrer un service (Linux)",
+      "description": "Démarre un service systemd arrêté.",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 1,
+      "tags": ["linux", "systemd", "service", "start"],
+      "linuxCommandTemplateId": "linux-service-start-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-service-start-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "sudo systemctl start {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service à démarrer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "sudo systemctl start nginx",
+          "description": "Démarre le service nginx"
+        }
+      ],
+      "notes": "Nécessite les droits sudo. Vérifier le statut après démarrage.",
+      "links": []
+    },
+    {
+      "id": "linux-service-stop",
+      "title": "Arrêter un service (Linux)",
+      "description": "Arrête un service systemd en cours d'exécution.",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 1,
+      "tags": ["linux", "systemd", "service", "stop"],
+      "linuxCommandTemplateId": "linux-service-stop-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-service-stop-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "sudo systemctl stop {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service à arrêter"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "sudo systemctl stop nginx",
+          "description": "Arrête le service nginx"
+        }
+      ],
+      "notes": "Nécessite les droits sudo. Peut affecter les services dépendants.",
+      "links": []
+    },
+    {
+      "id": "linux-service-restart",
+      "title": "Redémarrer un service (Linux)",
+      "description": "Redémarre un service systemd (arrêt puis démarrage).",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 1,
+      "tags": ["linux", "systemd", "service", "restart"],
+      "linuxCommandTemplateId": "linux-service-restart-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-service-restart-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "sudo systemctl restart {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service à redémarrer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "sudo systemctl restart nginx",
+          "description": "Redémarre le service nginx"
+        }
+      ],
+      "notes": "Nécessite les droits sudo. Utile après modification de configuration.",
+      "links": []
+    },
+    {
+      "id": "linux-service-enable",
+      "title": "Activer un service au démarrage (Linux)",
+      "description": "Configure un service systemd pour démarrer automatiquement au boot.",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 1,
+      "tags": ["linux", "systemd", "service", "enable", "autostart"],
+      "linuxCommandTemplateId": "linux-service-enable-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-service-enable-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "sudo systemctl enable {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service à activer au démarrage"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "sudo systemctl enable nginx",
+          "description": "Active nginx au démarrage"
+        }
+      ],
+      "notes": "N'affecte que le démarrage automatique, pas l'état actuel du service.",
+      "links": []
+    },
+    {
+      "id": "linux-service-disable",
+      "title": "Désactiver un service au démarrage (Linux)",
+      "description": "Empêche un service systemd de démarrer automatiquement au boot.",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 2,
+      "tags": ["linux", "systemd", "service", "disable"],
+      "linuxCommandTemplateId": "linux-service-disable-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-service-disable-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "sudo systemctl disable {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service à désactiver au démarrage"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "sudo systemctl disable apache2",
+          "description": "Désactive apache2 au démarrage"
+        }
+      ],
+      "notes": "N'arrête pas le service actuellement en cours, seulement le démarrage automatique.",
+      "links": []
+    },
+    {
+      "id": "linux-list-services",
+      "title": "Lister tous les services (Linux)",
+      "description": "Affiche la liste de tous les services systemd avec leur état.",
+      "category": "Linux Services",
+      "platform": 1,
+      "level": 0,
+      "tags": ["linux", "systemd", "service", "list"],
+      "linuxCommandTemplateId": "linux-list-services-cmd",
+      "linuxCommandTemplate": {
+        "id": "linux-list-services-cmd",
+        "platform": 1,
+        "name": "systemctl",
+        "commandPattern": "systemctl list-units --type=service --all",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "systemctl list-units --type=service --all",
+          "description": "Liste tous les services"
+        },
+        {
+          "command": "systemctl list-units --type=service --state=running",
+          "description": "Liste uniquement les services actifs"
+        }
+      ],
+      "notes": "Utiliser --state=failed pour voir les services en échec.",
+      "links": []
+    },
+    {
+      "id": "win-service-status",
+      "title": "Vérifier le statut d'un service (Windows)",
+      "description": "Affiche l'état actuel d'un service Windows.",
+      "category": "Windows Services",
+      "platform": 0,
+      "level": 0,
+      "tags": ["windows", "service", "status"],
+      "windowsCommandTemplateId": "win-service-status-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-service-status-cmd",
+        "platform": 0,
+        "name": "Get-Service",
+        "commandPattern": "Get-Service -Name {serviceName}",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service Windows (ex: W32Time, Spooler)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Service -Name W32Time",
+          "description": "Vérifie le statut du service Windows Time"
+        }
+      ],
+      "notes": "Pour voir tous les services : Get-Service",
+      "links": []
+    },
+    {
+      "id": "win-service-restart",
+      "title": "Redémarrer un service (Windows)",
+      "description": "Redémarre un service Windows.",
+      "category": "Windows Services",
+      "platform": 0,
+      "level": 1,
+      "tags": ["windows", "service", "restart"],
+      "windowsCommandTemplateId": "win-service-restart-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-service-restart-cmd",
+        "platform": 0,
+        "name": "Restart-Service",
+        "commandPattern": "Restart-Service -Name {serviceName} -Force",
+        "parameters": [
+          {
+            "name": "serviceName",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du service à redémarrer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Restart-Service -Name Spooler -Force",
+          "description": "Redémarre le service Spooler d'impression"
+        }
+      ],
+      "notes": "Nécessite des droits administrateur. -Force arrête les services dépendants.",
+      "links": []
+    },
+    {
+      "id": "network-test-connection",
+      "title": "Tester la connectivité réseau",
+      "description": "Teste la connectivité réseau vers une adresse IP ou un nom d'hôte.",
+      "category": "Network",
+      "platform": 2,
+      "level": 0,
+      "tags": ["network", "ping", "connectivity", "diagnostic"],
+      "windowsCommandTemplateId": "network-test-connection-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-test-connection-windows-cmd",
+        "platform": 0,
+        "name": "Test-Connection",
+        "commandPattern": "Test-Connection -ComputerName {target} -Count {count}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Adresse IP ou nom d'hôte à tester"
+          },
+          {
+            "name": "count",
+            "label": "Nombre de paquets",
+            "type": "int",
+            "defaultValue": "4",
+            "required": false,
+            "description": "Nombre de requêtes ping à envoyer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "network-test-connection-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "network-test-connection-linux-cmd",
+        "platform": 1,
+        "name": "ping",
+        "commandPattern": "ping -c {count} {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Adresse IP ou nom d'hôte à tester"
+          },
+          {
+            "name": "count",
+            "label": "Nombre de paquets",
+            "type": "int",
+            "defaultValue": "4",
+            "required": false,
+            "description": "Nombre de requêtes ping à envoyer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Test-Connection -ComputerName 8.8.8.8 -Count 4",
+          "description": "Teste la connectivité vers Google DNS (Windows)"
+        },
+        {
+          "command": "ping -c 4 8.8.8.8",
+          "description": "Teste la connectivité vers Google DNS (Linux)"
+        }
+      ],
+      "notes": "Un pare-feu peut bloquer les requêtes ICMP. Utiliser -t (Windows) ou sans -c (Linux) pour ping continu.",
+      "links": []
+    },
+    {
+      "id": "network-trace-route",
+      "title": "Tracer la route réseau",
+      "description": "Affiche le chemin complet des paquets réseau vers une destination.",
+      "category": "Network",
+      "platform": 2,
+      "level": 0,
+      "tags": ["network", "traceroute", "diagnostic", "routing"],
+      "windowsCommandTemplateId": "network-trace-route-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-trace-route-windows-cmd",
+        "platform": 0,
+        "name": "tracert",
+        "commandPattern": "tracert {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Adresse IP ou nom d'hôte"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "network-trace-route-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "network-trace-route-linux-cmd",
+        "platform": 1,
+        "name": "traceroute",
+        "commandPattern": "traceroute {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Adresse IP ou nom d'hôte"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "tracert google.com",
+          "description": "Trace la route vers google.com (Windows)"
+        },
+        {
+          "command": "traceroute google.com",
+          "description": "Trace la route vers google.com (Linux)"
+        }
+      ],
+      "notes": "Peut être lent. Sur Linux, installer traceroute si non disponible : sudo apt install traceroute",
+      "links": []
+    },
+    {
+      "id": "disk-check-space",
+      "title": "Vérifier l'espace disque",
+      "description": "Affiche l'utilisation de l'espace disque sur tous les volumes.",
+      "category": "Disk Management",
+      "platform": 2,
+      "level": 0,
+      "tags": ["disk", "space", "storage", "diagnostic"],
+      "windowsCommandTemplateId": "disk-check-space-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "disk-check-space-windows-cmd",
+        "platform": 0,
+        "name": "Get-PSDrive",
+        "commandPattern": "Get-PSDrive -PSProvider FileSystem | Select-Object Name,Used,Free,@{Name='Total';Expression={$_.Used+$_.Free}}",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "disk-check-space-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "disk-check-space-linux-cmd",
+        "platform": 1,
+        "name": "df",
+        "commandPattern": "df -h",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-PSDrive -PSProvider FileSystem",
+          "description": "Liste l'utilisation disque (Windows)"
+        },
+        {
+          "command": "df -h",
+          "description": "Affiche l'espace disque en format lisible (Linux)"
+        }
+      ],
+      "notes": "Sur Windows, utiliser aussi Get-Volume. Sur Linux, -h affiche en format human-readable (Go, Mo).",
+      "links": []
+    },
+    {
+      "id": "process-list",
+      "title": "Lister les processus en cours",
+      "description": "Affiche la liste de tous les processus en cours d'exécution.",
+      "category": "Process Management",
+      "platform": 2,
+      "level": 0,
+      "tags": ["process", "list", "monitoring"],
+      "windowsCommandTemplateId": "process-list-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "process-list-windows-cmd",
+        "platform": 0,
+        "name": "Get-Process",
+        "commandPattern": "Get-Process | Sort-Object CPU -Descending | Select-Object -First {count} Name,CPU,PM,Id",
+        "parameters": [
+          {
+            "name": "count",
+            "label": "Nombre de processus",
+            "type": "int",
+            "defaultValue": "20",
+            "required": false,
+            "description": "Nombre de processus à afficher"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "process-list-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "process-list-linux-cmd",
+        "platform": 1,
+        "name": "ps",
+        "commandPattern": "ps aux --sort=-%cpu | head -n {count}",
+        "parameters": [
+          {
+            "name": "count",
+            "label": "Nombre de processus",
+            "type": "int",
+            "defaultValue": "20",
+            "required": false,
+            "description": "Nombre de processus à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 20",
+          "description": "Top 20 processus par CPU (Windows)"
+        },
+        {
+          "command": "ps aux --sort=-%cpu | head -n 20",
+          "description": "Top 20 processus par CPU (Linux)"
+        }
+      ],
+      "notes": "Sur Linux, utiliser 'top' ou 'htop' pour monitoring interactif.",
+      "links": []
+    },
+    {
+      "id": "process-kill",
+      "title": "Terminer un processus",
+      "description": "Force l'arrêt d'un processus spécifique par son ID ou son nom.",
+      "category": "Process Management",
+      "platform": 2,
+      "level": 2,
+      "tags": ["process", "kill", "terminate"],
+      "windowsCommandTemplateId": "process-kill-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "process-kill-windows-cmd",
+        "platform": 0,
+        "name": "Stop-Process",
+        "commandPattern": "Stop-Process -Id {processId} -Force",
+        "parameters": [
+          {
+            "name": "processId",
+            "label": "ID du processus",
+            "type": "int",
+            "defaultValue": "",
+            "required": true,
+            "description": "ID numérique du processus à terminer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "process-kill-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "process-kill-linux-cmd",
+        "platform": 1,
+        "name": "kill",
+        "commandPattern": "kill -9 {processId}",
+        "parameters": [
+          {
+            "name": "processId",
+            "label": "ID du processus",
+            "type": "int",
+            "defaultValue": "",
+            "required": true,
+            "description": "PID du processus à terminer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Stop-Process -Id 1234 -Force",
+          "description": "Termine le processus 1234 (Windows)"
+        },
+        {
+          "command": "kill -9 1234",
+          "description": "Termine le processus 1234 (Linux)"
+        }
+      ],
+      "notes": "⚠️ ATTENTION : Peut causer une perte de données non sauvegardées. -9 (SIGKILL) est un arrêt forcé.",
+      "links": []
+    },
+    {
+      "id": "system-uptime",
+      "title": "Afficher le temps de fonctionnement du système",
+      "description": "Montre depuis combien de temps le système est démarré.",
+      "category": "System Info",
+      "platform": 2,
+      "level": 0,
+      "tags": ["system", "uptime", "info"],
+      "windowsCommandTemplateId": "system-uptime-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "system-uptime-windows-cmd",
+        "platform": 0,
+        "name": "Get-CimInstance",
+        "commandPattern": "(Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "system-uptime-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "system-uptime-linux-cmd",
+        "platform": 1,
+        "name": "uptime",
+        "commandPattern": "uptime -p",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "(Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime",
+          "description": "Affiche la date/heure du dernier démarrage (Windows)"
+        },
+        {
+          "command": "uptime -p",
+          "description": "Affiche l'uptime en format lisible (Linux)"
+        }
+      ],
+      "notes": "Sur Windows, calculer la différence avec Get-Date pour obtenir la durée. Sur Linux, 'uptime' sans option donne plus d'infos.",
+      "links": []
+    }
+  ]
+}
