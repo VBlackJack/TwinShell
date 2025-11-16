@@ -5,7 +5,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Converters and theme-independent resources -->
                 <ResourceDictionary Source="Resources/Styles.xaml"/>
+                <!-- Default theme (Light) - will be replaced by ThemeService at startup -->
+                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

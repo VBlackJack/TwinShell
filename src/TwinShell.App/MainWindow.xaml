@@ -21,6 +21,10 @@
                           Command="{Binding ImportConfigurationCommand}"
                           ToolTip="Import favorites and history from a JSON file"/>
                 <Separator/>
+                <MenuItem Header="_Settings..."
+                          Click="Settings_Click"
+                          ToolTip="Configure application settings and theme"/>
+                <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="_Help">
