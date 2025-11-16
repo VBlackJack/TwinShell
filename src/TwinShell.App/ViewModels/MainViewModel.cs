@@ -62,6 +62,12 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<ParameterViewModel> _commandParameters = new();
 
+    [ObservableProperty]
+    private bool _isLoading;
+
+    [ObservableProperty]
+    private string _statusMessage = "Ready";
+
     public MainViewModel(
         IActionService actionService,
         ISearchService searchService,
@@ -82,7 +88,17 @@ public partial class MainViewModel : ObservableObject
 
     public async Task InitializeAsync()
     {
-        await LoadActionsAsync();
+        IsLoading = true;
+        StatusMessage = "Loading actions...";
+        try
+        {
+            await LoadActionsAsync();
+            StatusMessage = $"{_allActions.Count} actions loaded";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private async Task LoadActionsAsync()

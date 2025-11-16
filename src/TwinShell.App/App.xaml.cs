@@ -73,6 +73,7 @@ public partial class App : Application
 
         // Infrastructure Services
         services.AddSingleton<IClipboardService, ClipboardService>();
+        services.AddSingleton<INotificationService, TwinShell.App.Services.NotificationService>();
 
         // Seed Service
         var seedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
