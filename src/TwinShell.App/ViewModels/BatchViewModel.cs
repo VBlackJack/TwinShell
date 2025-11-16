@@ -66,7 +66,8 @@ public partial class BatchViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Failed to load batches: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Failed to load batches");
         }
     }
 
@@ -139,7 +140,8 @@ public partial class BatchViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Failed to execute batch: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Failed to execute batch");
         }
         finally
         {
@@ -165,7 +167,8 @@ public partial class BatchViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Failed to delete batch: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Failed to delete batch");
         }
     }
 
@@ -195,7 +198,8 @@ public partial class BatchViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Failed to export batch: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Failed to export batch");
         }
     }
 
@@ -220,7 +224,8 @@ public partial class BatchViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _notificationService.ShowError($"Failed to import batch: {ex.Message}");
+            // SECURITY: Don't expose exception details to users
+            _notificationService.ShowError("Failed to import batch");
         }
     }
 }

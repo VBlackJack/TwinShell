@@ -186,7 +186,8 @@ public partial class ExecutionViewModel : ObservableObject
         {
             _executionTimer?.Stop();
             AddOutputLine("", false);
-            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ✗ ERROR: {ex.Message}", true);
+            // SECURITY: Don't expose exception details to users
+            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ✗ ERROR: Command execution failed", true);
             StatusMessage = "Execution error";
         }
         finally

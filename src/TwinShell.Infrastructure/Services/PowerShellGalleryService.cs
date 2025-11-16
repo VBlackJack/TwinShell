@@ -24,6 +24,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public async Task<IEnumerable<PowerShellModule>> SearchModulesAsync(string query, int maxResults = 50)
     {
+        // SECURITY: Validate and sanitize query
+        if (!ValidateModuleName(query))
+        {
+            return Enumerable.Empty<PowerShellModule>();
+        }
+
         var command = $@"
             Find-Module -Name '*{EscapeForPowerShell(query)}*' -ErrorAction SilentlyContinue |
             Select-Object -First {maxResults} |
@@ -75,6 +81,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public async Task<PowerShellModule?> GetModuleDetailsAsync(string moduleName)
     {
+        // SECURITY: Validate module name
+        if (!ValidateModuleName(moduleName))
+        {
+            return null;
+        }
+
         var command = $@"
             Find-Module -Name '{EscapeForPowerShell(moduleName)}' -ErrorAction SilentlyContinue |
             Select-Object Name, Version, Description, Author, CompanyName, PublishedDate, DownloadCount, ProjectUri, LicenseUri, Tags |
@@ -105,6 +117,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public async Task<IEnumerable<PowerShellCommand>> GetModuleCommandsAsync(string moduleName)
     {
+        // SECURITY: Validate module name
+        if (!ValidateModuleName(moduleName))
+        {
+            return Enumerable.Empty<PowerShellCommand>();
+        }
+
         var command = $@"
             Import-Module '{EscapeForPowerShell(moduleName)}' -ErrorAction SilentlyContinue
             Get-Command -Module '{EscapeForPowerShell(moduleName)}' -ErrorAction SilentlyContinue |
@@ -164,6 +182,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public async Task<PowerShellCommand?> GetCommandHelpAsync(string commandName)
     {
+        // SECURITY: Validate command name
+        if (!ValidateModuleName(commandName))
+        {
+            return null;
+        }
+
         var command = $@"
             Get-Help '{EscapeForPowerShell(commandName)}' -Full -ErrorAction SilentlyContinue |
             Select-Object @{{Name='Name';Expression={{$_.Name}}}},
@@ -223,6 +247,18 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public async Task<bool> InstallModuleAsync(string moduleName, string scope = "CurrentUser")
     {
+        // SECURITY: Validate module name
+        if (!ValidateModuleName(moduleName))
+        {
+            return false;
+        }
+
+        // SECURITY: Validate scope
+        if (scope != "CurrentUser" && scope != "AllUsers")
+        {
+            return false;
+        }
+
         var command = $@"
             Install-Module -Name '{EscapeForPowerShell(moduleName)}' -Scope {scope} -Force -AllowClobber -ErrorAction Stop
         ";
@@ -238,6 +274,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public async Task<bool> IsModuleInstalledAsync(string moduleName)
     {
+        // SECURITY: Validate module name
+        if (!ValidateModuleName(moduleName))
+        {
+            return false;
+        }
+
         var command = $@"
             Get-Module -ListAvailable -Name '{EscapeForPowerShell(moduleName)}' -ErrorAction SilentlyContinue |
             Select-Object -First 1 |
@@ -301,13 +343,68 @@ public class PowerShellGalleryService : IPowerShellGalleryService
         return await _actionService.CreateActionAsync(action);
     }
 
+    /// <summary>
+    /// Validates module/command name to prevent injection
+    /// </summary>
+    private static bool ValidateModuleName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return false;
+
+        // Module names should only contain alphanumeric, dots, dashes, and underscores
+        // Max length 100 characters
+        if (name.Length > 100)
+            return false;
+
+        var validNameRegex = new Regex(@"^[a-zA-Z0-9._-]+$");
+        if (!validNameRegex.IsMatch(name))
+            return false;
+
+        // Check for dangerous characters that could be used for injection
+        var dangerousChars = new[] { ';', '|', '&', '$', '`', '(', ')', '<', '>', '\n', '\r', '"' };
+        if (name.Any(c => dangerousChars.Contains(c)))
+            return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Escapes string for PowerShell execution
+    /// </summary>
     private static string EscapeForPowerShell(string input)
     {
+        // Escape single quotes by doubling them
+        // This is safe when the string is used within single quotes
         return input.Replace("'", "''");
+    }
+
+    /// <summary>
+    /// Validates URI to prevent malicious URLs
+    /// </summary>
+    private static bool ValidateUri(string? uri)
+    {
+        if (string.IsNullOrEmpty(uri))
+            return true; // Null/empty URIs are acceptable
+
+        if (!Uri.TryCreate(uri, UriKind.Absolute, out var result))
+            return false;
+
+        // Only allow HTTPS for security
+        if (result.Scheme != "https")
+            return false;
+
+        // Whitelist of allowed hosts for PowerShell Gallery
+        var allowedHosts = new[] { "github.com", "www.github.com", "powershellgallery.com", "www.powershellgallery.com" };
+        return allowedHosts.Any(host => result.Host.Equals(host, StringComparison.OrdinalIgnoreCase) ||
+                                        result.Host.EndsWith("." + host, StringComparison.OrdinalIgnoreCase));
     }
 
     private static PowerShellModule MapToModule(PowerShellGalleryModuleDto dto)
     {
+        // SECURITY: Validate URIs before storing
+        var projectUri = ValidateUri(dto.ProjectUri) ? dto.ProjectUri : null;
+        var licenseUri = ValidateUri(dto.LicenseUri) ? dto.LicenseUri : null;
+
         return new PowerShellModule
         {
             Name = dto.Name ?? string.Empty,
@@ -318,8 +415,8 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             DownloadCount = dto.DownloadCount ?? 0,
             PublishedDate = dto.PublishedDate ?? DateTime.MinValue,
             Tags = dto.Tags?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>(),
-            ProjectUri = dto.ProjectUri,
-            LicenseUri = dto.LicenseUri
+            ProjectUri = projectUri,
+            LicenseUri = licenseUri
         };
     }
 
