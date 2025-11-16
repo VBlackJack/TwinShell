@@ -15,6 +15,7 @@ public partial class MainViewModel : ObservableObject
     private readonly IClipboardService _clipboardService;
     private readonly ICommandHistoryService _commandHistoryService;
     private readonly IFavoritesService _favoritesService;
+    private readonly IConfigurationService _configurationService;
 
     private List<Action> _allActions = new();
     private HashSet<string> _favoriteActionIds = new();
@@ -67,7 +68,8 @@ public partial class MainViewModel : ObservableObject
         ICommandGeneratorService commandGeneratorService,
         IClipboardService clipboardService,
         ICommandHistoryService commandHistoryService,
-        IFavoritesService favoritesService)
+        IFavoritesService favoritesService,
+        IConfigurationService configurationService)
     {
         _actionService = actionService;
         _searchService = searchService;
@@ -75,6 +77,7 @@ public partial class MainViewModel : ObservableObject
         _clipboardService = clipboardService;
         _commandHistoryService = commandHistoryService;
         _favoritesService = favoritesService;
+        _configurationService = configurationService;
     }
 
     public async Task InitializeAsync()
@@ -323,6 +326,136 @@ public partial class MainViewModel : ObservableObject
     public bool IsSelectedActionFavorite()
     {
         return SelectedAction != null && _favoriteActionIds.Contains(SelectedAction.Id);
+    }
+
+    /// <summary>
+    /// Export configuration to JSON file
+    /// </summary>
+    [RelayCommand]
+    private async Task ExportConfigurationAsync()
+    {
+        try
+        {
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                DefaultExt = ".json",
+                FileName = $"TwinShell-Config-{DateTime.Now:yyyy-MM-dd}.json"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var result = await _configurationService.ExportToJsonAsync(
+                    saveFileDialog.FileName,
+                    userId: null,
+                    includeHistory: true);
+
+                if (result.Success)
+                {
+                    System.Windows.MessageBox.Show(
+                        $"Configuration exported successfully to:\n{saveFileDialog.FileName}",
+                        "Export Successful",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Information);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show(
+                        $"Export failed: {result.ErrorMessage}",
+                        "Export Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(
+                $"An error occurred: {ex.Message}",
+                "Export Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
+        }
+    }
+
+    /// <summary>
+    /// Import configuration from JSON file
+    /// </summary>
+    [RelayCommand]
+    private async Task ImportConfigurationAsync()
+    {
+        try
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                DefaultExt = ".json"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Validate file first
+                var validation = await _configurationService.ValidateConfigurationFileAsync(openFileDialog.FileName);
+
+                if (!validation.IsValid)
+                {
+                    System.Windows.MessageBox.Show(
+                        $"Invalid configuration file: {validation.ErrorMessage}",
+                        "Validation Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Confirm import
+                var confirmResult = System.Windows.MessageBox.Show(
+                    $"This will import favorites and history from the selected file.\n" +
+                    $"Existing data will be preserved (merge mode).\n\n" +
+                    $"Configuration Version: {validation.Version}\n\n" +
+                    $"Do you want to continue?",
+                    "Confirm Import",
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (confirmResult == System.Windows.MessageBoxResult.Yes)
+                {
+                    var result = await _configurationService.ImportFromJsonAsync(
+                        openFileDialog.FileName,
+                        userId: null,
+                        mergeMode: true);
+
+                    if (result.Success)
+                    {
+                        System.Windows.MessageBox.Show(
+                            $"Configuration imported successfully!\n\n" +
+                            $"Favorites imported: {result.FavoritesImported}\n" +
+                            $"History entries imported: {result.HistoryImported}",
+                            "Import Successful",
+                            System.Windows.MessageBoxButton.OK,
+                            System.Windows.MessageBoxImage.Information);
+
+                        // Reload data
+                        await LoadActionsAsync();
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show(
+                            $"Import failed: {result.ErrorMessage}",
+                            "Import Error",
+                            System.Windows.MessageBoxButton.OK,
+                            System.Windows.MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(
+                $"An error occurred: {ex.Message}",
+                "Import Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
+        }
     }
 }
 
