@@ -169,13 +169,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             var filtered = _allActions.AsEnumerable();
 
+            // UX: When search is active, ignore category filter to show all matching results
+            var hasActiveSearch = !string.IsNullOrWhiteSpace(SearchText);
+
             // Favorites filter (special category)
-            if (SelectedCategory == UIConstants.FavoritesCategoryDisplay)
+            if (!hasActiveSearch && SelectedCategory == UIConstants.FavoritesCategoryDisplay)
             {
                 filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
             }
-            // Category filter
-            else if (!string.IsNullOrEmpty(SelectedCategory))
+            // Category filter (only apply if no active search)
+            else if (!hasActiveSearch && !string.IsNullOrEmpty(SelectedCategory))
             {
                 filtered = filtered.Where(a => a.Category == SelectedCategory);
             }
@@ -186,8 +189,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
             }
 
-            // Search filter
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            // Search filter (applies across all categories when active)
+            if (hasActiveSearch)
             {
                 filtered = await _searchService.SearchAsync(filtered, SearchText);
             }
