@@ -1,0 +1,181 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ====================================================================== -->
+    <!-- WINDOWS 11 FLUENT DESIGN EFFECTS                                      -->
+    <!-- Acrylic, Mica, and modern material effects                           -->
+    <!-- ====================================================================== -->
+
+    <!-- ================================================================ -->
+    <!-- ACRYLIC BRUSH EFFECTS                                            -->
+    <!-- Translucent, blurred background material                         -->
+    <!-- ================================================================ -->
+
+    <!-- Acrylic Background (Light) - For light theme surfaces -->
+    <LinearGradientBrush x:Key="AcrylicBackgroundLight" StartPoint="0,0" EndPoint="1,1" Opacity="0.9">
+        <GradientStop Color="#F3F3F3" Offset="0"/>
+        <GradientStop Color="#FCFCFC" Offset="0.5"/>
+        <GradientStop Color="#F3F3F3" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Acrylic Background (Dark) - For dark theme surfaces -->
+    <LinearGradientBrush x:Key="AcrylicBackgroundDark" StartPoint="0,0" EndPoint="1,1" Opacity="0.85">
+        <GradientStop Color="#2C2C2C" Offset="0"/>
+        <GradientStop Color="#323232" Offset="0.5"/>
+        <GradientStop Color="#2C2C2C" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- ================================================================ -->
+    <!-- MICA BRUSH EFFECTS                                               -->
+    <!-- Subtle, transparent material that tints with desktop wallpaper   -->
+    <!-- ================================================================ -->
+
+    <!-- Mica Base (Light) -->
+    <SolidColorBrush x:Key="MicaBackgroundLight" Color="#F9F9F9" Opacity="0.95"/>
+
+    <!-- Mica Base (Dark) -->
+    <SolidColorBrush x:Key="MicaBackgroundDark" Color="#202020" Opacity="0.92"/>
+
+    <!-- ================================================================ -->
+    <!-- SMOKE GLASS EFFECT                                               -->
+    <!-- Frosted glass appearance for overlays                            -->
+    <!-- ================================================================ -->
+
+    <!-- Smoke Glass (Light) -->
+    <SolidColorBrush x:Key="SmokeGlassLight" Color="#FFFFFF" Opacity="0.7"/>
+
+    <!-- Smoke Glass (Dark) -->
+    <SolidColorBrush x:Key="SmokeGlassDark" Color="#000000" Opacity="0.5"/>
+
+    <!-- ================================================================ -->
+    <!-- LAYERING SYSTEM                                                  -->
+    <!-- Subtle gradient overlays for depth perception                    -->
+    <!-- ================================================================ -->
+
+    <!-- Subtle Gradient Overlay (Top to Bottom) -->
+    <LinearGradientBrush x:Key="SubtleGradientOverlay" StartPoint="0,0" EndPoint="0,1" Opacity="0.03">
+        <GradientStop Color="#FFFFFF" Offset="0"/>
+        <GradientStop Color="#000000" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Shimmer Effect (For hover states) -->
+    <LinearGradientBrush x:Key="ShimmerEffect" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="Transparent" Offset="0"/>
+        <GradientStop Color="#FFFFFF" Offset="0.5"/>
+        <GradientStop Color="Transparent" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- ================================================================ -->
+    <!-- NOISE TEXTURE (For realistic material feel)                     -->
+    <!-- Simulated using very subtle gradient pattern                     -->
+    <!-- ================================================================ -->
+
+    <!-- Noise Overlay -->
+    <DrawingBrush x:Key="NoiseTexture" TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute" Opacity="0.02">
+        <DrawingBrush.Drawing>
+            <GeometryDrawing Brush="#000000">
+                <GeometryDrawing.Geometry>
+                    <RectangleGeometry Rect="0,0,8,8"/>
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <!-- ================================================================ -->
+    <!-- GLOW EFFECTS                                                     -->
+    <!-- Soft glows for interactive elements                              -->
+    <!-- ================================================================ -->
+
+    <!-- Primary Glow (Blue) -->
+    <DropShadowEffect x:Key="PrimaryGlow"
+                      ShadowDepth="0"
+                      BlurRadius="24"
+                      Color="#0067C0"
+                      Opacity="0.3"/>
+
+    <!-- Success Glow (Green) -->
+    <DropShadowEffect x:Key="SuccessGlow"
+                      ShadowDepth="0"
+                      BlurRadius="24"
+                      Color="#2E7D32"
+                      Opacity="0.3"/>
+
+    <!-- Danger Glow (Red) -->
+    <DropShadowEffect x:Key="DangerGlow"
+                      ShadowDepth="0"
+                      BlurRadius="24"
+                      Color="#C62828"
+                      Opacity="0.3"/>
+
+    <!-- Focus Glow (Accent) -->
+    <DropShadowEffect x:Key="FocusGlow"
+                      ShadowDepth="0"
+                      BlurRadius="16"
+                      Color="#0078D4"
+                      Opacity="0.4"/>
+
+    <!-- ================================================================ -->
+    <!-- BACKDROP BLUR SIMULATION                                         -->
+    <!-- Using opacity and layering to simulate backdrop blur             -->
+    <!-- Note: WPF doesn't support native backdrop blur, this is a close approximation -->
+    <!-- ================================================================ -->
+
+    <!-- Blur Overlay Light -->
+    <SolidColorBrush x:Key="BlurOverlayLight" Color="#FAFAFA" Opacity="0.8"/>
+
+    <!-- Blur Overlay Dark -->
+    <SolidColorBrush x:Key="BlurOverlayDark" Color="#1E1E1E" Opacity="0.85"/>
+
+    <!-- ================================================================ -->
+    <!-- REVEAL HIGHLIGHT BRUSHES                                         -->
+    <!-- For hover reveal effects on interactive elements                 -->
+    <!-- ================================================================ -->
+
+    <!-- Reveal Border Brush (Light on hover) -->
+    <LinearGradientBrush x:Key="RevealBorderBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.2">
+        <GradientStop Color="#FFFFFF" Offset="0"/>
+        <GradientStop Color="Transparent" Offset="0.5"/>
+        <GradientStop Color="#FFFFFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Reveal Hover Brush (Subtle white overlay) -->
+    <RadialGradientBrush x:Key="RevealHoverBrush" GradientOrigin="0.5,0.5" RadiusX="1" RadiusY="1" Opacity="0.1">
+        <GradientStop Color="#FFFFFF" Offset="0"/>
+        <GradientStop Color="Transparent" Offset="1"/>
+    </RadialGradientBrush>
+
+    <!-- ================================================================ -->
+    <!-- CHROME EFFECTS                                                   -->
+    <!-- For app chrome (title bars, borders)                             -->
+    <!-- ================================================================ -->
+
+    <!-- App Chrome Light -->
+    <SolidColorBrush x:Key="AppChromeLight" Color="#F3F3F3" Opacity="0.95"/>
+
+    <!-- App Chrome Dark -->
+    <SolidColorBrush x:Key="AppChromeDark" Color="#2B2B2B" Opacity="0.95"/>
+
+    <!-- ================================================================ -->
+    <!-- ELEVATION ENHANCEMENT                                            -->
+    <!-- Enhanced shadows with multiple layers for realistic depth        -->
+    <!-- ================================================================ -->
+
+    <!-- Layered Shadow (Elevation 2) - Combines ambient + directional -->
+    <EffectGroup x:Key="LayeredElevation2">
+        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#000000" Opacity="0.04"/>
+        <DropShadowEffect ShadowDepth="2" BlurRadius="4" Direction="270" Color="#000000" Opacity="0.08"/>
+    </EffectGroup>
+
+    <!-- Layered Shadow (Elevation 3) -->
+    <EffectGroup x:Key="LayeredElevation3">
+        <DropShadowEffect ShadowDepth="0" BlurRadius="16" Color="#000000" Opacity="0.05"/>
+        <DropShadowEffect ShadowDepth="4" BlurRadius="8" Direction="270" Color="#000000" Opacity="0.10"/>
+    </EffectGroup>
+
+    <!-- Layered Shadow (Elevation 4) -->
+    <EffectGroup x:Key="LayeredElevation4">
+        <DropShadowEffect ShadowDepth="0" BlurRadius="32" Color="#000000" Opacity="0.06"/>
+        <DropShadowEffect ShadowDepth="8" BlurRadius="16" Direction="270" Color="#000000" Opacity="0.12"/>
+    </EffectGroup>
+
+</ResourceDictionary>
