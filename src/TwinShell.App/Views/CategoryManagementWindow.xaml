@@ -62,8 +62,13 @@
                                 Command="{Binding StartAddCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 HorizontalAlignment="Stretch"
+                                Padding="12,10"
+                                MinWidth="44"
+                                MinHeight="44"
                                 Margin="0,8,0,0"
-                                MinHeight="36"/>
+                                ToolTip="Create a new custom category"
+                                AutomationProperties.Name="Add new category"
+                                AutomationProperties.HelpText="Create a new custom category for organizing actions"/>
                     </StackPanel>
 
                     <!-- Categories ListBox -->
@@ -149,19 +154,73 @@
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
                         <Button Content="↑ Move Up"
                                 Command="{Binding MoveUpCommand}"
-                                Padding="8,4"
+                                Padding="10,10"
+                                MinWidth="44"
+                                MinHeight="44"
                                 Margin="0,0,8,0"
                                 Background="{StaticResource SurfaceBrush}"
                                 Foreground="{StaticResource TextPrimaryBrush}"
                                 BorderBrush="{StaticResource BorderBrush}"
-                                BorderThickness="1"/>
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                ToolTip="Move the selected category up in the list"
+                                AutomationProperties.Name="Move category up"
+                                AutomationProperties.HelpText="Move the selected category up in the display order">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="4"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                         <Button Content="↓ Move Down"
                                 Command="{Binding MoveDownCommand}"
-                                Padding="8,4"
+                                Padding="10,10"
+                                MinWidth="44"
+                                MinHeight="44"
                                 Background="{StaticResource SurfaceBrush}"
                                 Foreground="{StaticResource TextPrimaryBrush}"
                                 BorderBrush="{StaticResource BorderBrush}"
-                                BorderThickness="1"/>
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                ToolTip="Move the selected category down in the list"
+                                AutomationProperties.Name="Move category down"
+                                AutomationProperties.HelpText="Move the selected category down in the display order">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="4"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -364,29 +423,87 @@
                                                 Command="{Binding StartEditCommand}"
                                                 Style="{StaticResource PrimaryButtonStyle}"
                                                 HorizontalAlignment="Stretch"
-                                                Margin="0,0,0,8"/>
+                                                Padding="12,10"
+                                                MinWidth="44"
+                                                MinHeight="44"
+                                                Margin="0,0,0,8"
+                                                ToolTip="Edit category properties"
+                                                AutomationProperties.Name="Edit category"
+                                                AutomationProperties.HelpText="Edit the selected category's name, icon, color, and description"/>
                                         <Button Content="{Binding SelectedCategory.IsHidden, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='Show:Hide'}"
                                                 Command="{Binding ToggleVisibilityCommand}"
-                                                Padding="16,8"
+                                                Padding="12,10"
+                                                MinWidth="44"
+                                                MinHeight="44"
                                                 HorizontalAlignment="Stretch"
                                                 Background="{StaticResource SurfaceBrush}"
                                                 Foreground="{StaticResource TextPrimaryBrush}"
                                                 BorderBrush="{StaticResource BorderBrush}"
                                                 BorderThickness="1"
-                                                Margin="0,0,0,8"/>
+                                                Cursor="Hand"
+                                                Margin="0,0,0,8"
+                                                ToolTip="Toggle category visibility"
+                                                AutomationProperties.Name="Toggle visibility"
+                                                AutomationProperties.HelpText="Show or hide this category in the main view">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="4"
+                                                            Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                         <Button Content="Delete Category"
                                                 Command="{Binding DeleteCommand}"
-                                                Padding="16,8"
+                                                Padding="12,10"
+                                                MinWidth="44"
+                                                MinHeight="44"
                                                 HorizontalAlignment="Stretch"
                                                 Background="{StaticResource DangerBrush}"
                                                 Foreground="White"
-                                                BorderThickness="0"/>
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                ToolTip="Delete this category permanently"
+                                                AutomationProperties.Name="Delete category"
+                                                AutomationProperties.HelpText="Permanently delete the selected category">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="4"
+                                                            Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Opacity" Value="0.9"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
 
-                        <!-- Empty State -->
+                        <!-- UX: Empty State without emoji for professional appearance -->
                         <StackPanel VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Margin="0,40,0,0">
@@ -396,14 +513,19 @@
                                     <Binding Path="SelectedCategory"/>
                                 </MultiBinding>
                             </StackPanel.Visibility>
-                            <TextBlock Text="📁"
-                                       FontSize="48"
+                            <TextBlock Text="No Category Selected"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
                                        HorizontalAlignment="Center"
-                                       Margin="0,0,0,16"/>
-                            <TextBlock Text="Select a category or create a new one"
-                                       FontSize="14"
                                        Foreground="{StaticResource TextSecondaryBrush}"
-                                       HorizontalAlignment="Center"/>
+                                       Margin="0,0,0,8"/>
+                            <TextBlock Text="Select a category from the list or create a new one"
+                                       FontSize="12"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"
+                                       MaxWidth="300"
+                                       TextWrapping="Wrap"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
@@ -418,12 +540,39 @@
                 Margin="0,16,0,0">
             <Button Content="Close"
                     Click="Close_Click"
-                    Padding="16,8"
+                    Padding="12,10"
+                    MinWidth="44"
+                    MinHeight="44"
                     HorizontalAlignment="Right"
                     Background="{StaticResource SurfaceBrush}"
                     Foreground="{StaticResource TextPrimaryBrush}"
                     BorderBrush="{StaticResource BorderBrush}"
-                    BorderThickness="1"/>
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    ToolTip="Close this window"
+                    AutomationProperties.Name="Close"
+                    AutomationProperties.HelpText="Close the category management window">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Border>
     </Grid>
 </Window>
