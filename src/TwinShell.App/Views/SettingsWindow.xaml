@@ -151,27 +151,10 @@
                                  AutomationProperties.Name="Maximum history items"
                                  AutomationProperties.HelpText="Maximum number of items to display in history views, between 10 and 100000"/>
 
-                        <TextBlock Text="Recent Commands Count"
-                                   Style="{StaticResource SettingsLabelStyle}"
-                                   Margin="0,16,0,4"/>
-                        <TextBlock Text="Number of recent commands to display in the widget (1-50)."
-                                   Style="{StaticResource DescriptionStyle}"/>
-                        <TextBox x:Name="RecentCommandsCountTextBox"
-                                 Text="{Binding RecentCommandsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Style="{StaticResource NumberTextBoxStyle}"
-                                 TabIndex="4"
-                                 AutomationProperties.Name="Recent commands count"
-                                 AutomationProperties.HelpText="Number of recent commands to display in the widget, between 1 and 50"/>
-
-                        <CheckBox Content="Show Recent Commands Widget on startup"
-                                  IsChecked="{Binding ShowRecentCommandsWidget, Mode=TwoWay}"
-                                  Margin="0,16,0,0"
-                                  TabIndex="5"
-                                  AutomationProperties.Name="Show recent commands widget on startup"/>
-
                         <CheckBox Content="Confirm before executing dangerous commands"
                                   IsChecked="{Binding ConfirmDangerousActions, Mode=TwoWay}"
-                                  TabIndex="6"
+                                  Margin="0,16,0,0"
+                                  TabIndex="4"
                                   AutomationProperties.Name="Confirm before executing dangerous commands"/>
                     </StackPanel>
                 </Border>
@@ -216,7 +199,7 @@
                     MinWidth="44"
                     MinHeight="44"
                     Margin="0,0,8,0"
-                    TabIndex="9"
+                    TabIndex="7"
                     Background="{StaticResource DangerBrush}"
                     Foreground="White"
                     BorderThickness="0"
@@ -254,7 +237,7 @@
                     Padding="12,10"
                     MinWidth="44"
                     MinHeight="44"
-                    TabIndex="7"
+                    TabIndex="5"
                     AutomationProperties.Name="Save settings"
                     AutomationProperties.HelpText="Save your changes and close the settings window"/>
 
@@ -265,7 +248,7 @@
                     Padding="12,10"
                     MinWidth="44"
                     MinHeight="44"
-                    TabIndex="8"
+                    TabIndex="6"
                     Background="{StaticResource SurfaceBrush}"
                     Foreground="{StaticResource TextPrimaryBrush}"
                     BorderBrush="{StaticResource BorderBrush}"
