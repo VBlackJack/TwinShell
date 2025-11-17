@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using TwinShell.App.Collections;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
@@ -22,6 +23,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly IConfigurationService _configurationService;
     private readonly IDialogService _dialogService;
     private readonly ILocalizationService _localizationService;
+    private readonly IImportExportService _importExportService;
+    private readonly IServiceProvider _serviceProvider;
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
     private bool _disposed = false;
 
@@ -96,7 +99,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
         IFavoritesService favoritesService,
         IConfigurationService configurationService,
         IDialogService dialogService,
-        ILocalizationService localizationService)
+        ILocalizationService localizationService,
+        IImportExportService importExportService,
+        IServiceProvider serviceProvider)
     {
         _actionService = actionService;
         _searchService = searchService;
@@ -107,6 +112,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
         _configurationService = configurationService;
         _dialogService = dialogService;
         _localizationService = localizationService;
+        _importExportService = importExportService;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task InitializeAsync()
@@ -549,6 +556,250 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 _filterSemaphore?.Dispose();
             }
             _disposed = true;
+        }
+    }
+
+    /// <summary>
+    /// Add a new action
+    /// </summary>
+    [RelayCommand]
+    private async Task AddNewActionAsync()
+    {
+        try
+        {
+            var editorVm = ActivatorUtilities.CreateInstance<ActionEditorViewModel>(_serviceProvider);
+            await editorVm.InitializeForNewActionAsync();
+
+            var window = new Views.ActionEditorWindow(editorVm)
+            {
+                Owner = System.Windows.Application.Current.MainWindow
+            };
+
+            if (window.ShowDialog() == true)
+            {
+                // Reload actions
+                await LoadActionsAsync();
+                StatusMessage = "✓ Nouvelle commande ajoutée avec succès";
+                Services.SnackBarService.Instance.ShowSuccess("✓ Nouvelle commande ajoutée avec succès");
+            }
+        }
+        catch (Exception ex)
+        {
+            // SECURITY: Don't expose exception details to users
+            _dialogService.ShowError(
+                "Une erreur s'est produite lors de la création de la commande.",
+                "Erreur");
+        }
+    }
+
+    /// <summary>
+    /// Edit the selected action
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
+    private async Task EditActionAsync()
+    {
+        if (SelectedAction == null) return;
+
+        // SECURITY: Verify it's a user-created action
+        if (!SelectedAction.IsUserCreated)
+        {
+            _dialogService.ShowWarning(
+                "Impossible d'éditer une commande système. Seules les commandes créées par l'utilisateur peuvent être modifiées.",
+                "Édition interdite");
+            return;
+        }
+
+        try
+        {
+            var editorVm = ActivatorUtilities.CreateInstance<ActionEditorViewModel>(_serviceProvider);
+            await editorVm.InitializeForEditActionAsync(SelectedAction);
+
+            var window = new Views.ActionEditorWindow(editorVm)
+            {
+                Owner = System.Windows.Application.Current.MainWindow
+            };
+
+            if (window.ShowDialog() == true)
+            {
+                // Reload actions
+                await LoadActionsAsync();
+                StatusMessage = "✓ Commande mise à jour avec succès";
+                Services.SnackBarService.Instance.ShowSuccess("✓ Commande mise à jour avec succès");
+            }
+        }
+        catch (Exception ex)
+        {
+            // SECURITY: Don't expose exception details to users
+            _dialogService.ShowError(
+                "Une erreur s'est produite lors de la modification de la commande.",
+                "Erreur");
+        }
+    }
+
+    /// <summary>
+    /// Delete the selected action
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
+    private async Task DeleteActionAsync()
+    {
+        if (SelectedAction == null) return;
+
+        // SECURITY: Verify it's a user-created action
+        if (!SelectedAction.IsUserCreated)
+        {
+            _dialogService.ShowWarning(
+                "Impossible de supprimer une commande système. Seules les commandes créées par l'utilisateur peuvent être supprimées.",
+                "Suppression interdite");
+            return;
+        }
+
+        var confirmed = _dialogService.ShowQuestion(
+            $"Voulez-vous vraiment supprimer la commande '{SelectedAction.Title}' ?\n\nCette action est irréversible.",
+            "Confirmer la suppression");
+
+        if (confirmed)
+        {
+            try
+            {
+                await _actionService.DeleteActionAsync(SelectedAction.Id);
+                await LoadActionsAsync();
+                StatusMessage = "✓ Commande supprimée";
+                Services.SnackBarService.Instance.ShowSuccess("✓ Commande supprimée");
+            }
+            catch (Exception ex)
+            {
+                // SECURITY: Don't expose exception details to users
+                _dialogService.ShowError(
+                    "Une erreur s'est produite lors de la suppression de la commande.",
+                    "Erreur");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Check if the selected action can be edited or deleted
+    /// </summary>
+    private bool CanEditOrDelete() => SelectedAction?.IsUserCreated == true;
+
+    /// <summary>
+    /// Export actions database to JSON file
+    /// </summary>
+    [RelayCommand]
+    private async Task ExportActionsAsync()
+    {
+        try
+        {
+            var fileName = _dialogService.ShowSaveFileDialog(
+                "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                ".json",
+                $"twinshell-actions-{DateTime.Now:yyyy-MM-dd-HHmmss}.json");
+
+            if (fileName != null)
+            {
+                var result = await _importExportService.ExportActionsAsync(fileName);
+
+                if (result.Success)
+                {
+                    _dialogService.ShowSuccess(
+                        $"{result.ActionCount} commandes exportées vers:\n{fileName}",
+                        "Export réussi");
+                }
+                else
+                {
+                    _dialogService.ShowError(
+                        $"Erreur lors de l'export:\n{result.ErrorMessage}",
+                        "Échec de l'export");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // SECURITY: Don't expose exception details to users
+            _dialogService.ShowError(
+                "Une erreur s'est produite lors de l'export.",
+                "Erreur");
+        }
+    }
+
+    /// <summary>
+    /// Import actions from JSON file
+    /// </summary>
+    [RelayCommand]
+    private async Task ImportActionsAsync()
+    {
+        try
+        {
+            var fileName = _dialogService.ShowOpenFileDialog(
+                "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                ".json");
+
+            if (fileName != null)
+            {
+                // Validate file first
+                var validation = await _importExportService.ValidateImportFileAsync(fileName);
+
+                if (!validation.IsValid)
+                {
+                    _dialogService.ShowWarning(
+                        $"Fichier invalide:\n{validation.ErrorMessage}",
+                        "Validation échouée");
+                    return;
+                }
+
+                // Ask user for import mode
+                var mergeMode = _dialogService.ShowQuestion(
+                    $"Fichier valide contenant {validation.ActionCount} commandes.\n\n" +
+                    "Mode d'import:\n" +
+                    "• OUI = Fusionner (ajouter nouvelles, mettre à jour existantes)\n" +
+                    "• NON = Remplacer (supprimer toutes vos commandes puis importer)\n\n" +
+                    "Voulez-vous FUSIONNER avec vos commandes existantes ?",
+                    "Choisir le mode d'import");
+
+                var mode = mergeMode ? ImportMode.Merge : ImportMode.Replace;
+
+                // Confirm if Replace mode
+                if (mode == ImportMode.Replace)
+                {
+                    var confirmReplace = _dialogService.ShowQuestion(
+                        "⚠ ATTENTION ⚠\n\n" +
+                        "Le mode REMPLACEMENT va supprimer TOUTES vos commandes personnelles existantes.\n" +
+                        "Les commandes système seront conservées.\n\n" +
+                        "Êtes-vous ABSOLUMENT SÛR de vouloir continuer ?",
+                        "Confirmer le remplacement");
+
+                    if (!confirmReplace)
+                    {
+                        return;
+                    }
+                }
+
+                // Perform import
+                var result = await _importExportService.ImportActionsAsync(fileName, mode);
+
+                if (result.Success)
+                {
+                    await LoadActionsAsync();
+                    _dialogService.ShowSuccess(
+                        $"Import terminé:\n" +
+                        $"• {result.Imported} commandes importées\n" +
+                        $"• {result.Updated} commandes mises à jour\n" +
+                        $"• {result.Skipped} commandes ignorées",
+                        "Import réussi");
+                }
+                else
+                {
+                    _dialogService.ShowError(
+                        $"Erreur lors de l'import:\n{result.ErrorMessage}",
+                        "Échec de l'import");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // SECURITY: Don't expose exception details to users
+            _dialogService.ShowError(
+                "Une erreur s'est produite lors de l'import.",
+                "Erreur");
         }
     }
 
