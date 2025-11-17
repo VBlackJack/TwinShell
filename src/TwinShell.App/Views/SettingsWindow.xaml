@@ -9,7 +9,7 @@
         Title="Settings - TwinShell"
         Height="600" Width="700"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource BackgroundBrush}"
+        Background="{DynamicResource BackgroundBrush}"
         ResizeMode="CanResize"
         MinHeight="450" MinWidth="600">
 
@@ -17,10 +17,10 @@
         <!-- ComboBox Style -->
         <Style TargetType="ComboBox">
             <Setter Property="Padding" Value="8"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
         </Style>
 
         <!-- TextBox for numbers -->
@@ -31,7 +31,7 @@
 
         <!-- CheckBox Style -->
         <Style TargetType="CheckBox">
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
             <Setter Property="Margin" Value="0,4"/>
         </Style>
 
@@ -39,20 +39,20 @@
         <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
             <Setter Property="Margin" Value="0,16,0,8"/>
         </Style>
 
         <!-- Label Style -->
         <Style x:Key="SettingsLabelStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
             <Setter Property="Margin" Value="0,8,0,4"/>
             <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
         <!-- Description Style -->
         <Style x:Key="DescriptionStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -70,8 +70,8 @@
             <StackPanel>
                 <!-- Appearance Section -->
                 <TextBlock Text="Appearance" Style="{StaticResource SectionHeaderStyle}"/>
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrush}"
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="4"
                         Padding="16"
@@ -110,8 +110,8 @@
 
                 <!-- Behavior Section -->
                 <TextBlock Text="Behavior" Style="{StaticResource SectionHeaderStyle}"/>
-                <Border Background="{StaticResource SurfaceBrush}"
-                        BorderBrush="{StaticResource BorderBrush}"
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="4"
                         Padding="16"
@@ -149,8 +149,8 @@
                 </Border>
 
                 <!-- Validation Error Display -->
-                <Border Background="{StaticResource DangerBackgroundBrush}"
-                        BorderBrush="{StaticResource DangerBrush}"
+                <Border Background="{DynamicResource DangerBackgroundBrush}"
+                        BorderBrush="{DynamicResource DangerBrush}"
                         BorderThickness="1"
                         CornerRadius="4"
                         Padding="12"
@@ -161,10 +161,10 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="⚠ "
                                    FontSize="16"
-                                   Foreground="{StaticResource DangerBrush}"
+                                   Foreground="{DynamicResource DangerBrush}"
                                    VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding ValidationError}"
-                                   Foreground="{StaticResource DangerBrush}"
+                                   Foreground="{DynamicResource DangerBrush}"
                                    TextWrapping="Wrap"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
@@ -189,7 +189,7 @@
                     MinHeight="44"
                     Margin="0,0,8,0"
                     TabIndex="7"
-                    Background="{StaticResource DangerBrush}"
+                    Background="{DynamicResource DangerBrush}"
                     Foreground="White"
                     BorderThickness="0"
                     Cursor="Hand"
@@ -238,9 +238,9 @@
                     MinWidth="44"
                     MinHeight="44"
                     TabIndex="6"
-                    Background="{StaticResource SurfaceBrush}"
-                    Foreground="{StaticResource TextPrimaryBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    Foreground="{DynamicResource TextPrimaryBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     Cursor="Hand"
                     AutomationProperties.Name="Cancel"
@@ -261,7 +261,7 @@
                     <Style TargetType="Button">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>

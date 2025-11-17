@@ -8,7 +8,7 @@
         Title="Manage Categories - TwinShell"
         Height="650" Width="900"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource BackgroundBrush}"
+        Background="{DynamicResource BackgroundBrush}"
         ResizeMode="CanResize"
         MinHeight="500" MinWidth="700">
 
@@ -27,8 +27,8 @@
 
             <!-- Categories List -->
             <Border Grid.Column="0"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="4"
                     Padding="16"
@@ -45,7 +45,7 @@
                         <TextBlock Text="Categories"
                                    FontSize="16"
                                    FontWeight="SemiBold"
-                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                         <Button Content="Add New Category"
                                 Command="{Binding StartAddCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
@@ -71,8 +71,8 @@
                              AutomationProperties.HelpText="List of all categories. Select one to view details or edit.">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{StaticResource SurfaceBrush}"
-                                        BorderBrush="{StaticResource BorderBrush}"
+                                <Border Background="{DynamicResource SurfaceBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         CornerRadius="4"
                                         Padding="12"
@@ -100,9 +100,9 @@
                                         <StackPanel Grid.Column="1">
                                             <TextBlock Text="{Binding Name}"
                                                        FontWeight="Medium"
-                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
                                             <TextBlock FontSize="10"
-                                                       Foreground="{StaticResource TextSecondaryBrush}">
+                                                       Foreground="{DynamicResource TextSecondaryBrush}">
                                                 <Run Text="{Binding ActionCount, Mode=OneWay}"/>
                                                 <Run Text="actions"/>
                                                 <Run Text="•"/>
@@ -146,9 +146,9 @@
                                 MinWidth="44"
                                 MinHeight="44"
                                 Margin="0,0,8,0"
-                                Background="{StaticResource SurfaceBrush}"
-                                Foreground="{StaticResource TextPrimaryBrush}"
-                                BorderBrush="{StaticResource BorderBrush}"
+                                Background="{DynamicResource SurfaceBrush}"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 Cursor="Hand"
                                 ToolTip="Move the selected category up in the list"
@@ -169,7 +169,7 @@
                                 <Style TargetType="Button">
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -180,9 +180,9 @@
                                 Padding="10,10"
                                 MinWidth="44"
                                 MinHeight="44"
-                                Background="{StaticResource SurfaceBrush}"
-                                Foreground="{StaticResource TextPrimaryBrush}"
-                                BorderBrush="{StaticResource BorderBrush}"
+                                Background="{DynamicResource SurfaceBrush}"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 Cursor="Hand"
                                 ToolTip="Move the selected category down in the list"
@@ -203,7 +203,7 @@
                                 <Style TargetType="Button">
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -215,8 +215,8 @@
 
             <!-- Details Panel -->
             <Border Grid.Column="1"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="4"
                     Padding="16">
@@ -227,11 +227,11 @@
                             <TextBlock Text="Add New Category"
                                        FontSize="18"
                                        FontWeight="SemiBold"
-                                       Foreground="{StaticResource PrimaryBrush}"
+                                       Foreground="{DynamicResource PrimaryBrush}"
                                        Margin="0,0,0,16"/>
 
                             <TextBlock Text="Category Name *"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontWeight="Medium"
                                        Margin="0,8,0,4"/>
                             <TextBox x:Name="CategoryNameTextBox"
@@ -242,25 +242,25 @@
                                      AutomationProperties.HelpText="Enter a unique name for the category"/>
 
                             <TextBlock Text="Icon"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontWeight="Medium"
                                        Margin="0,16,0,4"/>
                             <ComboBox ItemsSource="{Binding AvailableIcons}"
                                       SelectedItem="{Binding NewCategoryIcon, Mode=TwoWay}"
                                       Padding="8"
-                                      BorderBrush="{StaticResource BorderBrush}"
+                                      BorderBrush="{DynamicResource BorderBrush}"
                                       TabIndex="3"
                                       AutomationProperties.Name="Category icon"
                                       AutomationProperties.HelpText="Select an icon for the category"/>
 
                             <TextBlock Text="Color"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontWeight="Medium"
                                        Margin="0,16,0,4"/>
                             <ComboBox ItemsSource="{Binding AvailableColors}"
                                       SelectedItem="{Binding NewCategoryColor, Mode=TwoWay}"
                                       Padding="8"
-                                      BorderBrush="{StaticResource BorderBrush}"
+                                      BorderBrush="{DynamicResource BorderBrush}"
                                       TabIndex="4"
                                       AutomationProperties.Name="Category color"
                                       AutomationProperties.HelpText="Select a color for the category">
@@ -283,7 +283,7 @@
                             </ComboBox>
 
                             <TextBlock Text="Description (Optional)"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontWeight="Medium"
                                        Margin="0,16,0,4"/>
                             <TextBox Text="{Binding NewCategoryDescription, Mode=TwoWay}"
@@ -296,8 +296,8 @@
                                      AutomationProperties.HelpText="Optional description for the category"/>
 
                             <!-- Error Message -->
-                            <Border Background="{StaticResource DangerBackgroundBrush}"
-                                    BorderBrush="{StaticResource DangerBrush}"
+                            <Border Background="{DynamicResource DangerBackgroundBrush}"
+                                    BorderBrush="{DynamicResource DangerBrush}"
                                     BorderThickness="1"
                                     CornerRadius="4"
                                     Padding="12"
@@ -306,7 +306,7 @@
                                     AutomationProperties.LiveSetting="Assertive"
                                     AutomationProperties.Name="Error message">
                                 <TextBlock Text="{Binding ErrorMessage}"
-                                           Foreground="{StaticResource DangerBrush}"
+                                           Foreground="{DynamicResource DangerBrush}"
                                            TextWrapping="Wrap"/>
                             </Border>
 
@@ -328,9 +328,9 @@
                                         MinWidth="44"
                                         MinHeight="44"
                                         TabIndex="7"
-                                        Background="{StaticResource SurfaceBrush}"
-                                        Foreground="{StaticResource TextPrimaryBrush}"
-                                        BorderBrush="{StaticResource BorderBrush}"
+                                        Background="{DynamicResource SurfaceBrush}"
+                                        Foreground="{DynamicResource TextPrimaryBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         AutomationProperties.Name="Cancel"
                                         AutomationProperties.HelpText="Cancel editing and return to list"/>
@@ -344,7 +344,7 @@
                                     <TextBlock Text="Category Details"
                                                FontSize="18"
                                                FontWeight="SemiBold"
-                                               Foreground="{StaticResource PrimaryBrush}"
+                                               Foreground="{DynamicResource PrimaryBrush}"
                                                Margin="0,0,0,16"/>
 
                                     <Grid>
@@ -368,9 +368,9 @@
                                             <TextBlock Text="{Binding SelectedCategory.Name}"
                                                        FontSize="20"
                                                        FontWeight="SemiBold"
-                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
                                             <TextBlock Text="{Binding SelectedCategory.Description}"
-                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                                        TextWrapping="Wrap"
                                                        Margin="0,4,0,0"/>
                                         </StackPanel>
@@ -424,9 +424,9 @@
                                                 MinWidth="44"
                                                 MinHeight="44"
                                                 HorizontalAlignment="Stretch"
-                                                Background="{StaticResource SurfaceBrush}"
-                                                Foreground="{StaticResource TextPrimaryBrush}"
-                                                BorderBrush="{StaticResource BorderBrush}"
+                                                Background="{DynamicResource SurfaceBrush}"
+                                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
                                                 BorderThickness="1"
                                                 Cursor="Hand"
                                                 Margin="0,0,0,8"
@@ -448,7 +448,7 @@
                                                 <Style TargetType="Button">
                                                     <Style.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                                                         </Trigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -460,7 +460,7 @@
                                                 MinWidth="44"
                                                 MinHeight="44"
                                                 HorizontalAlignment="Stretch"
-                                                Background="{StaticResource DangerBrush}"
+                                                Background="{DynamicResource DangerBrush}"
                                                 Foreground="White"
                                                 BorderThickness="0"
                                                 Cursor="Hand"
@@ -519,10 +519,10 @@
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        HorizontalAlignment="Center"
-                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                        Margin="0,0,0,12"/>
                             <TextBlock FontSize="12"
-                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                        HorizontalAlignment="Center"
                                        TextAlignment="Center"
                                        MaxWidth="350"
@@ -531,7 +531,7 @@
                                 <Run Text="Select a category from the list to view its details,"/>
                                 <LineBreak/>
                                 <Run Text="or click "/>
-                                <Run Text="Add New Category" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                                <Run Text="Add New Category" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
                                 <Run Text=" to create one."/>
                             </TextBlock>
                         </StackPanel>
@@ -542,7 +542,7 @@
 
         <!-- Footer -->
         <Border Grid.Row="1"
-                BorderBrush="{StaticResource BorderBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="0,1,0,0"
                 Padding="0,16,0,0"
                 Margin="0,16,0,0">
@@ -552,9 +552,9 @@
                     MinWidth="44"
                     MinHeight="44"
                     HorizontalAlignment="Right"
-                    Background="{StaticResource SurfaceBrush}"
-                    Foreground="{StaticResource TextPrimaryBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    Foreground="{DynamicResource TextPrimaryBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     Cursor="Hand"
                     ToolTip="Close this window"
@@ -575,7 +575,7 @@
                     <Style TargetType="Button">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>

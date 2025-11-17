@@ -9,21 +9,21 @@
         Title="Éditeur de commande - TwinShell"
         Height="700" Width="900"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource BackgroundBrush}"
+        Background="{DynamicResource BackgroundBrush}"
         ResizeMode="CanResize"
         MinHeight="600" MinWidth="800">
 
     <Window.Resources>
         <!-- Label Style -->
         <Style x:Key="LabelTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
             <Setter Property="Margin" Value="0,8,0,4"/>
             <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
         <!-- Hint Style -->
         <Style x:Key="HintTextStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="FontStyle" Value="Italic"/>
             <Setter Property="Margin" Value="0,2,0,0"/>
@@ -31,8 +31,8 @@
 
         <!-- Parameter Border Style -->
         <Style x:Key="ParameterBorderStyle" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Padding" Value="12"/>
@@ -53,7 +53,7 @@
                    Text="Informations de la commande"
                    FontSize="20"
                    FontWeight="SemiBold"
-                   Foreground="{StaticResource PrimaryBrush}"
+                   Foreground="{DynamicResource PrimaryBrush}"
                    Margin="0,0,0,16"/>
 
         <!-- Content - TabControl -->
@@ -206,7 +206,7 @@
                                                     Padding="8"
                                                     VerticalAlignment="Top"
                                                     Background="Transparent"
-                                                    BorderBrush="{StaticResource BorderBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     ToolTip="Supprimer ce paramètre"/>
                                         </Grid>
                                     </Border>
@@ -307,7 +307,7 @@
                                                     Padding="8"
                                                     VerticalAlignment="Top"
                                                     Background="Transparent"
-                                                    BorderBrush="{StaticResource BorderBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     ToolTip="Supprimer ce paramètre"/>
                                         </Grid>
                                     </Border>

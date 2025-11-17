@@ -34,11 +34,10 @@ public partial class App : Application
             _serviceProvider = services.BuildServiceProvider();
             LogInfo("Services configured");
 
-            // Initialize theme and database
-            // BUGFIX: Skip async theme initialization during startup - will be done after window is shown
-            //LogInfo("Initializing theme...");
-            //InitializeThemeAsync().GetAwaiter().GetResult();
-            //LogInfo("Theme initialized");
+            // Initialize theme and localization BEFORE creating the window
+            LogInfo("Initializing theme and localization...");
+            InitializeThemeAndLocalization();
+            LogInfo("Theme and localization initialized");
 
             LogInfo("Initializing database...");
             InitializeDatabaseAsync().GetAwaiter().GetResult();
@@ -188,9 +187,12 @@ public partial class App : Application
         services.AddTransient<ActionEditorWindow>();
     }
 
-    private async Task InitializeThemeAsync()
+    /// <summary>
+    /// Initializes theme and localization synchronously.
+    /// Called BEFORE window creation to ensure proper theme application.
+    /// </summary>
+    private void InitializeThemeAndLocalization()
     {
-        // BUGFIX: Added null-check to prevent NullReferenceException if OnStartup fails before _serviceProvider is initialized
         if (_serviceProvider == null)
         {
             throw new InvalidOperationException("Service provider has not been initialized");
@@ -200,19 +202,24 @@ public partial class App : Application
         var themeService = _serviceProvider.GetRequiredService<IThemeService>();
         var localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
 
-        // Load user settings
-        var settings = await settingsService.LoadSettingsAsync();
+        // Load user settings synchronously
+        var settings = settingsService.LoadSettingsAsync().GetAwaiter().GetResult();
 
-        // Apply the saved theme
+        // Apply the saved theme SYNCHRONOUSLY before window creation
+        LogInfo($"Applying theme: {settings.Theme}");
         themeService.ApplyTheme(settings.Theme);
+        LogInfo($"Theme applied successfully: {settings.Theme}");
 
         // Apply the saved language
         try
         {
+            LogInfo($"Applying language: {settings.CultureCode}");
             localizationService.ChangeLanguage(settings.CultureCode);
+            LogInfo($"Language applied successfully: {settings.CultureCode}");
         }
-        catch
+        catch (Exception ex)
         {
+            LogError("Failed to apply language, falling back to French", ex);
             // Fallback to French if culture is invalid
             localizationService.ChangeLanguage("fr");
         }
