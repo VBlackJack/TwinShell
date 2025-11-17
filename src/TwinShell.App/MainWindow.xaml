@@ -35,6 +35,15 @@
         <KeyBinding Key="D" Modifiers="Control" Command="{Binding ToggleFavoriteCommand}"/>
         <!-- Close/Cancel dialogs: Escape -->
         <KeyBinding Key="Escape" Command="{Binding CancelCommand}"/>
+        <!-- UX: Tab navigation shortcuts (standard Windows pattern) -->
+        <!-- Next tab: Ctrl+Tab -->
+        <KeyBinding Key="Tab" Modifiers="Control" Command="{Binding NextTabCommand}"/>
+        <!-- Previous tab: Ctrl+Shift+Tab -->
+        <KeyBinding Key="Tab" Modifiers="Control+Shift" Command="{Binding PreviousTabCommand}"/>
+        <!-- Go to Actions: Ctrl+1 -->
+        <KeyBinding Key="D1" Modifiers="Control" Command="{Binding GoToActionsTabCommand}"/>
+        <!-- Go to History: Ctrl+2 -->
+        <KeyBinding Key="D2" Modifiers="Control" Command="{Binding GoToHistoryTabCommand}"/>
     </Window.InputBindings>
 
     <Grid x:Name="RootGrid">
@@ -54,14 +63,14 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Find..." InputGestureText="Ctrl+F"
                           Command="{Binding FocusSearchCommand}"
-                          ToolTip="Focus the search box"/>
+                          ToolTip="Focus the search box to search for actions"/>
                 <MenuItem Header="C_lear Filters" InputGestureText="Ctrl+K"
                           Command="{Binding ClearFiltersCommand}"
-                          ToolTip="Reset all search filters"/>
+                          ToolTip="Reset all search filters to show all actions"/>
                 <Separator/>
                 <MenuItem Header="_Preferences..."
                           Click="Settings_Click"
-                          ToolTip="Configure application settings and theme"/>
+                          ToolTip="Configure application settings, theme, and behavior"/>
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Manage Categories..."
@@ -72,29 +81,18 @@
                           ToolTip="Reload actions and data"/>
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_Keyboard Shortcuts" InputGestureText="F1" Click="KeyboardShortcuts_Click"/>
+                <MenuItem Header="_Keyboard Shortcuts" InputGestureText="F1" Click="KeyboardShortcuts_Click"
+                          ToolTip="View all available keyboard shortcuts"/>
                 <Separator/>
-                <MenuItem Header="_About TwinShell" Click="About_Click"/>
+                <MenuItem Header="_About TwinShell" Click="About_Click"
+                          ToolTip="About TwinShell - version and information"/>
             </MenuItem>
         </Menu>
 
-        <!-- Main Content -->
+        <!-- UX: Main Content with cleaner layout (removed redundant header) -->
         <Grid Margin="16">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- UX: Simplified header - removed redundant app title (already in window title bar) -->
-            <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                <TextBlock Text="PowerShell &amp; Bash Command Reference"
-                           FontSize="20"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource PrimaryBrush}"/>
-            </StackPanel>
-
         <!-- UX: Tabs with text-only headers (professional, accessible, language-unified) -->
-        <TabControl Grid.Row="1">
+        <TabControl>
             <TabItem Header="Actions">
                 <Grid Margin="0,16,0,0">
                     <Grid.RowDefinitions>
@@ -166,9 +164,11 @@
                         <CheckBox Content="Linux" IsChecked="{Binding FilterLinux}" Margin="0,0,12,0"
                                   TabIndex="3"
                                   AutomationProperties.Name="Filter by Linux platform"/>
-                        <CheckBox Content="Cross-platform" IsChecked="{Binding FilterBoth}"
+                        <CheckBox Content="Windows &amp; Linux" IsChecked="{Binding FilterBoth}"
                                   TabIndex="4"
-                                  AutomationProperties.Name="Filter by cross-platform actions"/>
+                                  ToolTip="Commands that work on both Windows and Linux"
+                                  AutomationProperties.Name="Filter by cross-platform actions"
+                                  AutomationProperties.HelpText="Filter to show only actions that work on both Windows and Linux platforms"/>
                     </StackPanel>
 
                     <!-- Level Filters -->
@@ -601,27 +601,15 @@
                                                    TextWrapping="Wrap"/>
                                     </Border>
 
-                                    <!-- UX: Action buttons with clear text, proper states, and keyboard support -->
+                                    <!-- UX: Action button (Execute hidden until Sprint 4 - reduces confusion and UI clutter) -->
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-                                        <Button Content="Execute"
-                                                Command="{Binding ExecuteCommandCommand}"
-                                                IsEnabled="False"
-                                                Style="{StaticResource PrimaryButtonStyle}"
-                                                Margin="0,0,8,0"
-                                                Padding="16,10"
-                                                MinWidth="44"
-                                                MinHeight="44"
-                                                TabIndex="12"
-                                                ToolTip="Execute command directly (Coming in Sprint 4)"
-                                                AutomationProperties.Name="Execute Command"
-                                                AutomationProperties.HelpText="Execute the generated command directly - feature coming soon"/>
                                         <Button Content="Copy to Clipboard"
                                                 Command="{Binding CopyCommandCommand}"
                                                 Style="{StaticResource PrimaryButtonStyle}"
                                                 Padding="16,10"
                                                 MinWidth="44"
                                                 MinHeight="44"
-                                                TabIndex="13"
+                                                TabIndex="12"
                                                 AutomationProperties.Name="Copy command to clipboard"
                                                 AutomationProperties.HelpText="Copy the generated command to clipboard for use in terminal">
                                             <Button.ToolTip>
@@ -649,38 +637,7 @@
                 <ContentControl x:Name="HistoryTabContent"/>
             </TabItem>
 
-            <!-- UX: Execution Tab hidden until Sprint 4 implementation -->
-            <!-- Users should not see incomplete features - reduces cognitive load -->
-            <TabItem Header="Execution" Visibility="Collapsed">
-                <Grid Margin="24">
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="Command Execution"
-                                   FontSize="20"
-                                   FontWeight="SemiBold"
-                                   HorizontalAlignment="Center"
-                                   Foreground="{StaticResource PrimaryBrush}"
-                                   Margin="0,0,0,8"/>
-                        <TextBlock Text="Direct command execution will be available in Sprint 4."
-                                   FontSize="14"
-                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   MaxWidth="400"
-                                   Margin="0,0,0,16"/>
-                        <TextBlock FontSize="12"
-                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Center"
-                                   MaxWidth="500">
-                            <Run Text="Meanwhile, use the "/>
-                            <Run Text="'Copy to Clipboard'" FontWeight="SemiBold"/>
-                            <Run Text=" button to copy commands and execute them in your terminal."/>
-                        </TextBlock>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
+            <!-- UX: Execution Tab completely removed until Sprint 4 - cleaner, less confusing -->
         </TabControl>
         </Grid>
     </DockPanel>
