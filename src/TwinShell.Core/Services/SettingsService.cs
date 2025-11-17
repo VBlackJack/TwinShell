@@ -59,12 +59,13 @@ public class SettingsService : ISettingsService
             {
                 // Create default settings file
                 _currentSettings = UserSettings.Default;
-                await SaveSettingsAsync(_currentSettings);
+                await SaveSettingsAsync(_currentSettings).ConfigureAwait(false);
                 return _currentSettings;
             }
 
             // SECURITY: Read and decrypt settings
-            var encrypted = await File.ReadAllBytesAsync(_settingsFilePath);
+            // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread
+            var encrypted = await File.ReadAllBytesAsync(_settingsFilePath).ConfigureAwait(false);
             string json;
 
             try
@@ -85,7 +86,7 @@ public class SettingsService : ISettingsService
             {
                 // If deserialization fails or validation fails, use defaults
                 _currentSettings = UserSettings.Default;
-                await SaveSettingsAsync(_currentSettings);
+                await SaveSettingsAsync(_currentSettings).ConfigureAwait(false);
                 return _currentSettings;
             }
 
@@ -121,7 +122,8 @@ public class SettingsService : ISettingsService
             // SECURITY: Encrypt settings before saving
             var json = JsonSerializer.Serialize(settings, JsonOptions);
             var encrypted = EncryptData(json);
-            await File.WriteAllBytesAsync(_settingsFilePath, encrypted);
+            // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread
+            await File.WriteAllBytesAsync(_settingsFilePath, encrypted).ConfigureAwait(false);
 
             // SECURITY: Set restrictive file permissions (Windows only)
             if (OperatingSystem.IsWindows())
@@ -143,7 +145,8 @@ public class SettingsService : ISettingsService
     public async Task<UserSettings> ResetToDefaultAsync()
     {
         _currentSettings = UserSettings.Default;
-        await SaveSettingsAsync(_currentSettings);
+        // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread
+        await SaveSettingsAsync(_currentSettings).ConfigureAwait(false);
         return _currentSettings;
     }
 
