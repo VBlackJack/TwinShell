@@ -32,10 +32,6 @@ public partial class MainWindow : Window
             // Set the recent commands widget
             RecentCommandsContainer.Child = recentCommandsWidget;
 
-        // Set the execution output panel (Sprint 4)
-        // TODO: Uncomment when ExecutionTabContent is added to MainWindow.xaml
-        // ExecutionTabContent.Content = outputPanel;
-
         // Wire up the ExecutionViewModel to MainViewModel
         if (outputPanel.DataContext is ExecutionViewModel executionViewModel)
         {

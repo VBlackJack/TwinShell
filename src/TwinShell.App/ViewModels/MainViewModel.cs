@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TwinShell.App.Collections;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Helpers;
@@ -31,7 +32,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private ObservableCollection<string> _categories = new();
 
     [ObservableProperty]
-    private ObservableCollection<ActionModel> _filteredActions = new();
+    private ObservableRangeCollection<ActionModel> _filteredActions = new();
 
     [ObservableProperty]
     private ActionModel? _selectedAction;
@@ -213,7 +214,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 filtered = filtered.Where(a => levelFilters.Contains(a.Level));
             }
 
-            FilteredActions = new ObservableCollection<ActionModel>(filtered);
+            // PERFORMANCE: Use ReplaceRange() instead of recreating collection - single UI notification
+            FilteredActions.ReplaceRange(filtered);
         }
         finally
         {

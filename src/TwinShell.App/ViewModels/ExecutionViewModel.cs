@@ -57,53 +57,17 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task ExecuteCommandAsync(ExecuteCommandParameter parameter)
     {
-        if (string.IsNullOrWhiteSpace(parameter.Command))
+        if (!ValidateCommand(parameter.Command))
         {
-            MessageBox.Show("No command to execute", "Execution Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
-        // Check if dangerous command and requires confirmation
-        if (parameter.IsDangerous && parameter.RequireConfirmation)
+        if (!await ConfirmDangerousCommandIfNeededAsync(parameter))
         {
-            var confirmResult = MessageBox.Show(
-                "⚠️ ATTENTION: This command may cause significant system changes.\n\n" +
-                $"Command: {parameter.Command}\n\n" +
-                "Are you sure you want to execute this command?",
-                "Dangerous Command Confirmation",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning,
-                MessageBoxResult.No);
-
-            if (confirmResult != MessageBoxResult.Yes)
-            {
-                AddOutputLine("Execution cancelled by user", true);
-                return;
-            }
+            return;
         }
 
-        // Clear previous output
-        OutputLines.Clear();
-        IsExecuting = true;
-        StatusMessage = "Executing...";
-        ExecutionProgress = 0;
-        _outputReceivedViaCallbacks = false;
-
-        // Create cancellation token source
-        lock (_lock)
-        {
-            _executionCts = new CancellationTokenSource();
-        }
-
-        // Start execution timer
-        _executionStartTime = DateTime.Now;
-        lock (_lock)
-        {
-            // PERFORMANCE: Reduced from 100ms to 250ms (60% CPU reduction, no UX impact)
-            _executionTimer = new System.Timers.Timer(250); // Update every 250ms
-            _executionTimer.Elapsed += OnTimerElapsed;
-            _executionTimer.Start();
-        }
+        InitializeExecution();
 
         try
         {
@@ -138,53 +102,9 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
                     });
                 });
 
-            // Stop timer (will be fully disposed in finally block)
-            lock (_lock)
-            {
-                if (_executionTimer != null)
-                {
-                    _executionTimer.Stop();
-                }
-            }
-
-            // BUGFIX: Use explicit flag instead of fragile OutputLines.Count == 4 check
-            // Add final output if not already added via callbacks
-            if (!string.IsNullOrEmpty(result.Stdout) && !_outputReceivedViaCallbacks)
-            {
-                foreach (var line in result.Stdout.Split('\n', StringSplitOptions.RemoveEmptyEntries))
-                {
-                    AddOutputLine(line, false);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(result.Stderr) && !result.Stderr.Contains("OperationCanceledException"))
-            {
-                foreach (var line in result.Stderr.Split('\n', StringSplitOptions.RemoveEmptyEntries))
-                {
-                    AddOutputLine(line, true);
-                }
-            }
-
-            // Add execution summary
-            AddOutputLine("", false);
-            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ─────────────────────────────────────", false);
-            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Exit Code: {result.ExitCode}", !result.Success);
-            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Duration: {result.Duration.TotalSeconds:F2}s", false);
-            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Status: {(result.Success ? "✓ SUCCESS" : "✗ FAILED")}", !result.Success);
-
-            if (result.WasCancelled)
-            {
-                AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ⚠ Execution was cancelled", true);
-            }
-            else if (result.TimedOut)
-            {
-                AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ⚠ Execution timed out", true);
-            }
-
-            if (!string.IsNullOrEmpty(result.ErrorMessage))
-            {
-                AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Error: {result.ErrorMessage}", true);
-            }
+            StopExecutionTimer();
+            DisplayExecutionOutput(result);
+            UpdateExecutionStatus(result);
 
             StatusMessage = result.Success ? "Execution completed successfully" : "Execution failed";
             ExecutionProgress = 100;
@@ -287,6 +207,140 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
             IsError = isError,
             Timestamp = DateTime.Now
         });
+    }
+
+    /// <summary>
+    /// Validates that a command is not empty
+    /// </summary>
+    private bool ValidateCommand(string command)
+    {
+        if (string.IsNullOrWhiteSpace(command))
+        {
+            MessageBox.Show("No command to execute", "Execution Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Confirms dangerous command execution if needed
+    /// </summary>
+    private async Task<bool> ConfirmDangerousCommandIfNeededAsync(ExecuteCommandParameter parameter)
+    {
+        if (!parameter.IsDangerous || !parameter.RequireConfirmation)
+        {
+            return true;
+        }
+
+        var confirmResult = MessageBox.Show(
+            "⚠️ ATTENTION: This command may cause significant system changes.\n\n" +
+            $"Command: {parameter.Command}\n\n" +
+            "Are you sure you want to execute this command?",
+            "Dangerous Command Confirmation",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning,
+            MessageBoxResult.No);
+
+        if (confirmResult != MessageBoxResult.Yes)
+        {
+            AddOutputLine("Execution cancelled by user", true);
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Initializes execution state and starts timer
+    /// </summary>
+    private void InitializeExecution()
+    {
+        OutputLines.Clear();
+        IsExecuting = true;
+        StatusMessage = "Executing...";
+        ExecutionProgress = 0;
+        _outputReceivedViaCallbacks = false;
+
+        // Create cancellation token source
+        lock (_lock)
+        {
+            _executionCts = new CancellationTokenSource();
+        }
+
+        // Start execution timer
+        _executionStartTime = DateTime.Now;
+        lock (_lock)
+        {
+            // PERFORMANCE: Reduced from 100ms to 250ms (60% CPU reduction, no UX impact)
+            _executionTimer = new System.Timers.Timer(250); // Update every 250ms
+            _executionTimer.Elapsed += OnTimerElapsed;
+            _executionTimer.Start();
+        }
+    }
+
+    /// <summary>
+    /// Stops the execution timer
+    /// </summary>
+    private void StopExecutionTimer()
+    {
+        lock (_lock)
+        {
+            if (_executionTimer != null)
+            {
+                _executionTimer.Stop();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Displays execution output and summary
+    /// </summary>
+    private void DisplayExecutionOutput(ExecutionResult result)
+    {
+        // BUGFIX: Use explicit flag instead of fragile OutputLines.Count == 4 check
+        // Add final output if not already added via callbacks
+        if (!string.IsNullOrEmpty(result.Stdout) && !_outputReceivedViaCallbacks)
+        {
+            foreach (var line in result.Stdout.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                AddOutputLine(line, false);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(result.Stderr) && !result.Stderr.Contains("OperationCanceledException"))
+        {
+            foreach (var line in result.Stderr.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                AddOutputLine(line, true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Updates execution status summary in output
+    /// </summary>
+    private void UpdateExecutionStatus(ExecutionResult result)
+    {
+        // Add execution summary
+        AddOutputLine("", false);
+        AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ─────────────────────────────────────", false);
+        AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Exit Code: {result.ExitCode}", !result.Success);
+        AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Duration: {result.Duration.TotalSeconds:F2}s", false);
+        AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Status: {(result.Success ? "✓ SUCCESS" : "✗ FAILED")}", !result.Success);
+
+        if (result.WasCancelled)
+        {
+            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ⚠ Execution was cancelled", true);
+        }
+        else if (result.TimedOut)
+        {
+            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ⚠ Execution timed out", true);
+        }
+
+        if (!string.IsNullOrEmpty(result.ErrorMessage))
+        {
+            AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Error: {result.ErrorMessage}", true);
+        }
     }
 
     /// <summary>
