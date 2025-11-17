@@ -278,24 +278,34 @@
             </DockPanel>
         </Border>
 
-        <!-- UX: Empty state when no batches exist -->
+        <!-- UX: Enhanced empty state with icon and better guidance -->
         <StackPanel Grid.Row="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{Binding Batches.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
-            <TextBlock Text="No batches created yet"
-                       FontSize="16"
+            <TextBlock Text="📦"
+                       FontSize="64"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,16"
+                       Opacity="0.3"/>
+            <TextBlock Text="No Batches Yet"
+                       FontSize="18"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center"
                        Foreground="{StaticResource TextSecondaryBrush}"
-                       Margin="0,0,0,8"/>
-            <TextBlock Text="Create a batch to execute multiple commands together"
-                       FontSize="12"
+                       Margin="0,0,0,12"/>
+            <TextBlock FontSize="12"
                        HorizontalAlignment="Center"
                        Foreground="{StaticResource TextSecondaryBrush}"
                        TextAlignment="Center"
-                       MaxWidth="400"
-                       TextWrapping="Wrap"/>
+                       MaxWidth="450"
+                       TextWrapping="Wrap"
+                       LineHeight="18">
+                <Run Text="Batches allow you to execute multiple commands sequentially or in parallel."/>
+                <LineBreak/>
+                <LineBreak/>
+                <Run Text="Create your first batch to automate complex workflows and save time."/>
+            </TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>
