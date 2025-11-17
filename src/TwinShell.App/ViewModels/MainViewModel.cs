@@ -76,6 +76,12 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private string _statusMessage = UIConstants.DefaultStatusMessage;
 
+    [ObservableProperty]
+    private bool _isCommandCrossPlatform;
+
+    [ObservableProperty]
+    private Platform _selectedPlatformForGenerator = Platform.Windows;
+
     /// <summary>
     /// Reference to the ExecutionViewModel (set from MainWindow)
     /// </summary>
@@ -161,6 +167,15 @@ public partial class MainViewModel : ObservableObject, IDisposable
         }
     }
 
+    partial void OnSelectedPlatformForGeneratorChanged(Platform value)
+    {
+        // Regenerate command when platform selection changes
+        if (SelectedAction != null && IsCommandCrossPlatform)
+        {
+            LoadCommandGenerator();
+        }
+    }
+
     private async Task ApplyFiltersAsync()
     {
         // Use semaphore to prevent concurrent filter operations
@@ -232,11 +247,29 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             CommandParameters.Clear();
             GeneratedCommand = string.Empty;
+            IsCommandCrossPlatform = false;
             return;
         }
 
-        // Determine which template to use (prefer Windows for now)
-        var template = TemplateHelper.GetActiveTemplate(SelectedAction);
+        // Detect if this is a cross-platform command (platform: 2 / Both)
+        IsCommandCrossPlatform = SelectedAction.Platform == Platform.Both &&
+                                 SelectedAction.WindowsCommandTemplate != null &&
+                                 SelectedAction.LinuxCommandTemplate != null;
+
+        // Determine which template to use
+        CommandTemplate? template;
+        if (IsCommandCrossPlatform)
+        {
+            // Use the selected platform for cross-platform commands
+            template = SelectedPlatformForGenerator == Platform.Windows
+                ? SelectedAction.WindowsCommandTemplate
+                : SelectedAction.LinuxCommandTemplate;
+        }
+        else
+        {
+            // Use the default logic for single-platform commands
+            template = TemplateHelper.GetActiveTemplate(SelectedAction);
+        }
 
         if (!TemplateHelper.IsValidTemplate(template))
         {

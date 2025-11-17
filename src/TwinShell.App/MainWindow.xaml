@@ -548,6 +548,57 @@
                                                Foreground="{StaticResource TextPrimaryBrush}"
                                                Margin="0,0,0,8"/>
 
+                                    <!-- Platform Selector (visible only for cross-platform commands) -->
+                                    <Border Background="{StaticResource BackgroundBrush}"
+                                            BorderBrush="{StaticResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Padding="12"
+                                            Margin="0,0,0,12">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsCommandCrossPlatform}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <StackPanel>
+                                            <TextBlock Text="Select Platform"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="12"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       Margin="0,0,0,8"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <RadioButton Content="Windows"
+                                                             GroupName="PlatformSelector"
+                                                             IsChecked="{Binding SelectedPlatformForGenerator, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Windows}"
+                                                             Margin="0,0,16,0"
+                                                             VerticalContentAlignment="Center">
+                                                    <RadioButton.Style>
+                                                        <Style TargetType="RadioButton">
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                                                        </Style>
+                                                    </RadioButton.Style>
+                                                </RadioButton>
+                                                <RadioButton Content="Linux"
+                                                             GroupName="PlatformSelector"
+                                                             IsChecked="{Binding SelectedPlatformForGenerator, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Linux}"
+                                                             VerticalContentAlignment="Center">
+                                                    <RadioButton.Style>
+                                                        <Style TargetType="RadioButton">
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                                                        </Style>
+                                                    </RadioButton.Style>
+                                                </RadioButton>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
                                     <!-- Parameters -->
                                     <ItemsControl ItemsSource="{Binding CommandParameters}">
                                         <ItemsControl.ItemTemplate>
