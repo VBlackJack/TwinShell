@@ -1,0 +1,2084 @@
+{
+  "schemaVersion": "1.0",
+  "actions": [
+    {
+      "id": "eventlog-get-critical-errors",
+      "title": "Rechercher les erreurs critiques dans les logs système",
+      "description": "Extrait les événements de niveau Critique et Erreur des dernières heures depuis le journal System",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "errors", "diagnostic", "system"],
+      "windowsCommandTemplateId": "eventlog-get-critical-errors-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-get-critical-errors-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=1,2; StartTime=(Get-Date).AddHours(-{hours})} | Select-Object TimeCreated,ProviderName,Id,LevelDisplayName,Message | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "hours",
+            "label": "Nombre d'heures",
+            "type": "number",
+            "defaultValue": "24",
+            "required": true,
+            "description": "Nombre d'heures à analyser en arrière"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=1,2; StartTime=(Get-Date).AddHours(-24)} | Select-Object TimeCreated,ProviderName,Id,Message",
+          "description": "Affiche toutes les erreurs critiques des dernières 24h"
+        }
+      ],
+      "notes": "Nécessite des droits d'administrateur. Utilise Get-WinEvent (recommandé) plutôt que Get-EventLog. Level 1=Critical, 2=Error.",
+      "links": [
+        {
+          "title": "Documentation Get-WinEvent",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-search-by-eventid",
+      "title": "Rechercher des événements par EventID spécifique",
+      "description": "Recherche tous les événements correspondant à un EventID spécifique dans un journal donné",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "eventid", "search", "diagnostic"],
+      "windowsCommandTemplateId": "eventlog-search-by-eventid-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-search-by-eventid-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='{logName}'; Id={eventId}} -MaxEvents {maxEvents} | Select-Object TimeCreated,ProviderName,Message | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "logName",
+            "label": "Nom du journal",
+            "type": "string",
+            "defaultValue": "System",
+            "required": true,
+            "description": "Nom du journal (System, Application, Security, etc.)"
+          },
+          {
+            "name": "eventId",
+            "label": "Event ID",
+            "type": "number",
+            "defaultValue": "1074",
+            "required": true,
+            "description": "Numéro de l'EventID à rechercher"
+          },
+          {
+            "name": "maxEvents",
+            "label": "Nombre maximum d'événements",
+            "type": "number",
+            "defaultValue": "50",
+            "required": true,
+            "description": "Nombre maximum d'événements à retourner"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Id=1074} -MaxEvents 50",
+          "description": "Recherche les 50 derniers arrêts/redémarrages système (EventID 1074)"
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Application'; Id=1000} -MaxEvents 20",
+          "description": "Recherche les 20 derniers crashs d'application (EventID 1000)"
+        }
+      ],
+      "notes": "EventID 1074 = arrêt système, 1000 = crash application, 4625 = échec authentification. Liste complète sur Microsoft Docs.",
+      "links": [
+        {
+          "title": "Windows Event IDs",
+          "url": "https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-application-crashes",
+      "title": "Lister les crashs d'applications récents",
+      "description": "Extrait tous les événements de crash d'application (EventID 1000) du journal Application",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "crash", "application", "diagnostic"],
+      "windowsCommandTemplateId": "eventlog-application-crashes-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-application-crashes-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='Application'; Id=1000; StartTime=(Get-Date).AddDays(-{days})} | Select-Object TimeCreated,Message | Format-List",
+        "parameters": [
+          {
+            "name": "days",
+            "label": "Nombre de jours",
+            "type": "number",
+            "defaultValue": "7",
+            "required": true,
+            "description": "Nombre de jours à analyser en arrière"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Application'; Id=1000; StartTime=(Get-Date).AddDays(-7)} | Select-Object TimeCreated,Message",
+          "description": "Liste tous les crashs d'applications des 7 derniers jours"
+        }
+      ],
+      "notes": "EventID 1000 = Application Error (crash). Peut aider à identifier les applications instables.",
+      "links": [
+        {
+          "title": "Troubleshooting Application Crashes",
+          "url": "https://learn.microsoft.com/en-us/windows/win32/wer/windows-error-reporting"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-failed-authentication",
+      "title": "Détecter les tentatives d'authentification échouées",
+      "description": "Liste les événements d'échec d'authentification (EventID 4625) dans le journal Security",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "security", "authentication", "login", "audit"],
+      "windowsCommandTemplateId": "eventlog-failed-authentication-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-failed-authentication-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625; StartTime=(Get-Date).AddHours(-{hours})} | Select-Object TimeCreated,Message | Format-List",
+        "parameters": [
+          {
+            "name": "hours",
+            "label": "Nombre d'heures",
+            "type": "number",
+            "defaultValue": "24",
+            "required": true,
+            "description": "Nombre d'heures à analyser en arrière"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} -MaxEvents 20",
+          "description": "Affiche les 20 dernières tentatives de connexion échouées"
+        }
+      ],
+      "notes": "Nécessite des droits d'administrateur. EventID 4625 = échec d'authentification. Utile pour détecter les tentatives d'intrusion.",
+      "links": [
+        {
+          "title": "Event 4625 Documentation",
+          "url": "https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-system-startup-shutdown",
+      "title": "Historique des démarrages et arrêts système",
+      "description": "Liste tous les événements de démarrage (EventID 6005) et arrêt (EventID 6006) du système",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "startup", "shutdown", "system", "uptime"],
+      "windowsCommandTemplateId": "eventlog-system-startup-shutdown-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-system-startup-shutdown-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='System'; Id=6005,6006,1074; StartTime=(Get-Date).AddDays(-{days})} | Select-Object TimeCreated,Id,Message | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "days",
+            "label": "Nombre de jours",
+            "type": "number",
+            "defaultValue": "30",
+            "required": true,
+            "description": "Nombre de jours à analyser en arrière"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Id=6005,6006} -MaxEvents 50",
+          "description": "Affiche les 50 derniers événements de démarrage/arrêt"
+        }
+      ],
+      "notes": "EventID 6005 = démarrage Event Log service, 6006 = arrêt Event Log service, 1074 = arrêt initié par utilisateur/application.",
+      "links": [
+        {
+          "title": "System Event IDs",
+          "url": "https://learn.microsoft.com/en-us/windows/win32/eventlog/event-logging"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-export-to-csv",
+      "title": "Exporter les événements vers un fichier CSV",
+      "description": "Exporte les événements d'un journal spécifique vers un fichier CSV pour analyse",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "export", "csv", "report"],
+      "windowsCommandTemplateId": "eventlog-export-to-csv-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-export-to-csv-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='{logName}'; StartTime=(Get-Date).AddDays(-{days})} | Select-Object TimeCreated,Id,LevelDisplayName,ProviderName,Message | Export-Csv -Path '{outputPath}' -NoTypeInformation -Encoding UTF8",
+        "parameters": [
+          {
+            "name": "logName",
+            "label": "Nom du journal",
+            "type": "string",
+            "defaultValue": "System",
+            "required": true,
+            "description": "Nom du journal à exporter"
+          },
+          {
+            "name": "days",
+            "label": "Nombre de jours",
+            "type": "number",
+            "defaultValue": "7",
+            "required": true,
+            "description": "Nombre de jours à exporter"
+          },
+          {
+            "name": "outputPath",
+            "label": "Chemin du fichier de sortie",
+            "type": "string",
+            "defaultValue": "C:\\Temp\\EventLog.csv",
+            "required": true,
+            "description": "Chemin complet du fichier CSV de sortie"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; StartTime=(Get-Date).AddDays(-7)} | Export-Csv -Path C:\\Temp\\SystemLog.csv -NoTypeInformation",
+          "description": "Exporte les événements System des 7 derniers jours vers un CSV"
+        }
+      ],
+      "notes": "Assurez-vous que le répertoire de destination existe. Le fichier CSV peut être importé dans Excel pour analyse.",
+      "links": [
+        {
+          "title": "Export-Csv Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-csv"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-filter-by-source",
+      "title": "Filtrer les événements par source/fournisseur",
+      "description": "Recherche tous les événements provenant d'une source spécifique (ProviderName)",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "filter", "source", "provider"],
+      "windowsCommandTemplateId": "eventlog-filter-by-source-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-filter-by-source-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='{logName}'; ProviderName='{providerName}'; StartTime=(Get-Date).AddDays(-{days})} | Select-Object TimeCreated,Id,LevelDisplayName,Message | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "logName",
+            "label": "Nom du journal",
+            "type": "string",
+            "defaultValue": "Application",
+            "required": true,
+            "description": "Nom du journal à rechercher"
+          },
+          {
+            "name": "providerName",
+            "label": "Nom du fournisseur",
+            "type": "string",
+            "defaultValue": "Application Error",
+            "required": true,
+            "description": "Nom exact du fournisseur/source"
+          },
+          {
+            "name": "days",
+            "label": "Nombre de jours",
+            "type": "number",
+            "defaultValue": "7",
+            "required": true,
+            "description": "Nombre de jours à analyser"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Application'; ProviderName='Application Error'} -MaxEvents 50",
+          "description": "Liste les 50 derniers événements de la source 'Application Error'"
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; ProviderName='Service Control Manager'} -MaxEvents 20",
+          "description": "Liste les événements du gestionnaire de services"
+        }
+      ],
+      "notes": "Pour lister tous les fournisseurs disponibles: (Get-WinEvent -ListLog *).ProviderNames | Sort-Object -Unique",
+      "links": [
+        {
+          "title": "Get-WinEvent Filtering",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent"
+        }
+      ]
+    },
+    {
+      "id": "eventlog-list-available-logs",
+      "title": "Lister tous les journaux d'événements disponibles",
+      "description": "Affiche la liste de tous les journaux d'événements disponibles sur le système avec leurs statistiques",
+      "category": "Logs & Events",
+      "platform": 0,
+      "level": 0,
+      "tags": ["eventlog", "list", "logs", "diagnostic"],
+      "windowsCommandTemplateId": "eventlog-list-available-logs-cmd",
+      "windowsCommandTemplate": {
+        "id": "eventlog-list-available-logs-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -ListLog * | Where-Object {$_.RecordCount -gt 0} | Select-Object LogName,RecordCount,FileSize,LastWriteTime | Sort-Object RecordCount -Descending | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -ListLog * | Where-Object {$_.RecordCount -gt 0} | Select-Object LogName,RecordCount",
+          "description": "Liste tous les journaux contenant des événements"
+        },
+        {
+          "command": "Get-WinEvent -ListLog Application,System,Security | Format-List",
+          "description": "Affiche les détails des journaux principaux"
+        }
+      ],
+      "notes": "Utile pour découvrir les journaux disponibles avant de faire des requêtes spécifiques.",
+      "links": [
+        {
+          "title": "Get-WinEvent -ListLog",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-winevent"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-check-pending",
+      "title": "Vérifier les mises à jour Windows en attente",
+      "description": "Liste toutes les mises à jour Windows disponibles mais non encore installées",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 0,
+      "tags": ["windows-update", "pending", "diagnostic", "pswindowsupdate"],
+      "windowsCommandTemplateId": "windowsupdate-check-pending-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-check-pending-cmd",
+        "platform": 0,
+        "name": "Get-WindowsUpdate",
+        "commandPattern": "Get-WindowsUpdate -MicrosoftUpdate -Verbose",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WindowsUpdate -MicrosoftUpdate",
+          "description": "Liste toutes les mises à jour disponibles depuis Windows Update et Microsoft Update"
+        },
+        {
+          "command": "Get-WindowsUpdate -NotCategory 'Drivers'",
+          "description": "Liste les mises à jour en excluant les pilotes"
+        }
+      ],
+      "notes": "Nécessite le module PSWindowsUpdate (Install-Module PSWindowsUpdate). Droits administrateur requis.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        },
+        {
+          "title": "Documentation PSWindowsUpdate",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-install-all",
+      "title": "Installer toutes les mises à jour Windows disponibles",
+      "description": "Télécharge et installe automatiquement toutes les mises à jour Windows disponibles",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 1,
+      "tags": ["windows-update", "install", "patch", "pswindowsupdate"],
+      "windowsCommandTemplateId": "windowsupdate-install-all-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-install-all-cmd",
+        "platform": 0,
+        "name": "Install-WindowsUpdate",
+        "commandPattern": "Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Verbose",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -AutoReboot",
+          "description": "Installe toutes les mises à jour et redémarre automatiquement si nécessaire"
+        },
+        {
+          "command": "Install-WindowsUpdate -Category 'Critical Updates','Security Updates' -AcceptAll -IgnoreReboot",
+          "description": "Installe uniquement les mises à jour critiques et de sécurité sans redémarrer"
+        }
+      ],
+      "notes": "ATTENTION: Cette commande peut nécessiter un redémarrage. Utilisez -IgnoreReboot pour empêcher le redémarrage automatique. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Install Windows Updates with PowerShell",
+          "url": "https://www.alitajran.com/install-windows-updates-powershell/"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-clear-cache",
+      "title": "Nettoyer le cache Windows Update",
+      "description": "Arrête les services Windows Update et nettoie le dossier SoftwareDistribution pour résoudre les problèmes de mises à jour",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 1,
+      "tags": ["windows-update", "cache", "cleanup", "troubleshoot"],
+      "windowsCommandTemplateId": "windowsupdate-clear-cache-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-clear-cache-cmd",
+        "platform": 0,
+        "name": "Stop-Service",
+        "commandPattern": "Stop-Service -Name wuauserv,bits -Force; Remove-Item -Path C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv,bits",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Stop-Service wuauserv,bits -Force; Remove-Item C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force; Start-Service wuauserv,bits",
+          "description": "Nettoie complètement le cache de téléchargement Windows Update"
+        }
+      ],
+      "notes": "ATTENTION: Nécessite des droits administrateur. Arrête temporairement les services Windows Update. À utiliser en cas de problèmes de téléchargement de mises à jour.",
+      "links": [
+        {
+          "title": "Fix Windows Update Errors",
+          "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/installing-updates-features-roles/fix-windows-update-errors"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-dism-repair",
+      "title": "Réparer Windows Update avec DISM",
+      "description": "Utilise DISM pour réparer l'image Windows et résoudre les problèmes de Windows Update",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 1,
+      "tags": ["windows-update", "dism", "repair", "troubleshoot"],
+      "windowsCommandTemplateId": "windowsupdate-dism-repair-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-dism-repair-cmd",
+        "platform": 0,
+        "name": "Repair-WindowsImage",
+        "commandPattern": "Repair-WindowsImage -Online -RestoreHealth -Verbose",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "DISM /Online /Cleanup-Image /RestoreHealth",
+          "description": "Version CMD de la réparation DISM"
+        },
+        {
+          "command": "Repair-WindowsImage -Online -RestoreHealth",
+          "description": "Version PowerShell de la réparation DISM"
+        },
+        {
+          "command": "DISM /Online /Cleanup-Image /ScanHealth",
+          "description": "Scanne l'image sans réparer (diagnostic uniquement)"
+        }
+      ],
+      "notes": "Peut prendre 15-30 minutes. Nécessite une connexion Internet active. Exécuter DISM AVANT SFC pour de meilleurs résultats. Nécessite droits administrateur.",
+      "links": [
+        {
+          "title": "DISM Repair Documentation",
+          "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/deployment/fix-windows-update-errors"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-sfc-scan",
+      "title": "Vérifier l'intégrité des fichiers système (SFC)",
+      "description": "Exécute System File Checker pour détecter et réparer les fichiers système corrompus",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sfc", "system", "integrity", "repair"],
+      "windowsCommandTemplateId": "windowsupdate-sfc-scan-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-sfc-scan-cmd",
+        "platform": 0,
+        "name": "sfc",
+        "commandPattern": "sfc /scannow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "sfc /scannow",
+          "description": "Scanne et répare tous les fichiers système protégés"
+        },
+        {
+          "command": "sfc /verifyonly",
+          "description": "Scanne sans réparer (diagnostic uniquement)"
+        }
+      ],
+      "notes": "Nécessite des droits administrateur. Peut prendre 15-30 minutes. Logs disponibles dans C:\\Windows\\Logs\\CBS\\CBS.log. Exécuter DISM avant SFC si SFC échoue.",
+      "links": [
+        {
+          "title": "SFC Documentation",
+          "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/deployment/fix-windows-update-errors"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-check-services",
+      "title": "Vérifier l'état des services Windows Update",
+      "description": "Vérifie l'état et le type de démarrage des services critiques pour Windows Update",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 0,
+      "tags": ["windows-update", "services", "diagnostic", "wuauserv"],
+      "windowsCommandTemplateId": "windowsupdate-check-services-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-check-services-cmd",
+        "platform": 0,
+        "name": "Get-Service",
+        "commandPattern": "Get-Service -Name wuauserv,bits,cryptsvc,msiserver | Select-Object Name,DisplayName,Status,StartType | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Service wuauserv,bits,cryptsvc | Format-Table Name,Status,StartType",
+          "description": "Affiche l'état des services Windows Update essentiels"
+        },
+        {
+          "command": "Start-Service wuauserv,bits -Verbose",
+          "description": "Démarre les services Windows Update si arrêtés"
+        }
+      ],
+      "notes": "Services critiques: wuauserv (Windows Update), bits (Background Intelligent Transfer), cryptsvc (Cryptographic Services), msiserver (Windows Installer).",
+      "links": [
+        {
+          "title": "Windows Update Services",
+          "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/installing-updates-features-roles/fix-windows-update-errors"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-history",
+      "title": "Consulter l'historique des mises à jour installées",
+      "description": "Affiche l'historique complet des mises à jour Windows installées sur le système",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 0,
+      "tags": ["windows-update", "history", "installed", "report"],
+      "windowsCommandTemplateId": "windowsupdate-history-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-history-cmd",
+        "platform": 0,
+        "name": "Get-HotFix",
+        "commandPattern": "Get-HotFix | Select-Object Description,HotFixID,InstalledBy,InstalledOn | Sort-Object InstalledOn -Descending | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 20",
+          "description": "Affiche les 20 mises à jour les plus récentes"
+        },
+        {
+          "command": "Get-WindowsUpdateLog",
+          "description": "Génère un log Windows Update lisible sur Windows 10/11"
+        }
+      ],
+      "notes": "Get-HotFix affiche les mises à jour installées. Pour Windows 10/11, utiliser Get-WindowsUpdateLog pour créer un fichier WindowsUpdate.log sur le bureau.",
+      "links": [
+        {
+          "title": "Get-HotFix Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-hotfix"
+        }
+      ]
+    },
+    {
+      "id": "windowsupdate-force-scan",
+      "title": "Forcer la recherche immédiate de mises à jour",
+      "description": "Force Windows Update à rechercher immédiatement de nouvelles mises à jour",
+      "category": "Windows Update",
+      "platform": 0,
+      "level": 0,
+      "tags": ["windows-update", "scan", "check", "force"],
+      "windowsCommandTemplateId": "windowsupdate-force-scan-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-force-scan-cmd",
+        "platform": 0,
+        "name": "usoclient",
+        "commandPattern": "usoclient StartScan",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "usoclient StartScan",
+          "description": "Force la recherche de mises à jour (Windows 10/11)"
+        },
+        {
+          "command": "wuauclt /detectnow /updatenow",
+          "description": "Force la recherche de mises à jour (Windows 7/8)"
+        }
+      ],
+      "notes": "usoclient (Update Session Orchestrator) est l'outil recommandé pour Windows 10/11. Sur systèmes plus anciens, utiliser wuauclt.",
+      "links": [
+        {
+          "title": "USOClient Commands",
+          "url": "https://techdirectarchive.com/2020/02/05/handy-windows-server-update-services-commands-wauaclt-powershell-and-usoclient/"
+        }
+      ]
+    },
+    {
+      "id": "wsus-configure-client",
+      "title": "Configurer le client WSUS via le registre",
+      "description": "Configure les paramètres du client WSUS en modifiant les clés de registre appropriées",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 2,
+      "tags": ["wsus", "client", "configuration", "registry"],
+      "windowsCommandTemplateId": "wsus-configure-client-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-configure-client-cmd",
+        "platform": 0,
+        "name": "Set-ItemProperty",
+        "commandPattern": "$WSUSServer = '{wsusServer}'; $WSUSPort = {wsusPort}; Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate' -Name 'WUServer' -Value \"http://$WSUSServer`:$WSUSPort\" -Type String -Force; Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate' -Name 'WUStatusServer' -Value \"http://$WSUSServer`:$WSUSPort\" -Type String -Force; Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU' -Name 'UseWUServer' -Value 1 -Type DWord -Force; Restart-Service wuauserv",
+        "parameters": [
+          {
+            "name": "wsusServer",
+            "label": "Serveur WSUS",
+            "type": "string",
+            "defaultValue": "wsus.domain.local",
+            "required": true,
+            "description": "Nom d'hôte ou IP du serveur WSUS"
+          },
+          {
+            "name": "wsusPort",
+            "label": "Port WSUS",
+            "type": "number",
+            "defaultValue": "8530",
+            "required": true,
+            "description": "Port du serveur WSUS (8530 HTTP ou 8531 HTTPS)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate' -Name 'WUServer' -Value 'http://wsus.domain.local:8530'",
+          "description": "Configure l'adresse du serveur WSUS"
+        }
+      ],
+      "notes": "ATTENTION: Modifie le registre. Port 8530=HTTP, 8531=HTTPS. Nécessite redémarrage du service wuauserv. À utiliser pour machines hors domaine.",
+      "links": [
+        {
+          "title": "Configure WSUS Client",
+          "url": "https://blog.wapnet.nl/2022/05/configure-wsus-client-with-powershell-and-regedit/"
+        }
+      ]
+    },
+    {
+      "id": "wsus-force-client-sync",
+      "title": "Forcer la synchronisation d'un client avec WSUS",
+      "description": "Force le client Windows Update à se synchroniser immédiatement avec le serveur WSUS",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 0,
+      "tags": ["wsus", "sync", "client", "update"],
+      "windowsCommandTemplateId": "wsus-force-client-sync-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-force-client-sync-cmd",
+        "platform": 0,
+        "name": "usoclient",
+        "commandPattern": "wuauclt /detectnow /reportnow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "wuauclt /detectnow /reportnow",
+          "description": "Force la détection et le rapport immédiat au serveur WSUS"
+        },
+        {
+          "command": "usoclient StartScan",
+          "description": "Alternative pour Windows 10/11"
+        }
+      ],
+      "notes": "wuauclt est l'outil classique, usoclient est recommandé pour Windows 10/11. Le client signalera son état au serveur WSUS immédiatement.",
+      "links": [
+        {
+          "title": "WSUS Client Commands",
+          "url": "https://techdirectarchive.com/2020/02/05/handy-windows-server-update-services-commands-wauaclt-powershell-and-usoclient/"
+        }
+      ]
+    },
+    {
+      "id": "wsus-check-client-status",
+      "title": "Vérifier la configuration WSUS du client",
+      "description": "Affiche la configuration actuelle du client WSUS en lisant le registre",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 0,
+      "tags": ["wsus", "client", "status", "diagnostic"],
+      "windowsCommandTemplateId": "wsus-check-client-status-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-check-client-status-cmd",
+        "platform": 0,
+        "name": "Get-ItemProperty",
+        "commandPattern": "$wu = Get-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate' -ErrorAction SilentlyContinue; $au = Get-ItemProperty -Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU' -ErrorAction SilentlyContinue; [PSCustomObject]@{WUServer=$wu.WUServer; WUStatusServer=$wu.WUStatusServer; UseWUServer=$au.UseWUServer; TargetGroup=$wu.TargetGroup} | Format-List",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-ItemProperty 'HKLM:\\Software\\Policies\\Microsoft\\Windows\\WindowsUpdate' | Select-Object WUServer,WUStatusServer",
+          "description": "Affiche le serveur WSUS configuré"
+        }
+      ],
+      "notes": "Vérifie la configuration WSUS dans le registre. Si les valeurs sont vides, le client utilise Windows Update public.",
+      "links": [
+        {
+          "title": "WSUS Client Registry Keys",
+          "url": "https://learn.microsoft.com/en-us/windows/deployment/update/waas-wu-settings"
+        }
+      ]
+    },
+    {
+      "id": "wsus-reset-client-authorization",
+      "title": "Réinitialiser l'autorisation WSUS du client",
+      "description": "Réinitialise l'identifiant du client WSUS pour forcer une nouvelle autorisation sur le serveur",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 1,
+      "tags": ["wsus", "client", "reset", "authorization"],
+      "windowsCommandTemplateId": "wsus-reset-client-authorization-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-reset-client-authorization-cmd",
+        "platform": 0,
+        "name": "Remove-ItemProperty",
+        "commandPattern": "Stop-Service wuauserv -Force; Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate' -Name 'SusClientId' -ErrorAction SilentlyContinue; Remove-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate' -Name 'SusClientIdValidation' -ErrorAction SilentlyContinue; Start-Service wuauserv; wuauclt /resetauthorization /detectnow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "wuauclt /resetauthorization /detectnow",
+          "description": "Réinitialise l'autorisation et force la détection"
+        }
+      ],
+      "notes": "ATTENTION: Supprime l'identifiant client WSUS. Le client recevra un nouvel ID lors de la prochaine connexion au serveur WSUS. Nécessite droits administrateur.",
+      "links": [
+        {
+          "title": "Reset WSUS Client",
+          "url": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/installing-updates-features-roles/fix-windows-update-errors"
+        }
+      ]
+    },
+    {
+      "id": "wsus-server-sync",
+      "title": "Synchroniser le serveur WSUS avec Microsoft Update",
+      "description": "Lance la synchronisation du serveur WSUS avec Microsoft Update pour récupérer les nouvelles mises à jour",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 1,
+      "tags": ["wsus", "server", "sync", "microsoft-update"],
+      "windowsCommandTemplateId": "wsus-server-sync-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-server-sync-cmd",
+        "platform": 0,
+        "name": "Get-WsusServer",
+        "commandPattern": "[void][reflection.assembly]::LoadWithPartialName('Microsoft.UpdateServices.Administration'); $wsus = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer(); $subscription = $wsus.GetSubscription(); $subscription.StartSynchronization()",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "(Get-WsusServer).GetSubscription().StartSynchronization()",
+          "description": "Démarre la synchronisation du serveur WSUS (méthode courte)"
+        },
+        {
+          "command": "Start-PSWSUSSync",
+          "description": "Alternative si le module PSWSUS est installé"
+        }
+      ],
+      "notes": "À exécuter sur le serveur WSUS. Nécessite droits administrateur et module UpdateServices. La synchronisation peut prendre plusieurs minutes.",
+      "links": [
+        {
+          "title": "WSUS Server Synchronization",
+          "url": "https://dscottraynsford.wordpress.com/2015/07/22/force-wsus-to-synchronize-now-from-powershell/"
+        }
+      ]
+    },
+    {
+      "id": "wsus-server-unapproved-critical",
+      "title": "Lister les mises à jour critiques non approuvées sur WSUS",
+      "description": "Affiche toutes les mises à jour critiques non encore approuvées sur le serveur WSUS",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 0,
+      "tags": ["wsus", "server", "critical", "unapproved", "updates"],
+      "windowsCommandTemplateId": "wsus-server-unapproved-critical-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-server-unapproved-critical-cmd",
+        "platform": 0,
+        "name": "Get-WsusUpdate",
+        "commandPattern": "Get-WsusUpdate -Classification Critical -Approval Unapproved -Status Any | Select-Object Title,Classification,Approval,CreationDate | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WsusUpdate -Classification Critical,Security -Approval Unapproved -Status Any",
+          "description": "Liste les mises à jour critiques et de sécurité non approuvées"
+        }
+      ],
+      "notes": "À exécuter sur le serveur WSUS. Nécessite le module UpdateServices. Utile pour identifier les mises à jour importantes en attente d'approbation.",
+      "links": [
+        {
+          "title": "Get-WsusUpdate Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/updateservices/get-wsusupdate"
+        }
+      ]
+    },
+    {
+      "id": "wsus-server-cleanup",
+      "title": "Effectuer la maintenance du serveur WSUS",
+      "description": "Exécute les tâches de maintenance WSUS: suppression des mises à jour obsolètes, dépassées et des ordinateurs inactifs",
+      "category": "WSUS",
+      "platform": 0,
+      "level": 1,
+      "tags": ["wsus", "server", "cleanup", "maintenance"],
+      "windowsCommandTemplateId": "wsus-server-cleanup-cmd",
+      "windowsCommandTemplate": {
+        "id": "wsus-server-cleanup-cmd",
+        "platform": 0,
+        "name": "Invoke-WsusServerCleanup",
+        "commandPattern": "Invoke-WsusServerCleanup -CleanupObsoleteUpdates -CleanupUnneededContentFiles -CompressUpdates -DeclineExpiredUpdates -DeclineSupersededUpdates",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WsusServerCleanup -CleanupObsoleteUpdates -CompressUpdates",
+          "description": "Nettoie les mises à jour obsolètes et compresse les révisions"
+        },
+        {
+          "command": "Invoke-WsusServerCleanup -CleanupObsoleteComputers",
+          "description": "Supprime les ordinateurs qui n'ont pas contacté le serveur depuis 30 jours"
+        }
+      ],
+      "notes": "À exécuter sur le serveur WSUS. Peut prendre du temps selon la taille de la base WSUS. Libère de l'espace disque. Nécessite droits administrateur.",
+      "links": [
+        {
+          "title": "Invoke-WsusServerCleanup Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/updateservices/invoke-wsusservercleanup"
+        }
+      ]
+    },
+    {
+      "id": "sccm-trigger-machine-policy",
+      "title": "Déclencher la récupération de la stratégie machine SCCM",
+      "description": "Force le client SCCM à récupérer et appliquer immédiatement les stratégies machine depuis le serveur",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sccm", "policy", "client", "trigger"],
+      "windowsCommandTemplateId": "sccm-trigger-machine-policy-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-trigger-machine-policy-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}' -ErrorAction Stop",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}'",
+          "description": "Déclenche la récupération de la stratégie machine"
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000022}'",
+          "description": "Déclenche l'évaluation de la stratégie machine"
+        }
+      ],
+      "notes": "Schedule ID {21} = Machine Policy Retrieval, {22} = Machine Policy Evaluation. Nécessite le client SCCM installé. Vérifier CCM.log pour confirmation.",
+      "links": [
+        {
+          "title": "SCCM Client Actions",
+          "url": "https://www.anoopcnair.com/trigger-sccm-client-agent-actions-powershell/"
+        }
+      ]
+    },
+    {
+      "id": "sccm-trigger-hardware-inventory",
+      "title": "Forcer l'inventaire matériel SCCM",
+      "description": "Déclenche immédiatement la collecte de l'inventaire matériel et l'envoie au serveur SCCM",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sccm", "inventory", "hardware", "trigger"],
+      "windowsCommandTemplateId": "sccm-trigger-hardware-inventory-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-trigger-hardware-inventory-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}' -ErrorAction Stop",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}'",
+          "description": "Déclenche l'inventaire matériel"
+        }
+      ],
+      "notes": "Schedule ID {01} = Hardware Inventory Cycle. Utile après modification matérielle ou pour forcer la mise à jour de l'inventaire dans SCCM.",
+      "links": [
+        {
+          "title": "SCCM Trigger Schedule IDs",
+          "url": "https://www.systemcenterdudes.com/configuration-manager-2012-client-command-list/"
+        }
+      ]
+    },
+    {
+      "id": "sccm-trigger-software-inventory",
+      "title": "Forcer l'inventaire logiciel SCCM",
+      "description": "Déclenche immédiatement la collecte de l'inventaire logiciel et l'envoie au serveur SCCM",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sccm", "inventory", "software", "trigger"],
+      "windowsCommandTemplateId": "sccm-trigger-software-inventory-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-trigger-software-inventory-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}' -ErrorAction Stop",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}'",
+          "description": "Déclenche l'inventaire logiciel"
+        }
+      ],
+      "notes": "Schedule ID {02} = Software Inventory Cycle. L'inventaire logiciel collecte les informations sur les fichiers et applications installés.",
+      "links": [
+        {
+          "title": "SCCM Client Actions",
+          "url": "https://techuisitive.com/how-to-initiate-sccm-client-agent-actions-using-powershell/"
+        }
+      ]
+    },
+    {
+      "id": "sccm-trigger-app-deployment-eval",
+      "title": "Déclencher l'évaluation des déploiements d'applications",
+      "description": "Force l'évaluation de tous les déploiements d'applications SCCM pour vérifier les nouvelles applications disponibles",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sccm", "application", "deployment", "trigger"],
+      "windowsCommandTemplateId": "sccm-trigger-app-deployment-eval-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-trigger-app-deployment-eval-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}' -ErrorAction Stop",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}'",
+          "description": "Déclenche l'évaluation des déploiements d'applications"
+        }
+      ],
+      "notes": "Schedule ID {121} = Application Deployment Evaluation Cycle. Utile pour forcer la vérification de nouvelles applications déployées.",
+      "links": [
+        {
+          "title": "SCCM Client Actions PowerShell",
+          "url": "https://sccmpowershell.com/trigger-sccm-client-actions-remotely"
+        }
+      ]
+    },
+    {
+      "id": "sccm-trigger-update-scan",
+      "title": "Déclencher l'analyse des mises à jour SCCM",
+      "description": "Force le client SCCM à analyser immédiatement les mises à jour logicielles disponibles",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sccm", "updates", "scan", "trigger"],
+      "windowsCommandTemplateId": "sccm-trigger-update-scan-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-trigger-update-scan-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}' -ErrorAction Stop",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}'",
+          "description": "Déclenche l'analyse des mises à jour"
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000114}'",
+          "description": "Déclenche l'évaluation du déploiement des mises à jour"
+        }
+      ],
+      "notes": "Schedule ID {113} = Software Updates Scan Cycle, {114} = Software Updates Deployment Evaluation. Nécessite SCCM et WSUS configurés.",
+      "links": [
+        {
+          "title": "SCCM Update Actions",
+          "url": "https://www.manishbangia.com/initiate-sccm-client-actions-cmd-line/"
+        }
+      ]
+    },
+    {
+      "id": "sccm-check-client-status",
+      "title": "Vérifier l'état du client SCCM",
+      "description": "Affiche l'état détaillé du client SCCM incluant la version, le site assigné et la dernière communication",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 0,
+      "tags": ["sccm", "client", "status", "diagnostic"],
+      "windowsCommandTemplateId": "sccm-check-client-status-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-check-client-status-cmd",
+        "platform": 0,
+        "name": "Get-WmiObject",
+        "commandPattern": "Get-WmiObject -Namespace root\\ccm -Class SMS_Client | Select-Object ClientVersion,@{Name='SiteCode';Expression={(Get-WmiObject -Namespace root\\ccm -Class SMS_Authority).CurrentManagementPoint}},@{Name='LastPolicyRequest';Expression={(Get-WmiObject -Namespace root\\ccm\\Policy\\Machine -Class CCM_Policy_Policy5 -Filter \"PolicySource='SMS:$((Get-WmiObject -Namespace root\\ccm -Class SMS_Authority).Name.Split(':')[1])'\" | Select-Object -First 1 -ExpandProperty PolicyDownloadTime)}} | Format-List",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WmiObject -Namespace root\\ccm -Class SMS_Client | Select-Object ClientVersion",
+          "description": "Affiche la version du client SCCM"
+        },
+        {
+          "command": "Get-Service ccmexec | Select-Object Name,Status,StartType",
+          "description": "Vérifie l'état du service client SCCM"
+        }
+      ],
+      "notes": "Le service ccmexec doit être en cours d'exécution. Vérifier C:\\Windows\\CCM\\Logs pour les logs détaillés.",
+      "links": [
+        {
+          "title": "SCCM Client Troubleshooting",
+          "url": "https://learn.microsoft.com/en-us/mem/configmgr/core/clients/manage/monitor-clients"
+        }
+      ]
+    },
+    {
+      "id": "sccm-repair-client",
+      "title": "Réparer le client SCCM",
+      "description": "Exécute la réparation automatique du client SCCM pour résoudre les problèmes de communication",
+      "category": "SCCM",
+      "platform": 0,
+      "level": 1,
+      "tags": ["sccm", "client", "repair", "troubleshoot"],
+      "windowsCommandTemplateId": "sccm-repair-client-cmd",
+      "windowsCommandTemplate": {
+        "id": "sccm-repair-client-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name RepairClient",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name RepairClient",
+          "description": "Lance la réparation automatique du client SCCM"
+        },
+        {
+          "command": "& 'C:\\Windows\\CCM\\ccmrepair.exe'",
+          "description": "Alternative: lance l'outil de réparation via l'exécutable"
+        }
+      ],
+      "notes": "ATTENTION: La réparation peut prendre plusieurs minutes. Le client SCCM réinstallera les composants endommagés. Vérifier les logs dans C:\\Windows\\CCM\\Logs\\ccmrepair.log",
+      "links": [
+        {
+          "title": "SCCM Client Repair",
+          "url": "https://learn.microsoft.com/en-us/mem/configmgr/core/clients/manage/client-notification"
+        }
+      ]
+    },
+    {
+      "id": "network-test-connection-advanced",
+      "title": "Test de connectivité réseau avancé",
+      "description": "Teste la connectivité réseau vers un hôte avec traceroute, test de port et informations de routage détaillées",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "connectivity", "diagnostic", "test-netconnection"],
+      "windowsCommandTemplateId": "network-test-connection-advanced-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-test-connection-advanced-cmd",
+        "platform": 0,
+        "name": "Test-NetConnection",
+        "commandPattern": "Test-NetConnection -ComputerName {hostname} -Port {port} -InformationLevel Detailed -TraceRoute",
+        "parameters": [
+          {
+            "name": "hostname",
+            "label": "Nom d'hôte ou IP",
+            "type": "string",
+            "defaultValue": "google.com",
+            "required": true,
+            "description": "Nom d'hôte ou adresse IP à tester"
+          },
+          {
+            "name": "port",
+            "label": "Port",
+            "type": "number",
+            "defaultValue": "443",
+            "required": true,
+            "description": "Port TCP à tester"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Test-NetConnection google.com -Port 443 -InformationLevel Detailed",
+          "description": "Test HTTPS vers Google avec informations détaillées"
+        },
+        {
+          "command": "Test-NetConnection 192.168.1.1 -TraceRoute",
+          "description": "Test avec traceroute vers une passerelle"
+        }
+      ],
+      "notes": "Remplace ping et tracert. InformationLevel Detailed affiche toutes les informations. Ports courants: 80 (HTTP), 443 (HTTPS), 3389 (RDP), 445 (SMB).",
+      "links": [
+        {
+          "title": "Test-NetConnection Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/test-netconnection"
+        }
+      ]
+    },
+    {
+      "id": "network-test-dns-resolution",
+      "title": "Tester la résolution DNS",
+      "description": "Résout un nom de domaine en adresse IP et affiche les informations DNS détaillées",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "dns", "resolution", "diagnostic"],
+      "windowsCommandTemplateId": "network-test-dns-resolution-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-test-dns-resolution-cmd",
+        "platform": 0,
+        "name": "Resolve-DnsName",
+        "commandPattern": "Resolve-DnsName -Name {hostname} -Type {recordType} -Server {dnsServer} -DnsOnly",
+        "parameters": [
+          {
+            "name": "hostname",
+            "label": "Nom d'hôte",
+            "type": "string",
+            "defaultValue": "google.com",
+            "required": true,
+            "description": "Nom d'hôte à résoudre"
+          },
+          {
+            "name": "recordType",
+            "label": "Type d'enregistrement",
+            "type": "string",
+            "defaultValue": "A",
+            "required": true,
+            "description": "Type d'enregistrement DNS (A, AAAA, MX, TXT, etc.)"
+          },
+          {
+            "name": "dnsServer",
+            "label": "Serveur DNS",
+            "type": "string",
+            "defaultValue": "8.8.8.8",
+            "required": false,
+            "description": "Serveur DNS à interroger (optionnel)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Resolve-DnsName google.com -Type A",
+          "description": "Résout google.com en adresse IPv4"
+        },
+        {
+          "command": "Resolve-DnsName domain.com -Type MX -Server 8.8.8.8",
+          "description": "Interroge les enregistrements MX via Google DNS"
+        }
+      ],
+      "notes": "Remplace nslookup. Types courants: A (IPv4), AAAA (IPv6), MX (mail), TXT (texte), CNAME (alias). Serveurs DNS publics: 8.8.8.8 (Google), 1.1.1.1 (Cloudflare).",
+      "links": [
+        {
+          "title": "Resolve-DnsName Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/dnsclient/resolve-dnsname"
+        }
+      ]
+    },
+    {
+      "id": "network-flush-dns-cache",
+      "title": "Vider le cache DNS",
+      "description": "Vide le cache DNS du client pour forcer une nouvelle résolution des noms de domaine",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "dns", "cache", "flush"],
+      "windowsCommandTemplateId": "network-flush-dns-cache-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-flush-dns-cache-cmd",
+        "platform": 0,
+        "name": "Clear-DnsClientCache",
+        "commandPattern": "Clear-DnsClientCache; Get-DnsClientCache",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Clear-DnsClientCache",
+          "description": "Vide le cache DNS local"
+        },
+        {
+          "command": "ipconfig /flushdns",
+          "description": "Alternative en ligne de commande classique"
+        }
+      ],
+      "notes": "Utile après modification DNS ou en cas de problèmes de résolution. Les nouvelles résolutions DNS seront mises en cache après ce vidage.",
+      "links": [
+        {
+          "title": "Clear-DnsClientCache Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/dnsclient/clear-dnsclientcache"
+        }
+      ]
+    },
+    {
+      "id": "network-show-routing-table",
+      "title": "Afficher la table de routage",
+      "description": "Affiche la table de routage IP complète avec les routes par défaut et statiques",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "routing", "route", "diagnostic"],
+      "windowsCommandTemplateId": "network-show-routing-table-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-show-routing-table-cmd",
+        "platform": 0,
+        "name": "Get-NetRoute",
+        "commandPattern": "Get-NetRoute -AddressFamily IPv4 | Where-Object {$_.NextHop -ne '0.0.0.0'} | Select-Object DestinationPrefix,NextHop,RouteMetric,InterfaceAlias | Sort-Object RouteMetric | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-NetRoute -AddressFamily IPv4 | Format-Table",
+          "description": "Affiche toutes les routes IPv4"
+        },
+        {
+          "command": "route print",
+          "description": "Alternative classique pour afficher la table de routage"
+        }
+      ],
+      "notes": "Affiche les routes actives avec les métriques. La route par défaut (0.0.0.0/0) est la passerelle principale. RouteMetric: plus bas = prioritaire.",
+      "links": [
+        {
+          "title": "Get-NetRoute Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-netroute"
+        }
+      ]
+    },
+    {
+      "id": "network-list-adapters",
+      "title": "Lister les adaptateurs réseau",
+      "description": "Affiche tous les adaptateurs réseau avec leur état, vitesse et adresses IP",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "adapters", "interfaces", "diagnostic"],
+      "windowsCommandTemplateId": "network-list-adapters-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-list-adapters-cmd",
+        "platform": 0,
+        "name": "Get-NetAdapter",
+        "commandPattern": "Get-NetAdapter | Select-Object Name,InterfaceDescription,Status,LinkSpeed,MacAddress | Format-Table -AutoSize; Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notlike '*Loopback*'} | Select-Object InterfaceAlias,IPAddress,PrefixLength | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-NetAdapter | Where-Object {$_.Status -eq 'Up'}",
+          "description": "Affiche uniquement les adaptateurs actifs"
+        },
+        {
+          "command": "Get-NetIPConfiguration",
+          "description": "Affiche la configuration IP complète de tous les adaptateurs"
+        }
+      ],
+      "notes": "Remplace ipconfig /all. Status 'Up' = connecté, 'Disabled' = désactivé. LinkSpeed affiche la vitesse de liaison (1 Gbps, 100 Mbps, etc.).",
+      "links": [
+        {
+          "title": "Get-NetAdapter Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/netadapter/get-netadapter"
+        }
+      ]
+    },
+    {
+      "id": "network-test-port-connectivity",
+      "title": "Tester l'ouverture d'un port TCP",
+      "description": "Vérifie si un port TCP spécifique est ouvert et accessible sur un hôte distant",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "port", "tcp", "connectivity"],
+      "windowsCommandTemplateId": "network-test-port-connectivity-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-test-port-connectivity-cmd",
+        "platform": 0,
+        "name": "Test-NetConnection",
+        "commandPattern": "Test-NetConnection -ComputerName {hostname} -Port {port} | Select-Object ComputerName,RemoteAddress,RemotePort,TcpTestSucceeded",
+        "parameters": [
+          {
+            "name": "hostname",
+            "label": "Nom d'hôte ou IP",
+            "type": "string",
+            "defaultValue": "google.com",
+            "required": true,
+            "description": "Nom d'hôte ou adresse IP"
+          },
+          {
+            "name": "port",
+            "label": "Port TCP",
+            "type": "number",
+            "defaultValue": "443",
+            "required": true,
+            "description": "Numéro de port TCP à tester"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Test-NetConnection 192.168.1.1 -Port 3389",
+          "description": "Teste si le RDP est accessible"
+        },
+        {
+          "command": "Test-NetConnection mail.server.com -Port 25",
+          "description": "Teste la connectivité SMTP"
+        }
+      ],
+      "notes": "TcpTestSucceeded=$true signifie que le port est ouvert. Ports courants: 22 (SSH), 25 (SMTP), 80 (HTTP), 443 (HTTPS), 3389 (RDP), 445 (SMB).",
+      "links": [
+        {
+          "title": "Test-NetConnection Port Testing",
+          "url": "https://lazyadmin.nl/powershell/test-netconnection/"
+        }
+      ]
+    },
+    {
+      "id": "network-capture-packets",
+      "title": "Capturer le trafic réseau",
+      "description": "Démarre une capture de paquets réseau avec netsh trace pour analyse ultérieure",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 1,
+      "tags": ["network", "capture", "packets", "trace", "diagnostic"],
+      "windowsCommandTemplateId": "network-capture-packets-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-capture-packets-cmd",
+        "platform": 0,
+        "name": "netsh",
+        "commandPattern": "netsh trace start capture=yes tracefile={outputPath} maxSize={maxSizeMB}",
+        "parameters": [
+          {
+            "name": "outputPath",
+            "label": "Fichier de sortie",
+            "type": "string",
+            "defaultValue": "C:\\Temp\\networktrace.etl",
+            "required": true,
+            "description": "Chemin complet du fichier de trace (.etl)"
+          },
+          {
+            "name": "maxSizeMB",
+            "label": "Taille maximale (MB)",
+            "type": "number",
+            "defaultValue": "250",
+            "required": true,
+            "description": "Taille maximale du fichier en MB"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "netsh trace start capture=yes tracefile=C:\\Temp\\trace.etl maxSize=500",
+          "description": "Démarre une capture réseau (max 500 MB)"
+        },
+        {
+          "command": "netsh trace stop",
+          "description": "Arrête la capture en cours"
+        }
+      ],
+      "notes": "ATTENTION: Nécessite droits administrateur. Pour arrêter: 'netsh trace stop'. Le fichier .etl peut être analysé avec Microsoft Network Monitor ou Wireshark.",
+      "links": [
+        {
+          "title": "Netsh Trace Commands",
+          "url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/jj129382(v=ws.11)"
+        }
+      ]
+    },
+    {
+      "id": "network-show-open-ports",
+      "title": "Afficher les ports ouverts et les connexions actives",
+      "description": "Liste tous les ports TCP/UDP en écoute et les connexions établies avec les processus associés",
+      "category": "Réseau",
+      "platform": 0,
+      "level": 0,
+      "tags": ["network", "ports", "connections", "listening", "diagnostic"],
+      "windowsCommandTemplateId": "network-show-open-ports-cmd",
+      "windowsCommandTemplate": {
+        "id": "network-show-open-ports-cmd",
+        "platform": 0,
+        "name": "Get-NetTCPConnection",
+        "commandPattern": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,@{Name='ProcessName';Expression={(Get-Process -Id $_.OwningProcess).ProcessName}},OwningProcess | Sort-Object LocalPort | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-NetTCPConnection -State Listen | Sort-Object LocalPort",
+          "description": "Affiche tous les ports en écoute"
+        },
+        {
+          "command": "Get-NetTCPConnection -State Established | Format-Table",
+          "description": "Affiche toutes les connexions établies"
+        },
+        {
+          "command": "netstat -anob",
+          "description": "Alternative classique avec le nom des exécutables"
+        }
+      ],
+      "notes": "State = Listen (en écoute), Established (connecté), TimeWait (fermeture en cours). Nécessite droits administrateur pour voir les processus.",
+      "links": [
+        {
+          "title": "Get-NetTCPConnection Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-nettcpconnection"
+        }
+      ]
+    },
+    {
+      "id": "performance-monitor-cpu",
+      "title": "Surveiller l'utilisation CPU en temps réel",
+      "description": "Collecte et affiche l'utilisation du processeur en temps réel avec plusieurs échantillons",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "cpu", "monitoring", "counter"],
+      "windowsCommandTemplateId": "performance-monitor-cpu-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-monitor-cpu-cmd",
+        "platform": 0,
+        "name": "Get-Counter",
+        "commandPattern": "Get-Counter -Counter '\\Processor(_Total)\\% Processor Time' -SampleInterval {intervalSeconds} -MaxSamples {maxSamples} | Select-Object -ExpandProperty CounterSamples | Select-Object Timestamp,@{Name='CPU_Usage_%';Expression={[math]::Round($_.CookedValue,2)}} | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "intervalSeconds",
+            "label": "Intervalle (secondes)",
+            "type": "number",
+            "defaultValue": "2",
+            "required": true,
+            "description": "Intervalle entre chaque échantillon en secondes"
+          },
+          {
+            "name": "maxSamples",
+            "label": "Nombre d'échantillons",
+            "type": "number",
+            "defaultValue": "10",
+            "required": true,
+            "description": "Nombre d'échantillons à collecter"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Counter '\\Processor(_Total)\\% Processor Time' -Continuous",
+          "description": "Surveillance CPU continue (Ctrl+C pour arrêter)"
+        },
+        {
+          "command": "(Get-Counter '\\Processor(_Total)\\% Processor Time').CounterSamples.CookedValue",
+          "description": "Obtient la valeur CPU instantanée"
+        }
+      ],
+      "notes": "Remplace Performance Monitor. Continuous = surveillance continue jusqu'à Ctrl+C. Valeurs >80% indiquent une charge élevée.",
+      "links": [
+        {
+          "title": "Get-Counter Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter"
+        }
+      ]
+    },
+    {
+      "id": "performance-monitor-memory",
+      "title": "Surveiller l'utilisation de la RAM",
+      "description": "Affiche les statistiques d'utilisation de la mémoire RAM avec mémoire disponible et utilisée",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "memory", "ram", "monitoring"],
+      "windowsCommandTemplateId": "performance-monitor-memory-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-monitor-memory-cmd",
+        "platform": 0,
+        "name": "Get-Counter",
+        "commandPattern": "$mem = Get-Counter '\\Memory\\Available MBytes'; $total = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB; $available = $mem.CounterSamples.CookedValue; $used = $total - $available; [PSCustomObject]@{Total_MB=[math]::Round($total,2);Used_MB=[math]::Round($used,2);Available_MB=[math]::Round($available,2);Used_Percent=[math]::Round(($used/$total)*100,2)} | Format-List",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Counter '\\Memory\\Available MBytes'",
+          "description": "Affiche la mémoire disponible en MB"
+        },
+        {
+          "command": "Get-Counter '\\Memory\\% Committed Bytes In Use'",
+          "description": "Affiche le pourcentage de mémoire engagée utilisée"
+        }
+      ],
+      "notes": "Disponible <10% = situation critique. Committed Bytes In Use >90% = risque de pagination excessive.",
+      "links": [
+        {
+          "title": "Memory Performance Counters",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter"
+        }
+      ]
+    },
+    {
+      "id": "performance-monitor-disk",
+      "title": "Surveiller l'utilisation du disque",
+      "description": "Collecte les statistiques d'utilisation des disques (temps actif, lectures/écritures par seconde)",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "disk", "io", "monitoring"],
+      "windowsCommandTemplateId": "performance-monitor-disk-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-monitor-disk-cmd",
+        "platform": 0,
+        "name": "Get-Counter",
+        "commandPattern": "Get-Counter -Counter '\\PhysicalDisk(_Total)\\% Disk Time','\\PhysicalDisk(_Total)\\Disk Reads/sec','\\PhysicalDisk(_Total)\\Disk Writes/sec' -SampleInterval {intervalSeconds} -MaxSamples {maxSamples} | ForEach-Object {$_.CounterSamples | Select-Object Path,@{Name='Value';Expression={[math]::Round($_.CookedValue,2)}}} | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "intervalSeconds",
+            "label": "Intervalle (secondes)",
+            "type": "number",
+            "defaultValue": "2",
+            "required": true,
+            "description": "Intervalle entre échantillons"
+          },
+          {
+            "name": "maxSamples",
+            "label": "Nombre d'échantillons",
+            "type": "number",
+            "defaultValue": "5",
+            "required": true,
+            "description": "Nombre d'échantillons"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Counter '\\PhysicalDisk(_Total)\\% Disk Time'",
+          "description": "Affiche le temps d'activité du disque"
+        },
+        {
+          "command": "Get-Counter '\\PhysicalDisk(*)\\Avg. Disk Queue Length'",
+          "description": "Affiche la file d'attente disque (tous les disques)"
+        }
+      ],
+      "notes": "% Disk Time >80% = surcharge disque. Avg Disk Queue Length >2 par disque physique = goulot d'étranglement.",
+      "links": [
+        {
+          "title": "Disk Performance Counters",
+          "url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/cc961619(v=technet.10)"
+        }
+      ]
+    },
+    {
+      "id": "performance-top-cpu-processes",
+      "title": "Lister les processus consommant le plus de CPU",
+      "description": "Affiche les processus classés par utilisation CPU décroissante",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "processes", "cpu", "top"],
+      "windowsCommandTemplateId": "performance-top-cpu-processes-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-top-cpu-processes-cmd",
+        "platform": 0,
+        "name": "Get-Process",
+        "commandPattern": "Get-Process | Sort-Object CPU -Descending | Select-Object -First {topCount} | Select-Object ProcessName,Id,CPU,@{Name='CPU_Time';Expression={[string]::Format('{0:hh\\:mm\\:ss}',([TimeSpan]::FromSeconds($_.CPU)))}},WorkingSet | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "topCount",
+            "label": "Nombre de processus",
+            "type": "number",
+            "defaultValue": "10",
+            "required": true,
+            "description": "Nombre de processus à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10",
+          "description": "Top 10 des processus par CPU"
+        },
+        {
+          "command": "Get-Process | Where-Object {$_.CPU -gt 10} | Sort-Object CPU -Descending",
+          "description": "Processus ayant utilisé plus de 10 secondes CPU"
+        }
+      ],
+      "notes": "CPU = temps CPU cumulé depuis le démarrage du processus. WorkingSet = mémoire RAM utilisée. Triez par WS pour voir l'utilisation mémoire.",
+      "links": [
+        {
+          "title": "Get-Process Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process"
+        }
+      ]
+    },
+    {
+      "id": "performance-top-memory-processes",
+      "title": "Lister les processus consommant le plus de mémoire",
+      "description": "Affiche les processus classés par utilisation mémoire (RAM) décroissante",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "processes", "memory", "ram", "top"],
+      "windowsCommandTemplateId": "performance-top-memory-processes-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-top-memory-processes-cmd",
+        "platform": 0,
+        "name": "Get-Process",
+        "commandPattern": "Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First {topCount} | Select-Object ProcessName,Id,@{Name='Memory_MB';Expression={[math]::Round($_.WorkingSet/1MB,2)}},@{Name='Virtual_MB';Expression={[math]::Round($_.VirtualMemorySize/1MB,2)}},Handles | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "topCount",
+            "label": "Nombre de processus",
+            "type": "number",
+            "defaultValue": "10",
+            "required": true,
+            "description": "Nombre de processus à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object WS -Descending | Select-Object -First 10 ProcessName,@{n='Memory(MB)';e={[int]($_.WS/1MB)}}",
+          "description": "Top 10 des processus par mémoire (simplifié)"
+        },
+        {
+          "command": "Get-Process | Where-Object {$_.WorkingSet -gt 100MB} | Sort-Object WS -Descending",
+          "description": "Processus utilisant plus de 100 MB"
+        }
+      ],
+      "notes": "WorkingSet = RAM physique utilisée. VirtualMemorySize = mémoire virtuelle. Handles = nombre de handles système ouverts.",
+      "links": [
+        {
+          "title": "Process Memory Metrics",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process"
+        }
+      ]
+    },
+    {
+      "id": "performance-check-disk-space",
+      "title": "Vérifier l'espace disque disponible",
+      "description": "Affiche l'espace libre et utilisé pour tous les lecteurs avec alertes pour espace faible",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "disk", "space", "storage"],
+      "windowsCommandTemplateId": "performance-check-disk-space-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-check-disk-space-cmd",
+        "platform": 0,
+        "name": "Get-Volume",
+        "commandPattern": "Get-Volume | Where-Object {$_.DriveLetter} | Select-Object DriveLetter,FileSystemLabel,@{Name='Size_GB';Expression={[math]::Round($_.Size/1GB,2)}},@{Name='Free_GB';Expression={[math]::Round($_.SizeRemaining/1GB,2)}},@{Name='Free_%';Expression={[math]::Round(($_.SizeRemaining/$_.Size)*100,2)}},@{Name='Status';Expression={if(($_.SizeRemaining/$_.Size)*100 -lt 10){'CRITICAL'}elseif(($_.SizeRemaining/$_.Size)*100 -lt 20){'WARNING'}else{'OK'}}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Volume | Where-Object {$_.DriveLetter} | Format-Table DriveLetter,FileSystemLabel,Size,SizeRemaining",
+          "description": "Affiche l'espace disque de tous les lecteurs"
+        },
+        {
+          "command": "Get-PSDrive -PSProvider FileSystem | Select-Object Name,@{n='Free(GB)';e={[math]::Round($_.Free/1GB,2)}}",
+          "description": "Alternative avec Get-PSDrive"
+        }
+      ],
+      "notes": "Status CRITICAL = <10% libre, WARNING = <20% libre, OK = >20% libre. Surveillez particulièrement le disque système (C:).",
+      "links": [
+        {
+          "title": "Get-Volume Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/storage/get-volume"
+        }
+      ]
+    },
+    {
+      "id": "performance-check-services",
+      "title": "Vérifier l'état des services critiques",
+      "description": "Vérifie l'état de services Windows critiques et identifie ceux qui sont arrêtés alors qu'ils devraient être démarrés",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "services", "monitoring", "status"],
+      "windowsCommandTemplateId": "performance-check-services-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-check-services-cmd",
+        "platform": 0,
+        "name": "Get-Service",
+        "commandPattern": "Get-Service | Where-Object {$_.StartType -eq 'Automatic' -and $_.Status -ne 'Running'} | Select-Object DisplayName,Name,Status,StartType | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Service | Where-Object {$_.StartType -eq 'Automatic' -and $_.Status -ne 'Running'}",
+          "description": "Liste les services automatiques qui ne sont pas en cours d'exécution"
+        },
+        {
+          "command": "Get-Service -Name wuauserv,spooler,Dnscache | Format-Table Name,Status,StartType",
+          "description": "Vérifie des services spécifiques"
+        }
+      ],
+      "notes": "StartType Automatic = devrait démarrer au boot. Status Running = en cours. Services critiques: wuauserv, Dnscache, EventLog, RpcSs, spooler.",
+      "links": [
+        {
+          "title": "Get-Service Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-service"
+        }
+      ]
+    },
+    {
+      "id": "performance-system-health-report",
+      "title": "Générer un rapport de santé système complet",
+      "description": "Collecte et affiche un rapport complet sur la santé du système: CPU, RAM, disque, services, uptime",
+      "category": "Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": ["performance", "health", "report", "monitoring", "diagnostic"],
+      "windowsCommandTemplateId": "performance-system-health-report-cmd",
+      "windowsCommandTemplate": {
+        "id": "performance-system-health-report-cmd",
+        "platform": 0,
+        "name": "Get-ComputerInfo",
+        "commandPattern": "$os = Get-CimInstance Win32_OperatingSystem; $cpu = Get-Counter '\\Processor(_Total)\\% Processor Time'; $mem = Get-Counter '\\Memory\\Available MBytes'; [PSCustomObject]@{ComputerName=$env:COMPUTERNAME;OS=$os.Caption;LastBoot=$os.LastBootUpTime;Uptime=(New-TimeSpan -Start $os.LastBootUpTime -End (Get-Date)).ToString();CPU_Usage_Percent=[math]::Round($cpu.CounterSamples.CookedValue,2);Memory_Available_MB=[math]::Round($mem.CounterSamples.CookedValue,2);Memory_Total_MB=[math]::Round($os.TotalVisibleMemorySize/1KB,2);Disk_C_Free_GB=[math]::Round((Get-Volume -DriveLetter C).SizeRemaining/1GB,2);Failed_Services=(Get-Service | Where-Object {$_.StartType -eq 'Automatic' -and $_.Status -ne 'Running'}).Count} | Format-List",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-ComputerInfo | Select-Object CsName,WindowsVersion,OsLastBootUpTime,OsTotalVisibleMemorySize",
+          "description": "Informations système de base"
+        }
+      ],
+      "notes": "Rapport complet incluant: nom PC, OS, dernier boot, uptime, CPU, RAM, disque C:, services défaillants. Idéal pour un diagnostic rapide.",
+      "links": [
+        {
+          "title": "System Health Monitoring",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-computerinfo"
+        }
+      ]
+    },
+    {
+      "id": "security-audit-ntfs-permissions",
+      "title": "Auditer les permissions NTFS d'un dossier",
+      "description": "Affiche les permissions NTFS détaillées d'un dossier ou fichier avec les droits accordés à chaque utilisateur/groupe",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "ntfs", "permissions", "acl", "audit"],
+      "windowsCommandTemplateId": "security-audit-ntfs-permissions-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-audit-ntfs-permissions-cmd",
+        "platform": 0,
+        "name": "Get-Acl",
+        "commandPattern": "$acl = Get-Acl -Path '{path}'; $acl.Access | Select-Object @{Name='Path';Expression={'{path}'}},IdentityReference,FileSystemRights,AccessControlType,IsInherited | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin du dossier/fichier",
+            "type": "string",
+            "defaultValue": "C:\\",
+            "required": true,
+            "description": "Chemin complet du dossier ou fichier à auditer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Acl C:\\Users | Format-List",
+          "description": "Affiche les permissions du dossier Users"
+        },
+        {
+          "command": "(Get-Acl C:\\Temp).Access | Where-Object {$_.IdentityReference -like '*Users*'}",
+          "description": "Filtre les permissions pour le groupe Users"
+        }
+      ],
+      "notes": "AccessControlType: Allow (autoriser) ou Deny (refuser). IsInherited: True (hérité du parent). FileSystemRights: droits spécifiques (Read, Write, FullControl, etc.).",
+      "links": [
+        {
+          "title": "Get-Acl Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-acl"
+        }
+      ]
+    },
+    {
+      "id": "security-audit-ntfs-recursive",
+      "title": "Auditer récursivement les permissions NTFS",
+      "description": "Analyse récursivement tous les sous-dossiers et génère un rapport des permissions NTFS",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "ntfs", "permissions", "recursive", "audit"],
+      "windowsCommandTemplateId": "security-audit-ntfs-recursive-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-audit-ntfs-recursive-cmd",
+        "platform": 0,
+        "name": "Get-ChildItem",
+        "commandPattern": "Get-ChildItem -Path '{path}' -Directory -Recurse -Depth {depth} -ErrorAction SilentlyContinue | ForEach-Object {$path=$_.FullName; (Get-Acl $path).Access | Select-Object @{Name='Path';Expression={$path}},IdentityReference,FileSystemRights,AccessControlType} | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin de base",
+            "type": "string",
+            "defaultValue": "C:\\Shares",
+            "required": true,
+            "description": "Chemin du dossier racine à auditer"
+          },
+          {
+            "name": "depth",
+            "label": "Profondeur",
+            "type": "number",
+            "defaultValue": "2",
+            "required": true,
+            "description": "Profondeur de récursion (niveaux de sous-dossiers)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-ChildItem C:\\Shares -Directory -Recurse | ForEach-Object {Get-Acl $_.FullName}",
+          "description": "Audit complet de tous les sous-dossiers de C:\\Shares"
+        }
+      ],
+      "notes": "ATTENTION: Peut être lent sur de grandes arborescences. Utilisez -Depth pour limiter la récursion. Exportez vers CSV pour analyse: | Export-Csv report.csv",
+      "links": [
+        {
+          "title": "NTFS Permissions Auditing",
+          "url": "https://jfrmilner.wordpress.com/2011/05/01/audit-ntfs-permissions-powershell-script/"
+        }
+      ]
+    },
+    {
+      "id": "security-list-firewall-rules",
+      "title": "Lister toutes les règles de pare-feu actives",
+      "description": "Affiche toutes les règles de pare-feu Windows actives avec leurs propriétés",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "firewall", "rules", "audit"],
+      "windowsCommandTemplateId": "security-list-firewall-rules-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-list-firewall-rules-cmd",
+        "platform": 0,
+        "name": "Get-NetFirewallRule",
+        "commandPattern": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Select-Object DisplayName,Direction,Action,Enabled,Profile | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-NetFirewallRule -Direction Inbound -Enabled True | Format-Table",
+          "description": "Liste les règles entrantes actives"
+        },
+        {
+          "command": "Get-NetFirewallRule | Where-Object {$_.DisplayName -like '*RDP*'}",
+          "description": "Recherche les règles contenant 'RDP'"
+        }
+      ],
+      "notes": "Direction: Inbound (entrant) ou Outbound (sortant). Action: Allow ou Block. Profile: Domain, Private, Public. Enabled=True signifie active.",
+      "links": [
+        {
+          "title": "Get-NetFirewallRule Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/netsecurity/get-netfirewallrule"
+        }
+      ]
+    },
+    {
+      "id": "security-enable-rdp-firewall",
+      "title": "Activer la règle pare-feu pour RDP",
+      "description": "Active la règle de pare-feu Windows permettant les connexions Bureau à distance (RDP)",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 1,
+      "tags": ["security", "firewall", "rdp", "remote-desktop"],
+      "windowsCommandTemplateId": "security-enable-rdp-firewall-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-enable-rdp-firewall-cmd",
+        "platform": 0,
+        "name": "Enable-NetFirewallRule",
+        "commandPattern": "Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'",
+          "description": "Active toutes les règles du groupe Bureau à distance"
+        },
+        {
+          "command": "Set-ItemProperty -Path 'HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server' -Name 'fDenyTSConnections' -Value 0",
+          "description": "Active RDP au niveau système (registre)"
+        }
+      ],
+      "notes": "ATTENTION: Ouvre le port 3389. Assurez-vous que seuls les utilisateurs autorisés peuvent se connecter. Vérifiez aussi le paramètre système RDP.",
+      "links": [
+        {
+          "title": "Enable-NetFirewallRule Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/netsecurity/enable-netfirewallrule"
+        }
+      ]
+    },
+    {
+      "id": "security-list-local-users",
+      "title": "Lister tous les utilisateurs locaux",
+      "description": "Affiche tous les comptes utilisateurs locaux avec leur statut (activé/désactivé) et dernière connexion",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "users", "local", "audit"],
+      "windowsCommandTemplateId": "security-list-local-users-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-list-local-users-cmd",
+        "platform": 0,
+        "name": "Get-LocalUser",
+        "commandPattern": "Get-LocalUser | Select-Object Name,Enabled,LastLogon,PasswordLastSet,PasswordExpires,UserMayChangePassword | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-LocalUser | Where-Object {$_.Enabled -eq $true}",
+          "description": "Liste uniquement les utilisateurs activés"
+        },
+        {
+          "command": "Get-LocalUser | Where-Object {$_.PasswordExpires -lt (Get-Date).AddDays(30)}",
+          "description": "Utilisateurs dont le mot de passe expire dans 30 jours"
+        }
+      ],
+      "notes": "Enabled=$false = compte désactivé. PasswordExpires=Never ou date future. Vérifiez les comptes inactifs pour la sécurité.",
+      "links": [
+        {
+          "title": "Get-LocalUser Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localuser"
+        }
+      ]
+    },
+    {
+      "id": "security-check-password-policy",
+      "title": "Vérifier la politique de mot de passe locale",
+      "description": "Affiche les paramètres de la politique de mot de passe locale (longueur minimale, âge, complexité)",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "password", "policy", "compliance"],
+      "windowsCommandTemplateId": "security-check-password-policy-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-check-password-policy-cmd",
+        "platform": 0,
+        "name": "net",
+        "commandPattern": "net accounts",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "net accounts",
+          "description": "Affiche la politique de mot de passe locale"
+        },
+        {
+          "command": "Get-LocalUser | Select-Object Name,PasswordRequired,PasswordChangeableDate,PasswordExpires",
+          "description": "Détails des mots de passe par utilisateur"
+        }
+      ],
+      "notes": "Minimum password length = longueur minimale recommandée ≥12. Maximum password age = âge max recommandé ≤90 jours. Password complexity = complexité requise.",
+      "links": [
+        {
+          "title": "Password Policy Settings",
+          "url": "https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-policy"
+        }
+      ]
+    },
+    {
+      "id": "security-audit-rdp-sessions",
+      "title": "Auditer les connexions RDP récentes",
+      "description": "Liste les événements de connexion Bureau à distance (RDP) réussies et échouées",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "rdp", "audit", "sessions", "login"],
+      "windowsCommandTemplateId": "security-audit-rdp-sessions-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-audit-rdp-sessions-cmd",
+        "platform": 0,
+        "name": "Get-WinEvent",
+        "commandPattern": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddDays(-{days})} | Where-Object {$_.Message -like '*LogonType*10*' -or $_.Message -like '*LogonType*3*'} | Select-Object TimeCreated,Id,@{Name='EventType';Expression={if($_.Id -eq 4624){'Success'}else{'Failed'}}},Message | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "days",
+            "label": "Nombre de jours",
+            "type": "number",
+            "defaultValue": "7",
+            "required": true,
+            "description": "Nombre de jours à analyser en arrière"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624} | Where-Object {$_.Properties[8].Value -eq 10} | Select-Object TimeCreated,Message",
+          "description": "Connexions RDP réussies (LogonType 10)"
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} | Select-Object -First 20",
+          "description": "20 dernières tentatives de connexion échouées"
+        }
+      ],
+      "notes": "EventID 4624 = connexion réussie, 4625 = échec. LogonType 10 = RemoteInteractive (RDP), 3 = Network. Surveillez les échecs répétés (attaque).",
+      "links": [
+        {
+          "title": "Audit RDP Sessions",
+          "url": "https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624"
+        }
+      ]
+    },
+    {
+      "id": "security-check-admin-group",
+      "title": "Lister les membres du groupe Administrateurs local",
+      "description": "Affiche tous les utilisateurs et groupes membres du groupe Administrateurs local",
+      "category": "Sécurité",
+      "platform": 0,
+      "level": 0,
+      "tags": ["security", "administrators", "group", "audit"],
+      "windowsCommandTemplateId": "security-check-admin-group-cmd",
+      "windowsCommandTemplate": {
+        "id": "security-check-admin-group-cmd",
+        "platform": 0,
+        "name": "Get-LocalGroupMember",
+        "commandPattern": "Get-LocalGroupMember -Group 'Administrators' | Select-Object Name,ObjectClass,PrincipalSource | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-LocalGroupMember -Group 'Administrators'",
+          "description": "Liste les membres du groupe Administrateurs"
+        },
+        {
+          "command": "net localgroup Administrators",
+          "description": "Alternative avec commande net"
+        }
+      ],
+      "notes": "Vérifiez régulièrement ce groupe. ObjectClass: User (utilisateur) ou Group (groupe). PrincipalSource: Local ou ActiveDirectory. Limitez le nombre d'administrateurs.",
+      "links": [
+        {
+          "title": "Get-LocalGroupMember Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/get-localgroupmember"
+        }
+      ]
+    }
+  ]
+}
