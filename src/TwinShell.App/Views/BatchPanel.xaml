@@ -9,25 +9,13 @@
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <!-- UX: Header with consistent styling -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="Batch Execution"
-                       FontSize="24"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource PrimaryBrush}"/>
-            <TextBlock Text="Execute multiple commands sequentially or in parallel"
-                       FontSize="12"
-                       Foreground="{StaticResource TextSecondaryBrush}"/>
-        </StackPanel>
-
         <!-- UX: Action Buttons with consistent spacing and sizing -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
             <Button Content="Execute Batch"
                     Command="{Binding ExecuteBatchCommand}"
                     Style="{StaticResource PrimaryButtonStyle}"
@@ -146,7 +134,7 @@
         </StackPanel>
 
         <!-- UX: Batch List with modern Border instead of GroupBox -->
-        <Border Grid.Row="2"
+        <Border Grid.Row="1"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -213,7 +201,7 @@
         </Border>
 
         <!-- UX: Progress indicator with modern styling -->
-        <Border Grid.Row="3"
+        <Border Grid.Row="2"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -243,7 +231,7 @@
         </Border>
 
         <!-- UX: Output Console with modern styling -->
-        <Border Grid.Row="4"
+        <Border Grid.Row="3"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -279,7 +267,7 @@
         </Border>
 
         <!-- UX: Enhanced empty state with icon and better guidance -->
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{Binding Batches.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
