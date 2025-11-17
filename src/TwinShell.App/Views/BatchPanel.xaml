@@ -4,78 +4,298 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="900">
-    <Grid Margin="10">
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="{StaticResource BackgroundBrush}">
+    <Grid Margin="16">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Batch Execution" FontSize="20" FontWeight="Bold"/>
-            <TextBlock Text="Execute multiple commands sequentially" FontSize="12" Opacity="0.7" Margin="0,5,0,0"/>
+        <!-- UX: Header with consistent styling -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Batch Execution"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}"/>
+            <TextBlock Text="Execute multiple commands sequentially or in parallel"
+                       FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
         </StackPanel>
 
-        <!-- Batch List -->
-        <GroupBox Grid.Row="1" Header="Available Batches" Margin="0,0,0,10">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <!-- UX: Action Buttons with consistent spacing and sizing -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+            <Button Content="Execute Batch"
+                    Command="{Binding ExecuteBatchCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Padding="16,10"
+                    Margin="0,0,8,0"
+                    MinWidth="44"
+                    MinHeight="44"
+                    TabIndex="1"
+                    ToolTip="Execute the selected batch of commands"
+                    AutomationProperties.Name="Execute batch"
+                    AutomationProperties.HelpText="Execute all commands in the selected batch sequentially or in parallel"/>
+            <Button Content="Import Batch"
+                    Command="{Binding ImportBatchCommand}"
+                    Padding="12,10"
+                    Margin="0,0,8,0"
+                    MinWidth="44"
+                    MinHeight="44"
+                    TabIndex="2"
+                    Background="{StaticResource SurfaceBrush}"
+                    Foreground="{StaticResource TextPrimaryBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    ToolTip="Import a batch from a JSON file"
+                    AutomationProperties.Name="Import batch"
+                    AutomationProperties.HelpText="Import a batch configuration from a JSON file">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="Export Batch"
+                    Command="{Binding ExportBatchCommand}"
+                    Padding="12,10"
+                    Margin="0,0,8,0"
+                    MinWidth="44"
+                    MinHeight="44"
+                    TabIndex="3"
+                    Background="{StaticResource SurfaceBrush}"
+                    Foreground="{StaticResource TextPrimaryBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    ToolTip="Export the selected batch to a JSON file"
+                    AutomationProperties.Name="Export batch"
+                    AutomationProperties.HelpText="Export the selected batch configuration to a JSON file">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Content="Delete Batch"
+                    Command="{Binding DeleteBatchCommand}"
+                    Padding="12,10"
+                    MinWidth="44"
+                    MinHeight="44"
+                    TabIndex="4"
+                    Background="{StaticResource DangerBrush}"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    ToolTip="Delete the selected batch"
+                    AutomationProperties.Name="Delete batch"
+                    AutomationProperties.HelpText="Permanently delete the selected batch">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
 
-                <ListBox Grid.Row="0" ItemsSource="{Binding Batches}" SelectedItem="{Binding SelectedBatch}">
+        <!-- UX: Batch List with modern Border instead of GroupBox -->
+        <Border Grid.Row="2"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Margin="0,0,0,16">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="Available Batches"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Padding="12"
+                           Background="{StaticResource PrimaryBrush}"
+                           Foreground="White"/>
+
+                <ListBox ItemsSource="{Binding Batches}"
+                         SelectedItem="{Binding SelectedBatch}"
+                         BorderThickness="0"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         TabIndex="5"
+                         AutomationProperties.Name="Available batches"
+                         AutomationProperties.HelpText="List of saved command batches. Select one to execute, edit, or delete.">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="5">
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Description}" Opacity="0.7" FontSize="11" Margin="0,2,0,0"/>
-                                <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                    <TextBlock Text="{Binding CommandCount, StringFormat='Commands: {0}'}" FontSize="10" Opacity="0.6"/>
-                                    <TextBlock Text=" | " FontSize="10" Opacity="0.6" Margin="5,0"/>
-                                    <TextBlock Text="{Binding ExecutionMode}" FontSize="10" Opacity="0.6"/>
+                            <Border Background="White"
+                                    BorderBrush="{StaticResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Padding="12"
+                                    Margin="8">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}"
+                                               FontWeight="SemiBold"
+                                               FontSize="14"
+                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                    <TextBlock Text="{Binding Description}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               Margin="0,4,0,0"
+                                               TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <Border Style="{StaticResource PlatformBadgeStyle}">
+                                            <TextBlock FontSize="10"
+                                                       Foreground="{StaticResource PrimaryBrush}">
+                                                <Run Text="{Binding CommandCount, Mode=OneWay}"/>
+                                                <Run Text="commands"/>
+                                            </TextBlock>
+                                        </Border>
+                                        <Border Style="{StaticResource LevelBadgeStyle}"
+                                                Background="{StaticResource SuccessBrush}"
+                                                Opacity="0.2"
+                                                BorderBrush="{StaticResource SuccessBrush}">
+                                            <TextBlock Text="{Binding ExecutionMode}"
+                                                       FontSize="10"
+                                                       Foreground="{StaticResource SuccessBrush}"
+                                                       FontWeight="SemiBold"/>
+                                        </Border>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
+                            </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+            </DockPanel>
+        </Border>
 
-                <!-- UX: Buttons with text-only labels and consistent sizing -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
-                    <Button Content="Execute" Command="{Binding ExecuteBatchCommand}" MinWidth="100" Margin="0,0,8,0" MinHeight="32"/>
-                    <Button Content="Import" Command="{Binding ImportBatchCommand}" MinWidth="80" Margin="0,0,8,0" MinHeight="32"/>
-                    <Button Content="Export" Command="{Binding ExportBatchCommand}" MinWidth="80" Margin="0,0,8,0" MinHeight="32"/>
-                    <Button Content="Delete" Command="{Binding DeleteBatchCommand}" MinWidth="80" MinHeight="32"/>
-                </StackPanel>
-            </Grid>
-        </GroupBox>
-
-        <!-- Progress -->
-        <GroupBox Grid.Row="2" Header="Progress" Margin="0,0,0,10" Visibility="{Binding IsExecuting, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <!-- UX: Progress indicator with modern styling -->
+        <Border Grid.Row="3"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="16"
+                Margin="0,0,0,16"
+                Visibility="{Binding IsExecuting, Converter={StaticResource BooleanToVisibilityConverter}}"
+                AutomationProperties.LiveSetting="Polite">
             <StackPanel>
-                <TextBlock Text="{Binding ProgressMessage}" Margin="0,0,0,5"/>
-                <ProgressBar Value="{Binding ProgressPercentage}" Height="20" Minimum="0" Maximum="100"/>
+                <TextBlock Text="Execution Progress"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,8"/>
+                <TextBlock Text="{Binding ProgressMessage}"
+                           FontSize="12"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           Margin="0,0,0,8"/>
+                <ProgressBar Value="{Binding ProgressPercentage}"
+                             Height="24"
+                             Minimum="0"
+                             Maximum="100"
+                             Foreground="{StaticResource SuccessBrush}"
+                             AutomationProperties.Name="Batch execution progress"
+                             AutomationProperties.HelpText="{Binding ProgressMessage}"/>
             </StackPanel>
-        </GroupBox>
+        </Border>
 
-        <!-- Output -->
-        <GroupBox Grid.Row="3" Header="Output">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#1E1E1E">
-                <ItemsControl ItemsSource="{Binding OutputLines}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Text}"
-                                     Foreground="{Binding IsError, Converter={StaticResource ErrorToColorConverter}}"
-                                     FontFamily="Consolas"
-                                     FontSize="11"
-                                     Margin="5,1"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </GroupBox>
+        <!-- UX: Output Console with modern styling -->
+        <Border Grid.Row="4"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="Command Output"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Padding="12"
+                           Background="{StaticResource PrimaryBrush}"
+                           Foreground="White"/>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              Background="#1E1E1E"
+                              Padding="8">
+                    <ItemsControl ItemsSource="{Binding OutputLines}"
+                                  AutomationProperties.Name="Command output"
+                                  AutomationProperties.HelpText="Output from executed commands">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Text}"
+                                           Foreground="{Binding IsError, Converter={StaticResource ErrorToColorConverter}}"
+                                           FontFamily="Consolas"
+                                           FontSize="12"
+                                           Margin="4,2"
+                                           TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- UX: Empty state when no batches exist -->
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding Batches.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
+            <TextBlock Text="No batches created yet"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Margin="0,0,0,8"/>
+            <TextBlock Text="Create a batch to execute multiple commands together"
+                       FontSize="12"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       TextAlignment="Center"
+                       MaxWidth="400"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
     </Grid>
 </UserControl>

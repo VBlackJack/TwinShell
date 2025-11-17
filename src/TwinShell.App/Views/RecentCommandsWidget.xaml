@@ -60,11 +60,12 @@
                                     <TextBlock Text="{Binding ActionTitle}"
                                                FontWeight="SemiBold"
                                                FontSize="11"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding GeneratedCommand}"
                                                FontFamily="Consolas"
                                                FontSize="10"
-                                               Foreground="#666"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
                                                TextTrimming="CharacterEllipsis"
                                                Margin="0,2,0,0"/>
                                 </StackPanel>
@@ -72,7 +73,7 @@
                                 <TextBlock Grid.Column="1"
                                            Text="{Binding RelativeTime}"
                                            FontSize="9"
-                                           Foreground="#999"
+                                           Foreground="{StaticResource TextSecondaryBrush}"
                                            VerticalAlignment="Top"
                                            Margin="8,0,0,0"/>
                             </Grid>

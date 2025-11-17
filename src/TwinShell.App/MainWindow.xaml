@@ -30,6 +30,11 @@
         <KeyBinding Key="F1" Command="{Binding ShowHelpCommand}"/>
         <!-- Clear filters: Ctrl+K -->
         <KeyBinding Key="K" Modifiers="Control" Command="{Binding ClearFiltersCommand}"/>
+        <!-- UX: Additional essential shortcuts for power users -->
+        <!-- Toggle Favorite: Ctrl+D (like bookmark) -->
+        <KeyBinding Key="D" Modifiers="Control" Command="{Binding ToggleFavoriteCommand}"/>
+        <!-- Close/Cancel dialogs: Escape -->
+        <KeyBinding Key="Escape" Command="{Binding CancelCommand}"/>
     </Window.InputBindings>
 
     <Grid x:Name="RootGrid">
@@ -254,6 +259,25 @@
                              TabIndex="9"
                              AutomationProperties.Name="Actions list"
                              AutomationProperties.HelpText="Select an action to view details and generate commands">
+                        <!-- UX: Context menu for power users (right-click actions) -->
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="View Details"
+                                          FontWeight="SemiBold"
+                                          ToolTip="View full action details"
+                                          Command="{Binding ViewDetailsCommand}"/>
+                                <MenuItem Header="Add to Favorites"
+                                          Command="{Binding ToggleFavoriteCommand}"
+                                          ToolTip="Add this action to your favorites"/>
+                                <Separator/>
+                                <MenuItem Header="Copy Action ID"
+                                          Command="{Binding CopyActionIdCommand}"
+                                          ToolTip="Copy the action ID to clipboard"/>
+                                <MenuItem Header="Export Action..."
+                                          Command="{Binding ExportActionCommand}"
+                                          ToolTip="Export this action to a JSON file"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
@@ -338,9 +362,9 @@
                                            VerticalAlignment="Center"
                                            Foreground="{StaticResource TextPrimaryBrush}"/>
 
+                                <!-- UX: Favorite button with clear visual states (empty/filled star) -->
                                 <Button Grid.Column="1"
                                         x:Name="FavoriteButton"
-                                        Content="☆"
                                         FontSize="20"
                                         Padding="10,6"
                                         Margin="8,0,0,0"
@@ -348,23 +372,51 @@
                                         BorderThickness="1"
                                         BorderBrush="{StaticResource BorderBrush}"
                                         Cursor="Hand"
-                                        ToolTip="Add to Favorites"
                                         Command="{Binding DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                         VerticalAlignment="Center"
                                         TabIndex="11"
                                         MinWidth="44"
                                         MinHeight="44"
-                                        AutomationProperties.Name="Toggle favorite"
-                                        AutomationProperties.HelpText="Add or remove this action from favorites">
+                                        AutomationProperties.Name="Toggle favorite">
                                     <Button.Style>
                                         <Style TargetType="Button">
+                                            <Setter Property="Content" Value="☆"/>
                                             <Setter Property="Foreground" Value="#9E9E9E"/>
+                                            <Setter Property="AutomationProperties.HelpText" Value="Add this action to your favorites"/>
+                                            <!-- UX: Tooltip with keyboard shortcut -->
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip>
+                                                        <StackPanel>
+                                                            <TextBlock Text="Add to Favorites" FontWeight="SemiBold"/>
+                                                            <TextBlock Text="Ctrl+D" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                    </ToolTip>
+                                                </Setter.Value>
+                                            </Setter>
                                             <Style.Triggers>
+                                                <!-- UX: Filled star when favorited -->
+                                                <DataTrigger Binding="{Binding DataContext.IsCurrentActionFavorite, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                                    <Setter Property="Content" Value="★"/>
+                                                    <Setter Property="Foreground" Value="#FFD700"/>
+                                                    <Setter Property="Background" Value="#FFFEF5"/>
+                                                    <Setter Property="AutomationProperties.HelpText" Value="Remove this action from your favorites"/>
+                                                    <Setter Property="ToolTip">
+                                                        <Setter.Value>
+                                                            <ToolTip>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="Remove from Favorites" FontWeight="SemiBold"/>
+                                                                    <TextBlock Text="Ctrl+D" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                                </StackPanel>
+                                                            </ToolTip>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                <!-- UX: Hover effect -->
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Foreground" Value="#FFD700"/>
                                                     <Setter Property="Background" Value="#FFFEF5"/>
                                                 </Trigger>
-                                                <!-- TODO: Add DataTrigger for IsFavorite property to show filled star ★ -->
                                             </Style.Triggers>
                                         </Style>
                                     </Button.Style>
@@ -555,9 +607,17 @@
                                                 MinWidth="44"
                                                 MinHeight="44"
                                                 TabIndex="13"
-                                                ToolTip="Copy command to clipboard (Ctrl+C)"
                                                 AutomationProperties.Name="Copy command to clipboard"
-                                                AutomationProperties.HelpText="Copy the generated command to clipboard for use in terminal"/>
+                                                AutomationProperties.HelpText="Copy the generated command to clipboard for use in terminal">
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <StackPanel>
+                                                        <TextBlock Text="Copy to Clipboard" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="Ctrl+C" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                    </StackPanel>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
@@ -574,14 +634,11 @@
                 <ContentControl x:Name="HistoryTabContent"/>
             </TabItem>
 
-            <!-- UX: Execution Tab with empty state (feature not yet implemented) -->
-            <TabItem Header="Execution">
+            <!-- UX: Execution Tab hidden until Sprint 4 implementation -->
+            <!-- Users should not see incomplete features - reduces cognitive load -->
+            <TabItem Header="Execution" Visibility="Collapsed">
                 <Grid Margin="24">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="⏳"
-                                   FontSize="48"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,16"/>
                         <TextBlock Text="Command Execution"
                                    FontSize="20"
                                    FontWeight="SemiBold"
