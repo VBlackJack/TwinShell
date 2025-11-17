@@ -10,7 +10,8 @@
         Height="600" Width="700"
         WindowStartupLocation="CenterOwner"
         Background="{StaticResource BackgroundBrush}"
-        ResizeMode="NoResize">
+        ResizeMode="CanResize"
+        MinHeight="450" MinWidth="600">
 
     <Window.Resources>
         <!-- ComboBox Style -->
@@ -60,24 +61,12 @@
 
     <Grid Margin="24">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="Settings"
-                       FontSize="24"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource PrimaryBrush}"/>
-            <TextBlock Text="Configure your TwinShell preferences"
-                       FontSize="12"
-                       Foreground="{StaticResource TextSecondaryBrush}"/>
-        </StackPanel>
-
-        <!-- Settings Content -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <!-- UX: Settings Content with cleaner layout (removed redundant header) -->
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <!-- Appearance Section -->
                 <TextBlock Text="Appearance" Style="{StaticResource SectionHeaderStyle}"/>
@@ -184,7 +173,7 @@
         </ScrollViewer>
 
         <!-- Action Buttons -->
-        <Grid Grid.Row="2" Margin="0,16,0,0">
+        <Grid Grid.Row="1" Margin="0,16,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
