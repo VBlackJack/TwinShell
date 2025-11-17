@@ -25,7 +25,11 @@ public class CustomCategoryRepository : ICustomCategoryRepository
             .OrderBy(c => c.DisplayOrder)
             .ToListAsync();
 
-        var mappings = await _context.ActionCategoryMappings.ToListAsync();
+        // PERFORMANCE: Only fetch mappings for returned categories instead of all mappings
+        var categoryIds = entities.Select(e => e.Id).ToList();
+        var mappings = await _context.ActionCategoryMappings
+            .Where(m => categoryIds.Contains(m.CategoryId))
+            .ToListAsync();
 
         return entities.Select(e => CustomCategoryMapper.ToDomain(e, mappings));
     }
@@ -83,7 +87,11 @@ public class CustomCategoryRepository : ICustomCategoryRepository
             .OrderBy(c => c.DisplayOrder)
             .ToListAsync();
 
-        var mappings = await _context.ActionCategoryMappings.ToListAsync();
+        // PERFORMANCE: Only fetch mappings for returned categories instead of all mappings
+        var categoryIds = entities.Select(e => e.Id).ToList();
+        var mappings = await _context.ActionCategoryMappings
+            .Where(m => categoryIds.Contains(m.CategoryId))
+            .ToListAsync();
 
         return entities.Select(e => CustomCategoryMapper.ToDomain(e, mappings));
     }

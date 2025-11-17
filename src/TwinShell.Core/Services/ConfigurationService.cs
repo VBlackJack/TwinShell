@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -82,7 +83,7 @@ public class ConfigurationService : IConfigurationService
             // Export history if requested
             if (includeHistory)
             {
-                var history = await _historyRepository.GetRecentAsync(1000); // Last 1000 commands
+                var history = await _historyRepository.GetRecentAsync(ValidationConstants.DefaultHistoryLoadCount);
                 config.History = history.Select(h => new CommandHistoryDto
                 {
                     ActionId = h.ActionId,
@@ -141,8 +142,7 @@ public class ConfigurationService : IConfigurationService
 
             // SECURITY: Validate file size (max 10MB)
             var fileInfo = new FileInfo(filePath);
-            const long maxSize = 10 * 1024 * 1024; // 10 MB
-            if (fileInfo.Length > maxSize)
+            if (fileInfo.Length > ValidationConstants.MaxFileSizeBytes)
             {
                 return (false, "File too large: maximum size is 10MB", 0, 0);
             }
@@ -432,10 +432,10 @@ public class ConfigurationService : IConfigurationService
                     return false;
 
                 // Validate array lengths (prevent DoS via huge arrays)
-                if (favorites.GetArrayLength() > 1000)
+                if (favorites.GetArrayLength() > ValidationConstants.MaxFavoritesInImport)
                     return false;
 
-                if (history.GetArrayLength() > 10000)
+                if (history.GetArrayLength() > ValidationConstants.MaxHistoryInImport)
                     return false;
 
                 return true;

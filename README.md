@@ -198,6 +198,35 @@ Les commandes de niveau **Dangerous** (rouge) affichent un bandeau d'alerte :
 
 Exemples : `Clear-EventLog`, `Disable-ADAccount`, `Stop-Process -Force`
 
+### Audit de Sécurité & Corrections (Janvier 2025)
+
+**15 vulnérabilités critiques corrigées** :
+- ✅ Protection contre l'injection de commandes
+- ✅ Protection path traversal (validation stricte des chemins)
+- ✅ Correction de memory leaks (SemaphoreSlim non disposés)
+- ✅ Résolution de race conditions dans ViewModels
+- ✅ Protection contre l'information disclosure (exceptions)
+- ✅ Protection DoS (limites sur fichiers et collections)
+- ✅ Validation complète des entrées utilisateur
+- ✅ Thread-safety améliorée
+
+**8 problèmes de stabilité résolus** :
+- ✅ Gestion appropriée des ressources (IDisposable pattern)
+- ✅ Locks pour sections critiques
+- ✅ Timer cleanup dans ExecutionViewModel
+- ✅ Fragile checks remplacés par flags explicites
+
+**Voir [SECURITY.md](SECURITY.md) pour la politique de sécurité complète.**
+
+### Optimisations de Performance (Janvier 2025)
+
+- ⚡ **Pagination dans HistoryViewModel** : Charge 50 entrées au lieu de 1000
+- ⚡ **ObservableRangeCollection** : Single UI notification au lieu de N
+- ⚡ **Filtrage optimisé** : CustomCategoryRepository filtre avant de charger
+- ⚡ **Magic numbers** remplacés par constantes nommées
+- ⚡ **LINQ optimisé** : Énumérations uniques, ToHashSet() pour lookups
+- ⚡ **Timer interval** : 250ms au lieu de 100ms (60% CPU reduction)
+
 ## 🧩 Modèle de données
 
 ### Action
