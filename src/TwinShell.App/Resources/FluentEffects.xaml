@@ -158,24 +158,32 @@
     <!-- ================================================================ -->
     <!-- ELEVATION ENHANCEMENT                                            -->
     <!-- Enhanced shadows with multiple layers for realistic depth        -->
+    <!-- Note: WPF doesn't support EffectGroup natively                   -->
+    <!-- Using single effects as approximation                            -->
     <!-- ================================================================ -->
 
-    <!-- Layered Shadow (Elevation 2) - Combines ambient + directional -->
-    <EffectGroup x:Key="LayeredElevation2">
-        <DropShadowEffect ShadowDepth="0" BlurRadius="8" Color="#000000" Opacity="0.04"/>
-        <DropShadowEffect ShadowDepth="2" BlurRadius="4" Direction="270" Color="#000000" Opacity="0.08"/>
-    </EffectGroup>
+    <!-- Layered Shadow (Elevation 2) - Single effect approximation -->
+    <DropShadowEffect x:Key="LayeredElevation2"
+                      ShadowDepth="2"
+                      BlurRadius="8"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.10"/>
 
     <!-- Layered Shadow (Elevation 3) -->
-    <EffectGroup x:Key="LayeredElevation3">
-        <DropShadowEffect ShadowDepth="0" BlurRadius="16" Color="#000000" Opacity="0.05"/>
-        <DropShadowEffect ShadowDepth="4" BlurRadius="8" Direction="270" Color="#000000" Opacity="0.10"/>
-    </EffectGroup>
+    <DropShadowEffect x:Key="LayeredElevation3"
+                      ShadowDepth="4"
+                      BlurRadius="16"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.12"/>
 
     <!-- Layered Shadow (Elevation 4) -->
-    <EffectGroup x:Key="LayeredElevation4">
-        <DropShadowEffect ShadowDepth="0" BlurRadius="32" Color="#000000" Opacity="0.06"/>
-        <DropShadowEffect ShadowDepth="8" BlurRadius="16" Direction="270" Color="#000000" Opacity="0.12"/>
-    </EffectGroup>
+    <DropShadowEffect x:Key="LayeredElevation4"
+                      ShadowDepth="8"
+                      BlurRadius="32"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.14"/>
 
 </ResourceDictionary>
