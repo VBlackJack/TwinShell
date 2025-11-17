@@ -167,7 +167,6 @@ public partial class App : Application
         // ViewModels
         services.AddTransient<MainViewModel>();
         services.AddTransient<HistoryViewModel>();
-        services.AddTransient<RecentCommandsViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<CategoryManagementViewModel>();
         services.AddTransient<ExecutionViewModel>();
@@ -176,7 +175,6 @@ public partial class App : Application
 
         // Views
         services.AddTransient<HistoryPanel>();
-        services.AddTransient<RecentCommandsWidget>();
         services.AddTransient<OutputPanel>();
         services.AddTransient<BatchPanel>();
         services.AddTransient<PowerShellGalleryPanel>();

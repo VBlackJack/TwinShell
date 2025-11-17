@@ -27,12 +27,6 @@ public partial class SettingsViewModel : ObservableObject
     private int _maxHistoryItems;
 
     [ObservableProperty]
-    private int _recentCommandsCount;
-
-    [ObservableProperty]
-    private bool _showRecentCommandsWidget;
-
-    [ObservableProperty]
     private bool _confirmDangerousActions;
 
     [ObservableProperty]
@@ -61,8 +55,6 @@ public partial class SettingsViewModel : ObservableObject
         SelectedTheme = settings.Theme;
         AutoCleanupDays = settings.AutoCleanupDays;
         MaxHistoryItems = settings.MaxHistoryItems;
-        RecentCommandsCount = settings.RecentCommandsCount;
-        ShowRecentCommandsWidget = settings.ShowRecentCommandsWidget;
         ConfirmDangerousActions = settings.ConfirmDangerousActions;
 
         _originalSettings = settings.Clone();
@@ -75,8 +67,6 @@ public partial class SettingsViewModel : ObservableObject
     partial void OnSelectedThemeChanged(Theme value) => CheckForChanges();
     partial void OnAutoCleanupDaysChanged(int value) => CheckForChanges();
     partial void OnMaxHistoryItemsChanged(int value) => CheckForChanges();
-    partial void OnRecentCommandsCountChanged(int value) => CheckForChanges();
-    partial void OnShowRecentCommandsWidgetChanged(bool value) => CheckForChanges();
     partial void OnConfirmDangerousActionsChanged(bool value) => CheckForChanges();
 
     /// <summary>
@@ -87,8 +77,6 @@ public partial class SettingsViewModel : ObservableObject
         HasChanges = SelectedTheme != _originalSettings.Theme ||
                      AutoCleanupDays != _originalSettings.AutoCleanupDays ||
                      MaxHistoryItems != _originalSettings.MaxHistoryItems ||
-                     RecentCommandsCount != _originalSettings.RecentCommandsCount ||
-                     ShowRecentCommandsWidget != _originalSettings.ShowRecentCommandsWidget ||
                      ConfirmDangerousActions != _originalSettings.ConfirmDangerousActions;
     }
 
@@ -106,12 +94,6 @@ public partial class SettingsViewModel : ObservableObject
         if (MaxHistoryItems < 10 || MaxHistoryItems > 100000)
         {
             ValidationError = "Max history items must be between 10 and 100,000.";
-            return false;
-        }
-
-        if (RecentCommandsCount < 1 || RecentCommandsCount > 50)
-        {
-            ValidationError = "Recent commands count must be between 1 and 50.";
             return false;
         }
 
@@ -138,8 +120,6 @@ public partial class SettingsViewModel : ObservableObject
             Theme = SelectedTheme,
             AutoCleanupDays = AutoCleanupDays,
             MaxHistoryItems = MaxHistoryItems,
-            RecentCommandsCount = RecentCommandsCount,
-            ShowRecentCommandsWidget = ShowRecentCommandsWidget,
             ConfirmDangerousActions = ConfirmDangerousActions,
             DefaultPlatformFilter = _originalSettings.DefaultPlatformFilter
         };
