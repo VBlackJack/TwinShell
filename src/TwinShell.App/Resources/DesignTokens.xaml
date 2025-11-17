@@ -1,0 +1,205 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ====================================================================== -->
+    <!-- TWINSHELL DESIGN SYSTEM - Design Tokens                              -->
+    <!-- Following Windows 11 Fluent Design & WCAG AAA Guidelines              -->
+    <!-- ====================================================================== -->
+
+    <!-- ================================================================ -->
+    <!-- TYPOGRAPHY SCALE                                                -->
+    <!-- Based on modular scale (1.25 ratio) + Windows 11 best practices -->
+    <!-- ================================================================ -->
+
+    <!-- Font Family -->
+    <FontFamily x:Key="FontFamily.Primary">Segoe UI, Segoe UI Variable, system-ui, -apple-system, sans-serif</FontFamily>
+    <FontFamily x:Key="FontFamily.Monospace">Consolas, Cascadia Code, monospace</FontFamily>
+
+    <!-- Font Sizes - Modular Scale (base: 14px, ratio: 1.25) -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XS">10</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.SM">12</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.Base">14</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.MD">16</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.LG">20</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XL">24</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XXL">32</system:Double>
+
+    <!-- Font Weights -->
+    <FontWeight x:Key="FontWeight.Regular">Normal</FontWeight>
+    <FontWeight x:Key="FontWeight.Medium">Medium</FontWeight>
+    <FontWeight x:Key="FontWeight.SemiBold">SemiBold</FontWeight>
+    <FontWeight x:Key="FontWeight.Bold">Bold</FontWeight>
+
+    <!-- Line Heights (unitless multipliers for better vertical rhythm) -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="LineHeight.Tight">1.25</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="LineHeight.Normal">1.5</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="LineHeight.Relaxed">1.75</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- SPACING SCALE                                                    -->
+    <!-- 4px base grid system for consistent vertical rhythm             -->
+    <!-- ================================================================ -->
+
+    <Thickness x:Key="Spacing.XXS">2</Thickness>
+    <Thickness x:Key="Spacing.XS">4</Thickness>
+    <Thickness x:Key="Spacing.SM">8</Thickness>
+    <Thickness x:Key="Spacing.Base">12</Thickness>
+    <Thickness x:Key="Spacing.MD">16</Thickness>
+    <Thickness x:Key="Spacing.LG">20</Thickness>
+    <Thickness x:Key="Spacing.XL">24</Thickness>
+    <Thickness x:Key="Spacing.XXL">32</Thickness>
+    <Thickness x:Key="Spacing.XXXL">48</Thickness>
+
+    <!-- Numeric spacing values for complex layouts -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.XXS">2</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.XS">4</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.SM">8</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.Base">12</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.MD">16</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.LG">20</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.XL">24</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.XXL">32</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Space.XXXL">48</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- CORNER RADIUS SCALE                                              -->
+    <!-- Consistent rounding following Windows 11 design language         -->
+    <!-- ================================================================ -->
+
+    <CornerRadius x:Key="Radius.None">0</CornerRadius>
+    <CornerRadius x:Key="Radius.SM">2</CornerRadius>
+    <CornerRadius x:Key="Radius.Base">4</CornerRadius>
+    <CornerRadius x:Key="Radius.MD">6</CornerRadius>
+    <CornerRadius x:Key="Radius.LG">8</CornerRadius>
+    <CornerRadius x:Key="Radius.XL">12</CornerRadius>
+    <CornerRadius x:Key="Radius.XXL">16</CornerRadius>
+    <CornerRadius x:Key="Radius.Full">9999</CornerRadius>
+
+    <!-- ================================================================ -->
+    <!-- ELEVATION SYSTEM (Shadows)                                       -->
+    <!-- Based on Material Design adapted for Windows 11 acrylic style   -->
+    <!-- ================================================================ -->
+
+    <!-- Elevation 0 - No shadow -->
+    <DropShadowEffect x:Key="Elevation.0"
+                      ShadowDepth="0"
+                      BlurRadius="0"
+                      Opacity="0"/>
+
+    <!-- Elevation 1 - Subtle lift (cards, list items on hover) -->
+    <DropShadowEffect x:Key="Elevation.1"
+                      ShadowDepth="1"
+                      BlurRadius="3"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.08"/>
+
+    <!-- Elevation 2 - Raised elements (cards, panels) -->
+    <DropShadowEffect x:Key="Elevation.2"
+                      ShadowDepth="2"
+                      BlurRadius="6"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.12"/>
+
+    <!-- Elevation 3 - Floating elements (dropdowns, tooltips) -->
+    <DropShadowEffect x:Key="Elevation.3"
+                      ShadowDepth="4"
+                      BlurRadius="12"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.16"/>
+
+    <!-- Elevation 4 - Modals and dialogs -->
+    <DropShadowEffect x:Key="Elevation.4"
+                      ShadowDepth="8"
+                      BlurRadius="24"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.20"/>
+
+    <!-- Elevation 5 - Top layer (high priority notifications) -->
+    <DropShadowEffect x:Key="Elevation.5"
+                      ShadowDepth="12"
+                      BlurRadius="36"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.24"/>
+
+    <!-- ================================================================ -->
+    <!-- ANIMATION TIMING                                                 -->
+    <!-- Consistent durations and easing functions                        -->
+    <!-- ================================================================ -->
+
+    <!-- Duration values -->
+    <Duration x:Key="Duration.Instant">0:0:0.1</Duration>
+    <Duration x:Key="Duration.Fast">0:0:0.15</Duration>
+    <Duration x:Key="Duration.Normal">0:0:0.25</Duration>
+    <Duration x:Key="Duration.Slow">0:0:0.35</Duration>
+    <Duration x:Key="Duration.Slower">0:0:0.5</Duration>
+
+    <!-- Easing Functions -->
+    <CubicEase x:Key="Easing.Standard" EasingMode="EaseInOut"/>
+    <CubicEase x:Key="Easing.Decelerate" EasingMode="EaseOut"/>
+    <CubicEase x:Key="Easing.Accelerate" EasingMode="EaseIn"/>
+    <BackEase x:Key="Easing.Spring" EasingMode="EaseOut" Amplitude="0.3"/>
+    <ElasticEase x:Key="Easing.Bounce" EasingMode="EaseOut" Oscillations="1" Springiness="3"/>
+
+    <!-- ================================================================ -->
+    <!-- BORDER THICKNESS                                                 -->
+    <!-- Consistent stroke weights                                        -->
+    <!-- ================================================================ -->
+
+    <Thickness x:Key="BorderThickness.None">0</Thickness>
+    <Thickness x:Key="BorderThickness.Thin">1</Thickness>
+    <Thickness x:Key="BorderThickness.Medium">2</Thickness>
+    <Thickness x:Key="BorderThickness.Thick">3</Thickness>
+
+    <!-- ================================================================ -->
+    <!-- OPACITY SCALE                                                    -->
+    <!-- For layering and disabled states                                 -->
+    <!-- ================================================================ -->
+
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Invisible">0</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Subtle">0.05</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Light">0.1</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Medium">0.2</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Heavy">0.4</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Disabled">0.38</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Opacity.Visible">1</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- Z-INDEX LAYERS                                                   -->
+    <!-- Consistent layering system                                       -->
+    <!-- ================================================================ -->
+
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Base">0</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Dropdown">1000</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Sticky">1100</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Fixed">1200</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Overlay">1300</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Modal">1400</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Popover">1500</system:Int32>
+    <system:Int32 xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="ZIndex.Tooltip">1600</system:Int32>
+
+    <!-- ================================================================ -->
+    <!-- ICON SIZES                                                       -->
+    <!-- Consistent icon scaling                                          -->
+    <!-- ================================================================ -->
+
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="IconSize.XS">12</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="IconSize.SM">16</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="IconSize.Base">20</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="IconSize.MD">24</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="IconSize.LG">32</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="IconSize.XL">48</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- MINIMUM TOUCH TARGET SIZES                                       -->
+    <!-- Following WCAG 2.5.5 (AAA) - 44x44 CSS pixels minimum           -->
+    <!-- ================================================================ -->
+
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="TouchTarget.Minimum">44</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="TouchTarget.Comfortable">48</system:Double>
+
+</ResourceDictionary>
