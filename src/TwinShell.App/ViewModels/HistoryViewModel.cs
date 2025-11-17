@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TwinShell.App.Collections;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -38,6 +39,19 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     private string _statusMessage = string.Empty;
+
+    // PERFORMANCE: Pagination properties to avoid loading 1000 entries at once
+    [ObservableProperty]
+    private int _currentPage = 1;
+
+    [ObservableProperty]
+    private int _totalPages = 1;
+
+    [ObservableProperty]
+    private int _pageSize = ValidationConstants.DefaultHistoryPageSize;
+
+    [ObservableProperty]
+    private int _totalFilteredCount;
 
     public ObservableCollection<string> DateFilterOptions { get; } = new()
     {
@@ -83,11 +97,30 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         _ = ApplyFiltersAsync();
     }
 
+    partial void OnCurrentPageChanged(int value)
+    {
+        GoToPreviousPageCommand.NotifyCanExecuteChanged();
+        GoToNextPageCommand.NotifyCanExecuteChanged();
+        _ = ApplyFiltersAsync();
+    }
+
+    partial void OnTotalPagesChanged(int value)
+    {
+        GoToPreviousPageCommand.NotifyCanExecuteChanged();
+        GoToNextPageCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnPageSizeChanged(int value)
+    {
+        CurrentPage = 1; // Reset to first page when page size changes
+        _ = ApplyFiltersAsync();
+    }
+
     private async Task LoadHistoryAsync()
     {
         try
         {
-            _allHistory = (await _historyService.GetRecentAsync(1000)).ToList();
+            _allHistory = (await _historyService.GetRecentAsync(ValidationConstants.DefaultHistoryLoadCount)).ToList();
 
             // Extract unique categories
             var categories = _allHistory
@@ -161,10 +194,30 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             }
 
             var filteredList = filtered.ToList();
-            TotalCount = filteredList.Count;
+            TotalFilteredCount = filteredList.Count;
+            TotalCount = _allHistory.Count;
+
+            // PERFORMANCE: Calculate pagination
+            TotalPages = (int)Math.Ceiling((double)TotalFilteredCount / PageSize);
+            if (TotalPages < 1) TotalPages = 1;
+
+            // Ensure current page is within bounds
+            if (CurrentPage > TotalPages)
+            {
+                CurrentPage = TotalPages;
+            }
+            if (CurrentPage < 1)
+            {
+                CurrentPage = 1;
+            }
+
+            // PERFORMANCE: Apply pagination - only load current page items
+            var pagedList = filteredList
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize);
 
             // PERFORMANCE: Use ReplaceRange for batch update - single UI notification
-            var viewModels = filteredList.Select(h =>
+            var viewModels = pagedList.Select(h =>
                 new CommandHistoryViewModel(h, _clipboardService, this));
             HistoryItems.ReplaceRange(viewModels);
         }
@@ -212,6 +265,41 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         SelectedDateFilter = "All";
         SelectedCategory = null;
         SelectedPlatform = null;
+        CurrentPage = 1;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanGoToPreviousPage))]
+    private void GoToPreviousPage()
+    {
+        if (CurrentPage > 1)
+        {
+            CurrentPage--;
+        }
+    }
+
+    private bool CanGoToPreviousPage() => CurrentPage > 1;
+
+    [RelayCommand(CanExecute = nameof(CanGoToNextPage))]
+    private void GoToNextPage()
+    {
+        if (CurrentPage < TotalPages)
+        {
+            CurrentPage++;
+        }
+    }
+
+    private bool CanGoToNextPage() => CurrentPage < TotalPages;
+
+    [RelayCommand]
+    private void GoToFirstPage()
+    {
+        CurrentPage = 1;
+    }
+
+    [RelayCommand]
+    private void GoToLastPage()
+    {
+        CurrentPage = TotalPages;
     }
 
     internal async Task DeleteHistoryItemAsync(string id)

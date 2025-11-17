@@ -54,4 +54,29 @@ public static class ValidationConstants
     /// History retention in days (90 days).
     /// </summary>
     public const int HistoryRetentionDays = 90;
+
+    /// <summary>
+    /// Maximum file size for imports/exports (10MB).
+    /// </summary>
+    public const long MaxFileSizeBytes = 10 * 1024 * 1024;
+
+    /// <summary>
+    /// Default number of history entries to load (1000 entries).
+    /// </summary>
+    public const int DefaultHistoryLoadCount = 1000;
+
+    /// <summary>
+    /// Default history page size for pagination (50 items).
+    /// </summary>
+    public const int DefaultHistoryPageSize = 50;
+
+    /// <summary>
+    /// Maximum number of favorites in import (1000 items).
+    /// </summary>
+    public const int MaxFavoritesInImport = 1000;
+
+    /// <summary>
+    /// Maximum number of history entries in import (10000 items).
+    /// </summary>
+    public const int MaxHistoryInImport = 10000;
 }
