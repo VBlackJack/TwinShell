@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
-using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.App.ViewModels;
 
