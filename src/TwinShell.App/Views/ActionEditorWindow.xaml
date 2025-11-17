@@ -1,0 +1,377 @@
+<Window x:Class="TwinShell.App.Views.ActionEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:TwinShell.App.ViewModels"
+        xmlns:enums="clr-namespace:TwinShell.Core.Enums;assembly=TwinShell.Core"
+        mc:Ignorable="d"
+        Title="Éditeur de commande - TwinShell"
+        Height="700" Width="900"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}"
+        ResizeMode="CanResize"
+        MinHeight="600" MinWidth="800">
+
+    <Window.Resources>
+        <!-- Label Style -->
+        <Style x:Key="LabelTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,8,0,4"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+
+        <!-- Hint Style -->
+        <Style x:Key="HintTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+
+        <!-- Parameter Border Style -->
+        <Style x:Key="ParameterBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0"
+                   Text="Informations de la commande"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   Foreground="{StaticResource PrimaryBrush}"
+                   Margin="0,0,0,16"/>
+
+        <!-- Content - TabControl -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <!-- Tab Général -->
+            <TabItem Header="Général">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Titre *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 TabIndex="1"/>
+
+                        <TextBlock Text="Description" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 TextWrapping="Wrap" AcceptsReturn="True"
+                                 Height="80" TabIndex="2"/>
+
+                        <TextBlock Text="Catégorie *" Style="{StaticResource LabelTextStyle}"/>
+                        <ComboBox ItemsSource="{Binding AvailableCategories}"
+                                  Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEditable="True"
+                                  Style="{StaticResource {x:Type ComboBox}}"
+                                  TabIndex="3"/>
+
+                        <TextBlock Text="Plateforme *" Style="{StaticResource LabelTextStyle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                            <RadioButton Content="Windows"
+                                       IsChecked="{Binding SelectedPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Windows}"
+                                       Margin="0,0,20,0" TabIndex="4"/>
+                            <RadioButton Content="Linux"
+                                       IsChecked="{Binding SelectedPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Linux}"
+                                       Margin="0,0,20,0" TabIndex="5"/>
+                            <RadioButton Content="Les deux (Both)"
+                                       IsChecked="{Binding SelectedPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Both}"
+                                       TabIndex="6"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Niveau de criticité *" Style="{StaticResource LabelTextStyle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                            <RadioButton Content="Info (lecture seule)"
+                                       IsChecked="{Binding SelectedLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Info}"
+                                       Margin="0,0,20,0" TabIndex="7"/>
+                            <RadioButton Content="Run (exécution)"
+                                       IsChecked="{Binding SelectedLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Run}"
+                                       Margin="0,0,20,0" TabIndex="8"/>
+                            <RadioButton Content="Dangerous (dangereux)"
+                                       IsChecked="{Binding SelectedLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dangerous}"
+                                       TabIndex="9"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Tags (séparés par des virgules)" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding Tags, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 TabIndex="10"/>
+                        <TextBlock Text="Exemple: ad, users, diagnostic"
+                                   Style="{StaticResource HintTextStyle}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tab Windows Command -->
+            <TabItem Header="Commande Windows">
+                <TabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource PlatformToVisibilityMultiConverter}">
+                        <Binding Path="SelectedPlatform"/>
+                    </MultiBinding>
+                </TabItem.Visibility>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Nom de la commande *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding WindowsCommandName, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                        <TextBlock Text="Exemple: Get-ADUser"
+                                   Style="{StaticResource HintTextStyle}"/>
+
+                        <TextBlock Text="Pattern de commande PowerShell *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding WindowsCommandPattern, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 TextWrapping="Wrap" AcceptsReturn="True"
+                                 FontFamily="Consolas" Height="120"/>
+                        <TextBlock Text="Utiliser {paramName} pour les paramètres dynamiques"
+                                   Style="{StaticResource HintTextStyle}"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,16,0,8">
+                            <TextBlock Text="Paramètres" Style="{StaticResource LabelTextStyle}" Margin="0"/>
+                            <Button Content="+ Ajouter"
+                                    Command="{Binding AddWindowsParameterCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Padding="8,4"
+                                    Margin="12,0,0,0"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding WindowsParameters}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource ParameterBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                                    <TextBlock Text="Nom du paramètre" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
+                                                    <TextBlock Text="Label affiché" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,8,8,0">
+                                                    <TextBlock Text="Type" FontSize="11" Margin="0,0,0,2"/>
+                                                    <ComboBox SelectedItem="{Binding Type}">
+                                                        <ComboBoxItem Content="string"/>
+                                                        <ComboBoxItem Content="int"/>
+                                                        <ComboBoxItem Content="bool"/>
+                                                    </ComboBox>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,8,0,0">
+                                                    <TextBlock Text="Valeur par défaut" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBox Text="{Binding DefaultValue, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,8,0,0">
+                                                    <CheckBox Content="Paramètre requis" IsChecked="{Binding Required}"/>
+                                                    <TextBlock Text="Description" FontSize="11" Margin="0,8,0,2"/>
+                                                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <Button Grid.Column="1" Content="🗑️"
+                                                    Command="{Binding DataContext.RemoveWindowsParameterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
+                                                    Padding="8"
+                                                    VerticalAlignment="Top"
+                                                    Background="Transparent"
+                                                    BorderBrush="{StaticResource BorderBrush}"
+                                                    ToolTip="Supprimer ce paramètre"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tab Linux Command -->
+            <TabItem Header="Commande Linux">
+                <TabItem.Visibility>
+                    <MultiBinding Converter="{StaticResource PlatformToVisibilityMultiConverter}">
+                        <Binding Path="SelectedPlatform"/>
+                    </MultiBinding>
+                </TabItem.Visibility>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Nom de la commande *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding LinuxCommandName, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                        <TextBlock Text="Exemple: systemctl"
+                                   Style="{StaticResource HintTextStyle}"/>
+
+                        <TextBlock Text="Pattern de commande Bash *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding LinuxCommandPattern, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 TextWrapping="Wrap" AcceptsReturn="True"
+                                 FontFamily="Consolas" Height="120"/>
+                        <TextBlock Text="Utiliser {paramName} pour les paramètres dynamiques"
+                                   Style="{StaticResource HintTextStyle}"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,16,0,8">
+                            <TextBlock Text="Paramètres" Style="{StaticResource LabelTextStyle}" Margin="0"/>
+                            <Button Content="+ Ajouter"
+                                    Command="{Binding AddLinuxParameterCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Padding="8,4"
+                                    Margin="12,0,0,0"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding LinuxParameters}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource ParameterBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
+                                                    <TextBlock Text="Nom du paramètre" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
+                                                    <TextBlock Text="Label affiché" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,8,8,0">
+                                                    <TextBlock Text="Type" FontSize="11" Margin="0,0,0,2"/>
+                                                    <ComboBox SelectedItem="{Binding Type}">
+                                                        <ComboBoxItem Content="string"/>
+                                                        <ComboBoxItem Content="int"/>
+                                                        <ComboBoxItem Content="bool"/>
+                                                    </ComboBox>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,8,0,0">
+                                                    <TextBlock Text="Valeur par défaut" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBox Text="{Binding DefaultValue, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,8,0,0">
+                                                    <CheckBox Content="Paramètre requis" IsChecked="{Binding Required}"/>
+                                                    <TextBlock Text="Description" FontSize="11" Margin="0,8,0,2"/>
+                                                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <Button Grid.Column="1" Content="🗑️"
+                                                    Command="{Binding DataContext.RemoveLinuxParameterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
+                                                    Padding="8"
+                                                    VerticalAlignment="Top"
+                                                    Background="Transparent"
+                                                    BorderBrush="{StaticResource BorderBrush}"
+                                                    ToolTip="Supprimer ce paramètre"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tab Notes -->
+            <TabItem Header="Notes">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Notes additionnelles" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 TextWrapping="Wrap" AcceptsReturn="True"
+                                 Height="300"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <!-- Validation Error -->
+        <Border Grid.Row="2"
+                Background="#FFEBEE"
+                BorderBrush="#F44336"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="12"
+                Margin="0,16,0,16">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ValidationError, Converter={StaticResource NullToVisibilityConverter}}" Value="Visible">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="⚠" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding ValidationError}"
+                           Foreground="#D32F2F"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Content="Annuler"
+                    Command="{Binding CancelCommand}"
+                    Width="100"
+                    Margin="0,0,12,0"
+                    Padding="12,8"/>
+            <Button Content="Enregistrer"
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Width="120"
+                    Padding="12,8"/>
+        </StackPanel>
+    </Grid>
+</Window>
