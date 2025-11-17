@@ -2,6 +2,7 @@ using System.IO;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Services;
 using TwinShell.Infrastructure.Services;
@@ -111,6 +112,13 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
+        // Logging infrastructure for enhanced observability
+        services.AddLogging(builder =>
+        {
+            builder.AddDebug();
+            builder.SetMinimumLevel(LogLevel.Debug);
+        });
+
         // Database
         var dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
