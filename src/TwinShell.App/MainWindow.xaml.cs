@@ -57,12 +57,19 @@ public partial class MainWindow : Window
 
     /// <summary>
     /// BUGFIX: Proper async event handler to prevent unhandled exceptions from crashing the app
-    /// Wraps InitializeAsync in try-catch for error handling
+    /// Wraps InitializeAsync and theme initialization in try-catch for error handling
     /// </summary>
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
         try
         {
+            // BUGFIX: Initialize theme after window is loaded to prevent UI thread deadlock
+            var themeService = _serviceProvider.GetRequiredService<TwinShell.Core.Interfaces.IThemeService>();
+            var settingsService = _serviceProvider.GetRequiredService<TwinShell.Core.Interfaces.ISettingsService>();
+
+            var settings = await settingsService.LoadSettingsAsync();
+            themeService.ApplyTheme(settings.Theme);
+
             await _mainViewModel.InitializeAsync();
         }
         catch (Exception ex)
