@@ -6,6 +6,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <!-- Design System - Foundation -->
                 <ResourceDictionary Source="Resources/DesignTokens.xaml"/>
+                <!-- Windows 11 Fluent Design effects (Acrylic, Mica, etc.) -->
+                <ResourceDictionary Source="Resources/FluentEffects.xaml"/>
                 <!-- Converters and theme-independent resources -->
                 <ResourceDictionary Source="Resources/Styles.xaml"/>
                 <!-- Animations and transitions -->
