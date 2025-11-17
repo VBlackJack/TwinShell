@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900"
-             Background="{StaticResource BackgroundBrush}">
+             Background="{DynamicResource BackgroundBrush}">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -34,9 +34,9 @@
                     MinWidth="44"
                     MinHeight="44"
                     TabIndex="2"
-                    Background="{StaticResource SurfaceBrush}"
-                    Foreground="{StaticResource TextPrimaryBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    Foreground="{DynamicResource TextPrimaryBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     Cursor="Hand"
                     ToolTip="Import a batch from a JSON file"
@@ -57,7 +57,7 @@
                     <Style TargetType="Button">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -70,9 +70,9 @@
                     MinWidth="44"
                     MinHeight="44"
                     TabIndex="3"
-                    Background="{StaticResource SurfaceBrush}"
-                    Foreground="{StaticResource TextPrimaryBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    Foreground="{DynamicResource TextPrimaryBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     Cursor="Hand"
                     ToolTip="Export the selected batch to a JSON file"
@@ -93,7 +93,7 @@
                     <Style TargetType="Button">
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -105,7 +105,7 @@
                     MinWidth="44"
                     MinHeight="44"
                     TabIndex="4"
-                    Background="{StaticResource DangerBrush}"
+                    Background="{DynamicResource DangerBrush}"
                     Foreground="White"
                     BorderThickness="0"
                     Cursor="Hand"
@@ -135,8 +135,8 @@
 
         <!-- UX: Batch List with modern Border instead of GroupBox -->
         <Border Grid.Row="1"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Margin="0,0,0,16">
@@ -146,7 +146,7 @@
                            FontSize="14"
                            FontWeight="SemiBold"
                            Padding="12"
-                           Background="{StaticResource PrimaryBrush}"
+                           Background="{DynamicResource PrimaryBrush}"
                            Foreground="White"/>
 
                 <ListBox ItemsSource="{Binding Batches}"
@@ -159,7 +159,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Background="White"
-                                    BorderBrush="{StaticResource BorderBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="4"
                                     Padding="12"
@@ -168,27 +168,27 @@
                                     <TextBlock Text="{Binding Name}"
                                                FontWeight="SemiBold"
                                                FontSize="14"
-                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                               Foreground="{DynamicResource TextPrimaryBrush}"/>
                                     <TextBlock Text="{Binding Description}"
                                                FontSize="12"
-                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
                                                Margin="0,4,0,0"
                                                TextWrapping="Wrap"/>
                                     <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                                         <Border Style="{StaticResource PlatformBadgeStyle}">
                                             <TextBlock FontSize="10"
-                                                       Foreground="{StaticResource PrimaryBrush}">
+                                                       Foreground="{DynamicResource PrimaryBrush}">
                                                 <Run Text="{Binding CommandCount, Mode=OneWay}"/>
                                                 <Run Text="commands"/>
                                             </TextBlock>
                                         </Border>
                                         <Border Style="{StaticResource LevelBadgeStyle}"
-                                                Background="{StaticResource SuccessBrush}"
+                                                Background="{DynamicResource SuccessBrush}"
                                                 Opacity="0.2"
-                                                BorderBrush="{StaticResource SuccessBrush}">
+                                                BorderBrush="{DynamicResource SuccessBrush}">
                                             <TextBlock Text="{Binding ExecutionMode}"
                                                        FontSize="10"
-                                                       Foreground="{StaticResource SuccessBrush}"
+                                                       Foreground="{DynamicResource SuccessBrush}"
                                                        FontWeight="SemiBold"/>
                                         </Border>
                                     </StackPanel>
@@ -202,8 +202,8 @@
 
         <!-- UX: Progress indicator with modern styling -->
         <Border Grid.Row="2"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="16"
@@ -214,17 +214,17 @@
                 <TextBlock Text="Execution Progress"
                            FontSize="14"
                            FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
                            Margin="0,0,0,8"/>
                 <TextBlock Text="{Binding ProgressMessage}"
                            FontSize="12"
-                           Foreground="{StaticResource TextSecondaryBrush}"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
                            Margin="0,0,0,8"/>
                 <ProgressBar Value="{Binding ProgressPercentage}"
                              Height="24"
                              Minimum="0"
                              Maximum="100"
-                             Foreground="{StaticResource SuccessBrush}"
+                             Foreground="{DynamicResource SuccessBrush}"
                              AutomationProperties.Name="Batch execution progress"
                              AutomationProperties.HelpText="{Binding ProgressMessage}"/>
             </StackPanel>
@@ -232,8 +232,8 @@
 
         <!-- UX: Output Console with modern styling -->
         <Border Grid.Row="3"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
             <DockPanel>
@@ -242,7 +242,7 @@
                            FontSize="14"
                            FontWeight="SemiBold"
                            Padding="12"
-                           Background="{StaticResource PrimaryBrush}"
+                           Background="{DynamicResource PrimaryBrush}"
                            Foreground="White"/>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -280,11 +280,11 @@
                        FontSize="18"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center"
-                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Margin="0,0,0,12"/>
             <TextBlock FontSize="12"
                        HorizontalAlignment="Center"
-                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        TextAlignment="Center"
                        MaxWidth="450"
                        TextWrapping="Wrap"

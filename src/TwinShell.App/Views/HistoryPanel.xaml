@@ -6,7 +6,7 @@
              xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000"
-             Background="{StaticResource BackgroundBrush}"
+             Background="{DynamicResource BackgroundBrush}"
              Focusable="True">
     <!-- UX: Keyboard shortcuts for power users -->
     <UserControl.InputBindings>
@@ -24,8 +24,8 @@
 
         <!-- UX: Search and Filters with cleaner layout (removed redundant header) -->
         <Border Grid.Row="0"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="16"
@@ -152,8 +152,8 @@
 
         <!-- History List -->
         <Border Grid.Row="1"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
             <DockPanel>
@@ -162,7 +162,7 @@
                            FontSize="14"
                            FontWeight="Bold"
                            Padding="12"
-                           Background="{StaticResource PrimaryBrush}"
+                           Background="{DynamicResource PrimaryBrush}"
                            Foreground="White"/>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -172,7 +172,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="White"
-                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         CornerRadius="4"
                                         Margin="0,0,0,8"
@@ -199,20 +199,20 @@
                                                 <Border Style="{StaticResource PlatformBadgeStyle}">
                                                     <TextBlock Text="{Binding PlatformDisplay}"
                                                                FontSize="10"
-                                                               Foreground="{StaticResource PrimaryBrush}"/>
+                                                               Foreground="{DynamicResource PrimaryBrush}"/>
                                                 </Border>
                                             </StackPanel>
 
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding RelativeTime}"
                                                        FontSize="11"
-                                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
                                         </Grid>
 
                                         <!-- Command -->
                                         <Border Grid.Row="1"
-                                                Background="{StaticResource CodeBackgroundBrush}"
-                                                BorderBrush="{StaticResource CodeBorderBrush}"
+                                                Background="{DynamicResource CodeBackgroundBrush}"
+                                                BorderBrush="{DynamicResource CodeBorderBrush}"
                                                 BorderThickness="1"
                                                 CornerRadius="4"
                                                 Padding="8"
@@ -220,7 +220,7 @@
                                             <TextBlock Text="{Binding GeneratedCommand}"
                                                        FontFamily="Consolas"
                                                        FontSize="12"
-                                                       Foreground="{StaticResource CodeTextBrush}"
+                                                       Foreground="{DynamicResource CodeTextBrush}"
                                                        TextWrapping="Wrap"/>
                                         </Border>
 
@@ -237,7 +237,7 @@
                                                     Command="{Binding DeleteCommand}"
                                                     Padding="12,6"
                                                     MinWidth="60"
-                                                    Background="{StaticResource DangerBrush}"
+                                                    Background="{DynamicResource DangerBrush}"
                                                     Foreground="White"
                                                     BorderThickness="0"
                                                     Cursor="Hand"
@@ -286,11 +286,11 @@
                        FontSize="18"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center"
-                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Margin="0,0,0,12"/>
             <TextBlock FontSize="12"
                        HorizontalAlignment="Center"
-                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        TextAlignment="Center"
                        MaxWidth="450"
                        TextWrapping="Wrap"
@@ -300,22 +300,22 @@
                 <LineBreak/>
                 <Run Text="💡 " FontWeight="SemiBold"/>
                 <Run Text="Go to the " FontWeight="SemiBold"/>
-                <Run Text="Actions" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                <Run Text="Actions" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
                 <Run Text=" tab to start generating commands." FontWeight="SemiBold"/>
             </TextBlock>
         </StackPanel>
 
         <!-- Status Bar -->
         <Border Grid.Row="2"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="12"
                 Margin="0,16,0,0">
             <TextBlock Text="{Binding StatusMessage}"
                        FontSize="12"
-                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
         </Border>
     </Grid>
 </UserControl>
