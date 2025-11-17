@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System.Windows;
 using TwinShell.Core.Enums;
@@ -15,16 +16,21 @@ public class ThemeService : IThemeService, IDisposable
     private Theme _currentTheme = Theme.Light;
     private const string LightThemeUri = "/TwinShell.App;component/Themes/LightTheme.xaml";
     private const string DarkThemeUri = "/TwinShell.App;component/Themes/DarkTheme.xaml";
+    private readonly ILogger<ThemeService>? _logger;
 
     /// <summary>
     /// Initializes the ThemeService and subscribes to Windows theme changes.
     /// </summary>
-    public ThemeService()
+    public ThemeService(ILogger<ThemeService>? logger = null)
     {
+        _logger = logger;
+        _logger?.LogInformation("ThemeService initialized");
+
         // BUGFIX: Subscribe to Windows theme changes to support dynamic System theme switching
         if (OperatingSystem.IsWindows())
         {
             SystemEvents.UserPreferenceChanged += OnWindowsThemeChanged;
+            _logger?.LogDebug("Subscribed to Windows theme changes");
         }
     }
 
@@ -34,22 +40,43 @@ public class ThemeService : IThemeService, IDisposable
     /// <inheritdoc/>
     public void ApplyTheme(Theme theme)
     {
-        var effectiveTheme = GetEffectiveTheme(theme);
-        _currentTheme = theme;
-
-        // Remove existing theme ResourceDictionaries
-        RemoveExistingTheme();
-
-        // Get the appropriate theme URI
-        var themeUri = effectiveTheme == Theme.Dark ? DarkThemeUri : LightThemeUri;
-
-        // Load and merge the new theme ResourceDictionary
-        var themeResourceDictionary = new ResourceDictionary
+        try
         {
-            Source = new Uri(themeUri, UriKind.Relative)
-        };
+            _logger?.LogInformation($"Applying theme: {theme}");
 
-        Application.Current.Resources.MergedDictionaries.Add(themeResourceDictionary);
+            var effectiveTheme = GetEffectiveTheme(theme);
+            _currentTheme = theme;
+
+            _logger?.LogDebug($"Effective theme: {effectiveTheme}");
+
+            // Validation: Ensure Application.Current is available
+            if (Application.Current == null)
+            {
+                _logger?.LogError("Application.Current is null - cannot apply theme");
+                throw new InvalidOperationException("Application.Current is null. Theme can only be applied after Application initialization.");
+            }
+
+            // Remove existing theme ResourceDictionaries
+            RemoveExistingTheme();
+
+            // Get the appropriate theme URI
+            var themeUri = effectiveTheme == Theme.Dark ? DarkThemeUri : LightThemeUri;
+            _logger?.LogDebug($"Loading theme from: {themeUri}");
+
+            // Load and merge the new theme ResourceDictionary
+            var themeResourceDictionary = new ResourceDictionary
+            {
+                Source = new Uri(themeUri, UriKind.Relative)
+            };
+
+            Application.Current.Resources.MergedDictionaries.Add(themeResourceDictionary);
+            _logger?.LogInformation($"Theme applied successfully: {theme} (effective: {effectiveTheme})");
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError(ex, $"Failed to apply theme: {theme}");
+            throw;
+        }
     }
 
     /// <inheritdoc/>
@@ -69,6 +96,7 @@ public class ThemeService : IThemeService, IDisposable
         // BUGFIX: Check if running on Windows before accessing registry
         if (!OperatingSystem.IsWindows())
         {
+            _logger?.LogDebug("Not running on Windows, defaulting to Light theme");
             return Theme.Light; // Default to Light on non-Windows platforms
         }
 
@@ -85,13 +113,17 @@ public class ThemeService : IThemeService, IDisposable
                 var value = key.GetValue("AppsUseLightTheme");
                 if (value is int intValue)
                 {
-                    return intValue == 0 ? Theme.Dark : Theme.Light;
+                    var detectedTheme = intValue == 0 ? Theme.Dark : Theme.Light;
+                    _logger?.LogInformation($"Windows system theme detected: {detectedTheme} (registry value: {intValue})");
+                    return detectedTheme;
                 }
             }
+
+            _logger?.LogWarning("Could not read AppsUseLightTheme registry value, defaulting to Light");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // If registry access fails, default to Light theme
+            _logger?.LogError(ex, "Failed to detect system theme from registry, defaulting to Light");
         }
 
         // Default to Light if unable to detect
@@ -109,8 +141,11 @@ public class ThemeService : IThemeService, IDisposable
                         d.Source.OriginalString.Contains("/Themes/DarkTheme.xaml")))
             .ToList();
 
+        _logger?.LogDebug($"Removing {themesToRemove.Count} existing theme dictionary/dictionaries");
+
         foreach (var theme in themesToRemove)
         {
+            _logger?.LogTrace($"Removing theme dictionary: {theme.Source?.OriginalString}");
             Application.Current.Resources.MergedDictionaries.Remove(theme);
         }
     }
@@ -125,6 +160,8 @@ public class ThemeService : IThemeService, IDisposable
         // and only if the app is currently using System theme
         if (e.Category == UserPreferenceCategory.General && _currentTheme == Theme.System)
         {
+            _logger?.LogInformation("Windows theme changed, reapplying System theme");
+
             // Use Dispatcher to ensure UI thread safety
             Application.Current?.Dispatcher.Invoke(() =>
             {
@@ -141,6 +178,9 @@ public class ThemeService : IThemeService, IDisposable
         if (OperatingSystem.IsWindows())
         {
             SystemEvents.UserPreferenceChanged -= OnWindowsThemeChanged;
+            _logger?.LogDebug("Unsubscribed from Windows theme changes");
         }
+
+        _logger?.LogInformation("ThemeService disposed");
     }
 }

@@ -10,7 +10,7 @@
         Title="TwinShell - PowerShell &amp; Bash Command Manager"
         Height="700" Width="1200"
         MinHeight="600" MinWidth="800"
-        Background="{StaticResource BackgroundBrush}"
+        Background="{DynamicResource BackgroundBrush}"
         AutomationProperties.Name="TwinShell Main Window"
         AutomationProperties.HelpText="PowerShell and Bash command manager application">
 
@@ -122,8 +122,8 @@
 
         <!-- Search and Filters -->
         <Border Grid.Row="0"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="16"
@@ -161,7 +161,7 @@
                                VerticalAlignment="Center"
                                Margin="12,0,0,0"
                                FontSize="11"
-                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
                 </Grid>
 
                 <!-- UX: Filters with consistent English labels and lighter weight -->
@@ -177,7 +177,7 @@
                                    VerticalAlignment="Center"
                                    Margin="0,0,12,0"
                                    FontWeight="Medium"
-                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                         <CheckBox Content="Windows" IsChecked="{Binding FilterWindows}" Margin="0,0,12,0"
                                   TabIndex="2"
                                   AutomationProperties.Name="Filter by Windows platform"/>
@@ -197,7 +197,7 @@
                                    VerticalAlignment="Center"
                                    Margin="0,0,12,0"
                                    FontWeight="Medium"
-                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                         <CheckBox Content="Info" IsChecked="{Binding FilterInfo}" Margin="0,0,12,0"
                                   TabIndex="5"
                                   AutomationProperties.Name="Filter by informational commands"/>
@@ -224,8 +224,8 @@
 
             <!-- Categories Panel -->
             <Border Grid.Column="0"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                 <StackPanel>
@@ -233,7 +233,7 @@
                                FontSize="14"
                                FontWeight="SemiBold"
                                Padding="12"
-                               Background="{StaticResource PrimaryBrush}"
+                               Background="{DynamicResource PrimaryBrush}"
                                Foreground="White"/>
                     <ListBox ItemsSource="{Binding Categories}"
                              SelectedItem="{Binding SelectedCategory}"
@@ -253,8 +253,8 @@
 
             <!-- Actions ListBox -->
             <Border Grid.Column="2"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                 <DockPanel>
@@ -263,7 +263,7 @@
                                FontSize="14"
                                FontWeight="Bold"
                                Padding="12"
-                               Background="{StaticResource PrimaryBrush}"
+                               Background="{DynamicResource PrimaryBrush}"
                                Foreground="White"/>
                     <ListBox ItemsSource="{Binding FilteredActions}"
                              SelectedItem="{Binding SelectedAction}"
@@ -302,7 +302,7 @@
                                         <Border Style="{StaticResource PlatformBadgeStyle}">
                                             <TextBlock Text="{Binding Platform, Converter={StaticResource PlatformToTextConverter}}"
                                                        FontSize="10"
-                                                       Foreground="{StaticResource PrimaryBrush}"/>
+                                                       Foreground="{DynamicResource PrimaryBrush}"/>
                                         </Border>
                                         <Border Style="{StaticResource LevelBadgeStyle}"
                                                 Background="{Binding Level, Converter={StaticResource CriticalityToColorConverter}}"
@@ -322,8 +322,8 @@
 
             <!-- Action Details and Command Generator -->
             <Border Grid.Column="4"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -352,13 +352,13 @@
                                        FontSize="16"
                                        FontWeight="SemiBold"
                                        HorizontalAlignment="Center"
-                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                        Margin="0,0,0,8"/>
                             <TextBlock Text="Choose an action from the list to view details&#x0a;and generate commands"
                                        FontSize="12"
                                        HorizontalAlignment="Center"
                                        TextAlignment="Center"
-                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                        TextWrapping="Wrap"
                                        MaxWidth="250"/>
                         </StackPanel>
@@ -389,7 +389,7 @@
                                            FontWeight="SemiBold"
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
-                                           Foreground="{StaticResource TextPrimaryBrush}"/>
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                                 <!-- UX: Favorite button with clear visual states (empty/filled star) -->
                                 <Button Grid.Column="1"
@@ -399,7 +399,7 @@
                                         Margin="8,0,0,0"
                                         Background="Transparent"
                                         BorderThickness="1"
-                                        BorderBrush="{StaticResource BorderBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         Cursor="Hand"
                                         Command="{Binding DataContext.ToggleFavoriteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                         VerticalAlignment="Center"
@@ -418,7 +418,7 @@
                                                     <ToolTip>
                                                         <StackPanel>
                                                             <TextBlock Text="Add to Favorites" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="Ctrl+D" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                            <TextBlock Text="Ctrl+D" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,2,0,0"/>
                                                         </StackPanel>
                                                     </ToolTip>
                                                 </Setter.Value>
@@ -435,7 +435,7 @@
                                                             <ToolTip>
                                                                 <StackPanel>
                                                                     <TextBlock Text="Remove from Favorites" FontWeight="SemiBold"/>
-                                                                    <TextBlock Text="Ctrl+D" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                                    <TextBlock Text="Ctrl+D" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,2,0,0"/>
                                                                 </StackPanel>
                                                             </ToolTip>
                                                         </Setter.Value>
@@ -459,7 +459,7 @@
                                         <TextBlock Text="{Binding Platform, Converter={StaticResource PlatformToIconConverter}}"
                                                    Margin="0,0,4,0"/>
                                         <TextBlock Text="{Binding Platform, Converter={StaticResource PlatformToTextConverter}}"
-                                                   Foreground="{StaticResource PrimaryBrush}"/>
+                                                   Foreground="{DynamicResource PrimaryBrush}"/>
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{StaticResource LevelBadgeStyle}"
@@ -487,7 +487,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="⚠" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="WARNING: This command can cause significant system changes"
-                                               Foreground="{StaticResource DangerBrush}"
+                                               Foreground="{DynamicResource DangerBrush}"
                                                FontWeight="SemiBold"
                                                TextWrapping="Wrap"/>
                                 </StackPanel>
@@ -501,7 +501,7 @@
                             <TextBlock Text="{Binding Description}"
                                        TextWrapping="Wrap"
                                        Margin="0,0,0,16"
-                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
 
                             <!-- Examples -->
                             <TextBlock Text="Examples"
@@ -511,8 +511,8 @@
                             <ItemsControl ItemsSource="{Binding Examples}" Margin="0,0,0,16">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="{StaticResource CodeBackgroundBrush}"
-                                                BorderBrush="{StaticResource CodeBorderBrush}"
+                                        <Border Background="{DynamicResource CodeBackgroundBrush}"
+                                                BorderBrush="{DynamicResource CodeBorderBrush}"
                                                 BorderThickness="1"
                                                 Padding="8"
                                                 Margin="0,0,0,8"
@@ -521,11 +521,11 @@
                                                 <TextBlock Text="{Binding Command}"
                                                            FontFamily="Consolas"
                                                            FontSize="12"
-                                                           Foreground="{StaticResource CodeTextBrush}"
+                                                           Foreground="{DynamicResource CodeTextBrush}"
                                                            TextWrapping="Wrap"/>
                                                 <TextBlock Text="{Binding Description}"
                                                            FontSize="11"
-                                                           Foreground="{StaticResource TextSecondaryBrush}"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
                                                            TextWrapping="Wrap"
                                                            Margin="0,4,0,0"/>
                                             </StackPanel>
@@ -555,8 +555,8 @@
                             </StackPanel>
 
                             <!-- UX: Command Generator with English labels and clearer structure -->
-                            <Border Background="{StaticResource SurfaceElevatedBrush}"
-                                    BorderBrush="{StaticResource SuccessBorderBrush}"
+                            <Border Background="{DynamicResource SurfaceElevatedBrush}"
+                                    BorderBrush="{DynamicResource SuccessBorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="4"
                                     Padding="12"
@@ -565,12 +565,12 @@
                                     <TextBlock Text="Command Generator"
                                                FontWeight="SemiBold"
                                                FontSize="14"
-                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
                                                Margin="0,0,0,8"/>
 
                                     <!-- Platform Selector (visible only for cross-platform commands) -->
-                                    <Border Background="{StaticResource BackgroundBrush}"
-                                            BorderBrush="{StaticResource BorderBrush}"
+                                    <Border Background="{DynamicResource BackgroundBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
                                             BorderThickness="1"
                                             CornerRadius="4"
                                             Padding="12"
@@ -589,7 +589,7 @@
                                             <TextBlock Text="Select Platform"
                                                        FontWeight="SemiBold"
                                                        FontSize="12"
-                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                                        Margin="0,0,0,8"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <RadioButton Content="Windows"
@@ -600,7 +600,7 @@
                                                     <RadioButton.Style>
                                                         <Style TargetType="RadioButton">
                                                             <Setter Property="FontSize" Value="12"/>
-                                                            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
                                                         </Style>
                                                     </RadioButton.Style>
                                                 </RadioButton>
@@ -611,7 +611,7 @@
                                                     <RadioButton.Style>
                                                         <Style TargetType="RadioButton">
                                                             <Setter Property="FontSize" Value="12"/>
-                                                            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
                                                         </Style>
                                                     </RadioButton.Style>
                                                 </RadioButton>
@@ -646,7 +646,7 @@
                                                              AutomationProperties.HelpText="{Binding Description}"/>
                                                     <TextBlock Text="{Binding Description}"
                                                                FontSize="10"
-                                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                                               Foreground="{DynamicResource TextSecondaryBrush}"
                                                                TextWrapping="Wrap"
                                                                Margin="0,2,0,0"/>
                                                 </StackPanel>
@@ -657,10 +657,10 @@
                                     <!-- Generated Command -->
                                     <TextBlock Text="Generated Command"
                                                FontWeight="SemiBold"
-                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
                                                Margin="0,8,0,4"/>
-                                    <Border Background="{StaticResource CodeBackgroundBrush}"
-                                            BorderBrush="{StaticResource CodeBorderBrush}"
+                                    <Border Background="{DynamicResource CodeBackgroundBrush}"
+                                            BorderBrush="{DynamicResource CodeBorderBrush}"
                                             BorderThickness="1"
                                             CornerRadius="4"
                                             Padding="8">
@@ -668,7 +668,7 @@
                                                    Text="{Binding GeneratedCommand}"
                                                    FontFamily="Consolas"
                                                    FontSize="12"
-                                                   Foreground="{StaticResource CodeTextBrush}"
+                                                   Foreground="{DynamicResource CodeTextBrush}"
                                                    TextWrapping="Wrap"/>
                                     </Border>
 
@@ -687,7 +687,7 @@
                                                 <ToolTip>
                                                     <StackPanel>
                                                         <TextBlock Text="Copy to Clipboard" FontWeight="SemiBold"/>
-                                                        <TextBlock Text="Ctrl+C" FontSize="10" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                        <TextBlock Text="Ctrl+C" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,2,0,0"/>
                                                     </StackPanel>
                                                 </ToolTip>
                                             </Button.ToolTip>
