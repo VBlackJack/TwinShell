@@ -66,13 +66,11 @@ public class BatchRepository : IBatchRepository
 
     public async Task<IEnumerable<CommandBatch>> SearchAsync(string query)
     {
-        var lowerQuery = query.ToLower();
-
-        // PERFORMANCE: AsNoTracking for read-only queries
+        // PERFORMANCE: Use EF.Functions.Like instead of ToLower() to allow index usage
         var entities = await _context.CommandBatches
             .AsNoTracking()
-            .Where(b => b.Name.ToLower().Contains(lowerQuery) ||
-                       (b.Description != null && b.Description.ToLower().Contains(lowerQuery)))
+            .Where(b => EF.Functions.Like(b.Name, $"%{query}%") ||
+                       (b.Description != null && EF.Functions.Like(b.Description, $"%{query}%")))
             .OrderByDescending(b => b.UpdatedAt)
             .ToListAsync();
 

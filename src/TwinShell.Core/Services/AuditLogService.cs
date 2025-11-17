@@ -35,6 +35,12 @@ public class AuditLogService : IAuditLogService
 
     public async Task ExportToCsvAsync(string filePath, DateTime? from = null, DateTime? to = null)
     {
+        // SECURITY: Validate file path to prevent path traversal attacks
+        if (!IsPathSecure(filePath))
+        {
+            throw new ArgumentException("Invalid or insecure file path", nameof(filePath));
+        }
+
         var logs = await _repository.GetByDateRangeAsync(
             from ?? DateTime.UtcNow.AddYears(-1),
             to ?? DateTime.UtcNow);
@@ -58,12 +64,6 @@ public class AuditLogService : IAuditLogService
                           $"{log.WasDangerous}");
         }
 
-        // SECURITY: Validate file path before writing
-        if (string.IsNullOrWhiteSpace(filePath) || filePath.Contains(".."))
-        {
-            throw new ArgumentException("Invalid file path", nameof(filePath));
-        }
-
         await File.WriteAllTextAsync(filePath, csv.ToString());
     }
 
@@ -81,5 +81,46 @@ public class AuditLogService : IAuditLogService
     private string EscapeCsv(string value)
     {
         return value.Replace("\"", "\"\"");
+    }
+
+    /// <summary>
+    /// Validates that the file path is secure and doesn't allow path traversal
+    /// </summary>
+    private static bool IsPathSecure(string filePath)
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+            return false;
+
+        try
+        {
+            // Get the full canonical path
+            var fullPath = Path.GetFullPath(filePath);
+
+            // Get allowed base directories (user directories only)
+            var allowedBases = new[]
+            {
+                Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)),
+                Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)),
+                Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
+            };
+
+            // Check if the path starts with one of the allowed bases
+            if (!allowedBases.Any(baseDir => fullPath.StartsWith(baseDir, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            // Additional checks for suspicious patterns
+            if (filePath.Contains("..") || filePath.Contains("~"))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
