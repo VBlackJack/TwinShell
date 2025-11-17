@@ -5,7 +5,7 @@
       "id": "ad-list-users",
       "title": "Lister tous les utilisateurs Active Directory",
       "description": "Affiche une liste complète de tous les comptes utilisateurs dans Active Directory avec leurs propriétés principales.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -40,7 +40,7 @@
       "id": "ad-search-user",
       "title": "Rechercher un utilisateur AD par nom",
       "description": "Recherche un utilisateur spécifique dans Active Directory par son nom ou prénom.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -78,7 +78,7 @@
       "id": "ad-unlock-account",
       "title": "Déverrouiller un compte utilisateur AD",
       "description": "Déverrouille un compte utilisateur qui a été verrouillé suite à des tentatives de connexion échouées.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -117,7 +117,7 @@
       "id": "ad-reset-password",
       "title": "Réinitialiser le mot de passe d'un utilisateur AD",
       "description": "Force la réinitialisation du mot de passe d'un utilisateur Active Directory.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -164,7 +164,7 @@
       "id": "ad-disable-account",
       "title": "Désactiver un compte utilisateur AD",
       "description": "Désactive un compte utilisateur Active Directory sans le supprimer.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -203,7 +203,7 @@
       "id": "gpo-list-all",
       "title": "Lister toutes les GPO du domaine",
       "description": "Affiche la liste complète des stratégies de groupe (GPO) configurées dans le domaine.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -232,7 +232,7 @@
       "id": "gpo-applied-machine",
       "title": "Lister les GPO appliquées à une machine",
       "description": "Affiche toutes les stratégies de groupe appliquées à un ordinateur spécifique.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -275,7 +275,7 @@
       "id": "gpo-force-update",
       "title": "Forcer la mise à jour des GPO",
       "description": "Force l'application immédiate des stratégies de groupe sans attendre le délai de rafraîchissement.",
-      "category": "🪟 Active Directory & GPO",
+      "category": "🏢 Active Directory & GPO",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -1998,7 +1998,7 @@
       "id": "WIN-DEBLOAT-001",
       "title": "Supprimer tous les bloatwares tiers",
       "description": "Supprime automatiquement tous les bloatwares tiers préinstallés (Candy Crush, Spotify, Disney+, etc.).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2034,7 +2034,7 @@
       "id": "WIN-DEBLOAT-002",
       "title": "Supprimer les extensions média",
       "description": "Supprime les extensions média optionnelles (HEIF, VP9, WebP, AV1) pour libérer de l'espace.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2065,7 +2065,7 @@
       "id": "WIN-DEBLOAT-003",
       "title": "Lister les applications tierces installées",
       "description": "Affiche une liste complète de toutes les applications tierces installées via AppX.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -2096,7 +2096,7 @@
       "id": "WIN-DEBLOAT-101",
       "title": "Supprimer les apps Microsoft inutiles",
       "description": "Supprime 38 applications Microsoft préinstallées considérées comme non essentielles (3D Viewer, Alarms, BingNews, etc.).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2126,7 +2126,7 @@
       "id": "WIN-DEBLOAT-102",
       "title": "Supprimer uniquement les apps de jeux",
       "description": "Supprime toutes les applications de jeux Microsoft (Solitaire, Candy Crush, Xbox Game Bar).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2157,7 +2157,7 @@
       "id": "WIN-DEBLOAT-103",
       "title": "Supprimer les apps de communication",
       "description": "Supprime les applications de communication Microsoft (Skype, People, Mail, Calendar).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2188,7 +2188,7 @@
       "id": "WIN-DEBLOAT-104",
       "title": "Supprimer les apps météo/actualités",
       "description": "Supprime les applications d'information Microsoft (Météo, Actualités, Sports).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2219,7 +2219,7 @@
       "id": "WIN-DEBLOAT-105",
       "title": "Supprimer une liste personnalisée d'apps",
       "description": "Supprime une liste personnalisée d'applications spécifiée par l'utilisateur.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2258,7 +2258,7 @@
       "id": "WIN-DEBLOAT-201",
       "title": "Désinstaller Microsoft Store",
       "description": "⚠️ DANGEROUS: Désinstalle complètement le Microsoft Store. Cette action est difficilement réversible.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -2289,7 +2289,7 @@
       "id": "WIN-DEBLOAT-202",
       "title": "Désinstaller OneDrive (complet)",
       "description": "⚠️ DANGEROUS: Désinstallation complète de OneDrive avec nettoyage du registre et des fichiers (30+ étapes).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -2320,7 +2320,7 @@
       "id": "WIN-DEBLOAT-203",
       "title": "Désinstaller Microsoft Edge",
       "description": "⚠️ DANGEROUS: Désinstalle Microsoft Edge. Peut affecter certaines fonctionnalités Windows 11.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -2351,7 +2351,7 @@
       "id": "WIN-DEBLOAT-204",
       "title": "Désinstaller Copilot",
       "description": "⚠️ DANGEROUS: Désinstalle Windows Copilot AI.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -2382,7 +2382,7 @@
       "id": "WIN-DEBLOAT-205",
       "title": "Supprimer Xbox (tous composants)",
       "description": "⚠️ DANGEROUS: Supprime tous les composants Xbox (App, Game Bar, Gaming Services).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -2413,7 +2413,7 @@
       "id": "WIN-DEBLOAT-206",
       "title": "Supprimer Widgets",
       "description": "⚠️ DANGEROUS: Désinstalle le panneau Widgets de Windows 11.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -2444,7 +2444,7 @@
       "id": "WIN-DEBLOAT-301",
       "title": "Désactiver Consumer Features",
       "description": "Désactive l'installation automatique d'applications suggérées et de bloatware Microsoft.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2475,7 +2475,7 @@
       "id": "WIN-DEBLOAT-302",
       "title": "Désactiver Recall",
       "description": "Désactive la fonctionnalité Recall AI de Windows 11 (enregistrement de l'activité).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2506,7 +2506,7 @@
       "id": "WIN-DEBLOAT-303",
       "title": "Désactiver Internet Explorer",
       "description": "Désactive le composant Internet Explorer (IE11) de Windows.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2537,7 +2537,7 @@
       "id": "WIN-DEBLOAT-304",
       "title": "Désactiver Hyper-V",
       "description": "Désactive la fonctionnalité Hyper-V de Windows (virtualisation).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2568,7 +2568,7 @@
       "id": "WIN-DEBLOAT-401",
       "title": "Désactiver les recommandations Edge",
       "description": "Désactive les recommandations et suggestions dans Microsoft Edge.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2599,7 +2599,7 @@
       "id": "WIN-DEBLOAT-402",
       "title": "Désactiver le shopping assistant Edge",
       "description": "Désactive l'assistant shopping et les coupons dans Microsoft Edge.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2630,7 +2630,7 @@
       "id": "WIN-DEBLOAT-403",
       "title": "Désactiver la télémétrie Edge",
       "description": "Désactive la collecte de données de diagnostic et d'utilisation dans Microsoft Edge.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2661,7 +2661,7 @@
       "id": "WIN-DEBLOAT-404",
       "title": "Désactiver le crypto wallet Edge",
       "description": "Désactive le portefeuille crypto et les fonctionnalités Web3 dans Microsoft Edge.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2692,7 +2692,7 @@
       "id": "WIN-PRIVACY-001",
       "title": "Désactiver l'accès à la localisation",
       "description": "Désactive l'accès des applications à la localisation de l'appareil pour protéger la vie privée. Conforme RGPD.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2738,7 +2738,7 @@
       "id": "WIN-PRIVACY-002",
       "title": "Désactiver l'accès à la caméra",
       "description": "Désactive l'accès des applications à la caméra de l'appareil pour renforcer la sécurité. Conforme RGPD.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2779,7 +2779,7 @@
       "id": "WIN-PRIVACY-003",
       "title": "Désactiver l'accès au microphone",
       "description": "Désactive l'accès des applications au microphone pour éviter l'écoute non autorisée. Conforme RGPD.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2820,7 +2820,7 @@
       "id": "WIN-PRIVACY-004",
       "title": "Désactiver l'accès au système de fichiers",
       "description": "Restreint l'accès des applications au système de fichiers complet. Protection des données sensibles.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2861,7 +2861,7 @@
       "id": "WIN-PRIVACY-005",
       "title": "Désactiver l'accès aux contacts",
       "description": "Empêche les applications d'accéder à la liste de contacts Windows. Protection des données personnelles.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2902,7 +2902,7 @@
       "id": "WIN-PRIVACY-006",
       "title": "Désactiver l'accès au calendrier",
       "description": "Bloque l'accès des applications au calendrier Windows. Protection de la vie privée professionnelle.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2943,7 +2943,7 @@
       "id": "WIN-PRIVACY-007",
       "title": "Désactiver l'accès aux emails",
       "description": "Empêche les applications d'accéder aux emails Windows. Protection des communications.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -2984,7 +2984,7 @@
       "id": "WIN-PRIVACY-008",
       "title": "Désactiver l'accès aux notifications",
       "description": "Bloque l'accès des applications au système de notifications. Réduit les distractions et tracking.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3025,7 +3025,7 @@
       "id": "WIN-PRIVACY-009",
       "title": "Désactiver toutes les permissions applications",
       "description": "Désactive TOUTES les permissions d'accès des applications en une seule action. Configuration maximale de confidentialité.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -3057,7 +3057,7 @@
       "id": "WIN-PRIVACY-010",
       "title": "Restaurer les permissions par défaut",
       "description": "Restaure toutes les permissions d'accès des applications à leurs valeurs par défaut Windows.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3089,7 +3089,7 @@
       "id": "WIN-PRIVACY-101",
       "title": "Désactiver toute synchronisation cloud",
       "description": "Désactive TOUTE synchronisation Windows avec le cloud Microsoft (paramètres, mots de passe, thèmes, navigateur). Configuration RGPD maximale.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -3127,7 +3127,7 @@
       "id": "WIN-PRIVACY-102",
       "title": "Désactiver sync des paramètres",
       "description": "Désactive uniquement la synchronisation des paramètres Windows (préférences, accessibilité, etc.).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3159,7 +3159,7 @@
       "id": "WIN-PRIVACY-103",
       "title": "Désactiver sync des thèmes",
       "description": "Désactive la synchronisation des thèmes, fonds d'écran et personnalisation Windows.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3192,7 +3192,7 @@
       "id": "WIN-PRIVACY-104",
       "title": "Désactiver sync des mots de passe",
       "description": "Désactive la synchronisation des mots de passe et identifiants Windows. Sécurité maximale.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -3226,7 +3226,7 @@
       "id": "WIN-PRIVACY-105",
       "title": "Désactiver sync du navigateur",
       "description": "Désactive la synchronisation des paramètres de navigateur (favoris, historique, onglets).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3259,7 +3259,7 @@
       "id": "WIN-PRIVACY-106",
       "title": "Restaurer la synchronisation cloud",
       "description": "Réactive toute la synchronisation Windows avec le cloud Microsoft (annule WIN-PRIVACY-101).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3291,7 +3291,7 @@
       "id": "WIN-PRIVACY-201",
       "title": "Désactiver Activity Feed",
       "description": "Désactive l'Activity Feed (chronologie) qui collecte l'historique des activités Windows.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3324,7 +3324,7 @@
       "id": "WIN-PRIVACY-202",
       "title": "Désactiver Game DVR",
       "description": "Désactive Game DVR et les fonctionnalités d'enregistrement Xbox. Économise des ressources système.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3357,7 +3357,7 @@
       "id": "WIN-PRIVACY-203",
       "title": "Désactiver les notifications publicitaires",
       "description": "Bloque les notifications publicitaires Windows et les suggestions d'applications dans le menu Démarrer.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3390,7 +3390,7 @@
       "id": "WIN-PRIVACY-204",
       "title": "Désactiver le suivi de localisation",
       "description": "Désactive complètement le service de localisation Windows et le suivi de position.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3424,7 +3424,7 @@
       "id": "WIN-PRIVACY-205",
       "title": "Configuration minimale de télémétrie",
       "description": "Configure la télémétrie Windows au niveau minimal (Security). Protection maximale des données. RGPD strict.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -3462,7 +3462,7 @@
       "id": "WIN-PRIVACY-206",
       "title": "Désactiver la reconnaissance vocale cloud",
       "description": "Désactive la reconnaissance vocale en ligne (Cortana, dictée cloud). Les données vocales restent locales.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3496,7 +3496,7 @@
       "id": "WIN-PRIVACY-207",
       "title": "Désactiver les services biométriques",
       "description": "Désactive la collecte de données biométriques (empreintes digitales, reconnaissance faciale Windows Hello).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -3535,7 +3535,7 @@
       "id": "WIN-PRIVACY-208",
       "title": "Désactiver la caméra écran de verrouillage",
       "description": "Désactive l'accès à la caméra depuis l'écran de verrouillage Windows. Sécurité renforcée.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3568,7 +3568,7 @@
       "id": "WIN-PRIVACY-301",
       "title": "Désactiver télémétrie Adobe",
       "description": "Désactive la télémétrie et le reporting d'Adobe Creative Cloud (Photoshop, Illustrator, etc.).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3600,7 +3600,7 @@
       "id": "WIN-PRIVACY-302",
       "title": "Désactiver télémétrie VS Code",
       "description": "Désactive la télémétrie de Visual Studio Code et les rapports d'erreurs Microsoft.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3638,7 +3638,7 @@
       "id": "WIN-PRIVACY-303",
       "title": "Désactiver télémétrie Google",
       "description": "Désactive la télémétrie de Google Update et Chrome (si installés). Bloque les services de tracking Google.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3671,7 +3671,7 @@
       "id": "WIN-PRIVACY-304",
       "title": "Désactiver télémétrie Nvidia",
       "description": "Désactive la télémétrie et les services de tracking des pilotes graphiques Nvidia (GeForce Experience).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3704,7 +3704,7 @@
       "id": "WIN-PERF-001",
       "title": "Configurer DNS Google (8.8.8.8)",
       "description": "Configure les serveurs DNS Google (8.8.8.8 et 8.8.4.4) pour améliorer la vitesse de résolution DNS et la fiabilité.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3750,7 +3750,7 @@
       "id": "WIN-PERF-002",
       "title": "Configurer DNS Cloudflare (1.1.1.1)",
       "description": "Configure les serveurs DNS Cloudflare (1.1.1.1 et 1.0.0.1) pour une résolution DNS ultra-rapide et orientée confidentialité.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3797,7 +3797,7 @@
       "id": "WIN-PERF-003",
       "title": "Configurer DNS OpenDNS",
       "description": "Configure les serveurs DNS OpenDNS (208.67.222.222 et 208.67.220.220) avec filtrage de contenu et protection contre le phishing.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3844,7 +3844,7 @@
       "id": "WIN-PERF-004",
       "title": "Configurer DNS Quad9",
       "description": "Configure les serveurs DNS Quad9 (9.9.9.9 et 149.112.112.112) avec blocage automatique des domaines malveillants.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3892,7 +3892,7 @@
       "id": "WIN-PERF-005",
       "title": "Configurer DNS personnalisé",
       "description": "Configure des serveurs DNS personnalisés avec adresses primaire et secondaire au choix.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3949,7 +3949,7 @@
       "id": "WIN-PERF-006",
       "title": "Restaurer DNS automatique",
       "description": "Restaure la configuration DNS automatique (DHCP) sur l'interface réseau.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -3990,7 +3990,7 @@
       "id": "WIN-PERF-101",
       "title": "Activer le plan Ultimate Performance",
       "description": "Active le plan d'alimentation Ultimate Performance de Windows pour maximiser les performances (déconseillé sur portable).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4031,7 +4031,7 @@
       "id": "WIN-PERF-102",
       "title": "Activer le plan Hautes performances",
       "description": "Active le plan d'alimentation Hautes performances (équilibre entre performance et consommation).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4063,7 +4063,7 @@
       "id": "WIN-PERF-103",
       "title": "Désactiver l'hibernation",
       "description": "Désactive l'hibernation Windows et supprime le fichier hiberfil.sys pour libérer de l'espace disque (souvent plusieurs Go).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4095,7 +4095,7 @@
       "id": "WIN-PERF-104",
       "title": "Désactiver le mode veille hybride",
       "description": "Désactive le mode veille hybride pour accélérer la mise en veille et le réveil du PC.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4127,7 +4127,7 @@
       "id": "WIN-PERF-201",
       "title": "Désactiver les services non essentiels",
       "description": "Désactive plus de 200 services Windows non essentiels pour maximiser les performances (ATTENTION: réservé aux utilisateurs avancés).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -4159,7 +4159,7 @@
       "id": "WIN-PERF-202",
       "title": "Désactiver uniquement services de télémétrie",
       "description": "Désactive uniquement les services de télémétrie et de collecte de données Windows (approche conservatrice).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4191,7 +4191,7 @@
       "id": "WIN-PERF-203",
       "title": "Restaurer les services par défaut",
       "description": "Restaure tous les services Windows à leur configuration par défaut (annule WIN-PERF-201).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4222,7 +4222,7 @@
       "id": "WIN-PERF-204",
       "title": "Lister les services désactivés",
       "description": "Affiche la liste de tous les services Windows actuellement désactivés pour vérification.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -4254,7 +4254,7 @@
       "id": "WIN-PERF-205",
       "title": "Désactiver Windows Search Indexing",
       "description": "Désactive le service d'indexation Windows Search pour libérer CPU et disque (la recherche de fichiers sera plus lente).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4286,7 +4286,7 @@
       "id": "WIN-PERF-301",
       "title": "Désactiver Superfetch/SysMain",
       "description": "Désactive le service Superfetch (SysMain) qui précharge des applications en RAM. Utile sur SSD.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4319,7 +4319,7 @@
       "id": "WIN-PERF-302",
       "title": "Désactiver Prefetch",
       "description": "Désactive le Prefetch Windows via le registre pour réduire les accès disque.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4351,7 +4351,7 @@
       "id": "WIN-PERF-303",
       "title": "Vider le cache DNS",
       "description": "Vide le cache DNS local de Windows pour résoudre les problèmes de résolution de noms.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -4383,7 +4383,7 @@
       "id": "WIN-PERF-304",
       "title": "Désactiver Storage Sense",
       "description": "Désactive Storage Sense, la fonctionnalité automatique de nettoyage de disque de Windows.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4415,7 +4415,7 @@
       "id": "WIN-PERF-401",
       "title": "Désactiver HAGS (Hardware Accelerated GPU Scheduling)",
       "description": "Désactive l'ordonnancement GPU accéléré par matériel (peut causer des micro-stutters dans certains jeux).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4453,7 +4453,7 @@
       "id": "WIN-PERF-402",
       "title": "Désactiver Core Isolation",
       "description": "Désactive l'isolation des cœurs (Memory Integrity/VBS) pour améliorer les performances en jeu (perte de 5-10% FPS avec VBS actif).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4491,7 +4491,7 @@
       "id": "WIN-PERF-403",
       "title": "Réduire latence souris",
       "description": "Optimise les paramètres de latence de la souris pour améliorer la réactivité (gaming).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4524,7 +4524,7 @@
       "id": "WIN-PERF-404",
       "title": "Optimiser performances jeux",
       "description": "Active le Game Mode et optimise les paramètres Windows pour le gaming (priorité CPU/GPU aux jeux).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4555,7 +4555,7 @@
       "id": "WIN-PERF-405",
       "title": "Limiter Windows Defender CPU à 25%",
       "description": "Limite l'utilisation CPU de Windows Defender lors des analyses pour éviter les ralentissements.",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -4591,7 +4591,7 @@
       "id": "WIN-PERF-406",
       "title": "Configurer exclusions Windows Defender",
       "description": "Ajoute des exclusions à Windows Defender pour améliorer les performances (dossiers de jeux, outils de dev, etc.).",
-      "category": "🪟 Windows Optimization",
+      "category": "💻 Windows Optimization",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5046,7 +5046,7 @@
       "id": "windowsupdate-check-pending",
       "title": "Vérifier les mises à jour Windows en attente",
       "description": "Liste toutes les mises à jour Windows disponibles mais non encore installées",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5089,7 +5089,7 @@
       "id": "windowsupdate-install-all",
       "title": "Installer toutes les mises à jour Windows disponibles",
       "description": "Télécharge et installe automatiquement toutes les mises à jour Windows disponibles",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5128,7 +5128,7 @@
       "id": "windowsupdate-clear-cache",
       "title": "Nettoyer le cache Windows Update",
       "description": "Arrête les services Windows Update et nettoie le dossier SoftwareDistribution pour résoudre les problèmes de mises à jour",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5163,7 +5163,7 @@
       "id": "windowsupdate-dism-repair",
       "title": "Réparer Windows Update avec DISM",
       "description": "Utilise DISM pour réparer l'image Windows et résoudre les problèmes de Windows Update",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5206,7 +5206,7 @@
       "id": "windowsupdate-sfc-scan",
       "title": "Vérifier l'intégrité des fichiers système (SFC)",
       "description": "Exécute System File Checker pour détecter et réparer les fichiers système corrompus",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5245,7 +5245,7 @@
       "id": "windowsupdate-check-services",
       "title": "Vérifier l'état des services Windows Update",
       "description": "Vérifie l'état et le type de démarrage des services critiques pour Windows Update",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5284,7 +5284,7 @@
       "id": "windowsupdate-history",
       "title": "Consulter l'historique des mises à jour installées",
       "description": "Affiche l'historique complet des mises à jour Windows installées sur le système",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5323,7 +5323,7 @@
       "id": "windowsupdate-force-scan",
       "title": "Forcer la recherche immédiate de mises à jour",
       "description": "Force Windows Update à rechercher immédiatement de nouvelles mises à jour",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5362,7 +5362,7 @@
       "id": "wsus-configure-client",
       "title": "Configurer le client WSUS via le registre",
       "description": "Configure les paramètres du client WSUS en modifiant les clés de registre appropriées",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -5414,7 +5414,7 @@
       "id": "wsus-force-client-sync",
       "title": "Forcer la synchronisation d'un client avec WSUS",
       "description": "Force le client Windows Update à se synchroniser immédiatement avec le serveur WSUS",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5453,7 +5453,7 @@
       "id": "wsus-check-client-status",
       "title": "Vérifier la configuration WSUS du client",
       "description": "Affiche la configuration actuelle du client WSUS en lisant le registre",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5488,7 +5488,7 @@
       "id": "wsus-reset-client-authorization",
       "title": "Réinitialiser l'autorisation WSUS du client",
       "description": "Réinitialise l'identifiant du client WSUS pour forcer une nouvelle autorisation sur le serveur",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5523,7 +5523,7 @@
       "id": "wsus-server-sync",
       "title": "Synchroniser le serveur WSUS avec Microsoft Update",
       "description": "Lance la synchronisation du serveur WSUS avec Microsoft Update pour récupérer les nouvelles mises à jour",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5562,7 +5562,7 @@
       "id": "wsus-server-unapproved-critical",
       "title": "Lister les mises à jour critiques non approuvées sur WSUS",
       "description": "Affiche toutes les mises à jour critiques non encore approuvées sur le serveur WSUS",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5598,7 +5598,7 @@
       "id": "wsus-server-cleanup",
       "title": "Effectuer la maintenance du serveur WSUS",
       "description": "Exécute les tâches de maintenance WSUS: suppression des mises à jour obsolètes, dépassées et des ordinateurs inactifs",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5637,7 +5637,7 @@
       "id": "sccm-trigger-machine-policy",
       "title": "Déclencher la récupération de la stratégie machine SCCM",
       "description": "Force le client SCCM à récupérer et appliquer immédiatement les stratégies machine depuis le serveur",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5676,7 +5676,7 @@
       "id": "sccm-trigger-hardware-inventory",
       "title": "Forcer l'inventaire matériel SCCM",
       "description": "Déclenche immédiatement la collecte de l'inventaire matériel et l'envoie au serveur SCCM",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5711,7 +5711,7 @@
       "id": "sccm-trigger-software-inventory",
       "title": "Forcer l'inventaire logiciel SCCM",
       "description": "Déclenche immédiatement la collecte de l'inventaire logiciel et l'envoie au serveur SCCM",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5746,7 +5746,7 @@
       "id": "sccm-trigger-app-deployment-eval",
       "title": "Déclencher l'évaluation des déploiements d'applications",
       "description": "Force l'évaluation de tous les déploiements d'applications SCCM pour vérifier les nouvelles applications disponibles",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5781,7 +5781,7 @@
       "id": "sccm-trigger-update-scan",
       "title": "Déclencher l'analyse des mises à jour SCCM",
       "description": "Force le client SCCM à analyser immédiatement les mises à jour logicielles disponibles",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5820,7 +5820,7 @@
       "id": "sccm-check-client-status",
       "title": "Vérifier l'état du client SCCM",
       "description": "Affiche l'état détaillé du client SCCM incluant la version, le site assigné et la dernière communication",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5859,7 +5859,7 @@
       "id": "sccm-repair-client",
       "title": "Réparer le client SCCM",
       "description": "Exécute la réparation automatique du client SCCM pour résoudre les problèmes de communication",
-      "category": "🪟 Windows Updates",
+      "category": "🔄 Windows Updates",
       "platform": 0,
       "level": 1,
       "tags": [
