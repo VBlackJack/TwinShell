@@ -13,19 +13,28 @@ public partial class MainWindow : Window
 
     public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, RecentCommandsWidget recentCommandsWidget, OutputPanel outputPanel, IServiceProvider serviceProvider)
     {
-        InitializeComponent();
-        DataContext = viewModel;
-        _mainViewModel = viewModel;
-        _serviceProvider = serviceProvider;
+        try
+        {
+            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log"),
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor started\n");
 
-        // Set the history panel (will be accessed by name in XAML)
-        HistoryTabContent.Content = historyPanel;
+            InitializeComponent();
+            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log"),
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] InitializeComponent completed\n");
 
-        // Set the recent commands widget
-        RecentCommandsContainer.Child = recentCommandsWidget;
+            DataContext = viewModel;
+            _mainViewModel = viewModel;
+            _serviceProvider = serviceProvider;
+
+            // Set the history panel (will be accessed by name in XAML)
+            HistoryTabContent.Content = historyPanel;
+
+            // Set the recent commands widget
+            RecentCommandsContainer.Child = recentCommandsWidget;
 
         // Set the execution output panel (Sprint 4)
-        ExecutionTabContent.Content = outputPanel;
+        // TODO: Uncomment when ExecutionTabContent is added to MainWindow.xaml
+        // ExecutionTabContent.Content = outputPanel;
 
         // Wire up the ExecutionViewModel to MainViewModel
         if (outputPanel.DataContext is ExecutionViewModel executionViewModel)
@@ -33,11 +42,21 @@ public partial class MainWindow : Window
             _mainViewModel.ExecutionViewModel = executionViewModel;
         }
 
-        // Initialize SnackBar Service for visual feedback
-        SnackBarService.Instance.Initialize(RootGrid);
+            // Initialize SnackBar Service for visual feedback
+            SnackBarService.Instance.Initialize(RootGrid);
 
-        // BUGFIX: Extract async initialization to proper async method to prevent unhandled exceptions
-        Loaded += MainWindow_Loaded;
+            // BUGFIX: Extract async initialization to proper async method to prevent unhandled exceptions
+            Loaded += MainWindow_Loaded;
+
+            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log"),
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor completed\n");
+        }
+        catch (Exception ex)
+        {
+            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log"),
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor error: {ex}\n");
+            throw;
+        }
     }
 
     /// <summary>
@@ -111,6 +130,7 @@ public partial class MainWindow : Window
             "TwinShell v1.0\n\n" +
             "PowerShell & Bash Command Manager\n" +
             "For System Administrators\n\n" +
+            "Author: Julien Bombled\n\n" +
             "Sprint 4: Advanced Features & Integration\n\n" +
             "Features:\n" +
             "• Direct PowerShell/Bash Execution\n" +

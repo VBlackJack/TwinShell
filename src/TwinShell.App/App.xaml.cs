@@ -20,18 +20,86 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        var services = new ServiceCollection();
-        ConfigureServices(services);
-        _serviceProvider = services.BuildServiceProvider();
+        // Add global exception handlers
+        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        DispatcherUnhandledException += OnDispatcherUnhandledException;
 
-        // BUGFIX: Initialize theme and database synchronously to ensure they complete before showing the main window
-        // This prevents race conditions where the UI might try to access uninitialized resources
-        InitializeThemeAsync().GetAwaiter().GetResult();
-        InitializeDatabaseAsync().GetAwaiter().GetResult();
+        try
+        {
+            LogInfo("Starting application...");
 
-        // Create and show main window
-        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-        mainWindow.Show();
+            var services = new ServiceCollection();
+            LogInfo("Configuring services...");
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
+            LogInfo("Services configured");
+
+            // Initialize theme and database with ConfigureAwait to avoid deadlock
+            LogInfo("Initializing theme...");
+            Task.Run(async () => await InitializeThemeAsync().ConfigureAwait(false)).Wait();
+            LogInfo("Theme initialized");
+
+            LogInfo("Initializing database...");
+            Task.Run(async () => await InitializeDatabaseAsync().ConfigureAwait(false)).Wait();
+            LogInfo("Database initialized");
+
+            // Create and show main window
+            LogInfo("Creating main window...");
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            LogInfo("Main window created");
+
+            LogInfo("Showing main window...");
+            mainWindow.WindowState = WindowState.Normal;
+            mainWindow.Show();
+            mainWindow.Activate();
+            mainWindow.Topmost = true;
+            mainWindow.Topmost = false; // Set to true then false to bring to front
+            LogInfo("Main window shown!");
+        }
+        catch (Exception ex)
+        {
+            LogError("Startup error", ex);
+            MessageBox.Show($"Erreur au démarrage de l'application:\n\n{ex.Message}\n\nVoir startup-error.log pour plus de détails.",
+                "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            Shutdown(1);
+        }
+    }
+
+    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        if (e.ExceptionObject is Exception ex)
+        {
+            LogError("Unhandled exception", ex);
+        }
+    }
+
+    private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+    {
+        LogError("Dispatcher exception", e.Exception);
+        MessageBox.Show($"Erreur: {e.Exception.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        e.Handled = true;
+    }
+
+    private void LogError(string message, Exception ex)
+    {
+        try
+        {
+            var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log");
+            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n{ex}\n\n";
+            File.AppendAllText(logPath, logMessage);
+        }
+        catch { /* Ignore logging errors */ }
+    }
+
+    private void LogInfo(string message)
+    {
+        try
+        {
+            var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log");
+            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}\n";
+            File.AppendAllText(logPath, logMessage);
+        }
+        catch { /* Ignore logging errors */ }
     }
 
     private void ConfigureServices(IServiceCollection services)
@@ -152,8 +220,9 @@ public partial class App : Application
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<TwinShellDbContext>();
 
-        // Apply migrations
-        await context.Database.MigrateAsync();
+        // Create database and tables if they don't exist
+        // Using EnsureCreated instead of Migrate for simplicity
+        await context.Database.EnsureCreatedAsync();
 
         // Seed initial data
         var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();

@@ -24,17 +24,17 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
     private bool _disposed = false;
 
-    private List<Action> _allActions = new();
+    private List<ActionModel> _allActions = new();
     private HashSet<string> _favoriteActionIds = new();
 
     [ObservableProperty]
     private ObservableCollection<string> _categories = new();
 
     [ObservableProperty]
-    private ObservableCollection<Action> _filteredActions = new();
+    private ObservableCollection<ActionModel> _filteredActions = new();
 
     [ObservableProperty]
-    private Action? _selectedAction;
+    private ActionModel? _selectedAction;
 
     [ObservableProperty]
     private string _searchText = string.Empty;
@@ -152,7 +152,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     partial void OnFilterDangerousChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
     partial void OnShowFavoritesOnlyChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
 
-    partial void OnSelectedActionChanged(Action? value)
+    partial void OnSelectedActionChanged(ActionModel? value)
     {
         if (value != null)
         {
@@ -213,7 +213,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 filtered = filtered.Where(a => levelFilters.Contains(a.Level));
             }
 
-            FilteredActions = new ObservableCollection<Action>(filtered);
+            FilteredActions = new ObservableCollection<ActionModel>(filtered);
         }
         finally
         {
@@ -607,7 +607,7 @@ public partial class ParameterViewModel : ObservableObject
     [ObservableProperty]
     private string _value = string.Empty;
 
-    public event Action? ValueChanged;
+    public event System.Action? ValueChanged;
 
     partial void OnValueChanged(string value)
     {

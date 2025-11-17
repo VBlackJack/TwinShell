@@ -1,5 +1,6 @@
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
+using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Core.Services;
 
@@ -8,8 +9,8 @@ namespace TwinShell.Core.Services;
 /// </summary>
 public class SearchService : ISearchService
 {
-    public async Task<IEnumerable<Action>> SearchAsync(
-        IEnumerable<Action> actions,
+    public async Task<IEnumerable<ActionModel>> SearchAsync(
+        IEnumerable<ActionModel> actions,
         string searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))

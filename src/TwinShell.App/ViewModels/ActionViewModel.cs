@@ -12,9 +12,9 @@ namespace TwinShell.App.ViewModels;
 public partial class ActionViewModel : ObservableObject
 {
     private readonly IFavoritesService _favoritesService;
-    private readonly Action _action;
+    private readonly ActionModel _action;
 
-    public ActionViewModel(Action action, IFavoritesService favoritesService)
+    public ActionViewModel(ActionModel action, IFavoritesService favoritesService)
     {
         _action = action;
         _favoritesService = favoritesService;
@@ -40,7 +40,7 @@ public partial class ActionViewModel : ObservableObject
     public bool IsUserCreated => _action.IsUserCreated;
 
     // Get the underlying Action model
-    public Action GetAction() => _action;
+    public ActionModel GetAction() => _action;
 
     [ObservableProperty]
     private bool _isFavorite;

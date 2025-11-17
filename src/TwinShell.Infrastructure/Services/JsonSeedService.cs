@@ -1,6 +1,8 @@
+using System.IO;
 using System.Text.Json;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
+using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Infrastructure.Services;
 
@@ -60,6 +62,6 @@ public class JsonSeedService : ISeedService
     private class SeedData
     {
         public string SchemaVersion { get; set; } = string.Empty;
-        public List<Action> Actions { get; set; } = new();
+        public List<ActionModel> Actions { get; set; } = new();
     }
 }

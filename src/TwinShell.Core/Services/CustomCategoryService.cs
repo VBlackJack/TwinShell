@@ -1,6 +1,5 @@
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
-using TwinShell.Persistence.Repositories;
 
 namespace TwinShell.Core.Services;
 

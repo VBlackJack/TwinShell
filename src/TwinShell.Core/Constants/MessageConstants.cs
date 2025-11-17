@@ -28,6 +28,8 @@ public static class MessageKeys
     public const string ValidationParameterRequired = ParameterRequired;
     public const string ValidationParameterMustBeInteger = ParameterMustBeInteger;
     public const string ValidationParameterMustBeBoolean = ParameterMustBeBoolean;
+    public const string ValidationNoCommandTemplate = NoCommandTemplate;
+    public const string ValidationNoValidCommand = NoValidCommand;
 
     // New validation messages
     public const string ValidationParameterMaxLength = "Validation.ParameterMaxLength";
@@ -66,6 +68,7 @@ public static class MessageKeys
     public const string ConfigImportErrorMessage = ConfigImportError;
     public const string ConfigValidationErrorMessage = ConfigValidationError;
     public const string ConfigImportErrorGeneric = "Config.ImportError.Generic";
+    public const string ConfigExportErrorGeneric = "Config.ExportError.Generic";
 
     // Help messages
     public const string HelpTitle = "Help.Title";
@@ -75,4 +78,5 @@ public static class MessageKeys
     public const string ActionsLoaded = "Status.ActionsLoaded";
     public const string Refreshing = "Status.Refreshing";
     public const string StatusActionsLoaded = ActionsLoaded; // Alias for consistency
+    public const string StatusRefreshing = Refreshing; // Alias for consistency
 }

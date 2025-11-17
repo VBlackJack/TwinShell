@@ -108,7 +108,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         try
         {
             // Get timeout from settings
-            var settings = await _settingsService.GetSettingsAsync();
+            var settings = await _settingsService.LoadSettingsAsync();
             var timeout = Math.Min(Math.Max(settings.ExecutionTimeoutSeconds, 1), 300); // Between 1 and 300 seconds
 
             AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Executing command: {parameter.Command}", false);
