@@ -11,9 +11,9 @@
     <!-- Based on modular scale (1.25 ratio) + Windows 11 best practices -->
     <!-- ================================================================ -->
 
-    <!-- Font Family -->
-    <FontFamily x:Key="FontFamily.Primary">Segoe UI, Segoe UI Variable, system-ui, -apple-system, sans-serif</FontFamily>
-    <FontFamily x:Key="FontFamily.Monospace">Consolas, Cascadia Code, monospace</FontFamily>
+    <!-- Font Family - Windows 11 prioritizes Segoe UI Variable -->
+    <FontFamily x:Key="FontFamily.Primary">Segoe UI Variable Display, Segoe UI Variable Text, Segoe UI, system-ui, -apple-system, sans-serif</FontFamily>
+    <FontFamily x:Key="FontFamily.Monospace">Cascadia Mono, Cascadia Code, Consolas, monospace</FontFamily>
 
     <!-- Font Sizes - Modular Scale (base: 14px, ratio: 1.25) -->
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XS">10</system:Double>
@@ -63,21 +63,23 @@
 
     <!-- ================================================================ -->
     <!-- CORNER RADIUS SCALE                                              -->
-    <!-- Consistent rounding following Windows 11 design language         -->
+    <!-- Windows 11 Fluent Design uses more pronounced rounded corners    -->
+    <!-- Default changed from 4px to 8px for modern Windows 11 aesthetic  -->
     <!-- ================================================================ -->
 
     <CornerRadius x:Key="Radius.None">0</CornerRadius>
-    <CornerRadius x:Key="Radius.SM">2</CornerRadius>
-    <CornerRadius x:Key="Radius.Base">4</CornerRadius>
-    <CornerRadius x:Key="Radius.MD">6</CornerRadius>
-    <CornerRadius x:Key="Radius.LG">8</CornerRadius>
-    <CornerRadius x:Key="Radius.XL">12</CornerRadius>
-    <CornerRadius x:Key="Radius.XXL">16</CornerRadius>
+    <CornerRadius x:Key="Radius.SM">4</CornerRadius>
+    <CornerRadius x:Key="Radius.Base">8</CornerRadius><!-- Windows 11 default -->
+    <CornerRadius x:Key="Radius.MD">12</CornerRadius>
+    <CornerRadius x:Key="Radius.LG">16</CornerRadius>
+    <CornerRadius x:Key="Radius.XL">20</CornerRadius>
+    <CornerRadius x:Key="Radius.XXL">24</CornerRadius>
     <CornerRadius x:Key="Radius.Full">9999</CornerRadius>
 
     <!-- ================================================================ -->
     <!-- ELEVATION SYSTEM (Shadows)                                       -->
-    <!-- Based on Material Design adapted for Windows 11 acrylic style   -->
+    <!-- Windows 11 Fluent Design - Subtle, soft shadows                  -->
+    <!-- Reduced opacity and blur for modern, clean aesthetic             -->
     <!-- ================================================================ -->
 
     <!-- Elevation 0 - No shadow -->
@@ -88,43 +90,43 @@
 
     <!-- Elevation 1 - Subtle lift (cards, list items on hover) -->
     <DropShadowEffect x:Key="Elevation.1"
-                      ShadowDepth="1"
-                      BlurRadius="3"
+                      ShadowDepth="0"
+                      BlurRadius="4"
                       Direction="270"
                       Color="#000000"
-                      Opacity="0.08"/>
+                      Opacity="0.05"/>
 
     <!-- Elevation 2 - Raised elements (cards, panels) -->
     <DropShadowEffect x:Key="Elevation.2"
                       ShadowDepth="2"
-                      BlurRadius="6"
+                      BlurRadius="8"
                       Direction="270"
                       Color="#000000"
-                      Opacity="0.12"/>
+                      Opacity="0.08"/>
 
     <!-- Elevation 3 - Floating elements (dropdowns, tooltips) -->
     <DropShadowEffect x:Key="Elevation.3"
                       ShadowDepth="4"
-                      BlurRadius="12"
+                      BlurRadius="16"
                       Direction="270"
                       Color="#000000"
-                      Opacity="0.16"/>
+                      Opacity="0.10"/>
 
     <!-- Elevation 4 - Modals and dialogs -->
     <DropShadowEffect x:Key="Elevation.4"
                       ShadowDepth="8"
-                      BlurRadius="24"
+                      BlurRadius="32"
                       Direction="270"
                       Color="#000000"
-                      Opacity="0.20"/>
+                      Opacity="0.12"/>
 
     <!-- Elevation 5 - Top layer (high priority notifications) -->
     <DropShadowEffect x:Key="Elevation.5"
-                      ShadowDepth="12"
-                      BlurRadius="36"
+                      ShadowDepth="16"
+                      BlurRadius="48"
                       Direction="270"
                       Color="#000000"
-                      Opacity="0.24"/>
+                      Opacity="0.14"/>
 
     <!-- ================================================================ -->
     <!-- ANIMATION TIMING                                                 -->
