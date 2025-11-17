@@ -278,6 +278,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
+        // BUGFIX: Save current parameter values before clearing to preserve user input when switching platforms
+        var savedValues = new Dictionary<string, string>();
+        foreach (var param in CommandParameters)
+        {
+            if (!string.IsNullOrEmpty(param.Value))
+            {
+                savedValues[param.Name] = param.Value;
+            }
+        }
+
         // Load parameters
         CommandParameters.Clear();
         var defaults = _commandGeneratorService.GetDefaultParameterValues(template);
@@ -291,7 +301,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 Type = param.Type,
                 Required = param.Required,
                 Description = param.Description ?? string.Empty,
-                Value = defaults.ContainsKey(param.Name) ? defaults[param.Name] : string.Empty
+                // BUGFIX: Restore saved value if exists, otherwise use default
+                Value = savedValues.ContainsKey(param.Name)
+                    ? savedValues[param.Name]
+                    : (defaults.ContainsKey(param.Name) ? defaults[param.Name] : string.Empty)
             };
 
             paramVm.ValueChanged += () => GenerateCommand();
