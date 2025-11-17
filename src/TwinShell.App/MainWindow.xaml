@@ -306,7 +306,6 @@
                                         </Border>
                                         <Border Style="{StaticResource LevelBadgeStyle}"
                                                 Background="{Binding Level, Converter={StaticResource CriticalityToColorConverter}}"
-                                                Opacity="0.2"
                                                 BorderBrush="{Binding Level, Converter={StaticResource CriticalityToColorConverter}}">
                                             <TextBlock Text="{Binding Level, Converter={StaticResource CriticalityToTextConverter}}"
                                                        FontSize="10"
@@ -347,7 +346,7 @@
                                        FontSize="48"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,16"
-                                       Opacity="0.3"/>
+                                       Opacity="0.6"/>
                             <TextBlock Text="Select an Action"
                                        FontSize="16"
                                        FontWeight="SemiBold"
@@ -464,7 +463,6 @@
                                 </Border>
                                 <Border Style="{StaticResource LevelBadgeStyle}"
                                         Background="{Binding Level, Converter={StaticResource CriticalityToColorConverter}}"
-                                        Opacity="0.2"
                                         BorderBrush="{Binding Level, Converter={StaticResource CriticalityToColorConverter}}">
                                     <TextBlock Text="{Binding Level, Converter={StaticResource CriticalityToTextConverter}}"
                                                Foreground="{Binding Level, Converter={StaticResource CriticalityToColorConverter}}"
