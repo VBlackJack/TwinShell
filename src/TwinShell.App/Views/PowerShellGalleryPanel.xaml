@@ -6,7 +6,7 @@
              xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900"
-             Background="{StaticResource BackgroundBrush}">
+             Background="{DynamicResource BackgroundBrush}">
     <!-- UX: Aligned margin with other panels (16 instead of 10) for consistency -->
     <Grid Margin="16">
         <Grid.RowDefinitions>
@@ -17,8 +17,8 @@
 
         <!-- UX: Search with modern Border instead of GroupBox for consistency -->
         <Border Grid.Row="0"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="16"
@@ -33,7 +33,7 @@
                            Text="Search Modules"
                            FontSize="14"
                            FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
                            Margin="0,0,0,12"/>
 
                 <StackPanel Grid.Row="1">
@@ -70,7 +70,7 @@
 
                     <!-- UX: Status message with semantic colors instead of opacity -->
                     <TextBlock Text="{Binding StatusMessage}"
-                               Foreground="{StaticResource TextSecondaryBrush}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
                                FontSize="11"
                                TextWrapping="Wrap"
                                Visibility="{Binding StatusMessage, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -89,8 +89,8 @@
 
             <!-- Modules List -->
             <Border Grid.Column="0"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                 <DockPanel>
@@ -99,7 +99,7 @@
                                FontSize="14"
                                FontWeight="SemiBold"
                                Padding="12"
-                               Background="{StaticResource PrimaryBrush}"
+                               Background="{DynamicResource PrimaryBrush}"
                                Foreground="White"/>
 
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="12,12,12,12">
@@ -120,9 +120,9 @@
                                 MinWidth="44"
                                 MinHeight="44"
                                 TabIndex="4"
-                                Background="{StaticResource SurfaceBrush}"
-                                Foreground="{StaticResource TextPrimaryBrush}"
-                                BorderBrush="{StaticResource BorderBrush}"
+                                Background="{DynamicResource SurfaceBrush}"
+                                Foreground="{DynamicResource TextPrimaryBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 Cursor="Hand"
                                 ToolTip="Load available commands from the selected module"
@@ -143,7 +143,7 @@
                                 <Style TargetType="Button">
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -166,16 +166,16 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Name}"
                                                        FontWeight="SemiBold"
-                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
                                             <TextBlock Text="{Binding Version}"
                                                        FontSize="10"
-                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                                        VerticalAlignment="Center"
                                                        Margin="8,0,0,0"/>
                                         </StackPanel>
                                         <TextBlock Text="{Binding Description}"
                                                    TextWrapping="Wrap"
-                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
                                                    FontSize="11"
                                                    Margin="0,4,0,0"
                                                    MaxHeight="40"
@@ -183,14 +183,14 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                                             <TextBlock Text="{Binding Author}"
                                                        FontSize="10"
-                                                       Foreground="{StaticResource TextTertiaryBrush}"/>
+                                                       Foreground="{DynamicResource TextTertiaryBrush}"/>
                                             <TextBlock Text=" • "
                                                        FontSize="10"
-                                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                                       Foreground="{DynamicResource TextTertiaryBrush}"
                                                        Margin="4,0"/>
                                             <TextBlock Text="{Binding DownloadCount, StringFormat='{}{0:N0} downloads'}"
                                                        FontSize="10"
-                                                       Foreground="{StaticResource TextTertiaryBrush}"/>
+                                                       Foreground="{DynamicResource TextTertiaryBrush}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
@@ -202,8 +202,8 @@
 
             <!-- Commands List -->
             <Border Grid.Column="2"
-                    Background="{StaticResource SurfaceBrush}"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
                 <DockPanel>
@@ -212,7 +212,7 @@
                                FontSize="14"
                                FontWeight="SemiBold"
                                Padding="12"
-                               Background="{StaticResource PrimaryBrush}"
+                               Background="{DynamicResource PrimaryBrush}"
                                Foreground="White"/>
 
                     <Button DockPanel.Dock="Bottom"
@@ -242,10 +242,10 @@
                                     <StackPanel>
                                         <TextBlock Text="{Binding Name}"
                                                    FontWeight="SemiBold"
-                                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
                                         <TextBlock Text="{Binding Synopsis}"
                                                    TextWrapping="Wrap"
-                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
                                                    FontSize="11"
                                                    Margin="0,4,0,0"/>
                                         <Border Style="{StaticResource PlatformBadgeStyle}"
@@ -253,7 +253,7 @@
                                                 Margin="0,4,0,0">
                                             <TextBlock Text="{Binding CommandType}"
                                                        FontSize="10"
-                                                       Foreground="{StaticResource PrimaryBrush}"/>
+                                                       Foreground="{DynamicResource PrimaryBrush}"/>
                                         </Border>
                                     </StackPanel>
                                 </Border>
@@ -266,8 +266,8 @@
 
         <!-- UX: Progress Indicator with modern styling -->
         <Border Grid.Row="2"
-                Background="{StaticResource SurfaceBrush}"
-                BorderBrush="{StaticResource BorderBrush}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="16"
@@ -278,17 +278,17 @@
                 <TextBlock Text="Installing Module"
                            FontSize="14"
                            FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
                            Margin="0,0,0,8"/>
                 <ProgressBar IsIndeterminate="True"
                              Height="8"
-                             Foreground="{StaticResource PrimaryBrush}"
-                             Background="{StaticResource SurfaceSunkenBrush}"/>
+                             Foreground="{DynamicResource PrimaryBrush}"
+                             Background="{DynamicResource SurfaceSunkenBrush}"/>
                 <TextBlock Text="This may take a few minutes. Please wait..."
                            HorizontalAlignment="Center"
                            Margin="0,8,0,0"
                            FontSize="11"
-                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
             </StackPanel>
         </Border>
 
@@ -306,11 +306,11 @@
                        FontSize="18"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center"
-                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Margin="0,0,0,12"/>
             <TextBlock FontSize="12"
                        HorizontalAlignment="Center"
-                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        TextAlignment="Center"
                        MaxWidth="450"
                        TextWrapping="Wrap"

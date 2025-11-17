@@ -4,16 +4,19 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Design System - Foundation -->
+                <!-- Design System - Foundation (theme-independent resources) -->
                 <ResourceDictionary Source="Resources/DesignTokens.xaml"/>
                 <!-- Windows 11 Fluent Design effects (Acrylic, Mica, etc.) -->
                 <ResourceDictionary Source="Resources/FluentEffects.xaml"/>
-                <!-- Converters and theme-independent resources -->
+
+                <!-- THEME IS LOADED HERE DYNAMICALLY BY ThemeService -->
+                <!-- Do NOT hardcode any theme here - ThemeService manages theme loading in App.xaml.cs -->
+                <!-- The theme dictionary (LightTheme.xaml or DarkTheme.xaml) will be inserted here at runtime -->
+
+                <!-- Converters and theme-dependent resources (loaded after theme) -->
                 <ResourceDictionary Source="Resources/Styles.xaml"/>
                 <!-- Animations and transitions -->
                 <ResourceDictionary Source="Resources/Animations.xaml"/>
-                <!-- Default theme (Light) - will be replaced by ThemeService at startup -->
-                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
