@@ -406,4 +406,159 @@
                         Duration="{StaticResource Duration.Slow}"/>
     </Storyboard>
 
+    <!-- ================================================================ -->
+    <!-- WINDOWS 11 FLUENT REVEAL ANIMATIONS                              -->
+    <!-- Light reveal on hover for modern interactive feedback            -->
+    <!-- ================================================================ -->
+
+    <!-- Reveal Border Animation - Subtle border glow on hover -->
+    <Storyboard x:Key="RevealBorderIn">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        To="1.0"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+    </Storyboard>
+
+    <Storyboard x:Key="RevealBorderOut">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        To="0.0"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+    </Storyboard>
+
+    <!-- Reveal Highlight - Radial gradient following cursor (simplified) -->
+    <Storyboard x:Key="RevealHighlightStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.0"
+                        To="0.15"
+                        Duration="{StaticResource Duration.Normal}"
+                        AutoReverse="True"
+                        EasingFunction="{StaticResource Easing.Standard}"/>
+    </Storyboard>
+
+    <!-- ================================================================ -->
+    <!-- CONNECTED ANIMATIONS                                             -->
+    <!-- Smooth transitions between UI states                             -->
+    <!-- ================================================================ -->
+
+    <!-- Connected Animation - Element morphs from source to destination -->
+    <Storyboard x:Key="ConnectedAnimationStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="0.9"
+                        To="1.0"
+                        Duration="{StaticResource Duration.Slow}"
+                        EasingFunction="{StaticResource Easing.Spring}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="0.9"
+                        To="1.0"
+                        Duration="{StaticResource Duration.Slow}"
+                        EasingFunction="{StaticResource Easing.Spring}"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.0"
+                        To="1.0"
+                        Duration="{StaticResource Duration.Normal}"/>
+    </Storyboard>
+
+    <!-- ================================================================ -->
+    <!-- DEPTH ANIMATIONS                                                 -->
+    <!-- Elevation changes for interactive elements                       -->
+    <!-- ================================================================ -->
+
+    <!-- Lift Animation - Element rises on interaction -->
+    <Storyboard x:Key="LiftAnimationStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="0"
+                        To="-4"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.ShadowDepth)"
+                        From="2"
+                        To="8"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.BlurRadius)"
+                        From="8"
+                        To="24"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+    </Storyboard>
+
+    <!-- Lower Animation - Element returns to rest state -->
+    <Storyboard x:Key="LowerAnimationStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                        From="-4"
+                        To="0"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.ShadowDepth)"
+                        From="8"
+                        To="2"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.BlurRadius)"
+                        From="24"
+                        To="8"
+                        Duration="{StaticResource Duration.Fast}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+    </Storyboard>
+
+    <!-- ================================================================ -->
+    <!-- ACRYLIC MATERIAL ANIMATIONS                                      -->
+    <!-- Smooth material transitions                                      -->
+    <!-- ================================================================ -->
+
+    <!-- Material Fade In -->
+    <Storyboard x:Key="MaterialFadeInStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.0"
+                        To="0.9"
+                        Duration="{StaticResource Duration.Slow}"
+                        EasingFunction="{StaticResource Easing.Decelerate}"/>
+    </Storyboard>
+
+    <!-- Material Fade Out -->
+    <Storyboard x:Key="MaterialFadeOutStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.9"
+                        To="0.0"
+                        Duration="{StaticResource Duration.Normal}"
+                        EasingFunction="{StaticResource Easing.Accelerate}"/>
+    </Storyboard>
+
+    <!-- ================================================================ -->
+    <!-- SUBTLE BREATHING ANIMATION                                       -->
+    <!-- For live/active indicators                                       -->
+    <!-- ================================================================ -->
+
+    <!-- Breathing Effect - Gentle pulsing for status indicators -->
+    <Storyboard x:Key="BreathingStoryboard" RepeatBehavior="Forever">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="1.0"
+                        To="0.6"
+                        Duration="0:0:2"
+                        AutoReverse="True"
+                        EasingFunction="{StaticResource Easing.Standard}"/>
+    </Storyboard>
+
+    <!-- ================================================================ -->
+    <!-- ATTENTION SEEKING (Accessibility-friendly)                       -->
+    <!-- For important notifications without being disruptive             -->
+    <!-- ================================================================ -->
+
+    <!-- Gentle Attention - Single subtle pulse (WCAG compliant) -->
+    <Storyboard x:Key="GentleAttentionStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                        From="1.0"
+                        To="1.05"
+                        Duration="{StaticResource Duration.Slow}"
+                        AutoReverse="True"
+                        EasingFunction="{StaticResource Easing.Standard}"/>
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                        From="1.0"
+                        To="1.05"
+                        Duration="{StaticResource Duration.Slow}"
+                        AutoReverse="True"
+                        EasingFunction="{StaticResource Easing.Standard}"/>
+    </Storyboard>
+
 </ResourceDictionary>
