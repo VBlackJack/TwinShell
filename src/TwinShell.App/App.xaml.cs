@@ -158,6 +158,7 @@ public partial class App : Application
         services.AddSingleton<INotificationService, TwinShell.App.Services.NotificationService>();
         services.AddSingleton<IDialogService, TwinShell.App.Services.DialogService>();
         services.AddScoped<ICommandExecutionService, CommandExecutionService>();
+        services.AddScoped<IImportExportService, ImportExportService>();
 
         // Seed Service
         var seedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
@@ -172,6 +173,7 @@ public partial class App : Application
         services.AddTransient<ExecutionViewModel>();
         services.AddTransient<BatchViewModel>();
         services.AddTransient<PowerShellGalleryViewModel>();
+        services.AddTransient<ActionEditorViewModel>();
 
         // Views
         services.AddTransient<HistoryPanel>();
@@ -183,6 +185,7 @@ public partial class App : Application
         services.AddTransient<MainWindow>();
         services.AddTransient<SettingsWindow>();
         services.AddTransient<CategoryManagementWindow>();
+        services.AddTransient<ActionEditorWindow>();
     }
 
     private async Task InitializeThemeAsync()
