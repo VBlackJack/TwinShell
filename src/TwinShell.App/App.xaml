@@ -5,6 +5,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Design System - Foundation -->
+                <ResourceDictionary Source="Resources/DesignTokens.xaml"/>
                 <!-- Converters and theme-independent resources -->
                 <ResourceDictionary Source="Resources/Styles.xaml"/>
                 <!-- Animations and transitions -->
