@@ -4,8 +4,9 @@ namespace TwinShell.Core.Interfaces;
 
 /// <summary>
 /// Service for managing application themes (Light/Dark mode).
+/// BUGFIX: Now implements IDisposable to properly clean up Windows theme event subscriptions.
 /// </summary>
-public interface IThemeService
+public interface IThemeService : IDisposable
 {
     /// <summary>
     /// Gets the currently active theme.

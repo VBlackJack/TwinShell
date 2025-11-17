@@ -8,12 +8,25 @@ namespace TwinShell.Core.Services;
 /// <summary>
 /// Service for managing application themes (Light/Dark mode).
 /// Handles dynamic theme switching by merging ResourceDictionaries.
+/// BUGFIX: Now listens to Windows theme changes for System mode.
 /// </summary>
-public class ThemeService : IThemeService
+public class ThemeService : IThemeService, IDisposable
 {
     private Theme _currentTheme = Theme.Light;
     private const string LightThemeUri = "/TwinShell.App;component/Themes/LightTheme.xaml";
     private const string DarkThemeUri = "/TwinShell.App;component/Themes/DarkTheme.xaml";
+
+    /// <summary>
+    /// Initializes the ThemeService and subscribes to Windows theme changes.
+    /// </summary>
+    public ThemeService()
+    {
+        // BUGFIX: Subscribe to Windows theme changes to support dynamic System theme switching
+        if (OperatingSystem.IsWindows())
+        {
+            SystemEvents.UserPreferenceChanged += OnWindowsThemeChanged;
+        }
+    }
 
     /// <inheritdoc/>
     public Theme CurrentTheme => _currentTheme;
@@ -99,6 +112,35 @@ public class ThemeService : IThemeService
         foreach (var theme in themesToRemove)
         {
             Application.Current.Resources.MergedDictionaries.Remove(theme);
+        }
+    }
+
+    /// <summary>
+    /// BUGFIX: Handles Windows theme preference changes.
+    /// When the user changes Windows theme and the app is in System mode, this updates the UI automatically.
+    /// </summary>
+    private void OnWindowsThemeChanged(object sender, UserPreferenceChangedEventArgs e)
+    {
+        // Only react to General category changes (which includes theme changes)
+        // and only if the app is currently using System theme
+        if (e.Category == UserPreferenceCategory.General && _currentTheme == Theme.System)
+        {
+            // Use Dispatcher to ensure UI thread safety
+            Application.Current?.Dispatcher.Invoke(() =>
+            {
+                ApplyTheme(Theme.System);
+            });
+        }
+    }
+
+    /// <summary>
+    /// Cleans up resources and unsubscribes from Windows theme events.
+    /// </summary>
+    public void Dispose()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            SystemEvents.UserPreferenceChanged -= OnWindowsThemeChanged;
         }
     }
 }
