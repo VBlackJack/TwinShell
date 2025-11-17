@@ -228,16 +228,19 @@ public partial class App : Application
 
         // Create database and tables if they don't exist
         // Using EnsureCreated instead of Migrate for simplicity
-        await context.Database.EnsureCreatedAsync();
+        // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread with .GetAwaiter().GetResult()
+        await context.Database.EnsureCreatedAsync().ConfigureAwait(false);
 
         // Seed initial data
         var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
-        await seedService.SeedAsync();
+        await seedService.SeedAsync().ConfigureAwait(false);
 
         // Cleanup old history entries using user's configured retention days
+        // BUGFIX: Load settings before accessing CurrentSettings property
         var settingsService = _serviceProvider!.GetRequiredService<ISettingsService>();
+        await settingsService.LoadSettingsAsync().ConfigureAwait(false);
         var historyService = scope.ServiceProvider.GetRequiredService<ICommandHistoryService>();
-        await historyService.CleanupOldEntriesAsync(settingsService.CurrentSettings.AutoCleanupDays);
+        await historyService.CleanupOldEntriesAsync(settingsService.CurrentSettings.AutoCleanupDays).ConfigureAwait(false);
     }
 
     protected override void OnExit(ExitEventArgs e)
