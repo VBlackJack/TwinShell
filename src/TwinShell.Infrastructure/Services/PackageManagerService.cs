@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -11,6 +12,13 @@ namespace TwinShell.Infrastructure.Services;
 public class PackageManagerService : IPackageManagerService
 {
     private const int DefaultTimeoutSeconds = 30;
+    private static readonly Regex ValidSearchTermRegex = new(@"^[a-zA-Z0-9\s\-_.]+$", RegexOptions.Compiled);
+    private readonly ILogger<PackageManagerService>? _logger;
+
+    public PackageManagerService(ILogger<PackageManagerService>? logger = null)
+    {
+        _logger = logger;
+    }
 
     public async Task<IEnumerable<PackageSearchResult>> SearchWingetPackagesAsync(string searchTerm)
     {
@@ -19,7 +27,14 @@ public class PackageManagerService : IPackageManagerService
             return Array.Empty<PackageSearchResult>();
         }
 
-        var output = await ExecuteCommandAsync("winget", $"search \"{searchTerm}\"");
+        // SECURITY: Validate searchTerm to prevent command injection
+        if (!ValidateSearchTerm(searchTerm))
+        {
+            _logger?.LogWarning("Invalid search term rejected: {SearchTerm}", searchTerm);
+            return Array.Empty<PackageSearchResult>();
+        }
+
+        var output = await ExecuteCommandAsync("winget", $"search \"{EscapeArgument(searchTerm)}\"");
         return ParseWingetSearchOutput(output);
     }
 
@@ -30,7 +45,14 @@ public class PackageManagerService : IPackageManagerService
             return Array.Empty<PackageSearchResult>();
         }
 
-        var output = await ExecuteCommandAsync("choco", $"search \"{searchTerm}\"");
+        // SECURITY: Validate searchTerm to prevent command injection
+        if (!ValidateSearchTerm(searchTerm))
+        {
+            _logger?.LogWarning("Invalid search term rejected: {SearchTerm}", searchTerm);
+            return Array.Empty<PackageSearchResult>();
+        }
+
+        var output = await ExecuteCommandAsync("choco", $"search \"{EscapeArgument(searchTerm)}\"");
         return ParseChocolateySearchOutput(output);
     }
 
@@ -41,7 +63,14 @@ public class PackageManagerService : IPackageManagerService
             return null;
         }
 
-        var output = await ExecuteCommandAsync("winget", $"show \"{packageId}\"");
+        // SECURITY: Validate packageId to prevent command injection
+        if (!ValidateSearchTerm(packageId))
+        {
+            _logger?.LogWarning("Invalid package ID rejected: {PackageId}", packageId);
+            return null;
+        }
+
+        var output = await ExecuteCommandAsync("winget", $"show \"{EscapeArgument(packageId)}\"");
         return ParseWingetShowOutput(output, packageId);
     }
 
@@ -52,7 +81,14 @@ public class PackageManagerService : IPackageManagerService
             return null;
         }
 
-        var output = await ExecuteCommandAsync("choco", $"info \"{packageId}\"");
+        // SECURITY: Validate packageId to prevent command injection
+        if (!ValidateSearchTerm(packageId))
+        {
+            _logger?.LogWarning("Invalid package ID rejected: {PackageId}", packageId);
+            return null;
+        }
+
+        var output = await ExecuteCommandAsync("choco", $"info \"{EscapeArgument(packageId)}\"");
         return ParseChocolateyInfoOutput(output, packageId);
     }
 
@@ -128,8 +164,35 @@ public class PackageManagerService : IPackageManagerService
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Failed to execute command '{command} {arguments}': {ex.Message}", ex);
+            // SECURITY: Don't expose detailed error information
+            _logger?.LogError(ex, "Failed to execute command");
+            throw new InvalidOperationException("Command execution failed");
         }
+    }
+
+    /// <summary>
+    /// Validates search term or package ID to prevent command injection
+    /// </summary>
+    private static bool ValidateSearchTerm(string term)
+    {
+        if (string.IsNullOrWhiteSpace(term))
+            return false;
+
+        // Limit length to reasonable value
+        if (term.Length > 200)
+            return false;
+
+        // Only allow alphanumeric, spaces, hyphens, underscores, and dots
+        return ValidSearchTermRegex.IsMatch(term);
+    }
+
+    /// <summary>
+    /// Escapes argument for command-line execution
+    /// </summary>
+    private static string EscapeArgument(string argument)
+    {
+        // Replace any potentially dangerous characters
+        return argument.Replace("\"", "\\\"").Replace("$", "\\$");
     }
 
     private IEnumerable<PackageSearchResult> ParseWingetSearchOutput(string output)
