@@ -503,10 +503,10 @@
                             </Grid>
                         </StackPanel>
 
-                        <!-- UX: Empty State without emoji for professional appearance -->
+                        <!-- UX: Enhanced empty state with icon and better guidance -->
                         <StackPanel VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
-                                    Margin="0,40,0,0">
+                                    Margin="0,60,0,0">
                             <StackPanel.Style>
                                 <Style TargetType="StackPanel">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -521,19 +521,31 @@
                                     </Style.Triggers>
                                 </Style>
                             </StackPanel.Style>
+
+                            <TextBlock Text="🏷️"
+                                       FontSize="64"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,16"
+                                       Opacity="0.3"/>
                             <TextBlock Text="No Category Selected"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        HorizontalAlignment="Center"
                                        Foreground="{StaticResource TextSecondaryBrush}"
-                                       Margin="0,0,0,8"/>
-                            <TextBlock Text="Select a category from the list or create a new one"
-                                       FontSize="12"
+                                       Margin="0,0,0,12"/>
+                            <TextBlock FontSize="12"
                                        Foreground="{StaticResource TextSecondaryBrush}"
                                        HorizontalAlignment="Center"
                                        TextAlignment="Center"
-                                       MaxWidth="300"
-                                       TextWrapping="Wrap"/>
+                                       MaxWidth="350"
+                                       TextWrapping="Wrap"
+                                       LineHeight="18">
+                                <Run Text="Select a category from the list to view its details,"/>
+                                <LineBreak/>
+                                <Run Text="or click "/>
+                                <Run Text="Add New Category" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"/>
+                                <Run Text=" to create one."/>
+                            </TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>

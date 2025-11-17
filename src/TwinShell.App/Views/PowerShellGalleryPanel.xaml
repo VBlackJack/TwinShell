@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="900">
-    <Grid Margin="10">
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="{StaticResource BackgroundBrush}">
+    <!-- UX: Aligned margin with other panels (16 instead of 10) for consistency -->
+    <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -13,117 +16,315 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="PowerShell Gallery" FontSize="20" FontWeight="Bold"/>
-            <TextBlock Text="Search and import PowerShell modules and cmdlets" FontSize="12" Opacity="0.7" Margin="0,5,0,0"/>
+        <!-- UX: Header with consistent styling across all panels -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="PowerShell Gallery"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource PrimaryBrush}"/>
+            <TextBlock Text="Search and install PowerShell modules, then import commands as actions"
+                       FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
         </StackPanel>
 
-        <!-- Search -->
-        <GroupBox Grid.Row="1" Header="Search" Margin="0,0,0,10">
-            <StackPanel>
-                <!-- UX: Search box with text-only button -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                             Width="300" Margin="0,0,12,0"
-                             IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBooleanConverter}}"/>
-                    <Button Content="Search" Command="{Binding SearchModulesCommand}" MinWidth="100" MinHeight="32"/>
-                </StackPanel>
-                <TextBlock Text="{Binding StatusMessage}" Opacity="0.7" FontSize="11"/>
-            </StackPanel>
-        </GroupBox>
+        <!-- UX: Search with modern Border instead of GroupBox for consistency -->
+        <Border Grid.Row="1"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="16"
+                Margin="0,0,0,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <!-- Results -->
+                <TextBlock Grid.Row="0"
+                           Text="Search Modules"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,12"/>
+
+                <StackPanel Grid.Row="1">
+                    <!-- UX: Search box with consistent styling -->
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ModernTextBoxStyle}"
+                                 FontSize="14"
+                                 TabIndex="1"
+                                 IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBooleanConverter}}"
+                                 behaviors:TextBoxPlaceholderBehavior.Placeholder="Search PowerShell Gallery modules..."
+                                 AutomationProperties.Name="Search PowerShell Gallery"
+                                 AutomationProperties.HelpText="Search for PowerShell modules in the PowerShell Gallery"/>
+
+                        <Button Grid.Column="1"
+                                Content="Search"
+                                Command="{Binding SearchModulesCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Padding="16,10"
+                                Margin="12,0,0,0"
+                                MinWidth="100"
+                                MinHeight="44"
+                                TabIndex="2"
+                                ToolTip="Search PowerShell Gallery for modules"
+                                AutomationProperties.Name="Search modules"
+                                AutomationProperties.HelpText="Search PowerShell Gallery for modules matching your query"/>
+                    </Grid>
+
+                    <!-- UX: Status message with semantic colors instead of opacity -->
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               FontSize="11"
+                               TextWrapping="Wrap"
+                               Visibility="{Binding StatusMessage, Converter={StaticResource BoolToVisibilityConverter}}"
+                               AutomationProperties.LiveSetting="Polite"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- UX: Results with modern Border layout for consistency -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="16"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Modules List -->
-            <GroupBox Grid.Column="0" Header="Modules">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Border Grid.Column="0"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Modules"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Padding="12"
+                               Background="{StaticResource PrimaryBrush}"
+                               Foreground="White"/>
 
-                    <ListBox Grid.Row="0" ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule}">
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="12,12,12,12">
+                        <Button Content="Install Module"
+                                Command="{Binding InstallModuleCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Padding="12,10"
+                                Margin="0,0,8,0"
+                                MinWidth="44"
+                                MinHeight="44"
+                                TabIndex="3"
+                                ToolTip="Install the selected PowerShell module"
+                                AutomationProperties.Name="Install module"
+                                AutomationProperties.HelpText="Install the selected PowerShell module to your system"/>
+                        <Button Content="Load Commands"
+                                Command="{Binding LoadModuleCommandsCommand}"
+                                Padding="12,10"
+                                MinWidth="44"
+                                MinHeight="44"
+                                TabIndex="4"
+                                Background="{StaticResource SurfaceBrush}"
+                                Foreground="{StaticResource TextPrimaryBrush}"
+                                BorderBrush="{StaticResource BorderBrush}"
+                                BorderThickness="1"
+                                Cursor="Hand"
+                                ToolTip="Load available commands from the selected module"
+                                AutomationProperties.Name="Load commands"
+                                AutomationProperties.HelpText="Load available commands from the selected module">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="4"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+
+                    <ListBox ItemsSource="{Binding Modules}"
+                             SelectedItem="{Binding SelectedModule}"
+                             BorderThickness="0"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             TabIndex="5"
+                             AutomationProperties.Name="PowerShell modules"
+                             AutomationProperties.HelpText="List of PowerShell modules from the Gallery">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="5">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                        <TextBlock Text=" " Width="5"/>
-                                        <TextBlock Text="{Binding Version}" FontSize="10" Opacity="0.6" VerticalAlignment="Center"/>
+                                <Border Background="Transparent"
+                                        Padding="12,8">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"/>
+                                            <TextBlock Text="{Binding Version}"
+                                                       FontSize="10"
+                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Description}"
+                                                   TextWrapping="Wrap"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   FontSize="11"
+                                                   Margin="0,4,0,0"
+                                                   MaxHeight="40"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="{Binding Author}"
+                                                       FontSize="10"
+                                                       Foreground="{StaticResource TextTertiaryBrush}"/>
+                                            <TextBlock Text=" • "
+                                                       FontSize="10"
+                                                       Foreground="{StaticResource TextTertiaryBrush}"
+                                                       Margin="4,0"/>
+                                            <TextBlock Text="{Binding DownloadCount, StringFormat='{}{0:N0} downloads'}"
+                                                       FontSize="10"
+                                                       Foreground="{StaticResource TextTertiaryBrush}"/>
+                                        </StackPanel>
                                     </StackPanel>
-                                    <TextBlock Text="{Binding Description}"
-                                             TextWrapping="Wrap"
-                                             Opacity="0.7"
-                                             FontSize="11"
-                                             Margin="0,2,0,0"
-                                             MaxHeight="40"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
-                                        <TextBlock Text="{Binding Author}" FontSize="10" Opacity="0.5"/>
-                                        <TextBlock Text=" | " FontSize="10" Opacity="0.5" Margin="5,0"/>
-                                        <TextBlock Text="{Binding DownloadCount, StringFormat='Downloads: {0:N0}'}" FontSize="10" Opacity="0.5"/>
-                                    </StackPanel>
-                                </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
-                    <!-- UX: Consistent button styling -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
-                        <Button Content="Install Module" Command="{Binding InstallModuleCommand}" MinWidth="100" Margin="0,0,8,0" MinHeight="32"/>
-                        <Button Content="Load Commands" Command="{Binding LoadModuleCommandsCommand}" MinWidth="100" MinHeight="32"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+                </DockPanel>
+            </Border>
 
             <!-- Commands List -->
-            <GroupBox Grid.Column="2" Header="Commands">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Border Grid.Column="2"
+                    Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Commands"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Padding="12"
+                               Background="{StaticResource PrimaryBrush}"
+                               Foreground="White"/>
 
-                    <ListBox Grid.Row="0" ItemsSource="{Binding Commands}" SelectedItem="{Binding SelectedCommand}">
+                    <Button DockPanel.Dock="Bottom"
+                            Content="Import as Action"
+                            Command="{Binding ImportCommandAsActionCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Padding="12,10"
+                            Margin="12"
+                            MinWidth="44"
+                            MinHeight="44"
+                            TabIndex="6"
+                            ToolTip="Import the selected command as a TwinShell action"
+                            AutomationProperties.Name="Import as action"
+                            AutomationProperties.HelpText="Import the selected PowerShell command as a TwinShell action"/>
+
+                    <ListBox ItemsSource="{Binding Commands}"
+                             SelectedItem="{Binding SelectedCommand}"
+                             BorderThickness="0"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             TabIndex="7"
+                             AutomationProperties.Name="PowerShell commands"
+                             AutomationProperties.HelpText="List of commands available in the selected module">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="5">
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Synopsis}"
-                                             TextWrapping="Wrap"
-                                             Opacity="0.7"
-                                             FontSize="11"
-                                             Margin="0,2,0,0"/>
-                                    <TextBlock Text="{Binding CommandType}" FontSize="10" Opacity="0.5" Margin="0,2,0,0"/>
-                                </StackPanel>
+                                <Border Background="Transparent"
+                                        Padding="12,8">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextPrimaryBrush}"/>
+                                        <TextBlock Text="{Binding Synopsis}"
+                                                   TextWrapping="Wrap"
+                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                   FontSize="11"
+                                                   Margin="0,4,0,0"/>
+                                        <Border Style="{StaticResource PlatformBadgeStyle}"
+                                                HorizontalAlignment="Left"
+                                                Margin="0,4,0,0">
+                                            <TextBlock Text="{Binding CommandType}"
+                                                       FontSize="10"
+                                                       Foreground="{StaticResource PrimaryBrush}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
-                    <!-- UX: Import button with text-only label -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
-                        <Button Content="Import as Action" Command="{Binding ImportCommandAsActionCommand}" MinWidth="120" MinHeight="32"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
+                </DockPanel>
+            </Border>
         </Grid>
 
-        <!-- Progress Indicator -->
-        <StackPanel Grid.Row="3" Margin="0,10,0,0" Visibility="{Binding IsInstalling, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <ProgressBar IsIndeterminate="True" Height="4"/>
-            <TextBlock Text="Installing module... This may take a few minutes."
-                     HorizontalAlignment="Center"
-                     Margin="0,5,0,0"
-                     FontSize="11"
-                     Opacity="0.7"/>
+        <!-- UX: Progress Indicator with modern styling -->
+        <Border Grid.Row="3"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="16"
+                Margin="0,16,0,0"
+                Visibility="{Binding IsInstalling, Converter={StaticResource BooleanToVisibilityConverter}}"
+                AutomationProperties.LiveSetting="Polite">
+            <StackPanel>
+                <TextBlock Text="Installing Module"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimaryBrush}"
+                           Margin="0,0,0,8"/>
+                <ProgressBar IsIndeterminate="True"
+                             Height="8"
+                             Foreground="{StaticResource PrimaryBrush}"
+                             Background="{StaticResource SurfaceSunkenBrush}"/>
+                <TextBlock Text="This may take a few minutes. Please wait..."
+                           HorizontalAlignment="Center"
+                           Margin="0,8,0,0"
+                           FontSize="11"
+                           Foreground="{StaticResource TextSecondaryBrush}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- UX: Empty state when no search has been performed -->
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding Modules.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
+            <TextBlock Text="Search the PowerShell Gallery"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       Margin="0,0,0,8"/>
+            <TextBlock FontSize="12"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       TextAlignment="Center"
+                       MaxWidth="400"
+                       TextWrapping="Wrap">
+                <Run Text="Enter a module name in the search box above to find PowerShell modules."/>
+                <LineBreak/>
+                <Run Text="You can then install modules and import their commands as TwinShell actions."/>
+            </TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>

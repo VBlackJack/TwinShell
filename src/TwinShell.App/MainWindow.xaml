@@ -308,16 +308,12 @@
                     CornerRadius="8">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="16" DataContext="{Binding SelectedAction}">
-                        <!-- UX: Empty state with better positioning -->
-                        <TextBlock Text="Select an action to view details"
-                                   FontStyle="Italic"
-                                   FontSize="14"
-                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   Margin="0,40,0,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
+                        <!-- UX: Enhanced empty state with icon and better guidance -->
+                        <StackPanel HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    Margin="0,60,0,0">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding}" Value="{x:Null}">
@@ -325,8 +321,27 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            </StackPanel.Style>
+
+                            <TextBlock Text="📋"
+                                       FontSize="48"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,16"
+                                       Opacity="0.3"/>
+                            <TextBlock Text="Select an Action"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock Text="Choose an action from the list to view details&#x0a;and generate commands"
+                                       FontSize="12"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       TextWrapping="Wrap"
+                                       MaxWidth="250"/>
+                        </StackPanel>
 
                         <!-- Action Details -->
                         <StackPanel>
