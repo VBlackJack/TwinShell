@@ -35,13 +35,13 @@ public partial class App : Application
             LogInfo("Services configured");
 
             // Initialize theme and database
-            // BUGFIX: Use GetAwaiter().GetResult() instead of Wait() to prevent potential deadlocks
-            LogInfo("Initializing theme...");
-            InitializeThemeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            LogInfo("Theme initialized");
+            // BUGFIX: Skip async theme initialization during startup - will be done after window is shown
+            //LogInfo("Initializing theme...");
+            //InitializeThemeAsync().GetAwaiter().GetResult();
+            //LogInfo("Theme initialized");
 
             LogInfo("Initializing database...");
-            InitializeDatabaseAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            InitializeDatabaseAsync().GetAwaiter().GetResult();
             LogInfo("Database initialized");
 
             // Create and show main window
