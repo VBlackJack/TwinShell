@@ -11,6 +11,7 @@
     <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     <converters:ErrorToColorConverter x:Key="ErrorToColorConverter"/>
+    <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
 
     <!-- Note: Colors and Styles are now defined in Themes/LightTheme.xaml and Themes/DarkTheme.xaml -->
     <!-- The active theme is merged at runtime by ThemeService -->
