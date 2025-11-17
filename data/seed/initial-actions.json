@@ -5895,6 +5895,473 @@
       ]
     },
     {
+      "id": "reset-windows-update-complete",
+      "title": "Réinitialiser complètement Windows Update",
+      "description": "Arrête les services WU, supprime les caches SoftwareDistribution et Catroot2, puis redémarre les services",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "windows-update",
+        "troubleshooting",
+        "cache",
+        "reset"
+      ],
+      "windowsCommandTemplateId": "reset-windows-update-complete-cmd",
+      "windowsCommandTemplate": {
+        "id": "reset-windows-update-complete-cmd",
+        "platform": 0,
+        "name": "net",
+        "commandPattern": "net stop wuauserv && net stop cryptSvc && net stop bits && net stop msiserver && ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old && ren C:\\Windows\\System32\\catroot2 catroot2.old && net start wuauserv && net start cryptSvc && net start bits && net start msiserver",
+        "parameters": []
+      },
+      "examples": [],
+      "notes": "⚠️ Nécessite redémarrage du PC après exécution. Supprime tout l'historique de mises à jour. Commande à exécuter avec droits administrateur.",
+      "links": []
+    },
+    {
+      "id": "clean-wu-cache",
+      "title": "Nettoyer le cache Windows Update",
+      "description": "Supprime le dossier SoftwareDistribution pour forcer le re-téléchargement des mises à jour",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "windows-update",
+        "cache",
+        "cleanup"
+      ],
+      "windowsCommandTemplateId": "clean-wu-cache-cmd",
+      "windowsCommandTemplate": {
+        "id": "clean-wu-cache-cmd",
+        "platform": 0,
+        "name": "net",
+        "commandPattern": "net stop wuauserv && rd /s /q C:\\Windows\\SoftwareDistribution\\Download && net start wuauserv",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "net stop wuauserv && rd /s /q C:\\Windows\\SoftwareDistribution\\Download && net start wuauserv",
+          "description": "Nettoie le cache de téléchargement Windows Update"
+        }
+      ],
+      "notes": "Droits administrateur requis. Force le re-téléchargement des mises à jour en attente.",
+      "links": []
+    },
+    {
+      "id": "reregister-wu-dlls",
+      "title": "Réenregistrer les DLL Windows Update",
+      "description": "Réenregistre toutes les DLL critiques du système Windows Update",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "windows-update",
+        "dll",
+        "repair"
+      ],
+      "windowsCommandTemplateId": "reregister-wu-dlls-cmd",
+      "windowsCommandTemplate": {
+        "id": "reregister-wu-dlls-cmd",
+        "platform": 0,
+        "name": "regsvr32",
+        "commandPattern": "regsvr32 /s wuaueng.dll && regsvr32 /s wuapi.dll && regsvr32 /s wups.dll && regsvr32 /s wups2.dll && regsvr32 /s wucltux.dll && regsvr32 /s wuwebv.dll && regsvr32 /s qmgr.dll && regsvr32 /s qmgrprxy.dll",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "regsvr32 /s wuaueng.dll",
+          "description": "Réenregistre la DLL du moteur Windows Update"
+        }
+      ],
+      "notes": "Droits administrateur requis. Résout les erreurs de composants Windows Update corrompus.",
+      "links": []
+    },
+    {
+      "id": "repair-sccm-client-forced",
+      "title": "Réparer le client SCCM (installation forcée)",
+      "description": "Lance la réparation forcée du client Configuration Manager avec réinstallation",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "sccm",
+        "repair",
+        "configuration-manager"
+      ],
+      "windowsCommandTemplateId": "repair-sccm-client-forced-cmd",
+      "windowsCommandTemplate": {
+        "id": "repair-sccm-client-forced-cmd",
+        "platform": 0,
+        "name": "ccmsetup",
+        "commandPattern": "C:\\Windows\\ccmsetup\\ccmsetup.exe /mp:{mp_server} SMSSITECODE={site_code} /forceinstall",
+        "parameters": [
+          {
+            "name": "mp_server",
+            "label": "Serveur MP SCCM",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "FQDN du serveur Management Point SCCM"
+          },
+          {
+            "name": "site_code",
+            "label": "Code du site",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Code du site SCCM (3 caractères)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "C:\\Windows\\ccmsetup\\ccmsetup.exe /mp:sccm.contoso.com SMSSITECODE=ABC /forceinstall",
+          "description": "Réinstalle le client SCCM avec le site ABC"
+        }
+      ],
+      "notes": "Droits administrateur requis. /forceinstall réinstalle le client même s'il est déjà présent.",
+      "links": [
+        {
+          "title": "SCCM Client Installation",
+          "url": "https://learn.microsoft.com/en-us/mem/configmgr/core/clients/deploy/about-client-installation-properties"
+        }
+      ]
+    },
+    {
+      "id": "clean-sccm-cache",
+      "title": "Vider le cache SCCM",
+      "description": "Supprime tous les fichiers du cache du client Configuration Manager",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "sccm",
+        "cache",
+        "cleanup"
+      ],
+      "windowsCommandTemplateId": "clean-sccm-cache-cmd",
+      "windowsCommandTemplate": {
+        "id": "clean-sccm-cache-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "powershell -Command \"$UIResourceMgr = New-Object -ComObject UIResource.UIResourceMgr; $Cache = $UIResourceMgr.GetCacheInfo(); $Cache.GetCacheElements() | ForEach-Object { $Cache.DeleteCacheElement($_.CacheElementID) }\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powershell -Command \"$UIResourceMgr = New-Object -ComObject UIResource.UIResourceMgr; $Cache = $UIResourceMgr.GetCacheInfo(); $Cache.GetCacheElements() | ForEach-Object { Write-Host $_.ContentID }\"",
+          "description": "Liste le contenu du cache SCCM avant suppression"
+        }
+      ],
+      "notes": "Droits administrateur requis. Libère de l'espace disque en supprimant les packages téléchargés.",
+      "links": []
+    },
+    {
+      "id": "reset-sccm-policy",
+      "title": "Réinitialiser les stratégies SCCM",
+      "description": "Supprime toutes les stratégies machine et utilisateur du client SCCM",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "sccm",
+        "policy",
+        "reset"
+      ],
+      "windowsCommandTemplateId": "reset-sccm-policy-cmd",
+      "windowsCommandTemplate": {
+        "id": "reset-sccm-policy-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
+          "description": "Réinitialise toutes les stratégies SCCM"
+        }
+      ],
+      "notes": "Supprime toutes les stratégies. Le client les re-téléchargera automatiquement. Droits administrateur requis.",
+      "links": []
+    },
+    {
+      "id": "trigger-sccm-hardware-inventory",
+      "title": "Déclencher inventaire matériel SCCM",
+      "description": "Force l'exécution immédiate d'un cycle d'inventaire matériel",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "sccm",
+        "inventory",
+        "hardware"
+      ],
+      "windowsCommandTemplateId": "trigger-sccm-hardware-inventory-cmd",
+      "windowsCommandTemplate": {
+        "id": "trigger-sccm-hardware-inventory-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
+          "description": "Lance un inventaire matériel immédiat"
+        }
+      ],
+      "notes": "Droits administrateur requis. GUID {00000000-0000-0000-0000-000000000001} = Hardware Inventory.",
+      "links": []
+    },
+    {
+      "id": "trigger-sccm-software-updates-scan",
+      "title": "Déclencher scan des mises à jour SCCM",
+      "description": "Force la recherche immédiate des mises à jour disponibles",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "sccm",
+        "updates",
+        "scan"
+      ],
+      "windowsCommandTemplateId": "trigger-sccm-software-updates-scan-cmd",
+      "windowsCommandTemplate": {
+        "id": "trigger-sccm-software-updates-scan-cmd",
+        "platform": 0,
+        "name": "Invoke-WmiMethod",
+        "commandPattern": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
+          "description": "Force le scan des mises à jour SCCM"
+        }
+      ],
+      "notes": "Droits administrateur requis. GUID {00000000-0000-0000-0000-000000000113} = Software Updates Scan.",
+      "links": []
+    },
+    {
+      "id": "reset-wsus-client-id",
+      "title": "Réinitialiser l'ID client WSUS",
+      "description": "Supprime le SusClientId pour forcer la re-création lors de la prochaine connexion",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "wsus",
+        "reset",
+        "client-id"
+      ],
+      "windowsCommandTemplateId": "reset-wsus-client-id-cmd",
+      "windowsCommandTemplate": {
+        "id": "reset-wsus-client-id-cmd",
+        "platform": 0,
+        "name": "net",
+        "commandPattern": "net stop wuauserv && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientId /f && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientIdValidation /f && net start wuauserv && wuauclt /resetauthorization /detectnow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "wuauclt /resetauthorization /detectnow",
+          "description": "Force la détection après réinitialisation de l'ID"
+        }
+      ],
+      "notes": "Droits administrateur requis. Utile quand un PC cloné apparaît en double dans WSUS.",
+      "links": []
+    },
+    {
+      "id": "repair-wu-database",
+      "title": "Réparer la base de données Windows Update",
+      "description": "Utilise l'outil DISM pour réparer les composants Windows Update corrompus",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "windows-update",
+        "dism",
+        "repair",
+        "sfc"
+      ],
+      "windowsCommandTemplateId": "repair-wu-database-cmd",
+      "windowsCommandTemplate": {
+        "id": "repair-wu-database-cmd",
+        "platform": 0,
+        "name": "DISM",
+        "commandPattern": "DISM /Online /Cleanup-Image /RestoreHealth && sfc /scannow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "DISM /Online /Cleanup-Image /ScanHealth",
+          "description": "Scan uniquement sans réparation (plus rapide)"
+        },
+        {
+          "command": "DISM /Online /Cleanup-Image /RestoreHealth",
+          "description": "Répare l'image Windows"
+        }
+      ],
+      "notes": "⏱️ Peut prendre 15-30 minutes selon la vitesse du PC et de la connexion Internet. Droits administrateur requis.",
+      "links": [
+        {
+          "title": "DISM Documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/dism-operating-system-package-servicing-command-line-options"
+        }
+      ]
+    },
+    {
+      "id": "show-wu-history",
+      "title": "Afficher l'historique Windows Update",
+      "description": "Liste les 50 dernières mises à jour installées avec leur statut",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "history",
+        "diagnostic"
+      ],
+      "windowsCommandTemplateId": "show-wu-history-cmd",
+      "windowsCommandTemplate": {
+        "id": "show-wu-history-cmd",
+        "platform": 0,
+        "name": "Get-HotFix",
+        "commandPattern": "powershell -Command \"Get-HotFix | Sort-Object -Property InstalledOn -Descending | Select-Object -First 50 | Format-Table -AutoSize\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-HotFix | Sort-Object -Property InstalledOn -Descending | Select-Object -First 10",
+          "description": "Affiche les 10 dernières mises à jour installées"
+        }
+      ],
+      "notes": "Ne nécessite pas de droits administrateur. Affiche les KB installés avec leur date.",
+      "links": []
+    },
+    {
+      "id": "show-pending-updates",
+      "title": "Afficher les mises à jour en attente",
+      "description": "Liste toutes les mises à jour disponibles mais non installées",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "pending",
+        "diagnostic"
+      ],
+      "windowsCommandTemplateId": "show-pending-updates-cmd",
+      "windowsCommandTemplate": {
+        "id": "show-pending-updates-cmd",
+        "platform": 0,
+        "name": "Get-WindowsUpdate",
+        "commandPattern": "powershell -Command \"$UpdateSession = New-Object -ComObject Microsoft.Update.Session; $UpdateSearcher = $UpdateSession.CreateUpdateSearcher(); $SearchResult = $UpdateSearcher.Search('IsInstalled=0'); $SearchResult.Updates | Select-Object Title, IsDownloaded, IsMandatory | Format-Table -AutoSize\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "powershell -Command \"$UpdateSession = New-Object -ComObject Microsoft.Update.Session; $UpdateSearcher = $UpdateSession.CreateUpdateSearcher(); $SearchResult = $UpdateSearcher.Search('IsInstalled=0'); $SearchResult.Updates.Count\"",
+          "description": "Compte le nombre de mises à jour en attente"
+        }
+      ],
+      "notes": "Utilise l'API COM de Windows Update. Peut prendre quelques secondes.",
+      "links": []
+    },
+    {
+      "id": "test-wsus-connectivity",
+      "title": "Tester la connexion au serveur WSUS",
+      "description": "Vérifie la configuration et la connectivité au serveur WSUS",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "wsus",
+        "connectivity",
+        "diagnostics"
+      ],
+      "windowsCommandTemplateId": "test-wsus-connectivity-cmd",
+      "windowsCommandTemplate": {
+        "id": "test-wsus-connectivity-cmd",
+        "platform": 0,
+        "name": "Test-NetConnection",
+        "commandPattern": "powershell -Command \"$WUServer = (Get-ItemProperty 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate' -ErrorAction SilentlyContinue).WUServer; if ($WUServer) { Write-Host 'WSUS Server: ' $WUServer; Test-NetConnection -ComputerName ($WUServer -replace 'http://|https://|/' -split ':')[0] -Port 8530 } else { Write-Host 'Aucun serveur WSUS configuré' }\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-ItemProperty 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate'",
+          "description": "Affiche la configuration WSUS complète"
+        }
+      ],
+      "notes": "Vérifie la configuration du registre et teste la connectivité réseau. Port 8530 = HTTP, 8531 = HTTPS.",
+      "links": []
+    },
+    {
+      "id": "force-wu-detection",
+      "title": "Forcer la détection des mises à jour",
+      "description": "Force Windows Update à rechercher immédiatement les nouvelles mises à jour",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "detection",
+        "force"
+      ],
+      "windowsCommandTemplateId": "force-wu-detection-cmd",
+      "windowsCommandTemplate": {
+        "id": "force-wu-detection-cmd",
+        "platform": 0,
+        "name": "wuauclt",
+        "commandPattern": "wuauclt /detectnow /updatenow",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "wuauclt /detectnow",
+          "description": "Force uniquement la détection"
+        },
+        {
+          "command": "usoclient StartScan",
+          "description": "Alternative pour Windows 10/11 avec le service UpdateOrchestrator"
+        }
+      ],
+      "notes": "Droits administrateur requis. Sur Windows 10/11, préférer 'usoclient StartScan'.",
+      "links": []
+    },
+    {
+      "id": "repair-windows-store",
+      "title": "Réparer le Windows Store",
+      "description": "Réinitialise le cache du Windows Store qui peut affecter Windows Update",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "windows-store",
+        "cache",
+        "repair"
+      ],
+      "windowsCommandTemplateId": "repair-windows-store-cmd",
+      "windowsCommandTemplate": {
+        "id": "repair-windows-store-cmd",
+        "platform": 0,
+        "name": "wsreset",
+        "commandPattern": "wsreset.exe",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "wsreset.exe",
+          "description": "Réinitialise le cache du Windows Store"
+        }
+      ],
+      "notes": "Une fenêtre vide s'ouvrira puis se fermera automatiquement. Ne nécessite pas de droits administrateur.",
+      "links": []
+    },
+    {
       "id": "network-test-connection-advanced",
       "title": "Test de connectivité réseau avancé",
       "description": "Teste la connectivité réseau vers un hôte avec traceroute, test de port et informations de routage détaillées",
