@@ -322,7 +322,20 @@ public partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
-        var template = TemplateHelper.GetActiveTemplate(SelectedAction);
+        // BUGFIX: Use the same template selection logic as LoadCommandGenerator
+        // to respect platform selection for cross-platform commands
+        CommandTemplate? template;
+        if (IsCommandCrossPlatform)
+        {
+            template = SelectedPlatformForGenerator == Platform.Windows
+                ? SelectedAction.WindowsCommandTemplate
+                : SelectedAction.LinuxCommandTemplate;
+        }
+        else
+        {
+            template = TemplateHelper.GetActiveTemplate(SelectedAction);
+        }
+
         if (!TemplateHelper.IsValidTemplate(template))
         {
             return;
