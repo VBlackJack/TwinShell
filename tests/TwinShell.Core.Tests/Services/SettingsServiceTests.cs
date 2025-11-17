@@ -42,8 +42,6 @@ public class SettingsServiceTests : IDisposable
         settings.Theme.Should().Be(Theme.Light);
         settings.AutoCleanupDays.Should().Be(90);
         settings.MaxHistoryItems.Should().Be(1000);
-        settings.RecentCommandsCount.Should().Be(5);
-        settings.ShowRecentCommandsWidget.Should().BeTrue();
         settings.ConfirmDangerousActions.Should().BeTrue();
     }
 
@@ -56,8 +54,6 @@ public class SettingsServiceTests : IDisposable
             Theme = Theme.Dark,
             AutoCleanupDays = 30,
             MaxHistoryItems = 500,
-            RecentCommandsCount = 10,
-            ShowRecentCommandsWidget = false,
             ConfirmDangerousActions = false
         };
 
@@ -73,8 +69,6 @@ public class SettingsServiceTests : IDisposable
         loadedSettings.Theme.Should().Be(Theme.Dark);
         loadedSettings.AutoCleanupDays.Should().Be(30);
         loadedSettings.MaxHistoryItems.Should().Be(500);
-        loadedSettings.RecentCommandsCount.Should().Be(10);
-        loadedSettings.ShowRecentCommandsWidget.Should().BeFalse();
         loadedSettings.ConfirmDangerousActions.Should().BeFalse();
     }
 
@@ -123,8 +117,7 @@ public class SettingsServiceTests : IDisposable
         var settings = new UserSettings
         {
             AutoCleanupDays = 30,
-            MaxHistoryItems = 1000,
-            RecentCommandsCount = 10
+            MaxHistoryItems = 1000
         };
 
         // Act
@@ -173,38 +166,6 @@ public class SettingsServiceTests : IDisposable
         var settings = new UserSettings
         {
             MaxHistoryItems = 5  // Below minimum of 10
-        };
-
-        // Act
-        var result = _service.ValidateSettings(settings);
-
-        // Assert
-        result.Should().BeFalse();
-    }
-
-    [Fact]
-    public void ValidateSettings_ReturnsFalse_WhenRecentCommandsCountTooLow()
-    {
-        // Arrange
-        var settings = new UserSettings
-        {
-            RecentCommandsCount = 0  // Below minimum of 1
-        };
-
-        // Act
-        var result = _service.ValidateSettings(settings);
-
-        // Assert
-        result.Should().BeFalse();
-    }
-
-    [Fact]
-    public void ValidateSettings_ReturnsFalse_WhenRecentCommandsCountTooHigh()
-    {
-        // Arrange
-        var settings = new UserSettings
-        {
-            RecentCommandsCount = 100  // Above maximum of 50
         };
 
         // Act

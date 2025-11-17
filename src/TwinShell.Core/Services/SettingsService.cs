@@ -167,10 +167,6 @@ public class SettingsService : ISettingsService
         if (settings.MaxHistoryItems < 10 || settings.MaxHistoryItems > 100000)
             return false;
 
-        // Validate RecentCommandsCount (minimum 1, maximum 50)
-        if (settings.RecentCommandsCount < 1 || settings.RecentCommandsCount > 50)
-            return false;
-
         return true;
     }
 
