@@ -191,7 +191,7 @@
                                             VerticalAlignment="Center"/>
                         </Border>
                         <Ellipse x:Name="RippleEllipse"
-                                Fill="{StaticResource TextOnPrimaryBrush}"
+                                Fill="{DynamicResource TextOnPrimaryBrush}"
                                 Opacity="0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -221,14 +221,14 @@
                             </BeginStoryboard>
                         </EventTrigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource PrimaryHoverBrush}"/>
+                            <Setter TargetName="BorderElement" Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
                             <Setter TargetName="BorderElement" Property="Effect" Value="{StaticResource Elevation.2}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="BorderElement" Property="Effect" Value="{StaticResource Elevation.0}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource DisabledBrush}"/>
+                            <Setter TargetName="BorderElement" Property="Background" Value="{DynamicResource DisabledBrush}"/>
                             <Setter TargetName="BorderElement" Property="Effect" Value="{StaticResource Elevation.0}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -246,7 +246,7 @@
         <Setter Property="IsIndeterminate" Value="True"/>
         <Setter Property="Height" Value="4"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
