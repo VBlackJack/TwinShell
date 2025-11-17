@@ -11,7 +11,7 @@ public partial class MainWindow : Window
     private readonly IServiceProvider _serviceProvider;
     private readonly MainViewModel _mainViewModel;
 
-    public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, RecentCommandsWidget recentCommandsWidget, OutputPanel outputPanel, IServiceProvider serviceProvider)
+    public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, OutputPanel outputPanel, IServiceProvider serviceProvider)
     {
         try
         {
@@ -28,9 +28,6 @@ public partial class MainWindow : Window
 
             // Set the history panel (will be accessed by name in XAML)
             HistoryTabContent.Content = historyPanel;
-
-            // Set the recent commands widget
-            RecentCommandsContainer.Child = recentCommandsWidget;
 
         // Wire up the ExecutionViewModel to MainViewModel
         if (outputPanel.DataContext is ExecutionViewModel executionViewModel)

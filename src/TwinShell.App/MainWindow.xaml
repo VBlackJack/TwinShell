@@ -99,17 +99,11 @@
                 <Grid Margin="0,16,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-        <!-- Recent Commands Widget -->
-        <Border x:Name="RecentCommandsContainer"
-                Grid.Row="0"
-                Margin="0,0,0,16"/>
-
         <!-- Search and Filters -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="0"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -199,7 +193,7 @@
         </Border>
 
         <!-- UX: Rebalanced 3-column layout (250px | 350px | *) for better proportions -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="16"/>

@@ -32,22 +32,10 @@ public class UserSettings
     public Platform? DefaultPlatformFilter { get; set; } = null;
 
     /// <summary>
-    /// Whether to show the recent commands widget on startup.
-    /// Default: true.
-    /// </summary>
-    public bool ShowRecentCommandsWidget { get; set; } = true;
-
-    /// <summary>
     /// Whether to show confirmation dialog before executing dangerous commands.
     /// Default: true.
     /// </summary>
     public bool ConfirmDangerousActions { get; set; } = true;
-
-    /// <summary>
-    /// Default number of recent commands to display in the widget.
-    /// Default: 5.
-    /// </summary>
-    public int RecentCommandsCount { get; set; } = 5;
 
     /// <summary>
     /// Command execution timeout in seconds.
@@ -79,9 +67,7 @@ public class UserSettings
             AutoCleanupDays = this.AutoCleanupDays,
             MaxHistoryItems = this.MaxHistoryItems,
             DefaultPlatformFilter = this.DefaultPlatformFilter,
-            ShowRecentCommandsWidget = this.ShowRecentCommandsWidget,
             ConfirmDangerousActions = this.ConfirmDangerousActions,
-            RecentCommandsCount = this.RecentCommandsCount,
             ExecutionTimeoutSeconds = this.ExecutionTimeoutSeconds,
             CultureCode = this.CultureCode
         };
