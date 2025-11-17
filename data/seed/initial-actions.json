@@ -5125,6 +5125,470 @@
       ]
     },
     {
+      "id": "pswindowsupdate-get-history",
+      "title": "Afficher l'historique des mises à jour (PSWindowsUpdate)",
+      "description": "Liste l'historique détaillé de toutes les mises à jour Windows installées avec dates et statuts",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "history",
+        "pswindowsupdate",
+        "diagnostic"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-get-history-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-get-history-cmd",
+        "platform": 0,
+        "name": "Get-WUHistory",
+        "commandPattern": "Get-WUHistory | Select-Object -First 20",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WUHistory | Select-Object -First 50",
+          "description": "Affiche les 50 dernières mises à jour installées"
+        },
+        {
+          "command": "Get-WUHistory -MaxDate (Get-Date).AddDays(-30)",
+          "description": "Affiche l'historique des 30 derniers jours"
+        }
+      ],
+      "notes": "Nécessite le module PSWindowsUpdate. Fournit plus de détails que Get-HotFix.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-hide-update",
+      "title": "Masquer une mise à jour spécifique",
+      "description": "Masque une mise à jour Windows pour empêcher son installation automatique",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "windows-update",
+        "hide",
+        "pswindowsupdate",
+        "management"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-hide-update-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-hide-update-cmd",
+        "platform": 0,
+        "name": "Hide-WindowsUpdate",
+        "commandPattern": "Hide-WindowsUpdate -KBArticleID {kbNumber} -Confirm:$false",
+        "parameters": [
+          {
+            "name": "kbNumber",
+            "label": "Numéro KB",
+            "type": "string",
+            "defaultValue": "KB5001234",
+            "required": true,
+            "description": "Numéro KB de la mise à jour à masquer (ex: KB5001234)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Hide-WindowsUpdate -KBArticleID KB5001234",
+          "description": "Masque la mise à jour KB5001234"
+        },
+        {
+          "command": "Get-WindowsUpdate | Where-Object {$_.Title -like '*Driver*'} | Hide-WindowsUpdate",
+          "description": "Masque toutes les mises à jour de pilotes"
+        }
+      ],
+      "notes": "ATTENTION: Masquer des mises à jour de sécurité peut créer des vulnérabilités. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Hide Windows Updates",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-show-update",
+      "title": "Afficher une mise à jour masquée",
+      "description": "Réaffiche une mise à jour précédemment masquée pour permettre son installation",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "show",
+        "unhide",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-show-update-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-show-update-cmd",
+        "platform": 0,
+        "name": "Show-WindowsUpdate",
+        "commandPattern": "Show-WindowsUpdate -KBArticleID {kbNumber}",
+        "parameters": [
+          {
+            "name": "kbNumber",
+            "label": "Numéro KB",
+            "type": "string",
+            "defaultValue": "KB5001234",
+            "required": true,
+            "description": "Numéro KB de la mise à jour à réafficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Show-WindowsUpdate -KBArticleID KB5001234",
+          "description": "Réaffiche la mise à jour KB5001234"
+        },
+        {
+          "command": "Get-WindowsUpdate -IsHidden | Show-WindowsUpdate",
+          "description": "Réaffiche toutes les mises à jour masquées"
+        }
+      ],
+      "notes": "Nécessite le module PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-uninstall",
+      "title": "Désinstaller une mise à jour Windows",
+      "description": "Désinstalle une mise à jour Windows spécifique par son numéro KB",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "windows-update",
+        "uninstall",
+        "remove",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-uninstall-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-uninstall-cmd",
+        "platform": 0,
+        "name": "Uninstall-WindowsUpdate",
+        "commandPattern": "Uninstall-WindowsUpdate -KBArticleID {kbNumber} -Confirm:$false",
+        "parameters": [
+          {
+            "name": "kbNumber",
+            "label": "Numéro KB",
+            "type": "string",
+            "defaultValue": "KB5001234",
+            "required": true,
+            "description": "Numéro KB de la mise à jour à désinstaller"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Uninstall-WindowsUpdate -KBArticleID KB5001234",
+          "description": "Désinstalle la mise à jour KB5001234"
+        },
+        {
+          "command": "Uninstall-WindowsUpdate -KBArticleID KB5001234 -IgnoreReboot",
+          "description": "Désinstalle sans redémarrer automatiquement"
+        }
+      ],
+      "notes": "DANGER: Peut nécessiter un redémarrage. Peut créer des instabilités système. Nécessite droits administrateur et PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Uninstall Windows Updates",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-reboot-status",
+      "title": "Vérifier si un redémarrage est nécessaire",
+      "description": "Vérifie si des mises à jour en attente nécessitent un redémarrage système",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "reboot",
+        "restart",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-reboot-status-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-reboot-status-cmd",
+        "platform": 0,
+        "name": "Get-WURebootStatus",
+        "commandPattern": "Get-WURebootStatus -Silent",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WURebootStatus",
+          "description": "Affiche si un redémarrage est nécessaire"
+        },
+        {
+          "command": "if (Get-WURebootStatus -Silent) { 'Redémarrage nécessaire' } else { 'Pas de redémarrage' }",
+          "description": "Teste et affiche un message selon le statut"
+        }
+      ],
+      "notes": "Utile avant de planifier des maintenances. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-download-only",
+      "title": "Télécharger les mises à jour sans installer",
+      "description": "Télécharge les mises à jour Windows disponibles sans les installer",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "download",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-download-only-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-download-only-cmd",
+        "platform": 0,
+        "name": "Get-WindowsUpdate",
+        "commandPattern": "Get-WindowsUpdate -Download -AcceptAll",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WindowsUpdate -Download -AcceptAll",
+          "description": "Télécharge toutes les mises à jour disponibles"
+        },
+        {
+          "command": "Get-WindowsUpdate -Download -Category 'Security Updates'",
+          "description": "Télécharge uniquement les mises à jour de sécurité"
+        }
+      ],
+      "notes": "Utile pour télécharger en avance et installer plus tard. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Download Windows Updates",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-service-manager",
+      "title": "Lister les services de mise à jour configurés",
+      "description": "Affiche tous les services de mise à jour Windows configurés (Windows Update, WSUS, Microsoft Update)",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "service",
+        "wsus",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-service-manager-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-service-manager-cmd",
+        "platform": 0,
+        "name": "Get-WUServiceManager",
+        "commandPattern": "Get-WUServiceManager",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WUServiceManager",
+          "description": "Liste tous les services de mise à jour configurés"
+        },
+        {
+          "command": "Get-WUServiceManager | Where-Object {$_.IsDefaultAUService -eq $true}",
+          "description": "Affiche le service de mise à jour par défaut"
+        }
+      ],
+      "notes": "Utile pour diagnostiquer les problèmes de source de mises à jour. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Windows Update Service Manager",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-add-microsoft-update",
+      "title": "Activer Microsoft Update comme source",
+      "description": "Ajoute Microsoft Update comme source de mises à jour (inclut Office, SQL, etc.)",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "windows-update",
+        "microsoft-update",
+        "pswindowsupdate",
+        "configuration"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-add-microsoft-update-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-add-microsoft-update-cmd",
+        "platform": 0,
+        "name": "Add-WUServiceManager",
+        "commandPattern": "Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d",
+          "description": "Active Microsoft Update"
+        },
+        {
+          "command": "Get-WUServiceManager",
+          "description": "Vérifie que Microsoft Update est activé"
+        }
+      ],
+      "notes": "Permet de recevoir les mises à jour pour Office, SQL Server et autres produits Microsoft. Nécessite droits administrateur et PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Enable Microsoft Update",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-installer-status",
+      "title": "Vérifier le statut de l'installeur Windows Update",
+      "description": "Affiche si l'installeur Windows Update est en cours d'exécution",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "status",
+        "installer",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-installer-status-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-installer-status-cmd",
+        "platform": 0,
+        "name": "Get-WUInstallerStatus",
+        "commandPattern": "Get-WUInstallerStatus",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WUInstallerStatus",
+          "description": "Vérifie si une installation est en cours"
+        },
+        {
+          "command": "while (Get-WUInstallerStatus -eq $true) { Start-Sleep -Seconds 30; Write-Host 'Installation en cours...' }",
+          "description": "Attend la fin de l'installation"
+        }
+      ],
+      "notes": "Utile avant de lancer d'autres opérations de mise à jour. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-install-specific",
+      "title": "Installer une mise à jour spécifique par KB",
+      "description": "Installe uniquement une mise à jour Windows spécifique identifiée par son numéro KB",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "windows-update",
+        "install",
+        "kb",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-install-specific-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-install-specific-cmd",
+        "platform": 0,
+        "name": "Get-WindowsUpdate",
+        "commandPattern": "Get-WindowsUpdate -KBArticleID {kbNumber} -Install -AcceptAll -IgnoreReboot",
+        "parameters": [
+          {
+            "name": "kbNumber",
+            "label": "Numéro KB",
+            "type": "string",
+            "defaultValue": "KB5001234",
+            "required": true,
+            "description": "Numéro KB de la mise à jour à installer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-WindowsUpdate -KBArticleID KB5001234 -Install -AcceptAll",
+          "description": "Installe uniquement la mise à jour KB5001234"
+        },
+        {
+          "command": "Get-WindowsUpdate -KBArticleID KB5001234 -Download",
+          "description": "Télécharge seulement la mise à jour sans installer"
+        }
+      ],
+      "notes": "Utile pour installer une mise à jour précise. Peut nécessiter un redémarrage. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "Install Specific Windows Update",
+          "url": "https://woshub.com/pswindowsupdate-module/"
+        }
+      ]
+    },
+    {
+      "id": "pswindowsupdate-list-hidden",
+      "title": "Lister les mises à jour masquées",
+      "description": "Affiche toutes les mises à jour Windows qui ont été masquées",
+      "category": "🔄 Windows Updates",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "windows-update",
+        "hidden",
+        "list",
+        "pswindowsupdate"
+      ],
+      "windowsCommandTemplateId": "pswindowsupdate-list-hidden-cmd",
+      "windowsCommandTemplate": {
+        "id": "pswindowsupdate-list-hidden-cmd",
+        "platform": 0,
+        "name": "Get-WindowsUpdate",
+        "commandPattern": "Get-WindowsUpdate -IsHidden",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-WindowsUpdate -IsHidden",
+          "description": "Liste toutes les mises à jour masquées"
+        },
+        {
+          "command": "Get-WindowsUpdate -IsHidden | Format-Table Title,KB -AutoSize",
+          "description": "Affiche les mises à jour masquées en tableau"
+        }
+      ],
+      "notes": "Permet de voir quelles mises à jour ont été volontairement exclues. Nécessite PSWindowsUpdate.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        }
+      ]
+    },
+    {
       "id": "windowsupdate-clear-cache",
       "title": "Nettoyer le cache Windows Update",
       "description": "Arrête les services Windows Update et nettoie le dossier SoftwareDistribution pour résoudre les problèmes de mises à jour",
@@ -12680,6 +13144,977 @@
       ]
     },
     {
+      "id": "get-scheduledtask",
+      "title": "Lister les tâches planifiées Windows",
+      "description": "Affiche toutes les tâches planifiées configurées dans le Planificateur de tâches Windows",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "taskscheduler",
+        "scheduled",
+        "automation",
+        "windows",
+        "tasks"
+      ],
+      "windowsCommandTemplateId": "get-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "get-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Get-ScheduledTask",
+        "commandPattern": "Get-ScheduledTask {taskname} {taskpath} | Format-Table TaskName, State, LastRunTime, NextRunTime -AutoSize",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la tâche (laissez vide pour toutes)"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche (ex: -TaskPath '\\Microsoft\\Windows\\')"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-ScheduledTask",
+          "description": "Liste toutes les tâches planifiées"
+        },
+        {
+          "command": "Get-ScheduledTask | Where-Object {$_.State -eq 'Ready'}",
+          "description": "Liste uniquement les tâches actives"
+        },
+        {
+          "command": "Get-ScheduledTask -TaskName 'MyBackup'",
+          "description": "Affiche une tâche spécifique"
+        },
+        {
+          "command": "Get-ScheduledTask -TaskPath '\\' | Where-Object {$_.State -ne 'Disabled'}",
+          "description": "Tâches racine non désactivées"
+        }
+      ],
+      "notes": "Utilisez Get-ScheduledTaskInfo pour voir l'historique d'exécution. State peut être Ready, Running, Disabled.",
+      "links": [
+        {
+          "title": "Get-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/get-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "register-scheduledtask",
+      "title": "Créer une tâche planifiée",
+      "description": "Enregistre une nouvelle tâche planifiée dans le Planificateur de tâches Windows",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "taskscheduler",
+        "create",
+        "automation",
+        "windows",
+        "register"
+      ],
+      "windowsCommandTemplateId": "register-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "register-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Register-ScheduledTask",
+        "commandPattern": "$action = New-ScheduledTaskAction -Execute '{executable}' -Argument '{arguments}'; $trigger = New-ScheduledTaskTrigger {triggertype}; Register-ScheduledTask -TaskName '{taskname}' -Action $action -Trigger $trigger {user}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à créer"
+          },
+          {
+            "name": "executable",
+            "label": "Exécutable",
+            "type": "string",
+            "defaultValue": "powershell.exe",
+            "required": true,
+            "description": "Programme à exécuter"
+          },
+          {
+            "name": "arguments",
+            "label": "Arguments",
+            "type": "string",
+            "defaultValue": "-File C:\\Scripts\\backup.ps1",
+            "required": false,
+            "description": "Arguments de la commande"
+          },
+          {
+            "name": "triggertype",
+            "label": "Déclencheur",
+            "type": "string",
+            "defaultValue": "-Daily -At 9:00AM",
+            "required": true,
+            "description": "Type de déclencheur (-Daily, -Weekly, -AtStartup, -AtLogon)"
+          },
+          {
+            "name": "user",
+            "label": "Utilisateur",
+            "type": "string",
+            "defaultValue": "-User 'SYSTEM'",
+            "required": false,
+            "description": "Compte d'exécution (ex: -User 'SYSTEM')"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-File C:\\Scripts\\backup.ps1'; $trigger = New-ScheduledTaskTrigger -Daily -At 2:00AM; Register-ScheduledTask -TaskName 'DailyBackup' -Action $action -Trigger $trigger -User 'SYSTEM'",
+          "description": "Tâche de sauvegarde quotidienne à 2h"
+        },
+        {
+          "command": "$action = New-ScheduledTaskAction -Execute 'shutdown.exe' -Argument '/r /t 0'; $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 3:00AM; Register-ScheduledTask -TaskName 'WeeklyReboot' -Action $action -Trigger $trigger",
+          "description": "Redémarrage hebdomadaire le dimanche"
+        },
+        {
+          "command": "$action = New-ScheduledTaskAction -Execute 'C:\\Scripts\\startup.bat'; $trigger = New-ScheduledTaskTrigger -AtStartup; Register-ScheduledTask -TaskName 'StartupScript' -Action $action -Trigger $trigger -User 'SYSTEM'",
+          "description": "Script au démarrage du système"
+        }
+      ],
+      "notes": "Nécessite des privilèges administrateur. Utilisez -User 'SYSTEM' pour exécution système. Déclencheurs: -Daily, -Weekly, -AtStartup, -AtLogon, -Once.",
+      "links": [
+        {
+          "title": "Register-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/register-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "unregister-scheduledtask",
+      "title": "Supprimer une tâche planifiée",
+      "description": "Supprime une tâche planifiée du Planificateur de tâches Windows",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "taskscheduler",
+        "delete",
+        "remove",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "unregister-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "unregister-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Unregister-ScheduledTask",
+        "commandPattern": "Unregister-ScheduledTask -TaskName '{taskname}' {confirm}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à supprimer"
+          },
+          {
+            "name": "confirm",
+            "label": "Confirmation",
+            "type": "string",
+            "defaultValue": "-Confirm:$false",
+            "required": false,
+            "description": "Confirmer la suppression (-Confirm:$false pour ignorer)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Unregister-ScheduledTask -TaskName 'MyBackup' -Confirm:$false",
+          "description": "Supprime la tâche sans confirmation"
+        },
+        {
+          "command": "Get-ScheduledTask -TaskPath '\\CustomTasks\\' | Unregister-ScheduledTask -Confirm:$false",
+          "description": "Supprime toutes les tâches d'un dossier"
+        },
+        {
+          "command": "Unregister-ScheduledTask -TaskName 'OldTask'",
+          "description": "Supprime avec confirmation interactive"
+        }
+      ],
+      "notes": "Nécessite des privilèges administrateur. Utilisez -Confirm:$false pour automatiser. La suppression est irréversible.",
+      "links": [
+        {
+          "title": "Unregister-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/unregister-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "start-scheduledtask",
+      "title": "Démarrer une tâche planifiée",
+      "description": "Démarre immédiatement l'exécution d'une tâche planifiée",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "taskscheduler",
+        "start",
+        "run",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "start-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "start-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Start-ScheduledTask",
+        "commandPattern": "Start-ScheduledTask -TaskName '{taskname}' {taskpath}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à démarrer"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche (ex: -TaskPath '\\CustomTasks\\')"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Start-ScheduledTask -TaskName 'DailyBackup'",
+          "description": "Démarre la tâche immédiatement"
+        },
+        {
+          "command": "Start-ScheduledTask -TaskName 'Cleanup' -TaskPath '\\Maintenance\\'",
+          "description": "Démarre une tâche dans un chemin spécifique"
+        },
+        {
+          "command": "Get-ScheduledTask -TaskPath '\\' | Where-Object {$_.State -eq 'Ready'} | Start-ScheduledTask",
+          "description": "Démarre toutes les tâches prêtes"
+        }
+      ],
+      "notes": "Exécute immédiatement sans attendre le déclencheur. Vérifiez l'état avec Get-ScheduledTaskInfo.",
+      "links": [
+        {
+          "title": "Start-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/start-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "stop-scheduledtask",
+      "title": "Arrêter une tâche planifiée",
+      "description": "Arrête l'exécution en cours d'une tâche planifiée",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "taskscheduler",
+        "stop",
+        "kill",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "stop-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "stop-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Stop-ScheduledTask",
+        "commandPattern": "Stop-ScheduledTask -TaskName '{taskname}' {taskpath}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à arrêter"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Stop-ScheduledTask -TaskName 'LongRunningTask'",
+          "description": "Arrête une tâche en cours d'exécution"
+        },
+        {
+          "command": "Get-ScheduledTask | Where-Object {$_.State -eq 'Running'} | Stop-ScheduledTask",
+          "description": "Arrête toutes les tâches en cours"
+        }
+      ],
+      "notes": "Termine immédiatement l'exécution. Utilisez avec prudence sur les tâches critiques.",
+      "links": [
+        {
+          "title": "Stop-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/stop-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "enable-scheduledtask",
+      "title": "Activer une tâche planifiée",
+      "description": "Active une tâche planifiée désactivée pour qu'elle puisse s'exécuter selon son planning",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "taskscheduler",
+        "enable",
+        "activate",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "enable-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "enable-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Enable-ScheduledTask",
+        "commandPattern": "Enable-ScheduledTask -TaskName '{taskname}' {taskpath}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à activer"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Enable-ScheduledTask -TaskName 'DailyBackup'",
+          "description": "Active la tâche de sauvegarde"
+        },
+        {
+          "command": "Get-ScheduledTask | Where-Object {$_.State -eq 'Disabled'} | Enable-ScheduledTask",
+          "description": "Active toutes les tâches désactivées"
+        }
+      ],
+      "notes": "Change l'état de Disabled à Ready. La tâche s'exécutera selon son déclencheur.",
+      "links": [
+        {
+          "title": "Enable-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/enable-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "disable-scheduledtask",
+      "title": "Désactiver une tâche planifiée",
+      "description": "Désactive une tâche planifiée pour empêcher son exécution automatique",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "taskscheduler",
+        "disable",
+        "deactivate",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "disable-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "disable-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Disable-ScheduledTask",
+        "commandPattern": "Disable-ScheduledTask -TaskName '{taskname}' {taskpath}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à désactiver"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Disable-ScheduledTask -TaskName 'WindowsUpdate'",
+          "description": "Désactive temporairement les mises à jour"
+        },
+        {
+          "command": "Get-ScheduledTask -TaskPath '\\Microsoft\\Windows\\Maintenance\\' | Disable-ScheduledTask",
+          "description": "Désactive toutes les tâches de maintenance"
+        }
+      ],
+      "notes": "Change l'état à Disabled. La tâche ne s'exécutera plus jusqu'à réactivation.",
+      "links": [
+        {
+          "title": "Disable-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/disable-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "get-scheduledtaskinfo",
+      "title": "Voir l'historique d'une tâche planifiée",
+      "description": "Affiche les informations d'exécution et l'historique d'une tâche planifiée",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "taskscheduler",
+        "history",
+        "info",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "get-scheduledtaskinfo-cmd",
+      "windowsCommandTemplate": {
+        "id": "get-scheduledtaskinfo-cmd",
+        "platform": 0,
+        "name": "Get-ScheduledTaskInfo",
+        "commandPattern": "Get-ScheduledTaskInfo -TaskName '{taskname}' {taskpath}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-ScheduledTaskInfo -TaskName 'DailyBackup'",
+          "description": "Affiche l'historique de la tâche de sauvegarde"
+        },
+        {
+          "command": "Get-ScheduledTask | Get-ScheduledTaskInfo | Where-Object {$_.LastTaskResult -ne 0}",
+          "description": "Trouve les tâches avec erreurs"
+        },
+        {
+          "command": "Get-ScheduledTaskInfo -TaskName 'MyTask' | Select-Object LastRunTime, LastTaskResult, NextRunTime, NumberOfMissedRuns",
+          "description": "Informations détaillées d'exécution"
+        }
+      ],
+      "notes": "LastTaskResult 0 = succès, autre = erreur. Voir aussi les événements dans Event Viewer (TaskScheduler).",
+      "links": [
+        {
+          "title": "Get-ScheduledTaskInfo Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/get-scheduledtaskinfo"
+        }
+      ]
+    },
+    {
+      "id": "export-scheduledtask",
+      "title": "Exporter une tâche planifiée",
+      "description": "Exporte la définition d'une tâche planifiée au format XML pour sauvegarde ou migration",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "taskscheduler",
+        "export",
+        "backup",
+        "xml",
+        "automation"
+      ],
+      "windowsCommandTemplateId": "export-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "export-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Export-ScheduledTask",
+        "commandPattern": "Export-ScheduledTask -TaskName '{taskname}' {taskpath} | Out-File '{outputfile}'",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à exporter"
+          },
+          {
+            "name": "taskpath",
+            "label": "Chemin source",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Chemin de la tâche"
+          },
+          {
+            "name": "outputfile",
+            "label": "Fichier de sortie",
+            "type": "string",
+            "defaultValue": "C:\\Backup\\task.xml",
+            "required": true,
+            "description": "Chemin du fichier XML de sortie"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Export-ScheduledTask -TaskName 'DailyBackup' | Out-File 'C:\\Backup\\DailyBackup.xml'",
+          "description": "Exporte la tâche vers un fichier XML"
+        },
+        {
+          "command": "Get-ScheduledTask | ForEach-Object { Export-ScheduledTask $_.TaskName | Out-File \"C:\\Backup\\$($_.TaskName).xml\" }",
+          "description": "Exporte toutes les tâches"
+        },
+        {
+          "command": "Register-ScheduledTask -Xml (Get-Content 'C:\\Backup\\task.xml' | Out-String) -TaskName 'RestoredTask'",
+          "description": "Réimporte une tâche depuis XML"
+        }
+      ],
+      "notes": "Utile pour migration entre serveurs ou sauvegarde. Utilisez Register-ScheduledTask avec -Xml pour réimporter.",
+      "links": [
+        {
+          "title": "Export-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/export-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "set-scheduledtask",
+      "title": "Modifier une tâche planifiée",
+      "description": "Modifie les propriétés d'une tâche planifiée existante",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "taskscheduler",
+        "modify",
+        "update",
+        "automation",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "set-scheduledtask-cmd",
+      "windowsCommandTemplate": {
+        "id": "set-scheduledtask-cmd",
+        "platform": 0,
+        "name": "Set-ScheduledTask",
+        "commandPattern": "Set-ScheduledTask -TaskName '{taskname}' {parameters}",
+        "parameters": [
+          {
+            "name": "taskname",
+            "label": "Nom de la tâche",
+            "type": "string",
+            "defaultValue": "MyTask",
+            "required": true,
+            "description": "Nom de la tâche à modifier"
+          },
+          {
+            "name": "parameters",
+            "label": "Paramètres à modifier",
+            "type": "string",
+            "defaultValue": "-Trigger (New-ScheduledTaskTrigger -Daily -At 3:00AM)",
+            "required": true,
+            "description": "Propriétés à modifier (-Trigger, -Action, -User, etc.)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$trigger = New-ScheduledTaskTrigger -Daily -At 3:00AM; Set-ScheduledTask -TaskName 'Backup' -Trigger $trigger",
+          "description": "Change l'heure d'exécution"
+        },
+        {
+          "command": "$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-File C:\\Scripts\\new-backup.ps1'; Set-ScheduledTask -TaskName 'Backup' -Action $action",
+          "description": "Change le script exécuté"
+        },
+        {
+          "command": "Set-ScheduledTask -TaskName 'MyTask' -User 'DOMAIN\\ServiceAccount'",
+          "description": "Change le compte d'exécution"
+        }
+      ],
+      "notes": "Nécessite des privilèges admin. Utilisez Get-ScheduledTask pour voir la config actuelle avant modification.",
+      "links": [
+        {
+          "title": "Set-ScheduledTask Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/set-scheduledtask"
+        }
+      ]
+    },
+    {
+      "id": "get-service-windows",
+      "title": "Lister les services Windows",
+      "description": "Affiche tous les services Windows avec leur état (Running, Stopped, etc.)",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "service",
+        "windows",
+        "status",
+        "automation",
+        "management"
+      ],
+      "windowsCommandTemplateId": "get-service-cmd",
+      "windowsCommandTemplate": {
+        "id": "get-service-cmd",
+        "platform": 0,
+        "name": "Get-Service",
+        "commandPattern": "Get-Service {name} {displayname} | Format-Table Name, DisplayName, Status, StartType -AutoSize",
+        "parameters": [
+          {
+            "name": "name",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom du service (ex: -Name 'wuauserv') ou laissez vide"
+          },
+          {
+            "name": "displayname",
+            "label": "Nom affiché",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Filtre par nom affiché (ex: -DisplayName '*update*')"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Service",
+          "description": "Liste tous les services"
+        },
+        {
+          "command": "Get-Service | Where-Object {$_.Status -eq 'Running'}",
+          "description": "Services en cours d'exécution"
+        },
+        {
+          "command": "Get-Service -Name 'wuauserv'",
+          "description": "Service Windows Update"
+        },
+        {
+          "command": "Get-Service | Where-Object {$_.StartType -eq 'Automatic' -and $_.Status -ne 'Running'}",
+          "description": "Services automatiques arrêtés (problème potentiel)"
+        }
+      ],
+      "notes": "Essentiel pour Windows Core. Voir aussi Start-Service, Stop-Service, Restart-Service pour contrôler les services.",
+      "links": [
+        {
+          "title": "Get-Service Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-service"
+        }
+      ]
+    },
+    {
+      "id": "restart-service",
+      "title": "Redémarrer un service Windows",
+      "description": "Arrête puis redémarre un service Windows",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "service",
+        "restart",
+        "windows",
+        "automation",
+        "management"
+      ],
+      "windowsCommandTemplateId": "restart-service-cmd",
+      "windowsCommandTemplate": {
+        "id": "restart-service-cmd",
+        "platform": 0,
+        "name": "Restart-Service",
+        "commandPattern": "Restart-Service -Name '{servicename}' {force}",
+        "parameters": [
+          {
+            "name": "servicename",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "wuauserv",
+            "required": true,
+            "description": "Nom du service à redémarrer"
+          },
+          {
+            "name": "force",
+            "label": "Forcer",
+            "type": "string",
+            "defaultValue": "-Force",
+            "required": false,
+            "description": "Forcer l'arrêt (-Force)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Restart-Service -Name 'wuauserv' -Force",
+          "description": "Redémarre Windows Update"
+        },
+        {
+          "command": "Restart-Service -Name 'Spooler'",
+          "description": "Redémarre le spooler d'impression"
+        },
+        {
+          "command": "Get-Service -DisplayName '*IIS*' | Restart-Service -Force",
+          "description": "Redémarre tous les services IIS"
+        }
+      ],
+      "notes": "Nécessite des privilèges admin. -Force arrête les services dépendants. Utile pour résoudre des problèmes.",
+      "links": [
+        {
+          "title": "Restart-Service Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/restart-service"
+        }
+      ]
+    },
+    {
+      "id": "set-service-starttype",
+      "title": "Changer le type de démarrage d'un service",
+      "description": "Modifie le type de démarrage d'un service (Automatic, Manual, Disabled)",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "service",
+        "startup",
+        "windows",
+        "automation",
+        "configuration"
+      ],
+      "windowsCommandTemplateId": "set-service-cmd",
+      "windowsCommandTemplate": {
+        "id": "set-service-cmd",
+        "platform": 0,
+        "name": "Set-Service",
+        "commandPattern": "Set-Service -Name '{servicename}' -StartupType {startuptype}",
+        "parameters": [
+          {
+            "name": "servicename",
+            "label": "Nom du service",
+            "type": "string",
+            "defaultValue": "wuauserv",
+            "required": true,
+            "description": "Nom du service à configurer"
+          },
+          {
+            "name": "startuptype",
+            "label": "Type de démarrage",
+            "type": "string",
+            "defaultValue": "Automatic",
+            "required": true,
+            "description": "Automatic, Manual, Disabled, ou AutomaticDelayedStart"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-Service -Name 'wuauserv' -StartupType Automatic",
+          "description": "Configure Windows Update en démarrage automatique"
+        },
+        {
+          "command": "Set-Service -Name 'Spooler' -StartupType Manual",
+          "description": "Configure le spooler en manuel"
+        },
+        {
+          "command": "Set-Service -Name 'UnusedService' -StartupType Disabled",
+          "description": "Désactive un service inutilisé"
+        },
+        {
+          "command": "Get-Service | Where-Object {$_.DisplayName -like '*Telemetry*'} | Set-Service -StartupType Disabled",
+          "description": "Désactive la télémétrie"
+        }
+      ],
+      "notes": "Nécessite admin. AutomaticDelayedStart démarre 2 min après le boot pour améliorer les perfs.",
+      "links": [
+        {
+          "title": "Set-Service Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/set-service"
+        }
+      ]
+    },
+    {
+      "id": "invoke-command-remote",
+      "title": "Exécuter une commande à distance",
+      "description": "Exécute une commande PowerShell sur un ou plusieurs ordinateurs distants via PSRemoting",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "remote",
+        "psremoting",
+        "automation",
+        "windows",
+        "invoke"
+      ],
+      "windowsCommandTemplateId": "invoke-command-cmd",
+      "windowsCommandTemplate": {
+        "id": "invoke-command-cmd",
+        "platform": 0,
+        "name": "Invoke-Command",
+        "commandPattern": "Invoke-Command -ComputerName {computername} -ScriptBlock { {scriptblock} } {credential}",
+        "parameters": [
+          {
+            "name": "computername",
+            "label": "Ordinateur distant",
+            "type": "string",
+            "defaultValue": "Server01",
+            "required": true,
+            "description": "Nom ou IP du serveur distant (ou plusieurs séparés par virgule)"
+          },
+          {
+            "name": "scriptblock",
+            "label": "Commande à exécuter",
+            "type": "string",
+            "defaultValue": "Get-Service",
+            "required": true,
+            "description": "Commande PowerShell à exécuter à distance"
+          },
+          {
+            "name": "credential",
+            "label": "Identifiants",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Identifiants (ex: -Credential (Get-Credential))"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Invoke-Command -ComputerName Server01 -ScriptBlock { Get-Service }",
+          "description": "Liste les services sur Server01"
+        },
+        {
+          "command": "Invoke-Command -ComputerName Server01,Server02,Server03 -ScriptBlock { Restart-Service -Name 'wuauserv' }",
+          "description": "Redémarre un service sur plusieurs serveurs"
+        },
+        {
+          "command": "Invoke-Command -ComputerName Server01 -ScriptBlock { Get-EventLog -LogName System -Newest 10 }",
+          "description": "Récupère les derniers événements système"
+        },
+        {
+          "command": "$cred = Get-Credential; Invoke-Command -ComputerName Server01 -Credential $cred -ScriptBlock { Get-Disk }",
+          "description": "Exécute avec identifiants spécifiques"
+        }
+      ],
+      "notes": "Nécessite WinRM activé (Enable-PSRemoting). Essentiel pour gérer Windows Core à distance. Utilisez Enter-PSSession pour session interactive.",
+      "links": [
+        {
+          "title": "Invoke-Command Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/invoke-command"
+        }
+      ]
+    },
+    {
+      "id": "get-eventlog-latest",
+      "title": "Consulter les événements Windows récents",
+      "description": "Affiche les derniers événements du journal Windows (System, Application, Security)",
+      "category": "⚙️ Automation",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "eventlog",
+        "logs",
+        "monitoring",
+        "windows",
+        "troubleshooting"
+      ],
+      "windowsCommandTemplateId": "get-eventlog-cmd",
+      "windowsCommandTemplate": {
+        "id": "get-eventlog-cmd",
+        "platform": 0,
+        "name": "Get-EventLog",
+        "commandPattern": "Get-EventLog -LogName {logname} -Newest {count} {entrytype} | Format-Table TimeGenerated, EntryType, Source, Message -AutoSize",
+        "parameters": [
+          {
+            "name": "logname",
+            "label": "Journal",
+            "type": "string",
+            "defaultValue": "System",
+            "required": true,
+            "description": "Nom du journal (System, Application, Security)"
+          },
+          {
+            "name": "count",
+            "label": "Nombre d'événements",
+            "type": "number",
+            "defaultValue": "20",
+            "required": false,
+            "description": "Nombre d'événements à afficher"
+          },
+          {
+            "name": "entrytype",
+            "label": "Type",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Filtre par type (ex: -EntryType Error,Warning)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-EventLog -LogName System -Newest 20",
+          "description": "20 derniers événements système"
+        },
+        {
+          "command": "Get-EventLog -LogName Application -EntryType Error -Newest 10",
+          "description": "10 dernières erreurs applicatives"
+        },
+        {
+          "command": "Get-EventLog -LogName System -EntryType Error,Warning -Newest 50 | Out-GridView",
+          "description": "Erreurs et avertissements en grille interactive"
+        },
+        {
+          "command": "Get-EventLog -LogName System -After (Get-Date).AddHours(-1)",
+          "description": "Événements de la dernière heure"
+        }
+      ],
+      "notes": "Essentiel pour diagnostic. Utilisez Get-WinEvent pour logs plus récents (plus performant). EntryType: Error, Warning, Information.",
+      "links": [
+        {
+          "title": "Get-EventLog Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-eventlog"
+        }
+      ]
+    },
+    {
       "id": "kill-process",
       "title": "Terminer un processus",
       "description": "Envoie un signal à un processus pour le terminer (par défaut SIGTERM)",
@@ -13003,6 +14438,2154 @@
         {
           "title": "mpstat documentation",
           "url": "https://man7.org/linux/man-pages/man1/mpstat.1.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-playbook-run",
+      "title": "Exécuter un playbook Ansible",
+      "description": "Exécute un playbook Ansible sur les hôtes définis dans l'inventaire",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "playbook", "automation", "configuration"],
+      "windowsCommandTemplateId": "ansible-playbook-run-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-playbook-run-win",
+        "platform": 0,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory}",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-playbook-run-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-playbook-run-linux",
+        "platform": 1,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory}",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-playbook site.yml -i production",
+          "description": "Exécute le playbook sur l'inventaire de production"
+        },
+        {
+          "command": "ansible-playbook deploy.yml -i staging --check",
+          "description": "Mode dry-run sur l'environnement de staging"
+        }
+      ],
+      "notes": "Utiliser --check pour un dry-run, --diff pour voir les changements, -v/-vv/-vvv pour plus de verbosité.",
+      "links": [
+        {
+          "title": "Ansible Playbooks",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-ad-hoc",
+      "title": "Exécuter une commande Ansible ad-hoc",
+      "description": "Exécute une commande ponctuelle sur un groupe d'hôtes sans playbook",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "ad-hoc", "command"],
+      "windowsCommandTemplateId": "ansible-ad-hoc-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-ad-hoc-win",
+        "platform": 0,
+        "name": "ansible",
+        "commandPattern": "ansible {hostPattern} -m {module} -a \"{args}\"",
+        "parameters": [
+          {
+            "name": "hostPattern",
+            "label": "Pattern hôtes",
+            "type": "string",
+            "defaultValue": "all",
+            "required": true,
+            "description": "Pattern pour cibler les hôtes (all, webservers, etc.)"
+          },
+          {
+            "name": "module",
+            "label": "Module",
+            "type": "string",
+            "defaultValue": "ping",
+            "required": true,
+            "description": "Module Ansible à utiliser"
+          },
+          {
+            "name": "args",
+            "label": "Arguments",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Arguments pour le module"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-ad-hoc-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-ad-hoc-linux",
+        "platform": 1,
+        "name": "ansible",
+        "commandPattern": "ansible {hostPattern} -m {module} -a \"{args}\"",
+        "parameters": [
+          {
+            "name": "hostPattern",
+            "label": "Pattern hôtes",
+            "type": "string",
+            "defaultValue": "all",
+            "required": true,
+            "description": "Pattern pour cibler les hôtes"
+          },
+          {
+            "name": "module",
+            "label": "Module",
+            "type": "string",
+            "defaultValue": "ping",
+            "required": true,
+            "description": "Module Ansible à utiliser"
+          },
+          {
+            "name": "args",
+            "label": "Arguments",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Arguments pour le module"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible all -m ping",
+          "description": "Teste la connectivité sur tous les hôtes"
+        },
+        {
+          "command": "ansible webservers -m shell -a 'uptime'",
+          "description": "Exécute la commande uptime sur les serveurs web"
+        }
+      ],
+      "notes": "Les commandes ad-hoc sont parfaites pour les tâches ponctuelles sans nécessiter un playbook complet.",
+      "links": [
+        {
+          "title": "Ansible Ad-Hoc Commands",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-galaxy-install",
+      "title": "Installer un rôle Ansible Galaxy",
+      "description": "Télécharge et installe un rôle depuis Ansible Galaxy",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "galaxy", "role", "install"],
+      "windowsCommandTemplateId": "ansible-galaxy-install-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-galaxy-install-win",
+        "platform": 0,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy install {roleName}",
+        "parameters": [
+          {
+            "name": "roleName",
+            "label": "Nom du rôle",
+            "type": "string",
+            "defaultValue": "geerlingguy.apache",
+            "required": true,
+            "description": "Nom du rôle à installer depuis Galaxy"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-galaxy-install-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-galaxy-install-linux",
+        "platform": 1,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy install {roleName}",
+        "parameters": [
+          {
+            "name": "roleName",
+            "label": "Nom du rôle",
+            "type": "string",
+            "defaultValue": "geerlingguy.apache",
+            "required": true,
+            "description": "Nom du rôle à installer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-galaxy install geerlingguy.docker",
+          "description": "Installe le rôle Docker de geerlingguy"
+        },
+        {
+          "command": "ansible-galaxy install -r requirements.yml",
+          "description": "Installe tous les rôles listés dans requirements.yml"
+        }
+      ],
+      "notes": "Ansible Galaxy est le dépôt officiel de rôles Ansible réutilisables.",
+      "links": [
+        {
+          "title": "Ansible Galaxy",
+          "url": "https://galaxy.ansible.com/"
+        }
+      ]
+    },
+    {
+      "id": "ansible-vault-encrypt",
+      "title": "Chiffrer un fichier avec Ansible Vault",
+      "description": "Chiffre un fichier contenant des données sensibles avec Ansible Vault",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "vault", "encryption", "security"],
+      "windowsCommandTemplateId": "ansible-vault-encrypt-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-vault-encrypt-win",
+        "platform": 0,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault encrypt {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à chiffrer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier à chiffrer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-vault-encrypt-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-vault-encrypt-linux",
+        "platform": 1,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault encrypt {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à chiffrer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier à chiffrer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-vault encrypt vars/secrets.yml",
+          "description": "Chiffre le fichier de secrets"
+        },
+        {
+          "command": "ansible-vault decrypt vars/secrets.yml",
+          "description": "Déchiffre le fichier de secrets"
+        }
+      ],
+      "notes": "Utilisez un mot de passe fort et stockez-le de manière sécurisée. Pour exécuter un playbook avec des fichiers chiffrés, utilisez --ask-vault-pass.",
+      "links": [
+        {
+          "title": "Ansible Vault",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-inventory-list",
+      "title": "Lister l'inventaire Ansible",
+      "description": "Affiche la liste complète des hôtes dans l'inventaire Ansible",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "inventory", "hosts"],
+      "windowsCommandTemplateId": "ansible-inventory-list-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-inventory-list-win",
+        "platform": 0,
+        "name": "ansible-inventory",
+        "commandPattern": "ansible-inventory --list -i {inventory}",
+        "parameters": [
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-inventory-list-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-inventory-list-linux",
+        "platform": 1,
+        "name": "ansible-inventory",
+        "commandPattern": "ansible-inventory --list -i {inventory}",
+        "parameters": [
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-inventory --list -i production",
+          "description": "Liste l'inventaire de production au format JSON"
+        },
+        {
+          "command": "ansible-inventory --graph",
+          "description": "Affiche l'inventaire sous forme d'arbre"
+        }
+      ],
+      "notes": "Utilisez --graph pour une vue hiérarchique de l'inventaire.",
+      "links": [
+        {
+          "title": "Ansible Inventory",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-playbook-check",
+      "title": "Exécuter un playbook en mode dry-run (--check)",
+      "description": "Exécute un playbook Ansible en mode test sans appliquer les changements",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "playbook", "dry-run", "check", "test"],
+      "windowsCommandTemplateId": "ansible-playbook-check-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-playbook-check-win",
+        "platform": 0,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory} --check --diff",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-playbook-check-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-playbook-check-linux",
+        "platform": 1,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory} --check --diff",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-playbook deploy.yml -i production --check --diff",
+          "description": "Simule le déploiement et affiche les modifications"
+        },
+        {
+          "command": "ansible-playbook update.yml --check -v",
+          "description": "Test avec sortie verbeux"
+        }
+      ],
+      "notes": "Le mode --check simule l'exécution sans appliquer les changements. --diff affiche les différences avant/après.",
+      "links": [
+        {
+          "title": "Ansible Check Mode",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks_checkmode.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-playbook-tags",
+      "title": "Exécuter des tâches spécifiques avec --tags",
+      "description": "Exécute uniquement les tâches marquées avec des tags spécifiques",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "playbook", "tags", "filter"],
+      "windowsCommandTemplateId": "ansible-playbook-tags-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-playbook-tags-win",
+        "platform": 0,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory} --tags \"{tags}\"",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          },
+          {
+            "name": "tags",
+            "label": "Tags",
+            "type": "string",
+            "defaultValue": "deploy",
+            "required": true,
+            "description": "Tags des tâches à exécuter (séparés par des virgules)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-playbook-tags-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-playbook-tags-linux",
+        "platform": 1,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory} --tags \"{tags}\"",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          },
+          {
+            "name": "tags",
+            "label": "Tags",
+            "type": "string",
+            "defaultValue": "deploy",
+            "required": true,
+            "description": "Tags des tâches à exécuter"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-playbook site.yml --tags \"deploy,configure\"",
+          "description": "Exécute uniquement les tâches avec les tags deploy et configure"
+        },
+        {
+          "command": "ansible-playbook site.yml --skip-tags \"backup\"",
+          "description": "Exécute toutes les tâches sauf celles avec le tag backup"
+        }
+      ],
+      "notes": "Les tags permettent d'exécuter sélectivement des parties d'un playbook. Utilisez --skip-tags pour exclure certaines tâches.",
+      "links": [
+        {
+          "title": "Ansible Tags",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks_tags.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-playbook-limit",
+      "title": "Limiter l'exécution à certains hôtes (--limit)",
+      "description": "Exécute un playbook uniquement sur un sous-ensemble d'hôtes",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "playbook", "limit", "hosts"],
+      "windowsCommandTemplateId": "ansible-playbook-limit-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-playbook-limit-win",
+        "platform": 0,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory} --limit \"{hostPattern}\"",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          },
+          {
+            "name": "hostPattern",
+            "label": "Pattern d'hôtes",
+            "type": "string",
+            "defaultValue": "webservers",
+            "required": true,
+            "description": "Pattern pour limiter les hôtes ciblés"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-playbook-limit-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-playbook-limit-linux",
+        "platform": 1,
+        "name": "ansible-playbook",
+        "commandPattern": "ansible-playbook {playbookPath} -i {inventory} --limit \"{hostPattern}\"",
+        "parameters": [
+          {
+            "name": "playbookPath",
+            "label": "Chemin du playbook",
+            "type": "string",
+            "defaultValue": "site.yml",
+            "required": true,
+            "description": "Chemin vers le fichier playbook YAML"
+          },
+          {
+            "name": "inventory",
+            "label": "Inventaire",
+            "type": "string",
+            "defaultValue": "inventory.ini",
+            "required": true,
+            "description": "Fichier d'inventaire des hôtes"
+          },
+          {
+            "name": "hostPattern",
+            "label": "Pattern d'hôtes",
+            "type": "string",
+            "defaultValue": "webservers",
+            "required": true,
+            "description": "Pattern pour limiter les hôtes ciblés"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-playbook site.yml --limit \"webservers\"",
+          "description": "Exécute uniquement sur le groupe webservers"
+        },
+        {
+          "command": "ansible-playbook update.yml --limit \"server1.example.com,server2.example.com\"",
+          "description": "Exécute uniquement sur les hôtes spécifiés"
+        }
+      ],
+      "notes": "Utilisez --limit pour tester un playbook sur un sous-ensemble d'hôtes avant un déploiement complet.",
+      "links": [
+        {
+          "title": "Ansible Patterns",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-config-view",
+      "title": "Afficher la configuration Ansible",
+      "description": "Affiche la configuration actuelle d'Ansible avec toutes les sources",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "config", "configuration", "settings"],
+      "windowsCommandTemplateId": "ansible-config-view-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-config-view-win",
+        "platform": 0,
+        "name": "ansible-config",
+        "commandPattern": "ansible-config dump --only-changed",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "ansible-config-view-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-config-view-linux",
+        "platform": 1,
+        "name": "ansible-config",
+        "commandPattern": "ansible-config dump --only-changed",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "ansible-config dump --only-changed",
+          "description": "Affiche uniquement les paramètres modifiés"
+        },
+        {
+          "command": "ansible-config list",
+          "description": "Liste tous les paramètres de configuration disponibles"
+        },
+        {
+          "command": "ansible-config view",
+          "description": "Affiche le fichier de configuration actuel"
+        }
+      ],
+      "notes": "Utilisez cette commande pour diagnostiquer les problèmes de configuration et vérifier les paramètres appliqués.",
+      "links": [
+        {
+          "title": "Ansible Configuration",
+          "url": "https://docs.ansible.com/ansible/latest/reference_appendices/config.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-doc-module",
+      "title": "Consulter la documentation d'un module",
+      "description": "Affiche la documentation complète d'un module Ansible",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "doc", "documentation", "module", "help"],
+      "windowsCommandTemplateId": "ansible-doc-module-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-doc-module-win",
+        "platform": 0,
+        "name": "ansible-doc",
+        "commandPattern": "ansible-doc {moduleName}",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "label": "Nom du module",
+            "type": "string",
+            "defaultValue": "copy",
+            "required": true,
+            "description": "Nom du module Ansible à documenter"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-doc-module-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-doc-module-linux",
+        "platform": 1,
+        "name": "ansible-doc",
+        "commandPattern": "ansible-doc {moduleName}",
+        "parameters": [
+          {
+            "name": "moduleName",
+            "label": "Nom du module",
+            "type": "string",
+            "defaultValue": "copy",
+            "required": true,
+            "description": "Nom du module Ansible"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-doc copy",
+          "description": "Documentation du module copy"
+        },
+        {
+          "command": "ansible-doc -l | grep docker",
+          "description": "Liste tous les modules contenant 'docker'"
+        },
+        {
+          "command": "ansible-doc -t lookup file",
+          "description": "Documentation du plugin lookup 'file'"
+        }
+      ],
+      "notes": "Utilisez -l pour lister tous les modules disponibles, -t pour spécifier le type de plugin (lookup, callback, etc.).",
+      "links": [
+        {
+          "title": "Ansible Modules Index",
+          "url": "https://docs.ansible.com/ansible/latest/collections/index_module.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-vault-edit",
+      "title": "Éditer un fichier chiffré avec Ansible Vault",
+      "description": "Ouvre un fichier chiffré dans l'éditeur pour modification",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "vault", "edit", "encryption", "security"],
+      "windowsCommandTemplateId": "ansible-vault-edit-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-vault-edit-win",
+        "platform": 0,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault edit {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à éditer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier chiffré à éditer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-vault-edit-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-vault-edit-linux",
+        "platform": 1,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault edit {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à éditer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier chiffré"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-vault edit group_vars/all/vault.yml",
+          "description": "Édite le fichier vault du groupe 'all'"
+        },
+        {
+          "command": "ansible-vault edit --vault-id prod@prompt secrets.yml",
+          "description": "Édite avec un vault-id spécifique"
+        }
+      ],
+      "notes": "Le fichier est automatiquement déchiffré pour l'édition et rechiffré à la sauvegarde.",
+      "links": [
+        {
+          "title": "Ansible Vault",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-vault-view",
+      "title": "Visualiser un fichier chiffré",
+      "description": "Affiche le contenu d'un fichier chiffré sans le modifier",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "vault", "view", "display"],
+      "windowsCommandTemplateId": "ansible-vault-view-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-vault-view-win",
+        "platform": 0,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault view {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à visualiser",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier chiffré à afficher"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-vault-view-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-vault-view-linux",
+        "platform": 1,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault view {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à visualiser",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier chiffré"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-vault view vars/secrets.yml",
+          "description": "Affiche le contenu déchiffré"
+        },
+        {
+          "command": "ansible-vault view --vault-password-file ~/.vault_pass secrets.yml",
+          "description": "Utilise un fichier de mot de passe"
+        }
+      ],
+      "notes": "Commande en lecture seule, idéale pour consulter rapidement des secrets sans risque de modification.",
+      "links": [
+        {
+          "title": "Ansible Vault",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-vault-decrypt",
+      "title": "Déchiffrer un fichier Ansible Vault",
+      "description": "Déchiffre définitivement un fichier chiffré avec Ansible Vault",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "vault", "decrypt", "security"],
+      "windowsCommandTemplateId": "ansible-vault-decrypt-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-vault-decrypt-win",
+        "platform": 0,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault decrypt {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à déchiffrer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier à déchiffrer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-vault-decrypt-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-vault-decrypt-linux",
+        "platform": 1,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault decrypt {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à déchiffrer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-vault decrypt secrets.yml",
+          "description": "Déchiffre le fichier de secrets"
+        },
+        {
+          "command": "ansible-vault decrypt --output=secrets-plain.yml secrets.yml",
+          "description": "Déchiffre vers un nouveau fichier"
+        }
+      ],
+      "notes": "ATTENTION: Cette commande déchiffre définitivement le fichier. Utilisez 'view' ou 'edit' pour une consultation temporaire.",
+      "links": [
+        {
+          "title": "Ansible Vault",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-vault-rekey",
+      "title": "Changer le mot de passe Vault",
+      "description": "Modifie le mot de passe de chiffrement d'un fichier Ansible Vault",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 1,
+      "tags": ["ansible", "vault", "rekey", "password", "security"],
+      "windowsCommandTemplateId": "ansible-vault-rekey-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-vault-rekey-win",
+        "platform": 0,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault rekey {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à rechiffrer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier à rechiffrer avec un nouveau mot de passe"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-vault-rekey-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-vault-rekey-linux",
+        "platform": 1,
+        "name": "ansible-vault",
+        "commandPattern": "ansible-vault rekey {filePath}",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Fichier à rechiffrer",
+            "type": "string",
+            "defaultValue": "secrets.yml",
+            "required": true,
+            "description": "Chemin du fichier"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-vault rekey secrets.yml",
+          "description": "Change le mot de passe du fichier"
+        },
+        {
+          "command": "ansible-vault rekey --new-vault-id prod@prompt secrets.yml",
+          "description": "Utilise un nouveau vault-id"
+        }
+      ],
+      "notes": "Utilisez cette commande pour faire une rotation des mots de passe Vault. L'ancien et le nouveau mot de passe seront demandés.",
+      "links": [
+        {
+          "title": "Ansible Vault",
+          "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+        }
+      ]
+    },
+    {
+      "id": "ansible-galaxy-search",
+      "title": "Rechercher des rôles Ansible Galaxy",
+      "description": "Recherche des rôles disponibles sur Ansible Galaxy",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "galaxy", "search", "role"],
+      "windowsCommandTemplateId": "ansible-galaxy-search-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-galaxy-search-win",
+        "platform": 0,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy search {keyword}",
+        "parameters": [
+          {
+            "name": "keyword",
+            "label": "Mot-clé de recherche",
+            "type": "string",
+            "defaultValue": "nginx",
+            "required": true,
+            "description": "Mot-clé pour rechercher des rôles"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-galaxy-search-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-galaxy-search-linux",
+        "platform": 1,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy search {keyword}",
+        "parameters": [
+          {
+            "name": "keyword",
+            "label": "Mot-clé",
+            "type": "string",
+            "defaultValue": "nginx",
+            "required": true,
+            "description": "Mot-clé de recherche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-galaxy search docker",
+          "description": "Recherche les rôles relatifs à Docker"
+        },
+        {
+          "command": "ansible-galaxy search nginx --author geerlingguy",
+          "description": "Recherche les rôles nginx d'un auteur spécifique"
+        }
+      ],
+      "notes": "Galaxy héberge des milliers de rôles réutilisables créés par la communauté.",
+      "links": [
+        {
+          "title": "Ansible Galaxy",
+          "url": "https://galaxy.ansible.com/"
+        }
+      ]
+    },
+    {
+      "id": "ansible-galaxy-list",
+      "title": "Lister les rôles installés",
+      "description": "Affiche la liste de tous les rôles Ansible installés localement",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "galaxy", "list", "role"],
+      "windowsCommandTemplateId": "ansible-galaxy-list-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-galaxy-list-win",
+        "platform": 0,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy list",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "ansible-galaxy-list-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-galaxy-list-linux",
+        "platform": 1,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy list",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "ansible-galaxy list",
+          "description": "Liste tous les rôles installés"
+        },
+        {
+          "command": "ansible-galaxy list --roles-path ./roles",
+          "description": "Liste les rôles d'un répertoire spécifique"
+        }
+      ],
+      "notes": "Par défaut, les rôles sont installés dans ~/.ansible/roles ou /etc/ansible/roles.",
+      "links": [
+        {
+          "title": "Ansible Galaxy",
+          "url": "https://galaxy.ansible.com/"
+        }
+      ]
+    },
+    {
+      "id": "ansible-galaxy-remove",
+      "title": "Supprimer un rôle installé",
+      "description": "Supprime un rôle Ansible Galaxy installé localement",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 0,
+      "tags": ["ansible", "galaxy", "remove", "uninstall", "role"],
+      "windowsCommandTemplateId": "ansible-galaxy-remove-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-galaxy-remove-win",
+        "platform": 0,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy remove {roleName}",
+        "parameters": [
+          {
+            "name": "roleName",
+            "label": "Nom du rôle",
+            "type": "string",
+            "defaultValue": "geerlingguy.apache",
+            "required": true,
+            "description": "Nom du rôle à supprimer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-galaxy-remove-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-galaxy-remove-linux",
+        "platform": 1,
+        "name": "ansible-galaxy",
+        "commandPattern": "ansible-galaxy remove {roleName}",
+        "parameters": [
+          {
+            "name": "roleName",
+            "label": "Nom du rôle",
+            "type": "string",
+            "defaultValue": "geerlingguy.apache",
+            "required": true,
+            "description": "Nom du rôle à supprimer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-galaxy remove geerlingguy.docker",
+          "description": "Supprime le rôle Docker"
+        },
+        {
+          "command": "ansible-galaxy remove ansible.posix",
+          "description": "Supprime la collection posix"
+        }
+      ],
+      "notes": "Cette commande supprime définitivement le rôle du système de fichiers local.",
+      "links": [
+        {
+          "title": "Ansible Galaxy",
+          "url": "https://galaxy.ansible.com/"
+        }
+      ]
+    },
+    {
+      "id": "ansible-pull",
+      "title": "Exécuter Ansible en mode pull",
+      "description": "Configure un système pour récupérer et exécuter automatiquement des playbooks depuis un dépôt Git",
+      "category": "🚀 Ansible & Automation",
+      "platform": 2,
+      "level": 2,
+      "tags": ["ansible", "pull", "git", "automation"],
+      "windowsCommandTemplateId": "ansible-pull-win",
+      "windowsCommandTemplate": {
+        "id": "ansible-pull-win",
+        "platform": 0,
+        "name": "ansible-pull",
+        "commandPattern": "ansible-pull -U {repoUrl} {playbookPath}",
+        "parameters": [
+          {
+            "name": "repoUrl",
+            "label": "URL du dépôt Git",
+            "type": "string",
+            "defaultValue": "https://github.com/user/ansible-repo.git",
+            "required": true,
+            "description": "URL du dépôt Git contenant les playbooks"
+          },
+          {
+            "name": "playbookPath",
+            "label": "Playbook",
+            "type": "string",
+            "defaultValue": "local.yml",
+            "required": true,
+            "description": "Nom du playbook à exécuter"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "ansible-pull-linux",
+      "linuxCommandTemplate": {
+        "id": "ansible-pull-linux",
+        "platform": 1,
+        "name": "ansible-pull",
+        "commandPattern": "ansible-pull -U {repoUrl} {playbookPath}",
+        "parameters": [
+          {
+            "name": "repoUrl",
+            "label": "URL du dépôt Git",
+            "type": "string",
+            "defaultValue": "https://github.com/user/ansible-repo.git",
+            "required": true,
+            "description": "URL du dépôt Git"
+          },
+          {
+            "name": "playbookPath",
+            "label": "Playbook",
+            "type": "string",
+            "defaultValue": "local.yml",
+            "required": true,
+            "description": "Nom du playbook"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "ansible-pull -U https://github.com/company/config.git site.yml",
+          "description": "Clone le dépôt et exécute site.yml"
+        },
+        {
+          "command": "ansible-pull -U https://github.com/company/config.git -C production site.yml",
+          "description": "Utilise la branche production"
+        }
+      ],
+      "notes": "Mode pull inversé : les serveurs récupèrent leur configuration au lieu d'être configurés à distance. Idéal pour les environnements à grande échelle.",
+      "links": [
+        {
+          "title": "Ansible Pull",
+          "url": "https://docs.ansible.com/ansible/latest/cli/ansible-pull.html"
+        }
+      ]
+    },
+    {
+      "id": "git-clone",
+      "title": "Cloner un dépôt Git",
+      "description": "Clone un dépôt Git distant vers un répertoire local",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "clone", "repository"],
+      "windowsCommandTemplateId": "git-clone-win",
+      "windowsCommandTemplate": {
+        "id": "git-clone-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git clone {repoUrl} {destination}",
+        "parameters": [
+          {
+            "name": "repoUrl",
+            "label": "URL du dépôt",
+            "type": "string",
+            "defaultValue": "https://github.com/user/repo.git",
+            "required": true,
+            "description": "URL du dépôt Git à cloner"
+          },
+          {
+            "name": "destination",
+            "label": "Destination",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Répertoire de destination (optionnel)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-clone-linux",
+      "linuxCommandTemplate": {
+        "id": "git-clone-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git clone {repoUrl} {destination}",
+        "parameters": [
+          {
+            "name": "repoUrl",
+            "label": "URL du dépôt",
+            "type": "string",
+            "defaultValue": "https://github.com/user/repo.git",
+            "required": true,
+            "description": "URL du dépôt Git"
+          },
+          {
+            "name": "destination",
+            "label": "Destination",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Répertoire de destination"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git clone https://github.com/torvalds/linux.git",
+          "description": "Clone le dépôt du noyau Linux"
+        },
+        {
+          "command": "git clone --depth 1 https://github.com/user/repo.git",
+          "description": "Clone uniquement le dernier commit (shallow clone)"
+        }
+      ],
+      "notes": "Utilisez --depth 1 pour un clone superficiel si vous n'avez pas besoin de l'historique complet.",
+      "links": [
+        {
+          "title": "Git Clone Documentation",
+          "url": "https://git-scm.com/docs/git-clone"
+        }
+      ]
+    },
+    {
+      "id": "git-status",
+      "title": "Afficher le statut Git",
+      "description": "Affiche l'état des fichiers dans le répertoire de travail et l'index",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "status", "working-directory"],
+      "windowsCommandTemplateId": "git-status-win",
+      "windowsCommandTemplate": {
+        "id": "git-status-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git status",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "git-status-linux",
+      "linuxCommandTemplate": {
+        "id": "git-status-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git status",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "git status",
+          "description": "Affiche le statut complet"
+        },
+        {
+          "command": "git status -s",
+          "description": "Affiche le statut en format court"
+        }
+      ],
+      "notes": "Utilisez -s pour un format court, -b pour voir la branche actuelle.",
+      "links": [
+        {
+          "title": "Git Status Documentation",
+          "url": "https://git-scm.com/docs/git-status"
+        }
+      ]
+    },
+    {
+      "id": "git-add",
+      "title": "Ajouter des fichiers à l'index Git",
+      "description": "Ajoute les modifications de fichiers à l'index (staging area)",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "add", "staging"],
+      "windowsCommandTemplateId": "git-add-win",
+      "windowsCommandTemplate": {
+        "id": "git-add-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git add {files}",
+        "parameters": [
+          {
+            "name": "files",
+            "label": "Fichiers",
+            "type": "string",
+            "defaultValue": ".",
+            "required": true,
+            "description": "Fichiers à ajouter (. pour tous)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-add-linux",
+      "linuxCommandTemplate": {
+        "id": "git-add-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git add {files}",
+        "parameters": [
+          {
+            "name": "files",
+            "label": "Fichiers",
+            "type": "string",
+            "defaultValue": ".",
+            "required": true,
+            "description": "Fichiers à ajouter"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git add .",
+          "description": "Ajoute tous les fichiers modifiés"
+        },
+        {
+          "command": "git add src/*.js",
+          "description": "Ajoute tous les fichiers JS du dossier src"
+        }
+      ],
+      "notes": "Utilisez . pour ajouter tous les fichiers, -A pour inclure suppressions et renames.",
+      "links": [
+        {
+          "title": "Git Add Documentation",
+          "url": "https://git-scm.com/docs/git-add"
+        }
+      ]
+    },
+    {
+      "id": "git-commit",
+      "title": "Créer un commit Git",
+      "description": "Enregistre les modifications de l'index dans l'historique du dépôt",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 1,
+      "tags": ["git", "commit", "history"],
+      "windowsCommandTemplateId": "git-commit-win",
+      "windowsCommandTemplate": {
+        "id": "git-commit-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git commit -m \"{message}\"",
+        "parameters": [
+          {
+            "name": "message",
+            "label": "Message",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Message du commit"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-commit-linux",
+      "linuxCommandTemplate": {
+        "id": "git-commit-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git commit -m \"{message}\"",
+        "parameters": [
+          {
+            "name": "message",
+            "label": "Message",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Message du commit"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git commit -m \"Fix: correction du bug #123\"",
+          "description": "Crée un commit avec un message"
+        },
+        {
+          "command": "git commit --amend",
+          "description": "Modifie le dernier commit"
+        }
+      ],
+      "notes": "Écrivez des messages de commit clairs et descriptifs. Utilisez --amend pour corriger le dernier commit.",
+      "links": [
+        {
+          "title": "Git Commit Documentation",
+          "url": "https://git-scm.com/docs/git-commit"
+        }
+      ]
+    },
+    {
+      "id": "git-push",
+      "title": "Pousser les commits vers le dépôt distant",
+      "description": "Envoie les commits locaux vers le dépôt distant",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 1,
+      "tags": ["git", "push", "remote"],
+      "windowsCommandTemplateId": "git-push-win",
+      "windowsCommandTemplate": {
+        "id": "git-push-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git push {remote} {branch}",
+        "parameters": [
+          {
+            "name": "remote",
+            "label": "Remote",
+            "type": "string",
+            "defaultValue": "origin",
+            "required": false,
+            "description": "Nom du dépôt distant"
+          },
+          {
+            "name": "branch",
+            "label": "Branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la branche"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-push-linux",
+      "linuxCommandTemplate": {
+        "id": "git-push-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git push {remote} {branch}",
+        "parameters": [
+          {
+            "name": "remote",
+            "label": "Remote",
+            "type": "string",
+            "defaultValue": "origin",
+            "required": false,
+            "description": "Nom du dépôt distant"
+          },
+          {
+            "name": "branch",
+            "label": "Branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la branche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git push origin main",
+          "description": "Pousse les commits vers la branche main"
+        },
+        {
+          "command": "git push -u origin feature-branch",
+          "description": "Pousse et configure le tracking de la branche"
+        }
+      ],
+      "notes": "Utilisez -f (force) avec précaution car cela peut écraser l'historique distant.",
+      "links": [
+        {
+          "title": "Git Push Documentation",
+          "url": "https://git-scm.com/docs/git-push"
+        }
+      ]
+    },
+    {
+      "id": "git-pull",
+      "title": "Récupérer et fusionner depuis le dépôt distant",
+      "description": "Récupère les modifications du dépôt distant et les fusionne avec la branche locale",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 1,
+      "tags": ["git", "pull", "fetch", "merge"],
+      "windowsCommandTemplateId": "git-pull-win",
+      "windowsCommandTemplate": {
+        "id": "git-pull-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git pull {remote} {branch}",
+        "parameters": [
+          {
+            "name": "remote",
+            "label": "Remote",
+            "type": "string",
+            "defaultValue": "origin",
+            "required": false,
+            "description": "Nom du dépôt distant"
+          },
+          {
+            "name": "branch",
+            "label": "Branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la branche"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-pull-linux",
+      "linuxCommandTemplate": {
+        "id": "git-pull-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git pull {remote} {branch}",
+        "parameters": [
+          {
+            "name": "remote",
+            "label": "Remote",
+            "type": "string",
+            "defaultValue": "origin",
+            "required": false,
+            "description": "Nom du dépôt distant"
+          },
+          {
+            "name": "branch",
+            "label": "Branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la branche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git pull origin main",
+          "description": "Récupère et fusionne les changements de main"
+        },
+        {
+          "command": "git pull --rebase",
+          "description": "Récupère et rebase au lieu de merge"
+        }
+      ],
+      "notes": "Utilisez --rebase pour un historique linéaire sans commits de merge.",
+      "links": [
+        {
+          "title": "Git Pull Documentation",
+          "url": "https://git-scm.com/docs/git-pull"
+        }
+      ]
+    },
+    {
+      "id": "git-branch",
+      "title": "Gérer les branches Git",
+      "description": "Crée, liste ou supprime des branches",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "branch", "management"],
+      "windowsCommandTemplateId": "git-branch-win",
+      "windowsCommandTemplate": {
+        "id": "git-branch-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git branch {branchName}",
+        "parameters": [
+          {
+            "name": "branchName",
+            "label": "Nom branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la branche (vide pour lister)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-branch-linux",
+      "linuxCommandTemplate": {
+        "id": "git-branch-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git branch {branchName}",
+        "parameters": [
+          {
+            "name": "branchName",
+            "label": "Nom branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom de la branche"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git branch",
+          "description": "Liste toutes les branches locales"
+        },
+        {
+          "command": "git branch feature-login",
+          "description": "Crée une nouvelle branche"
+        },
+        {
+          "command": "git branch -d old-feature",
+          "description": "Supprime une branche fusionnée"
+        }
+      ],
+      "notes": "Utilisez -a pour voir toutes les branches (locales et distantes), -d pour supprimer une branche.",
+      "links": [
+        {
+          "title": "Git Branch Documentation",
+          "url": "https://git-scm.com/docs/git-branch"
+        }
+      ]
+    },
+    {
+      "id": "git-checkout",
+      "title": "Changer de branche ou restaurer des fichiers",
+      "description": "Bascule sur une autre branche ou restaure des fichiers du working directory",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 1,
+      "tags": ["git", "checkout", "switch"],
+      "windowsCommandTemplateId": "git-checkout-win",
+      "windowsCommandTemplate": {
+        "id": "git-checkout-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git checkout {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Branche ou fichier à checkout"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-checkout-linux",
+      "linuxCommandTemplate": {
+        "id": "git-checkout-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git checkout {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Branche ou fichier"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git checkout main",
+          "description": "Bascule sur la branche main"
+        },
+        {
+          "command": "git checkout -b new-feature",
+          "description": "Crée et bascule sur une nouvelle branche"
+        },
+        {
+          "command": "git checkout -- file.txt",
+          "description": "Restaure un fichier depuis le dernier commit"
+        }
+      ],
+      "notes": "Utilisez -b pour créer et basculer sur une nouvelle branche. Préférez 'git switch' et 'git restore' dans Git moderne.",
+      "links": [
+        {
+          "title": "Git Checkout Documentation",
+          "url": "https://git-scm.com/docs/git-checkout"
+        }
+      ]
+    },
+    {
+      "id": "git-merge",
+      "title": "Fusionner des branches",
+      "description": "Fusionne une ou plusieurs branches dans la branche actuelle",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 2,
+      "tags": ["git", "merge", "integration"],
+      "windowsCommandTemplateId": "git-merge-win",
+      "windowsCommandTemplate": {
+        "id": "git-merge-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git merge {branchName}",
+        "parameters": [
+          {
+            "name": "branchName",
+            "label": "Branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Branche à fusionner"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-merge-linux",
+      "linuxCommandTemplate": {
+        "id": "git-merge-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git merge {branchName}",
+        "parameters": [
+          {
+            "name": "branchName",
+            "label": "Branche",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Branche à fusionner"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git merge feature-branch",
+          "description": "Fusionne feature-branch dans la branche actuelle"
+        },
+        {
+          "command": "git merge --no-ff feature",
+          "description": "Force un commit de merge même si fast-forward possible"
+        }
+      ],
+      "notes": "En cas de conflits, résolvez-les puis faites 'git add' et 'git commit'.",
+      "links": [
+        {
+          "title": "Git Merge Documentation",
+          "url": "https://git-scm.com/docs/git-merge"
+        }
+      ]
+    },
+    {
+      "id": "git-log",
+      "title": "Afficher l'historique des commits",
+      "description": "Affiche l'historique des commits du dépôt",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "log", "history"],
+      "windowsCommandTemplateId": "git-log-win",
+      "windowsCommandTemplate": {
+        "id": "git-log-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git log --oneline --graph --decorate -n {count}",
+        "parameters": [
+          {
+            "name": "count",
+            "label": "Nombre",
+            "type": "number",
+            "defaultValue": "20",
+            "required": false,
+            "description": "Nombre de commits à afficher"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-log-linux",
+      "linuxCommandTemplate": {
+        "id": "git-log-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git log --oneline --graph --decorate -n {count}",
+        "parameters": [
+          {
+            "name": "count",
+            "label": "Nombre",
+            "type": "number",
+            "defaultValue": "20",
+            "required": false,
+            "description": "Nombre de commits"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git log --oneline",
+          "description": "Affiche l'historique en format compact"
+        },
+        {
+          "command": "git log --graph --all",
+          "description": "Affiche toutes les branches avec un graphe"
+        },
+        {
+          "command": "git log --author=\"John\"",
+          "description": "Filtre par auteur"
+        }
+      ],
+      "notes": "Utilisez --graph pour visualiser les branches, --stat pour voir les statistiques de modifications.",
+      "links": [
+        {
+          "title": "Git Log Documentation",
+          "url": "https://git-scm.com/docs/git-log"
+        }
+      ]
+    },
+    {
+      "id": "git-diff",
+      "title": "Afficher les différences",
+      "description": "Affiche les différences entre commits, branches ou fichiers",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "diff", "changes"],
+      "windowsCommandTemplateId": "git-diff-win",
+      "windowsCommandTemplate": {
+        "id": "git-diff-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git diff {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Branche, commit ou fichier à comparer"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-diff-linux",
+      "linuxCommandTemplate": {
+        "id": "git-diff-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git diff {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Cible à comparer"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git diff",
+          "description": "Affiche les modifications non staged"
+        },
+        {
+          "command": "git diff --staged",
+          "description": "Affiche les modifications staged"
+        },
+        {
+          "command": "git diff main..feature",
+          "description": "Compare deux branches"
+        }
+      ],
+      "notes": "Utilisez --staged pour voir ce qui sera commité, --stat pour un résumé.",
+      "links": [
+        {
+          "title": "Git Diff Documentation",
+          "url": "https://git-scm.com/docs/git-diff"
+        }
+      ]
+    },
+    {
+      "id": "git-stash",
+      "title": "Sauvegarder temporairement des modifications",
+      "description": "Met de côté temporairement les modifications non commitées",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "stash", "temporary"],
+      "windowsCommandTemplateId": "git-stash-win",
+      "windowsCommandTemplate": {
+        "id": "git-stash-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git stash",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "git-stash-linux",
+      "linuxCommandTemplate": {
+        "id": "git-stash-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git stash",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "git stash",
+          "description": "Sauvegarde les modifications actuelles"
+        },
+        {
+          "command": "git stash pop",
+          "description": "Restaure les modifications et supprime le stash"
+        },
+        {
+          "command": "git stash list",
+          "description": "Liste tous les stashs"
+        }
+      ],
+      "notes": "Utilisez 'stash push -m \"message\"' pour nommer un stash, 'stash apply' pour restaurer sans supprimer.",
+      "links": [
+        {
+          "title": "Git Stash Documentation",
+          "url": "https://git-scm.com/docs/git-stash"
+        }
+      ]
+    },
+    {
+      "id": "git-reset",
+      "title": "Réinitialiser l'état du dépôt",
+      "description": "Réinitialise HEAD à un état spécifique",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 2,
+      "tags": ["git", "reset", "undo"],
+      "windowsCommandTemplateId": "git-reset-win",
+      "windowsCommandTemplate": {
+        "id": "git-reset-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git reset {mode} {target}",
+        "parameters": [
+          {
+            "name": "mode",
+            "label": "Mode",
+            "type": "string",
+            "defaultValue": "--mixed",
+            "required": false,
+            "description": "Mode de reset (--soft, --mixed, --hard)"
+          },
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "HEAD~1",
+            "required": false,
+            "description": "Commit cible"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-reset-linux",
+      "linuxCommandTemplate": {
+        "id": "git-reset-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git reset {mode} {target}",
+        "parameters": [
+          {
+            "name": "mode",
+            "label": "Mode",
+            "type": "string",
+            "defaultValue": "--mixed",
+            "required": false,
+            "description": "Mode de reset"
+          },
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "HEAD~1",
+            "required": false,
+            "description": "Commit cible"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git reset HEAD~1",
+          "description": "Annule le dernier commit en gardant les modifications"
+        },
+        {
+          "command": "git reset --hard origin/main",
+          "description": "Réinitialise complètement au state de origin/main"
+        }
+      ],
+      "notes": "ATTENTION : --hard supprime les modifications. --soft garde tout staged, --mixed unstage.",
+      "links": [
+        {
+          "title": "Git Reset Documentation",
+          "url": "https://git-scm.com/docs/git-reset"
+        }
+      ]
+    },
+    {
+      "id": "git-rebase",
+      "title": "Rebaser une branche",
+      "description": "Réapplique des commits sur une nouvelle base",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 2,
+      "tags": ["git", "rebase", "history"],
+      "windowsCommandTemplateId": "git-rebase-win",
+      "windowsCommandTemplate": {
+        "id": "git-rebase-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git rebase {branch}",
+        "parameters": [
+          {
+            "name": "branch",
+            "label": "Branche de base",
+            "type": "string",
+            "defaultValue": "main",
+            "required": true,
+            "description": "Branche sur laquelle rebaser"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-rebase-linux",
+      "linuxCommandTemplate": {
+        "id": "git-rebase-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git rebase {branch}",
+        "parameters": [
+          {
+            "name": "branch",
+            "label": "Branche de base",
+            "type": "string",
+            "defaultValue": "main",
+            "required": true,
+            "description": "Branche sur laquelle rebaser"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git rebase main",
+          "description": "Rebase la branche actuelle sur main"
+        },
+        {
+          "command": "git rebase -i HEAD~5",
+          "description": "Rebase interactif des 5 derniers commits"
+        }
+      ],
+      "notes": "ATTENTION : Ne rebasez jamais des commits déjà poussés sur un dépôt public. Utilisez -i pour un rebase interactif.",
+      "links": [
+        {
+          "title": "Git Rebase Documentation",
+          "url": "https://git-scm.com/docs/git-rebase"
+        }
+      ]
+    },
+    {
+      "id": "git-tag",
+      "title": "Gérer les tags Git",
+      "description": "Crée, liste ou supprime des tags (versions)",
+      "category": "🔀 Git & Version Control",
+      "platform": 2,
+      "level": 0,
+      "tags": ["git", "tag", "version", "release"],
+      "windowsCommandTemplateId": "git-tag-win",
+      "windowsCommandTemplate": {
+        "id": "git-tag-win",
+        "platform": 0,
+        "name": "git",
+        "commandPattern": "git tag {tagName}",
+        "parameters": [
+          {
+            "name": "tagName",
+            "label": "Nom du tag",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom du tag (vide pour lister)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "git-tag-linux",
+      "linuxCommandTemplate": {
+        "id": "git-tag-linux",
+        "platform": 1,
+        "name": "git",
+        "commandPattern": "git tag {tagName}",
+        "parameters": [
+          {
+            "name": "tagName",
+            "label": "Nom du tag",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "Nom du tag"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "git tag",
+          "description": "Liste tous les tags"
+        },
+        {
+          "command": "git tag v1.0.0",
+          "description": "Crée un tag léger"
+        },
+        {
+          "command": "git tag -a v1.0.0 -m \"Release 1.0.0\"",
+          "description": "Crée un tag annoté"
+        }
+      ],
+      "notes": "Utilisez -a pour créer des tags annotés (recommandé). N'oubliez pas de pousser les tags avec 'git push --tags'.",
+      "links": [
+        {
+          "title": "Git Tag Documentation",
+          "url": "https://git-scm.com/docs/git-tag"
         }
       ]
     }
