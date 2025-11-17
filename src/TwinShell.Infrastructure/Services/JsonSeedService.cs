@@ -39,6 +39,15 @@ public class JsonSeedService : ISeedService
         }
 
         var json = await File.ReadAllTextAsync(_seedFilePath);
+
+        // SECURITY: Limit JSON size to prevent DoS
+        const int MaxJsonSizeBytes = 10 * 1024 * 1024; // 10 MB
+        if (json.Length > MaxJsonSizeBytes)
+        {
+            Console.WriteLine($"Warning: Seed file too large ({json.Length} bytes). Maximum allowed is {MaxJsonSizeBytes} bytes.");
+            return;
+        }
+
         var seedData = JsonSerializer.Deserialize<SeedData>(json, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -49,14 +58,69 @@ public class JsonSeedService : ISeedService
             return;
         }
 
+        // SECURITY: Validate and sanitize each action before insertion
+        var validActionsCount = 0;
+        var skippedActionsCount = 0;
+
         foreach (var action in seedData.Actions)
         {
+            if (!ValidateAction(action))
+            {
+                Console.WriteLine($"Warning: Skipping invalid action: {action.Id ?? "unknown"}");
+                skippedActionsCount++;
+                continue;
+            }
+
             action.IsUserCreated = false;
             action.CreatedAt = DateTime.UtcNow;
             action.UpdatedAt = DateTime.UtcNow;
 
             await _actionRepository.AddAsync(action);
+            validActionsCount++;
         }
+
+        Console.WriteLine($"Seeding completed: {validActionsCount} actions inserted, {skippedActionsCount} actions skipped.");
+    }
+
+    /// <summary>
+    /// Validates action data to prevent injection of malicious content
+    /// </summary>
+    private static bool ValidateAction(ActionModel action)
+    {
+        // Check required fields
+        if (string.IsNullOrWhiteSpace(action.Title) ||
+            string.IsNullOrWhiteSpace(action.Category))
+        {
+            return false;
+        }
+
+        // Check field lengths to prevent oversized data
+        const int MaxTitleLength = 200;
+        const int MaxDescriptionLength = 2000;
+        const int MaxCategoryLength = 100;
+        const int MaxNotesLength = 5000;
+
+        if (action.Title.Length > MaxTitleLength ||
+            action.Category.Length > MaxCategoryLength ||
+            (action.Description?.Length ?? 0) > MaxDescriptionLength ||
+            (action.Notes?.Length ?? 0) > MaxNotesLength)
+        {
+            return false;
+        }
+
+        // Check collections sizes
+        const int MaxTagsCount = 20;
+        const int MaxExamplesCount = 10;
+        const int MaxLinksCount = 10;
+
+        if ((action.Tags?.Count ?? 0) > MaxTagsCount ||
+            (action.Examples?.Count ?? 0) > MaxExamplesCount ||
+            (action.Links?.Count ?? 0) > MaxLinksCount)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private class SeedData

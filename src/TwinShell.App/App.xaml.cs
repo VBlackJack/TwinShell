@@ -34,13 +34,14 @@ public partial class App : Application
             _serviceProvider = services.BuildServiceProvider();
             LogInfo("Services configured");
 
-            // Initialize theme and database with ConfigureAwait to avoid deadlock
+            // Initialize theme and database
+            // BUGFIX: Use GetAwaiter().GetResult() instead of Wait() to prevent potential deadlocks
             LogInfo("Initializing theme...");
-            Task.Run(async () => await InitializeThemeAsync().ConfigureAwait(false)).Wait();
+            InitializeThemeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             LogInfo("Theme initialized");
 
             LogInfo("Initializing database...");
-            Task.Run(async () => await InitializeDatabaseAsync().ConfigureAwait(false)).Wait();
+            InitializeDatabaseAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             LogInfo("Database initialized");
 
             // Create and show main window
@@ -59,8 +60,9 @@ public partial class App : Application
         catch (Exception ex)
         {
             LogError("Startup error", ex);
-            MessageBox.Show($"Erreur au démarrage de l'application:\n\n{ex.Message}\n\nVoir startup-error.log pour plus de détails.",
-                "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            // SECURITY: Don't expose detailed error messages to users
+            MessageBox.Show("Une erreur s'est produite au démarrage de l'application.\n\nVeuillez consulter le fichier startup-error.log pour plus de détails.",
+                "Erreur de démarrage", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }
     }
@@ -76,7 +78,9 @@ public partial class App : Application
     private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
         LogError("Dispatcher exception", e.Exception);
-        MessageBox.Show($"Erreur: {e.Exception.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        // SECURITY: Don't expose detailed error messages to users
+        MessageBox.Show("Une erreur inattendue s'est produite.\n\nL'application va continuer à fonctionner mais certaines fonctionnalités peuvent être affectées.",
+            "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
     }
 
@@ -85,7 +89,11 @@ public partial class App : Application
         try
         {
             var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log");
-            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n{ex}\n\n";
+            // SECURITY: Sanitize exception logging to avoid exposing sensitive paths or data
+            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n" +
+                           $"Type: {ex.GetType().Name}\n" +
+                           $"Message: {ex.Message}\n" +
+                           $"Source: {ex.Source}\n\n";
             File.AppendAllText(logPath, logMessage);
         }
         catch { /* Ignore logging errors */ }

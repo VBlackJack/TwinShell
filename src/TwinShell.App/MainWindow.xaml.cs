@@ -53,8 +53,11 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            // SECURITY: Sanitize exception logging
             System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log"),
-                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor error: {ex}\n");
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor error\n" +
+                $"Type: {ex.GetType().Name}\n" +
+                $"Message: {ex.Message}\n\n");
             throw;
         }
     }
@@ -71,9 +74,14 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
+            // SECURITY: Don't expose detailed error messages
+            System.IO.File.AppendAllText(
+                System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log"),
+                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Initialization error: {ex.GetType().Name} - {ex.Message}\n");
+
             MessageBox.Show(
-                $"Failed to initialize the application: {ex.Message}",
-                "Initialization Error",
+                "Échec de l'initialisation de l'application.\n\nConsultez le fichier startup-error.log pour plus de détails.",
+                "Erreur d'initialisation",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
