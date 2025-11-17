@@ -23,7 +23,8 @@ public class JsonSeedService : ISeedService
     public async Task SeedAsync()
     {
         // Check if database is empty
-        var existingCount = await _actionRepository.CountAsync();
+        // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread
+        var existingCount = await _actionRepository.CountAsync().ConfigureAwait(false);
         if (existingCount > 0)
         {
             // Database already has data, skip seeding
@@ -38,7 +39,7 @@ public class JsonSeedService : ISeedService
             return;
         }
 
-        var json = await File.ReadAllTextAsync(_seedFilePath);
+        var json = await File.ReadAllTextAsync(_seedFilePath).ConfigureAwait(false);
 
         // SECURITY: Limit JSON size to prevent DoS
         const int MaxJsonSizeBytes = 10 * 1024 * 1024; // 10 MB
@@ -75,7 +76,7 @@ public class JsonSeedService : ISeedService
             action.CreatedAt = DateTime.UtcNow;
             action.UpdatedAt = DateTime.UtcNow;
 
-            await _actionRepository.AddAsync(action);
+            await _actionRepository.AddAsync(action).ConfigureAwait(false);
             validActionsCount++;
         }
 
