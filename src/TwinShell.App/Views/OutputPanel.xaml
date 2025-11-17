@@ -27,35 +27,72 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Status and Progress -->
+                <!-- UX: Status and Progress (removed emoji for professional consistency) -->
                 <StackPanel Grid.Column="0" Orientation="Vertical">
                     <TextBlock Text="{Binding StatusMessage}"
                                FontSize="14"
                                FontWeight="SemiBold"
                                Foreground="{StaticResource PrimaryBrush}"/>
                     <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                        <TextBlock Text="⏱ "
+                        <TextBlock Text="Execution time: "
                                    FontSize="12"
                                    Foreground="{StaticResource TextSecondaryBrush}"/>
                         <TextBlock Text="{Binding ExecutionTime}"
                                    FontSize="12"
                                    FontFamily="Consolas"
+                                   FontWeight="SemiBold"
                                    Foreground="{StaticResource TextSecondaryBrush}"/>
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Action Buttons -->
+                <!-- UX: Action Buttons with text-only labels (consistent with rest of app, professional) -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button Content="⏹ Stop"
+                    <Button Content="Stop"
                             Command="{Binding StopExecutionCommand}"
                             IsEnabled="{Binding IsExecuting}"
                             Style="{StaticResource PrimaryButtonStyle}"
-                            Padding="12,6"
-                            Margin="0,0,8,0"/>
-                    <Button Content="🗑 Clear"
+                            Padding="12,10"
+                            MinWidth="44"
+                            MinHeight="44"
+                            Margin="0,0,8,0"
+                            ToolTip="Stop the currently running command"
+                            AutomationProperties.Name="Stop execution"
+                            AutomationProperties.HelpText="Stop the currently executing command"/>
+                    <Button Content="Clear"
                             Command="{Binding ClearOutputCommand}"
                             IsEnabled="{Binding IsExecuting, Converter={StaticResource InverseBooleanConverter}}"
-                            Padding="12,6"/>
+                            Padding="12,10"
+                            MinWidth="44"
+                            MinHeight="44"
+                            Background="{StaticResource SurfaceBrush}"
+                            Foreground="{StaticResource TextPrimaryBrush}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            Cursor="Hand"
+                            ToolTip="Clear the output console"
+                            AutomationProperties.Name="Clear output"
+                            AutomationProperties.HelpText="Clear all output from the console">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="4"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>

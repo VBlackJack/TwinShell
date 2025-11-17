@@ -18,24 +18,12 @@
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="Command History"
-                       FontSize="24"
-                       FontWeight="Bold"
-                       Foreground="{StaticResource PrimaryBrush}"/>
-            <TextBlock Text="Browse and reuse your command history"
-                       FontSize="12"
-                       Foreground="{StaticResource TextSecondaryBrush}"/>
-        </StackPanel>
-
-        <!-- Search and Filters -->
-        <Border Grid.Row="1"
+        <!-- UX: Search and Filters with cleaner layout (removed redundant header) -->
+        <Border Grid.Row="0"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -163,7 +151,7 @@
         </Border>
 
         <!-- History List -->
-        <Border Grid.Row="2"
+        <Border Grid.Row="1"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
@@ -285,7 +273,7 @@
         </Border>
 
         <!-- UX: Enhanced empty state with icon -->
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{Binding HistoryItems.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
@@ -318,7 +306,7 @@
         </StackPanel>
 
         <!-- Status Bar -->
-        <Border Grid.Row="3"
+        <Border Grid.Row="2"
                 Background="{StaticResource SurfaceBrush}"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="1"
