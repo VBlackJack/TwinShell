@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Entities;
 using TwinShell.Persistence.Mappers;

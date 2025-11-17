@@ -1,6 +1,7 @@
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
+using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Core.Services;
 
@@ -16,17 +17,17 @@ public class ActionService : IActionService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Action>> GetAllActionsAsync()
+    public async Task<IEnumerable<ActionModel>> GetAllActionsAsync()
     {
         return await _repository.GetAllAsync();
     }
 
-    public async Task<Action?> GetActionByIdAsync(string id)
+    public async Task<ActionModel?> GetActionByIdAsync(string id)
     {
         return await _repository.GetByIdAsync(id);
     }
 
-    public async Task<IEnumerable<Action>> GetActionsByCategoryAsync(string category)
+    public async Task<IEnumerable<ActionModel>> GetActionsByCategoryAsync(string category)
     {
         return await _repository.GetByCategoryAsync(category);
     }
@@ -36,8 +37,8 @@ public class ActionService : IActionService
         return await _repository.GetAllCategoriesAsync();
     }
 
-    public async Task<IEnumerable<Action>> FilterActionsAsync(
-        IEnumerable<Action> actions,
+    public async Task<IEnumerable<ActionModel>> FilterActionsAsync(
+        IEnumerable<ActionModel> actions,
         Platform? platform = null,
         CriticalityLevel? level = null)
     {
@@ -58,7 +59,7 @@ public class ActionService : IActionService
         return await Task.FromResult(filtered);
     }
 
-    public async Task<Action> CreateActionAsync(Action action)
+    public async Task<ActionModel> CreateActionAsync(ActionModel action)
     {
         action.Id = Guid.NewGuid().ToString();
         action.CreatedAt = DateTime.UtcNow;
@@ -69,7 +70,7 @@ public class ActionService : IActionService
         return action;
     }
 
-    public async Task UpdateActionAsync(Action action)
+    public async Task UpdateActionAsync(ActionModel action)
     {
         action.UpdatedAt = DateTime.UtcNow;
         await _repository.UpdateAsync(action);

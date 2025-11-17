@@ -21,9 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="..\..\data\seed\initial-actions.json">
+    <Content Include="..\..\data\seed\initial-actions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+      <Link>data\seed\initial-actions.json</Link>
+    </Content>
   </ItemGroup>
+
+  <Target Name="CopySeedData" AfterTargets="Build">
+    <MakeDir Directories="$(OutputPath)data\seed" />
+    <Copy SourceFiles="..\..\data\seed\initial-actions.json" DestinationFolder="$(OutputPath)data\seed" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

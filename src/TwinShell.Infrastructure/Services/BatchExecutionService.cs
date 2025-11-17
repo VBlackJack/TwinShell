@@ -100,6 +100,21 @@ public class BatchExecutionService : IBatchExecutionService
                 if (executionResult.Success)
                 {
                     successCount++;
+
+                    // Log successful execution
+                    await _auditLogService.AddLogAsync(new AuditLog
+                    {
+                        Timestamp = DateTime.UtcNow,
+                        ActionId = command.ActionId ?? batch.Id,
+                        Command = command.Command,
+                        Platform = command.Platform,
+                        ExitCode = executionResult.ExitCode,
+                        Success = true,
+                        Duration = executionResult.Duration,
+                        ActionTitle = command.ActionTitle,
+                        Category = "Batch Execution",
+                        WasDangerous = false
+                    });
                 }
                 else
                 {
@@ -128,23 +143,6 @@ public class BatchExecutionService : IBatchExecutionService
                         onProgressChanged?.Invoke(progress);
                         break;
                     }
-                }
-                else
-                {
-                    // Log successful execution
-                    await _auditLogService.AddLogAsync(new AuditLog
-                    {
-                        Timestamp = DateTime.UtcNow,
-                        ActionId = command.ActionId ?? batch.Id,
-                        Command = command.Command,
-                        Platform = command.Platform,
-                        ExitCode = executionResult.ExitCode,
-                        Success = true,
-                        Duration = executionResult.Duration,
-                        ActionTitle = command.ActionTitle,
-                        Category = "Batch Execution",
-                        WasDangerous = false
-                    });
                 }
 
                 // Report progress after execution

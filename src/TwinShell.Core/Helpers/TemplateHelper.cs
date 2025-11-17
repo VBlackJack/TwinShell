@@ -1,5 +1,6 @@
 using TwinShell.Core.Enums;
 using TwinShell.Core.Models;
+using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Core.Helpers;
 
@@ -14,7 +15,7 @@ public static class TemplateHelper
     /// </summary>
     /// <param name="action">The action to get the template from</param>
     /// <returns>The active template, or null if no template is available</returns>
-    public static CommandTemplate? GetActiveTemplate(Action action)
+    public static CommandTemplate? GetActiveTemplate(ActionModel action)
     {
         if (action == null)
             return null;
@@ -39,7 +40,7 @@ public static class TemplateHelper
     /// <param name="action">The action containing the templates</param>
     /// <param name="template">The template to check</param>
     /// <returns>The platform (Windows or Linux)</returns>
-    public static Platform GetPlatformForTemplate(Action action, CommandTemplate template)
+    public static Platform GetPlatformForTemplate(ActionModel action, CommandTemplate template)
     {
         // BUGFIX: Specify parameter name in ArgumentNullException
         if (action == null)
@@ -57,6 +58,6 @@ public static class TemplateHelper
     /// <returns>True if the template is valid</returns>
     public static bool IsValidTemplate(CommandTemplate? template)
     {
-        return template != null && !string.IsNullOrWhiteSpace(template.BaseCommand);
+        return template != null && !string.IsNullOrWhiteSpace(template.CommandPattern);
     }
 }

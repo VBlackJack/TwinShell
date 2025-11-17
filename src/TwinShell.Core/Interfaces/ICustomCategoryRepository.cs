@@ -1,6 +1,6 @@
 using TwinShell.Core.Models;
 
-namespace TwinShell.Persistence.Repositories;
+namespace TwinShell.Core.Interfaces;
 
 /// <summary>
 /// Repository interface for managing custom categories.

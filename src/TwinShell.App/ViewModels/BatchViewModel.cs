@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -241,14 +242,4 @@ public partial class BatchViewModel : ObservableObject
             _notificationService.ShowError("Failed to import batch");
         }
     }
-}
-
-/// <summary>
-/// ViewModel for output lines
-/// </summary>
-public class OutputLineViewModel
-{
-    public string Text { get; set; } = string.Empty;
-    public bool IsError { get; set; }
-    public DateTime Timestamp { get; set; }
 }

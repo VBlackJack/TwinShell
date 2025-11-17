@@ -260,27 +260,9 @@
                         <GradientStop Color="#F5F5F5" Offset="0.5"/>
                         <GradientStop Color="#E0E0E0" Offset="1"/>
                     </LinearGradientBrush.GradientStops>
-                    <LinearGradientBrush.Transform>
-                        <TranslateTransform x:Name="SkeletonTransform"/>
-                    </LinearGradientBrush.Transform>
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <EventTrigger RoutedEvent="Loaded">
-                <BeginStoryboard>
-                    <Storyboard RepeatBehavior="Forever">
-                        <DoubleAnimation Storyboard.TargetName="SkeletonTransform"
-                                       Storyboard.TargetProperty="X"
-                                       From="-200"
-                                       To="200"
-                                       Duration="0:0:1.2"
-                                       AutoReverse="False"
-                                       EasingFunction="{StaticResource Easing.Standard}"/>
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-        </Style.Triggers>
     </Style>
 
     <!-- Pulse Animation for Loading States -->

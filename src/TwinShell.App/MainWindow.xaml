@@ -444,7 +444,7 @@
                             </StackPanel>
 
                             <!-- UX: Danger banner with clearer English wording -->
-                            <Border Style="{StaticResource DangerBannerStyle}">
+                            <Border>
                                 <Border.Style>
                                     <Style TargetType="Border" BasedOn="{StaticResource DangerBannerStyle}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -482,7 +482,9 @@
                             <ItemsControl ItemsSource="{Binding Examples}" Margin="0,0,0,16">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#F5F5F5"
+                                        <Border Background="{StaticResource CodeBackgroundBrush}"
+                                                BorderBrush="{StaticResource CodeBorderBrush}"
+                                                BorderThickness="1"
                                                 Padding="8"
                                                 Margin="0,0,0,8"
                                                 CornerRadius="4">
@@ -490,6 +492,7 @@
                                                 <TextBlock Text="{Binding Command}"
                                                            FontFamily="Consolas"
                                                            FontSize="12"
+                                                           Foreground="{StaticResource CodeTextBrush}"
                                                            TextWrapping="Wrap"/>
                                                 <TextBlock Text="{Binding Description}"
                                                            FontSize="11"
@@ -523,8 +526,8 @@
                             </StackPanel>
 
                             <!-- UX: Command Generator with English labels and clearer structure -->
-                            <Border Background="#E8F5E9"
-                                    BorderBrush="#4CAF50"
+                            <Border Background="{StaticResource SurfaceElevatedBrush}"
+                                    BorderBrush="{StaticResource SuccessBorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="4"
                                     Padding="12"
@@ -533,6 +536,7 @@
                                     <TextBlock Text="Command Generator"
                                                FontWeight="SemiBold"
                                                FontSize="14"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
                                                Margin="0,0,0,8"/>
 
                                     <!-- Parameters -->
@@ -540,11 +544,11 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Margin="0,0,0,8">
-                                                    <TextBlock>
-                                                        <Run Text="{Binding Label, Mode=OneWay}"/>
-                                                        <Run Text="*" Foreground="Red">
-                                                            <Run.Style>
-                                                                <Style TargetType="Run">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Label, Mode=OneWay}"/>
+                                                        <TextBlock Text="*" Foreground="Red" Margin="2,0,0,0">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
                                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                                     <Style.Triggers>
                                                                         <DataTrigger Binding="{Binding Required}" Value="True">
@@ -552,9 +556,9 @@
                                                                         </DataTrigger>
                                                                     </Style.Triggers>
                                                                 </Style>
-                                                            </Run.Style>
-                                                        </Run>
-                                                    </TextBlock>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
                                                     <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource ModernTextBoxStyle}"
                                                              Margin="0,4,0,0"
@@ -573,9 +577,10 @@
                                     <!-- Generated Command -->
                                     <TextBlock Text="Generated Command"
                                                FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimaryBrush}"
                                                Margin="0,8,0,4"/>
-                                    <Border Background="White"
-                                            BorderBrush="{StaticResource BorderBrush}"
+                                    <Border Background="{StaticResource CodeBackgroundBrush}"
+                                            BorderBrush="{StaticResource CodeBorderBrush}"
                                             BorderThickness="1"
                                             CornerRadius="4"
                                             Padding="8">
@@ -583,6 +588,7 @@
                                                    Text="{Binding GeneratedCommand}"
                                                    FontFamily="Consolas"
                                                    FontSize="12"
+                                                   Foreground="{StaticResource CodeTextBrush}"
                                                    TextWrapping="Wrap"/>
                                     </Border>
 

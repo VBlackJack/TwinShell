@@ -507,12 +507,20 @@
                         <StackPanel VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Margin="0,40,0,0">
-                            <StackPanel.Visibility>
-                                <MultiBinding Converter="{StaticResource BoolToVisibilityConverter}">
-                                    <Binding Path="IsAddMode"/>
-                                    <Binding Path="SelectedCategory"/>
-                                </MultiBinding>
-                            </StackPanel.Visibility>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsAddMode}" Value="False"/>
+                                                <Condition Binding="{Binding SelectedCategory}" Value="{x:Null}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
                             <TextBlock Text="No Category Selected"
                                        FontSize="18"
                                        FontWeight="SemiBold"

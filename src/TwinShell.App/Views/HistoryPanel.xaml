@@ -223,13 +223,16 @@
 
                                         <!-- Command -->
                                         <Border Grid.Row="1"
-                                                Background="#F5F5F5"
+                                                Background="{StaticResource CodeBackgroundBrush}"
+                                                BorderBrush="{StaticResource CodeBorderBrush}"
+                                                BorderThickness="1"
                                                 CornerRadius="4"
                                                 Padding="8"
                                                 Margin="0,8,0,8">
                                             <TextBlock Text="{Binding GeneratedCommand}"
                                                        FontFamily="Consolas"
                                                        FontSize="12"
+                                                       Foreground="{StaticResource CodeTextBrush}"
                                                        TextWrapping="Wrap"/>
                                         </Border>
 

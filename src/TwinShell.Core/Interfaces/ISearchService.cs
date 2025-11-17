@@ -1,4 +1,5 @@
 using TwinShell.Core.Models;
+using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Core.Interfaces;
 
@@ -7,7 +8,7 @@ namespace TwinShell.Core.Interfaces;
 /// </summary>
 public interface ISearchService
 {
-    Task<IEnumerable<Action>> SearchAsync(
-        IEnumerable<Action> actions,
+    Task<IEnumerable<ActionModel>> SearchAsync(
+        IEnumerable<ActionModel> actions,
         string searchTerm);
 }

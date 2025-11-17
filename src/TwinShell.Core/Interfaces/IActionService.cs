@@ -1,5 +1,6 @@
 using TwinShell.Core.Enums;
 using TwinShell.Core.Models;
+using ActionModel = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Core.Interfaces;
 
@@ -8,15 +9,15 @@ namespace TwinShell.Core.Interfaces;
 /// </summary>
 public interface IActionService
 {
-    Task<IEnumerable<Action>> GetAllActionsAsync();
-    Task<Action?> GetActionByIdAsync(string id);
-    Task<IEnumerable<Action>> GetActionsByCategoryAsync(string category);
+    Task<IEnumerable<ActionModel>> GetAllActionsAsync();
+    Task<ActionModel?> GetActionByIdAsync(string id);
+    Task<IEnumerable<ActionModel>> GetActionsByCategoryAsync(string category);
     Task<IEnumerable<string>> GetAllCategoriesAsync();
-    Task<IEnumerable<Action>> FilterActionsAsync(
-        IEnumerable<Action> actions,
+    Task<IEnumerable<ActionModel>> FilterActionsAsync(
+        IEnumerable<ActionModel> actions,
         Platform? platform = null,
         CriticalityLevel? level = null);
-    Task<Action> CreateActionAsync(Action action);
-    Task UpdateActionAsync(Action action);
+    Task<ActionModel> CreateActionAsync(ActionModel action);
+    Task UpdateActionAsync(ActionModel action);
     Task DeleteActionAsync(string id);
 }

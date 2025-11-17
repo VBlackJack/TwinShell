@@ -347,12 +347,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             Level = CriticalityLevel.Run,
             WindowsCommandTemplate = new CommandTemplate
             {
-                Template = template,
+                CommandPattern = template,
                 Parameters = command.Parameters.Select(p => new TemplateParameter
                 {
                     Name = p.Name,
                     Description = p.Description,
-                    IsRequired = p.IsMandatory,
+                    Required = p.IsMandatory,
                     DefaultValue = p.DefaultValue
                 }).ToList()
             },
@@ -366,9 +366,8 @@ public class PowerShellGalleryService : IPowerShellGalleryService
         {
             action.Examples = command.Examples.Select((example, index) => new CommandExample
             {
-                Title = $"Example {index + 1}",
                 Command = example,
-                Description = $"Example usage of {command.Name}"
+                Description = $"Example {index + 1} - {command.Name}"
             }).ToList();
         }
 
