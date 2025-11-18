@@ -18596,7 +18596,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "playbook", "automation", "configuration"],
+      "tags": [
+        "ansible",
+        "playbook",
+        "automation",
+        "configuration"
+      ],
       "windowsCommandTemplateId": "ansible-playbook-run-win",
       "windowsCommandTemplate": {
         "id": "ansible-playbook-run-win",
@@ -18672,7 +18677,11 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "ad-hoc", "command"],
+      "tags": [
+        "ansible",
+        "ad-hoc",
+        "command"
+      ],
       "windowsCommandTemplateId": "ansible-ad-hoc-win",
       "windowsCommandTemplate": {
         "id": "ansible-ad-hoc-win",
@@ -18764,7 +18773,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "galaxy", "role", "install"],
+      "tags": [
+        "ansible",
+        "galaxy",
+        "role",
+        "install"
+      ],
       "windowsCommandTemplateId": "ansible-galaxy-install-win",
       "windowsCommandTemplate": {
         "id": "ansible-galaxy-install-win",
@@ -18824,7 +18838,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "vault", "encryption", "security"],
+      "tags": [
+        "ansible",
+        "vault",
+        "encryption",
+        "security"
+      ],
       "windowsCommandTemplateId": "ansible-vault-encrypt-win",
       "windowsCommandTemplate": {
         "id": "ansible-vault-encrypt-win",
@@ -18884,7 +18903,11 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "inventory", "hosts"],
+      "tags": [
+        "ansible",
+        "inventory",
+        "hosts"
+      ],
       "windowsCommandTemplateId": "ansible-inventory-list-win",
       "windowsCommandTemplate": {
         "id": "ansible-inventory-list-win",
@@ -18944,7 +18967,13 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "playbook", "dry-run", "check", "test"],
+      "tags": [
+        "ansible",
+        "playbook",
+        "dry-run",
+        "check",
+        "test"
+      ],
       "windowsCommandTemplateId": "ansible-playbook-check-win",
       "windowsCommandTemplate": {
         "id": "ansible-playbook-check-win",
@@ -19020,7 +19049,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "playbook", "tags", "filter"],
+      "tags": [
+        "ansible",
+        "playbook",
+        "tags",
+        "filter"
+      ],
       "windowsCommandTemplateId": "ansible-playbook-tags-win",
       "windowsCommandTemplate": {
         "id": "ansible-playbook-tags-win",
@@ -19112,7 +19146,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "playbook", "limit", "hosts"],
+      "tags": [
+        "ansible",
+        "playbook",
+        "limit",
+        "hosts"
+      ],
       "windowsCommandTemplateId": "ansible-playbook-limit-win",
       "windowsCommandTemplate": {
         "id": "ansible-playbook-limit-win",
@@ -19204,7 +19243,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "config", "configuration", "settings"],
+      "tags": [
+        "ansible",
+        "config",
+        "configuration",
+        "settings"
+      ],
       "windowsCommandTemplateId": "ansible-config-view-win",
       "windowsCommandTemplate": {
         "id": "ansible-config-view-win",
@@ -19250,7 +19294,13 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "doc", "documentation", "module", "help"],
+      "tags": [
+        "ansible",
+        "doc",
+        "documentation",
+        "module",
+        "help"
+      ],
       "windowsCommandTemplateId": "ansible-doc-module-win",
       "windowsCommandTemplate": {
         "id": "ansible-doc-module-win",
@@ -19314,7 +19364,13 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "vault", "edit", "encryption", "security"],
+      "tags": [
+        "ansible",
+        "vault",
+        "edit",
+        "encryption",
+        "security"
+      ],
       "windowsCommandTemplateId": "ansible-vault-edit-win",
       "windowsCommandTemplate": {
         "id": "ansible-vault-edit-win",
@@ -19374,7 +19430,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "vault", "view", "display"],
+      "tags": [
+        "ansible",
+        "vault",
+        "view",
+        "display"
+      ],
       "windowsCommandTemplateId": "ansible-vault-view-win",
       "windowsCommandTemplate": {
         "id": "ansible-vault-view-win",
@@ -19434,7 +19495,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "vault", "decrypt", "security"],
+      "tags": [
+        "ansible",
+        "vault",
+        "decrypt",
+        "security"
+      ],
       "windowsCommandTemplateId": "ansible-vault-decrypt-win",
       "windowsCommandTemplate": {
         "id": "ansible-vault-decrypt-win",
@@ -19494,7 +19560,13 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 1,
-      "tags": ["ansible", "vault", "rekey", "password", "security"],
+      "tags": [
+        "ansible",
+        "vault",
+        "rekey",
+        "password",
+        "security"
+      ],
       "windowsCommandTemplateId": "ansible-vault-rekey-win",
       "windowsCommandTemplate": {
         "id": "ansible-vault-rekey-win",
@@ -19554,7 +19626,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "galaxy", "search", "role"],
+      "tags": [
+        "ansible",
+        "galaxy",
+        "search",
+        "role"
+      ],
       "windowsCommandTemplateId": "ansible-galaxy-search-win",
       "windowsCommandTemplate": {
         "id": "ansible-galaxy-search-win",
@@ -19614,7 +19691,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "galaxy", "list", "role"],
+      "tags": [
+        "ansible",
+        "galaxy",
+        "list",
+        "role"
+      ],
       "windowsCommandTemplateId": "ansible-galaxy-list-win",
       "windowsCommandTemplate": {
         "id": "ansible-galaxy-list-win",
@@ -19656,7 +19738,13 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 0,
-      "tags": ["ansible", "galaxy", "remove", "uninstall", "role"],
+      "tags": [
+        "ansible",
+        "galaxy",
+        "remove",
+        "uninstall",
+        "role"
+      ],
       "windowsCommandTemplateId": "ansible-galaxy-remove-win",
       "windowsCommandTemplate": {
         "id": "ansible-galaxy-remove-win",
@@ -19716,7 +19804,12 @@
       "category": "🚀 Ansible & Automation",
       "platform": 2,
       "level": 2,
-      "tags": ["ansible", "pull", "git", "automation"],
+      "tags": [
+        "ansible",
+        "pull",
+        "git",
+        "automation"
+      ],
       "windowsCommandTemplateId": "ansible-pull-win",
       "windowsCommandTemplate": {
         "id": "ansible-pull-win",
@@ -19792,7 +19885,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "clone", "repository"],
+      "tags": [
+        "git",
+        "clone",
+        "repository"
+      ],
       "windowsCommandTemplateId": "git-clone-win",
       "windowsCommandTemplate": {
         "id": "git-clone-win",
@@ -19868,7 +19965,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "status", "working-directory"],
+      "tags": [
+        "git",
+        "status",
+        "working-directory"
+      ],
       "windowsCommandTemplateId": "git-status-win",
       "windowsCommandTemplate": {
         "id": "git-status-win",
@@ -19910,7 +20011,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "add", "staging"],
+      "tags": [
+        "git",
+        "add",
+        "staging"
+      ],
       "windowsCommandTemplateId": "git-add-win",
       "windowsCommandTemplate": {
         "id": "git-add-win",
@@ -19970,7 +20075,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 1,
-      "tags": ["git", "commit", "history"],
+      "tags": [
+        "git",
+        "commit",
+        "history"
+      ],
       "windowsCommandTemplateId": "git-commit-win",
       "windowsCommandTemplate": {
         "id": "git-commit-win",
@@ -20030,7 +20139,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 1,
-      "tags": ["git", "push", "remote"],
+      "tags": [
+        "git",
+        "push",
+        "remote"
+      ],
       "windowsCommandTemplateId": "git-push-win",
       "windowsCommandTemplate": {
         "id": "git-push-win",
@@ -20106,7 +20219,12 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 1,
-      "tags": ["git", "pull", "fetch", "merge"],
+      "tags": [
+        "git",
+        "pull",
+        "fetch",
+        "merge"
+      ],
       "windowsCommandTemplateId": "git-pull-win",
       "windowsCommandTemplate": {
         "id": "git-pull-win",
@@ -20182,7 +20300,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "branch", "management"],
+      "tags": [
+        "git",
+        "branch",
+        "management"
+      ],
       "windowsCommandTemplateId": "git-branch-win",
       "windowsCommandTemplate": {
         "id": "git-branch-win",
@@ -20246,7 +20368,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 1,
-      "tags": ["git", "checkout", "switch"],
+      "tags": [
+        "git",
+        "checkout",
+        "switch"
+      ],
       "windowsCommandTemplateId": "git-checkout-win",
       "windowsCommandTemplate": {
         "id": "git-checkout-win",
@@ -20310,7 +20436,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 2,
-      "tags": ["git", "merge", "integration"],
+      "tags": [
+        "git",
+        "merge",
+        "integration"
+      ],
       "windowsCommandTemplateId": "git-merge-win",
       "windowsCommandTemplate": {
         "id": "git-merge-win",
@@ -20370,7 +20500,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "log", "history"],
+      "tags": [
+        "git",
+        "log",
+        "history"
+      ],
       "windowsCommandTemplateId": "git-log-win",
       "windowsCommandTemplate": {
         "id": "git-log-win",
@@ -20434,7 +20568,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "diff", "changes"],
+      "tags": [
+        "git",
+        "diff",
+        "changes"
+      ],
       "windowsCommandTemplateId": "git-diff-win",
       "windowsCommandTemplate": {
         "id": "git-diff-win",
@@ -20498,7 +20636,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "stash", "temporary"],
+      "tags": [
+        "git",
+        "stash",
+        "temporary"
+      ],
       "windowsCommandTemplateId": "git-stash-win",
       "windowsCommandTemplate": {
         "id": "git-stash-win",
@@ -20544,7 +20686,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 2,
-      "tags": ["git", "reset", "undo"],
+      "tags": [
+        "git",
+        "reset",
+        "undo"
+      ],
       "windowsCommandTemplateId": "git-reset-win",
       "windowsCommandTemplate": {
         "id": "git-reset-win",
@@ -20620,7 +20766,11 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 2,
-      "tags": ["git", "rebase", "history"],
+      "tags": [
+        "git",
+        "rebase",
+        "history"
+      ],
       "windowsCommandTemplateId": "git-rebase-win",
       "windowsCommandTemplate": {
         "id": "git-rebase-win",
@@ -20680,7 +20830,12 @@
       "category": "🔀 Git & Version Control",
       "platform": 2,
       "level": 0,
-      "tags": ["git", "tag", "version", "release"],
+      "tags": [
+        "git",
+        "tag",
+        "version",
+        "release"
+      ],
       "windowsCommandTemplateId": "git-tag-win",
       "windowsCommandTemplate": {
         "id": "git-tag-win",
@@ -20734,6 +20889,1472 @@
         {
           "title": "Git Tag Documentation",
           "url": "https://git-scm.com/docs/git-tag"
+        }
+      ]
+    },
+    {
+      "id": "iis-list-sites",
+      "title": "Lister tous les sites IIS",
+      "description": "Affiche la liste complète de tous les sites web configurés dans Internet Information Services avec leur état, bindings et pool d'application associé.",
+      "category": "🌐 IIS Management",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "iis",
+        "web",
+        "sites",
+        "list",
+        "diagnostic",
+        "webserver",
+        "internet-information-services"
+      ],
+      "windowsCommandTemplateId": "iis-list-sites-cmd",
+      "windowsCommandTemplate": {
+        "id": "iis-list-sites-cmd",
+        "platform": 0,
+        "name": "Get-IISSite",
+        "commandPattern": "Import-Module WebAdministration; Get-IISSite | Select-Object Name, Id, State, @{Name='Bindings';Expression={$_.Bindings.Protocol + '://' + $_.Bindings.BindingInformation}}, @{Name='AppPool';Expression={(Get-ItemProperty \"IIS:\\Sites\\$($_.Name)\" -Name applicationPool).Value}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-IISSite | Select-Object Name, State, Bindings",
+          "description": "Liste simple de tous les sites avec leur état"
+        },
+        {
+          "command": "Get-IISSite | Where-Object {$_.State -eq 'Stopped'}",
+          "description": "Affiche uniquement les sites arrêtés"
+        },
+        {
+          "command": "Get-Website | Select-Object Name, PhysicalPath, State",
+          "description": "Liste les sites avec leur chemin physique"
+        }
+      ],
+      "notes": "Nécessite le module WebAdministration. Doit être exécuté avec des privilèges administrateur.",
+      "links": [
+        {
+          "title": "Documentation Get-IISSite",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/iisadministration/get-iissite"
+        }
+      ]
+    },
+    {
+      "id": "iis-manage-site",
+      "title": "Démarrer ou arrêter un site IIS",
+      "description": "Permet de démarrer, arrêter ou redémarrer un site web IIS spécifique. Utile pour la maintenance ou le troubleshooting.",
+      "category": "🌐 IIS Management",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "iis",
+        "web",
+        "site",
+        "start",
+        "stop",
+        "restart",
+        "control",
+        "webserver"
+      ],
+      "windowsCommandTemplateId": "iis-manage-site-cmd",
+      "windowsCommandTemplate": {
+        "id": "iis-manage-site-cmd",
+        "platform": 0,
+        "name": "Start/Stop-IISSite",
+        "commandPattern": "Import-Module WebAdministration; {action}-WebSite -Name '{siteName}'",
+        "parameters": [
+          {
+            "name": "siteName",
+            "label": "Nom du site",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du site IIS à gérer"
+          },
+          {
+            "name": "action",
+            "label": "Action",
+            "type": "string",
+            "defaultValue": "Start",
+            "required": true,
+            "description": "Action à effectuer: Start, Stop, Restart"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Start-WebSite -Name 'Default Web Site'",
+          "description": "Démarre le site web par défaut"
+        },
+        {
+          "command": "Stop-WebSite -Name 'MonAppWeb'",
+          "description": "Arrête le site MonAppWeb"
+        },
+        {
+          "command": "Restart-WebAppPool -Name 'DefaultAppPool'",
+          "description": "Redémarre le pool d'application par défaut"
+        }
+      ],
+      "notes": "Privilèges administrateur requis. Pour redémarrer, utilisez Stop puis Start, ou recyclez le pool d'application.",
+      "links": [
+        {
+          "title": "Documentation WebAdministration",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/webadministration/"
+        }
+      ]
+    },
+    {
+      "id": "iis-create-site",
+      "title": "Créer un nouveau site IIS",
+      "description": "Crée un nouveau site web dans IIS avec un nom, un chemin physique et un binding spécifiques.",
+      "category": "🌐 IIS Management",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "iis",
+        "web",
+        "create",
+        "new",
+        "site",
+        "setup",
+        "webserver",
+        "deployment"
+      ],
+      "windowsCommandTemplateId": "iis-create-site-cmd",
+      "windowsCommandTemplate": {
+        "id": "iis-create-site-cmd",
+        "platform": 0,
+        "name": "New-IISSite",
+        "commandPattern": "Import-Module WebAdministration; New-Website -Name '{siteName}' -PhysicalPath '{physicalPath}' -Port {port} -HostHeader '{hostHeader}'",
+        "parameters": [
+          {
+            "name": "siteName",
+            "label": "Nom du site",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du nouveau site IIS"
+          },
+          {
+            "name": "physicalPath",
+            "label": "Chemin physique",
+            "type": "string",
+            "defaultValue": "C:\\inetpub\\wwwroot",
+            "required": true,
+            "description": "Chemin du dossier contenant le site"
+          },
+          {
+            "name": "port",
+            "label": "Port",
+            "type": "string",
+            "defaultValue": "80",
+            "required": true,
+            "description": "Port d'écoute HTTP"
+          },
+          {
+            "name": "hostHeader",
+            "label": "Host Header",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "En-tête d'hôte (ex: www.example.com)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "New-Website -Name 'MonSite' -PhysicalPath 'C:\\Sites\\MonSite' -Port 8080",
+          "description": "Crée un site sur le port 8080"
+        },
+        {
+          "command": "New-Website -Name 'App1' -PhysicalPath 'D:\\WebApps\\App1' -Port 80 -HostHeader 'app1.local'",
+          "description": "Crée un site avec un host header spécifique"
+        },
+        {
+          "command": "New-Website -Name 'SecureSite' -PhysicalPath 'C:\\SecureSite' -Port 443 -Ssl",
+          "description": "Crée un site HTTPS"
+        }
+      ],
+      "notes": "DANGER: Le dossier physique doit exister. Vérifiez les permissions NTFS. Pour HTTPS, configurez le certificat SSL séparément.",
+      "links": [
+        {
+          "title": "Documentation New-Website",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/webadministration/new-website"
+        }
+      ]
+    },
+    {
+      "id": "iis-list-apppools",
+      "title": "Lister tous les pools d'application IIS",
+      "description": "Affiche tous les pools d'application (Application Pools) configurés dans IIS avec leur état, version .NET et mode de pipeline.",
+      "category": "🌐 IIS Management",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "iis",
+        "apppool",
+        "application-pool",
+        "list",
+        "diagnostic",
+        ".net",
+        "runtime"
+      ],
+      "windowsCommandTemplateId": "iis-list-apppools-cmd",
+      "windowsCommandTemplate": {
+        "id": "iis-list-apppools-cmd",
+        "platform": 0,
+        "name": "Get-IISAppPool",
+        "commandPattern": "Import-Module WebAdministration; Get-IISAppPool | Select-Object Name, State, @{Name='Runtime';Expression={$_.ManagedRuntimeVersion}}, @{Name='Pipeline';Expression={$_.ManagedPipelineMode}}, @{Name='Identity';Expression={$_.ProcessModel.IdentityType}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-IISAppPool | Select-Object Name, State",
+          "description": "Liste simple des pools et leur état"
+        },
+        {
+          "command": "Get-IISAppPool | Where-Object {$_.State -eq 'Stopped'}",
+          "description": "Affiche uniquement les pools arrêtés"
+        },
+        {
+          "command": "Get-WebAppPoolState -Name 'DefaultAppPool'",
+          "description": "Obtient l'état d'un pool spécifique"
+        }
+      ],
+      "notes": "Les pools en état 'Stopped' peuvent indiquer un problème. Runtime 'v4.0' = .NET Framework 4.x, '' = .NET Core/5+.",
+      "links": [
+        {
+          "title": "Documentation Get-IISAppPool",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/iisadministration/get-iisapppool"
+        }
+      ]
+    },
+    {
+      "id": "iis-recycle-apppool",
+      "title": "Recycler un pool d'application IIS",
+      "description": "Force le recyclage (redémarrage) d'un pool d'application IIS. Utile pour appliquer des changements de configuration ou libérer de la mémoire.",
+      "category": "🌐 IIS Management",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "iis",
+        "apppool",
+        "recycle",
+        "restart",
+        "memory",
+        "performance",
+        "troubleshooting"
+      ],
+      "windowsCommandTemplateId": "iis-recycle-apppool-cmd",
+      "windowsCommandTemplate": {
+        "id": "iis-recycle-apppool-cmd",
+        "platform": 0,
+        "name": "Restart-WebAppPool",
+        "commandPattern": "Import-Module WebAdministration; Restart-WebAppPool -Name '{appPoolName}'",
+        "parameters": [
+          {
+            "name": "appPoolName",
+            "label": "Nom du pool",
+            "type": "string",
+            "defaultValue": "DefaultAppPool",
+            "required": true,
+            "description": "Nom du pool d'application à recycler"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Restart-WebAppPool -Name 'DefaultAppPool'",
+          "description": "Recycle le pool par défaut"
+        },
+        {
+          "command": "Restart-WebAppPool -Name 'MonAppPool'",
+          "description": "Recycle un pool spécifique"
+        },
+        {
+          "command": "Get-IISAppPool | Where-Object {$_.State -eq 'Started'} | ForEach-Object {Restart-WebAppPool $_.Name}",
+          "description": "Recycle tous les pools actifs"
+        }
+      ],
+      "notes": "Le recyclage arrête puis redémarre le processus w3wp.exe. Peut causer une brève interruption de service.",
+      "links": [
+        {
+          "title": "Documentation Restart-WebAppPool",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/webadministration/restart-webapppool"
+        }
+      ]
+    },
+    {
+      "id": "sql-list-databases",
+      "title": "Lister toutes les bases de données SQL Server",
+      "description": "Affiche la liste complète de toutes les bases de données sur une instance SQL Server avec leur taille, état et mode de récupération.",
+      "category": "💽 SQL Server",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "sql",
+        "database",
+        "list",
+        "mssql",
+        "sql-server",
+        "diagnostic",
+        "inventory"
+      ],
+      "windowsCommandTemplateId": "sql-list-databases-cmd",
+      "windowsCommandTemplate": {
+        "id": "sql-list-databases-cmd",
+        "platform": 0,
+        "name": "Invoke-Sqlcmd",
+        "commandPattern": "Invoke-Sqlcmd -ServerInstance '{serverInstance}' -Query \"SELECT name AS DatabaseName, database_id AS ID, state_desc AS State, recovery_model_desc AS RecoveryModel, (SELECT SUM(size)*8/1024 FROM sys.master_files WHERE database_id = d.database_id) AS SizeMB FROM sys.databases d ORDER BY name\" | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "serverInstance",
+            "label": "Instance SQL Server",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": true,
+            "description": "Nom de l'instance SQL Server (ex: localhost, SERVER\\INSTANCE)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Invoke-Sqlcmd -ServerInstance 'localhost' -Query \"SELECT name, state_desc FROM sys.databases\"",
+          "description": "Liste simple des bases et leur état"
+        },
+        {
+          "command": "Invoke-Sqlcmd -ServerInstance 'PROD-SQL\\INSTANCE1' -Query \"SELECT * FROM sys.databases\"",
+          "description": "Liste détaillée sur une instance nommée"
+        },
+        {
+          "command": "sqlcmd -S localhost -Q \"SELECT name FROM sys.databases\"",
+          "description": "Alternative avec sqlcmd.exe"
+        }
+      ],
+      "notes": "Nécessite le module SqlServer PowerShell ou sqlcmd.exe. Privilèges de lecture requis sur sys.databases.",
+      "links": [
+        {
+          "title": "Documentation Invoke-Sqlcmd",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/sqlserver/invoke-sqlcmd"
+        }
+      ]
+    },
+    {
+      "id": "sql-backup-database",
+      "title": "Sauvegarder une base de données SQL Server",
+      "description": "Effectue une sauvegarde complète (FULL) d'une base de données SQL Server vers un fichier .bak spécifié.",
+      "category": "💽 SQL Server",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "sql",
+        "backup",
+        "sauvegarde",
+        "database",
+        "mssql",
+        "protection",
+        "recovery"
+      ],
+      "windowsCommandTemplateId": "sql-backup-database-cmd",
+      "windowsCommandTemplate": {
+        "id": "sql-backup-database-cmd",
+        "platform": 0,
+        "name": "Backup-SqlDatabase",
+        "commandPattern": "Backup-SqlDatabase -ServerInstance '{serverInstance}' -Database '{databaseName}' -BackupFile '{backupPath}' -CompressionOption On",
+        "parameters": [
+          {
+            "name": "serverInstance",
+            "label": "Instance SQL Server",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": true,
+            "description": "Instance SQL Server"
+          },
+          {
+            "name": "databaseName",
+            "label": "Nom de la base",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de la base de données à sauvegarder"
+          },
+          {
+            "name": "backupPath",
+            "label": "Chemin de sauvegarde",
+            "type": "string",
+            "defaultValue": "C:\\Backups\\backup.bak",
+            "required": true,
+            "description": "Chemin complet du fichier de sauvegarde"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Backup-SqlDatabase -ServerInstance 'localhost' -Database 'MyDB' -BackupFile 'C:\\Backups\\MyDB.bak'",
+          "description": "Sauvegarde complète de MyDB"
+        },
+        {
+          "command": "Backup-SqlDatabase -ServerInstance 'PROD-SQL' -Database 'Production' -BackupFile 'D:\\Backups\\Prod_$(Get-Date -Format yyyyMMdd_HHmmss).bak' -CompressionOption On",
+          "description": "Sauvegarde compressée avec horodatage"
+        },
+        {
+          "command": "Invoke-Sqlcmd -Query \"BACKUP DATABASE [MyDB] TO DISK='C:\\Backups\\MyDB.bak' WITH COMPRESSION\"",
+          "description": "Alternative avec T-SQL"
+        }
+      ],
+      "notes": "ATTENTION: Vérifiez l'espace disque disponible. La compression réduit la taille de ~50%. Le compte SQL Server doit avoir accès au chemin de backup.",
+      "links": [
+        {
+          "title": "Documentation Backup-SqlDatabase",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/sqlserver/backup-sqldatabase"
+        }
+      ]
+    },
+    {
+      "id": "sql-restore-database",
+      "title": "Restaurer une base de données SQL Server",
+      "description": "Restaure une base de données SQL Server à partir d'un fichier de sauvegarde .bak.",
+      "category": "💽 SQL Server",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "sql",
+        "restore",
+        "restauration",
+        "recovery",
+        "database",
+        "mssql",
+        "disaster-recovery"
+      ],
+      "windowsCommandTemplateId": "sql-restore-database-cmd",
+      "windowsCommandTemplate": {
+        "id": "sql-restore-database-cmd",
+        "platform": 0,
+        "name": "Restore-SqlDatabase",
+        "commandPattern": "Restore-SqlDatabase -ServerInstance '{serverInstance}' -Database '{databaseName}' -BackupFile '{backupPath}' -ReplaceDatabase",
+        "parameters": [
+          {
+            "name": "serverInstance",
+            "label": "Instance SQL Server",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": true,
+            "description": "Instance SQL Server cible"
+          },
+          {
+            "name": "databaseName",
+            "label": "Nom de la base",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de la base de données à restaurer"
+          },
+          {
+            "name": "backupPath",
+            "label": "Fichier de sauvegarde",
+            "type": "string",
+            "defaultValue": "C:\\Backups\\backup.bak",
+            "required": true,
+            "description": "Chemin du fichier .bak"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Restore-SqlDatabase -ServerInstance 'localhost' -Database 'MyDB' -BackupFile 'C:\\Backups\\MyDB.bak' -ReplaceDatabase",
+          "description": "Restaure MyDB en écrasant la base existante"
+        },
+        {
+          "command": "Restore-SqlDatabase -ServerInstance 'localhost' -Database 'MyDB_Test' -BackupFile 'C:\\Backups\\MyDB.bak'",
+          "description": "Restaure sous un nouveau nom"
+        },
+        {
+          "command": "Invoke-Sqlcmd -Query \"RESTORE DATABASE [MyDB] FROM DISK='C:\\Backups\\MyDB.bak' WITH REPLACE\"",
+          "description": "Alternative avec T-SQL"
+        }
+      ],
+      "notes": "DANGER: -ReplaceDatabase écrase la base existante! Fermez toutes les connexions avant la restauration. Le compte SQL Server doit avoir accès au fichier .bak.",
+      "links": [
+        {
+          "title": "Documentation Restore-SqlDatabase",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/sqlserver/restore-sqldatabase"
+        }
+      ]
+    },
+    {
+      "id": "sql-check-space",
+      "title": "Vérifier l'espace disque des bases SQL",
+      "description": "Analyse l'espace disque utilisé et disponible pour chaque base de données SQL Server, incluant les fichiers de données (.mdf) et journaux (.ldf).",
+      "category": "💽 SQL Server",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "sql",
+        "space",
+        "disk",
+        "storage",
+        "capacity",
+        "monitoring",
+        "diagnostic",
+        "mssql"
+      ],
+      "windowsCommandTemplateId": "sql-check-space-cmd",
+      "windowsCommandTemplate": {
+        "id": "sql-check-space-cmd",
+        "platform": 0,
+        "name": "Invoke-Sqlcmd",
+        "commandPattern": "Invoke-Sqlcmd -ServerInstance '{serverInstance}' -Query \"SELECT DB_NAME(database_id) AS DatabaseName, name AS FileName, type_desc AS FileType, (size*8.0)/1024 AS SizeMB, (size*8.0/1024) - (FILEPROPERTY(name, 'SpaceUsed')*8.0/1024) AS FreeSpaceMB, physical_name AS FilePath FROM sys.master_files WHERE database_id > 4 ORDER BY database_id, type\" | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "serverInstance",
+            "label": "Instance SQL Server",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": true,
+            "description": "Instance SQL Server à analyser"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Invoke-Sqlcmd -ServerInstance 'localhost' -Query \"EXEC sp_spaceused\"",
+          "description": "Espace utilisé de la base courante"
+        },
+        {
+          "command": "Invoke-Sqlcmd -Query \"SELECT name, (size*8/1024) AS SizeMB FROM sys.master_files\"",
+          "description": "Taille de tous les fichiers SQL Server"
+        },
+        {
+          "command": "Get-ChildItem 'C:\\Program Files\\Microsoft SQL Server\\*\\*.mdf' | Measure-Object -Property Length -Sum",
+          "description": "Taille totale des fichiers .mdf"
+        }
+      ],
+      "notes": "Surveiller l'espace libre pour éviter les erreurs de croissance automatique. Les fichiers journaux (.ldf) peuvent grossir rapidement.",
+      "links": [
+        {
+          "title": "Documentation sys.master_files",
+          "url": "https://learn.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-master-files-transact-sql"
+        }
+      ]
+    },
+    {
+      "id": "sql-list-jobs",
+      "title": "Lister les jobs SQL Server Agent",
+      "description": "Affiche tous les jobs configurés dans SQL Server Agent avec leur statut, dernière exécution et prochaine planification.",
+      "category": "💽 SQL Server",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "sql",
+        "agent",
+        "jobs",
+        "scheduler",
+        "automation",
+        "monitoring",
+        "mssql",
+        "task"
+      ],
+      "windowsCommandTemplateId": "sql-list-jobs-cmd",
+      "windowsCommandTemplate": {
+        "id": "sql-list-jobs-cmd",
+        "platform": 0,
+        "name": "Invoke-Sqlcmd",
+        "commandPattern": "Invoke-Sqlcmd -ServerInstance '{serverInstance}' -Database 'msdb' -Query \"SELECT j.name AS JobName, j.enabled AS IsEnabled, CASE WHEN ja.run_requested_date IS NOT NULL THEN 'Running' WHEN jh.run_status = 1 THEN 'Success' WHEN jh.run_status = 0 THEN 'Failed' ELSE 'Unknown' END AS LastStatus, jh.run_date AS LastRunDate, jh.run_time AS LastRunTime FROM msdb.dbo.sysjobs j LEFT JOIN msdb.dbo.sysjobactivity ja ON j.job_id = ja.job_id AND ja.run_requested_date IS NOT NULL LEFT JOIN (SELECT job_id, run_status, run_date, run_time, ROW_NUMBER() OVER (PARTITION BY job_id ORDER BY run_date DESC, run_time DESC) AS rn FROM msdb.dbo.sysjobhistory WHERE step_id = 0) jh ON j.job_id = jh.job_id AND jh.rn = 1 ORDER BY j.name\" | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "serverInstance",
+            "label": "Instance SQL Server",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": true,
+            "description": "Instance SQL Server"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Invoke-Sqlcmd -ServerInstance 'localhost' -Database 'msdb' -Query \"SELECT name, enabled FROM msdb.dbo.sysjobs\"",
+          "description": "Liste simple des jobs et leur état"
+        },
+        {
+          "command": "Get-SqlAgentJob -ServerInstance 'localhost'",
+          "description": "Alternative avec cmdlet SQL Server"
+        },
+        {
+          "command": "Invoke-Sqlcmd -Database 'msdb' -Query \"EXEC sp_help_job\"",
+          "description": "Utilise la procédure stockée native"
+        }
+      ],
+      "notes": "Le service SQL Server Agent doit être démarré. Les jobs désactivés n'apparaissent pas dans les planifications actives.",
+      "links": [
+        {
+          "title": "Documentation SQL Server Agent",
+          "url": "https://learn.microsoft.com/en-us/sql/ssms/agent/sql-server-agent"
+        }
+      ]
+    },
+    {
+      "id": "cert-list-all",
+      "title": "Lister tous les certificats installés",
+      "description": "Affiche tous les certificats installés dans les magasins Windows Certificate Store (LocalMachine et CurrentUser) avec leur expiration et usage.",
+      "category": "🔒 Certificate Management",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "certificate",
+        "ssl",
+        "tls",
+        "security",
+        "crypto",
+        "x509",
+        "pki",
+        "inventory"
+      ],
+      "windowsCommandTemplateId": "cert-list-all-cmd",
+      "windowsCommandTemplate": {
+        "id": "cert-list-all-cmd",
+        "platform": 0,
+        "name": "Get-ChildItem",
+        "commandPattern": "Get-ChildItem -Path Cert:\\LocalMachine\\My | Select-Object Subject, Issuer, NotAfter, Thumbprint, @{Name='DaysUntilExpiration';Expression={($_.NotAfter - (Get-Date)).Days}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-ChildItem -Path Cert:\\LocalMachine\\My | Format-List",
+          "description": "Liste détaillée des certificats personnels de la machine"
+        },
+        {
+          "command": "Get-ChildItem -Path Cert:\\LocalMachine\\Root",
+          "description": "Certificats racine de confiance"
+        },
+        {
+          "command": "Get-ChildItem -Path Cert:\\ -Recurse | Where-Object {$_.NotAfter -lt (Get-Date).AddDays(30)}",
+          "description": "Certificats expirant dans 30 jours"
+        }
+      ],
+      "notes": "Principaux magasins: My (personnels), Root (racine), CA (intermédiaires), TrustedPublisher, AuthRoot.",
+      "links": [
+        {
+          "title": "Documentation Certificate Store",
+          "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/install/certificate-stores"
+        }
+      ]
+    },
+    {
+      "id": "cert-import",
+      "title": "Importer un certificat",
+      "description": "Importe un certificat (.cer, .pfx, .p12) dans un magasin de certificats Windows spécifique.",
+      "category": "🔒 Certificate Management",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "certificate",
+        "import",
+        "ssl",
+        "tls",
+        "security",
+        "pfx",
+        "cer",
+        "installation"
+      ],
+      "windowsCommandTemplateId": "cert-import-cmd",
+      "windowsCommandTemplate": {
+        "id": "cert-import-cmd",
+        "platform": 0,
+        "name": "Import-Certificate",
+        "commandPattern": "Import-Certificate -FilePath '{certPath}' -CertStoreLocation Cert:\\LocalMachine\\{storeName}",
+        "parameters": [
+          {
+            "name": "certPath",
+            "label": "Chemin du certificat",
+            "type": "string",
+            "defaultValue": "C:\\Certs\\certificate.cer",
+            "required": true,
+            "description": "Chemin du fichier certificat (.cer, .crt)"
+          },
+          {
+            "name": "storeName",
+            "label": "Magasin de destination",
+            "type": "string",
+            "defaultValue": "My",
+            "required": true,
+            "description": "Nom du magasin (My, Root, CA, TrustedPublisher)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Import-Certificate -FilePath 'C:\\Certs\\cert.cer' -CertStoreLocation Cert:\\LocalMachine\\My",
+          "description": "Importe dans le magasin personnel de la machine"
+        },
+        {
+          "command": "Import-PfxCertificate -FilePath 'C:\\Certs\\cert.pfx' -CertStoreLocation Cert:\\LocalMachine\\My -Password (ConvertTo-SecureString -String 'MyPassword' -AsPlainText -Force)",
+          "description": "Importe un certificat PFX avec clé privée"
+        },
+        {
+          "command": "certutil -addstore Root 'C:\\Certs\\rootCA.cer'",
+          "description": "Alternative avec certutil pour certificat racine"
+        }
+      ],
+      "notes": "Privilèges administrateur requis pour LocalMachine. Les fichiers PFX nécessitent un mot de passe. Utilisez Import-PfxCertificate pour les .pfx.",
+      "links": [
+        {
+          "title": "Documentation Import-Certificate",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/pki/import-certificate"
+        }
+      ]
+    },
+    {
+      "id": "cert-export",
+      "title": "Exporter un certificat",
+      "description": "Exporte un certificat du magasin Windows vers un fichier .cer ou .pfx.",
+      "category": "🔒 Certificate Management",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "certificate",
+        "export",
+        "backup",
+        "ssl",
+        "tls",
+        "security",
+        "pfx",
+        "migration"
+      ],
+      "windowsCommandTemplateId": "cert-export-cmd",
+      "windowsCommandTemplate": {
+        "id": "cert-export-cmd",
+        "platform": 0,
+        "name": "Export-Certificate",
+        "commandPattern": "$cert = Get-ChildItem -Path Cert:\\LocalMachine\\My\\{thumbprint}; Export-Certificate -Cert $cert -FilePath '{exportPath}'",
+        "parameters": [
+          {
+            "name": "thumbprint",
+            "label": "Empreinte du certificat",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Thumbprint (empreinte SHA-1) du certificat"
+          },
+          {
+            "name": "exportPath",
+            "label": "Chemin d'export",
+            "type": "string",
+            "defaultValue": "C:\\Export\\certificate.cer",
+            "required": true,
+            "description": "Chemin du fichier de destination"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Export-Certificate -Cert (Get-ChildItem Cert:\\LocalMachine\\My\\1234567890ABCDEF) -FilePath 'C:\\cert.cer'",
+          "description": "Exporte un certificat public (.cer)"
+        },
+        {
+          "command": "Export-PfxCertificate -Cert (Get-ChildItem Cert:\\LocalMachine\\My\\1234567890ABCDEF) -FilePath 'C:\\cert.pfx' -Password (ConvertTo-SecureString -String 'MyPassword' -AsPlainText -Force)",
+          "description": "Exporte avec clé privée (.pfx)"
+        },
+        {
+          "command": "certutil -exportPFX My 1234567890ABCDEF C:\\cert.pfx",
+          "description": "Alternative avec certutil"
+        }
+      ],
+      "notes": "Export-Certificate exporte uniquement la clé publique. Utilisez Export-PfxCertificate pour inclure la clé privée (nécessite mot de passe).",
+      "links": [
+        {
+          "title": "Documentation Export-Certificate",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/pki/export-certificate"
+        }
+      ]
+    },
+    {
+      "id": "cert-check-expiration",
+      "title": "Vérifier l'expiration des certificats",
+      "description": "Analyse tous les certificats installés et identifie ceux qui sont expirés ou proches de l'expiration (< 30 jours).",
+      "category": "🔒 Certificate Management",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "certificate",
+        "expiration",
+        "monitoring",
+        "ssl",
+        "tls",
+        "security",
+        "audit",
+        "compliance"
+      ],
+      "windowsCommandTemplateId": "cert-check-expiration-cmd",
+      "windowsCommandTemplate": {
+        "id": "cert-check-expiration-cmd",
+        "platform": 0,
+        "name": "Get-ChildItem",
+        "commandPattern": "$daysThreshold = {daysThreshold}; Get-ChildItem -Path Cert:\\LocalMachine\\My | Where-Object {$_.NotAfter -lt (Get-Date).AddDays($daysThreshold)} | Select-Object Subject, Issuer, NotAfter, @{Name='DaysRemaining';Expression={($_.NotAfter - (Get-Date)).Days}}, Thumbprint | Sort-Object NotAfter | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "daysThreshold",
+            "label": "Seuil en jours",
+            "type": "string",
+            "defaultValue": "30",
+            "required": true,
+            "description": "Nombre de jours avant expiration pour alerter"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-ChildItem Cert:\\LocalMachine\\My | Where-Object {$_.NotAfter -lt (Get-Date).AddDays(30)} | Format-Table Subject, NotAfter",
+          "description": "Certificats expirant dans 30 jours"
+        },
+        {
+          "command": "Get-ChildItem Cert:\\ -Recurse | Where-Object {$_.NotAfter -lt (Get-Date)} | Select-Object PSPath, Subject, NotAfter",
+          "description": "Tous les certificats déjà expirés"
+        },
+        {
+          "command": "Get-ChildItem Cert:\\LocalMachine -Recurse | Where-Object {$_.NotAfter -lt (Get-Date).AddDays(90)} | Export-Csv C:\\cert-expiration-report.csv",
+          "description": "Export CSV des certificats à renouveler"
+        }
+      ],
+      "notes": "Automatisez cette vérification dans une tâche planifiée pour une surveillance proactive. Les certificats expirés causent des erreurs SSL/TLS.",
+      "links": [
+        {
+          "title": "Documentation Certificate Management",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/pki/"
+        }
+      ]
+    },
+    {
+      "id": "cert-create-selfsigned",
+      "title": "Créer un certificat auto-signé",
+      "description": "Génère un nouveau certificat auto-signé pour des tests, développement ou usage interne. Non recommandé pour la production publique.",
+      "category": "🔒 Certificate Management",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "certificate",
+        "self-signed",
+        "create",
+        "ssl",
+        "tls",
+        "development",
+        "testing",
+        "crypto"
+      ],
+      "windowsCommandTemplateId": "cert-create-selfsigned-cmd",
+      "windowsCommandTemplate": {
+        "id": "cert-create-selfsigned-cmd",
+        "platform": 0,
+        "name": "New-SelfSignedCertificate",
+        "commandPattern": "New-SelfSignedCertificate -DnsName '{dnsName}' -CertStoreLocation Cert:\\LocalMachine\\My -NotAfter (Get-Date).AddYears({validityYears}) -KeyExportPolicy Exportable -KeySpec KeyExchange",
+        "parameters": [
+          {
+            "name": "dnsName",
+            "label": "Nom DNS",
+            "type": "string",
+            "defaultValue": "localhost",
+            "required": true,
+            "description": "Nom DNS ou Subject du certificat (ex: localhost, *.example.com)"
+          },
+          {
+            "name": "validityYears",
+            "label": "Validité (années)",
+            "type": "string",
+            "defaultValue": "1",
+            "required": true,
+            "description": "Durée de validité en années"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "New-SelfSignedCertificate -DnsName 'localhost' -CertStoreLocation Cert:\\LocalMachine\\My",
+          "description": "Certificat pour localhost"
+        },
+        {
+          "command": "New-SelfSignedCertificate -DnsName 'myapp.local', 'www.myapp.local' -CertStoreLocation Cert:\\LocalMachine\\My -NotAfter (Get-Date).AddYears(2)",
+          "description": "Certificat multi-domaines valide 2 ans"
+        },
+        {
+          "command": "$cert = New-SelfSignedCertificate -DnsName 'dev.example.com' -CertStoreLocation Cert:\\CurrentUser\\My; Export-PfxCertificate -Cert $cert -FilePath 'C:\\cert.pfx' -Password (ConvertTo-SecureString -String 'pass' -AsPlainText -Force)",
+          "description": "Crée et exporte immédiatement"
+        }
+      ],
+      "notes": "Les certificats auto-signés génèrent des avertissements de sécurité dans les navigateurs. Pour IIS, liez le certificat au site après création.",
+      "links": [
+        {
+          "title": "Documentation New-SelfSignedCertificate",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/pki/new-selfsignedcertificate"
+        }
+      ]
+    },
+    {
+      "id": "hyperv-list-vms",
+      "title": "Lister toutes les machines virtuelles Hyper-V",
+      "description": "Affiche la liste complète de toutes les machines virtuelles configurées dans Hyper-V avec leur état, mémoire allouée et version de configuration.",
+      "category": "💠 Hyper-V",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "hyperv",
+        "vm",
+        "virtual-machine",
+        "list",
+        "virtualization",
+        "inventory",
+        "diagnostic"
+      ],
+      "windowsCommandTemplateId": "hyperv-list-vms-cmd",
+      "windowsCommandTemplate": {
+        "id": "hyperv-list-vms-cmd",
+        "platform": 0,
+        "name": "Get-VM",
+        "commandPattern": "Get-VM | Select-Object Name, State, CPUUsage, @{Name='MemoryAssignedMB';Expression={$_.MemoryAssigned/1MB}}, @{Name='MemoryDemandMB';Expression={$_.MemoryDemand/1MB}}, Uptime, Status, Version | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-VM | Select-Object Name, State, Status",
+          "description": "Liste simple des VMs et leur état"
+        },
+        {
+          "command": "Get-VM | Where-Object {$_.State -eq 'Running'}",
+          "description": "Affiche uniquement les VMs en cours d'exécution"
+        },
+        {
+          "command": "Get-VM | Measure-VMResourcePool",
+          "description": "Statistiques d'utilisation des ressources"
+        }
+      ],
+      "notes": "Nécessite le rôle Hyper-V installé et des privilèges administrateur. États possibles: Running, Off, Saved, Paused.",
+      "links": [
+        {
+          "title": "Documentation Get-VM",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/hyper-v/get-vm"
+        }
+      ]
+    },
+    {
+      "id": "hyperv-manage-vm",
+      "title": "Démarrer, arrêter ou suspendre une VM",
+      "description": "Permet de contrôler l'état d'une machine virtuelle Hyper-V: démarrage, arrêt propre, arrêt forcé, suspension ou reprise.",
+      "category": "💠 Hyper-V",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "hyperv",
+        "vm",
+        "start",
+        "stop",
+        "suspend",
+        "control",
+        "management",
+        "virtualization"
+      ],
+      "windowsCommandTemplateId": "hyperv-manage-vm-cmd",
+      "windowsCommandTemplate": {
+        "id": "hyperv-manage-vm-cmd",
+        "platform": 0,
+        "name": "VM Control",
+        "commandPattern": "{action}-VM -Name '{vmName}'",
+        "parameters": [
+          {
+            "name": "vmName",
+            "label": "Nom de la VM",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de la machine virtuelle"
+          },
+          {
+            "name": "action",
+            "label": "Action",
+            "type": "string",
+            "defaultValue": "Start",
+            "required": true,
+            "description": "Action: Start, Stop, Save, Suspend, Resume"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Start-VM -Name 'Windows11-Dev'",
+          "description": "Démarre la VM Windows11-Dev"
+        },
+        {
+          "command": "Stop-VM -Name 'Ubuntu-Server' -Force",
+          "description": "Arrêt forcé (équivalent à couper l'alimentation)"
+        },
+        {
+          "command": "Save-VM -Name 'Production-DB'",
+          "description": "Sauvegarde l'état et suspend la VM"
+        },
+        {
+          "command": "Suspend-VM -Name 'TestVM'; Resume-VM -Name 'TestVM'",
+          "description": "Pause puis reprend une VM"
+        }
+      ],
+      "notes": "Stop-VM sans -Force tente un arrêt propre via Integration Services. Save-VM libère la RAM mais conserve l'état. -TurnOff équivaut à -Force.",
+      "links": [
+        {
+          "title": "Documentation Hyper-V VM Management",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/hyper-v/"
+        }
+      ]
+    },
+    {
+      "id": "hyperv-create-snapshot",
+      "title": "Créer un snapshot (point de contrôle) d'une VM",
+      "description": "Crée un point de contrôle (snapshot) d'une machine virtuelle Hyper-V, capturant son état actuel pour une restauration ultérieure.",
+      "category": "💠 Hyper-V",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "hyperv",
+        "snapshot",
+        "checkpoint",
+        "backup",
+        "vm",
+        "restore",
+        "virtualization"
+      ],
+      "windowsCommandTemplateId": "hyperv-create-snapshot-cmd",
+      "windowsCommandTemplate": {
+        "id": "hyperv-create-snapshot-cmd",
+        "platform": 0,
+        "name": "Checkpoint-VM",
+        "commandPattern": "Checkpoint-VM -Name '{vmName}' -SnapshotName '{snapshotName}'",
+        "parameters": [
+          {
+            "name": "vmName",
+            "label": "Nom de la VM",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de la machine virtuelle"
+          },
+          {
+            "name": "snapshotName",
+            "label": "Nom du snapshot",
+            "type": "string",
+            "defaultValue": "Checkpoint-$(Get-Date -Format 'yyyy-MM-dd_HH-mm')",
+            "required": true,
+            "description": "Nom du point de contrôle"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Checkpoint-VM -Name 'Windows11-Dev' -SnapshotName 'Before-Updates'",
+          "description": "Snapshot avant mise à jour"
+        },
+        {
+          "command": "Get-VM 'Production-*' | Checkpoint-VM -SnapshotName 'Weekly-Backup'",
+          "description": "Snapshot de toutes les VMs de production"
+        },
+        {
+          "command": "Restore-VMSnapshot -VMName 'TestVM' -Name 'Before-Updates' -Confirm:$false",
+          "description": "Restaure un snapshot"
+        }
+      ],
+      "notes": "Les snapshots consomment de l'espace disque. Supprimez les anciens snapshots régulièrement. Évitez trop de snapshots en chaîne (impact performance).",
+      "links": [
+        {
+          "title": "Documentation Checkpoint-VM",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/hyper-v/checkpoint-vm"
+        }
+      ]
+    },
+    {
+      "id": "hyperv-export-vm",
+      "title": "Exporter une machine virtuelle",
+      "description": "Exporte une VM Hyper-V complète (configuration, disques virtuels, snapshots) vers un dossier pour sauvegarde ou migration.",
+      "category": "💠 Hyper-V",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "hyperv",
+        "export",
+        "backup",
+        "migration",
+        "vm",
+        "disaster-recovery",
+        "clone"
+      ],
+      "windowsCommandTemplateId": "hyperv-export-vm-cmd",
+      "windowsCommandTemplate": {
+        "id": "hyperv-export-vm-cmd",
+        "platform": 0,
+        "name": "Export-VM",
+        "commandPattern": "Export-VM -Name '{vmName}' -Path '{exportPath}'",
+        "parameters": [
+          {
+            "name": "vmName",
+            "label": "Nom de la VM",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de la VM à exporter"
+          },
+          {
+            "name": "exportPath",
+            "label": "Chemin d'export",
+            "type": "string",
+            "defaultValue": "D:\\VM-Exports",
+            "required": true,
+            "description": "Dossier de destination de l'export"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Export-VM -Name 'Windows11-Dev' -Path 'D:\\Backups\\VMs'",
+          "description": "Exporte une VM vers D:\\Backups\\VMs"
+        },
+        {
+          "command": "Export-VM -Name 'Production-DB' -Path '\\\\NAS\\VM-Backups' -CaptureLiveState CaptureSavedState",
+          "description": "Exporte avec capture de l'état actuel"
+        },
+        {
+          "command": "Import-VM -Path 'D:\\Backups\\VMs\\Windows11-Dev' -Copy -GenerateNewId",
+          "description": "Importe une VM exportée (avec nouvel ID)"
+        }
+      ],
+      "notes": "L'export peut être long selon la taille de la VM. Vérifiez l'espace disque disponible. Utilisez Import-VM pour restaurer.",
+      "links": [
+        {
+          "title": "Documentation Export-VM",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/hyper-v/export-vm"
+        }
+      ]
+    },
+    {
+      "id": "hyperv-get-vm-stats",
+      "title": "Obtenir les statistiques d'une VM",
+      "description": "Affiche des statistiques détaillées d'utilisation des ressources (CPU, mémoire, disque, réseau) pour une machine virtuelle Hyper-V.",
+      "category": "💠 Hyper-V",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "hyperv",
+        "stats",
+        "monitoring",
+        "performance",
+        "vm",
+        "metrics",
+        "diagnostic",
+        "resources"
+      ],
+      "windowsCommandTemplateId": "hyperv-get-vm-stats-cmd",
+      "windowsCommandTemplate": {
+        "id": "hyperv-get-vm-stats-cmd",
+        "platform": 0,
+        "name": "Measure-VM",
+        "commandPattern": "Measure-VM -Name '{vmName}' | Select-Object VMName, AvgCPU, AvgRAM, MaxRAM, TotalDisk, NetworkMeteredTrafficReport | Format-List",
+        "parameters": [
+          {
+            "name": "vmName",
+            "label": "Nom de la VM",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de la VM à analyser"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Measure-VM -Name 'Production-Web' | Format-List",
+          "description": "Statistiques détaillées de la VM Production-Web"
+        },
+        {
+          "command": "Get-VM | Where-Object {$_.State -eq 'Running'} | Measure-VM | Sort-Object AvgCPU -Descending",
+          "description": "Toutes les VMs triées par utilisation CPU"
+        },
+        {
+          "command": "Get-VM 'TestVM' | Select-Object Name, CPUUsage, MemoryDemand, Uptime",
+          "description": "Métriques en temps réel d'une VM"
+        }
+      ],
+      "notes": "Measure-VM fournit des moyennes sur la durée de vie de la VM. Pour le temps réel, utilisez Get-VM avec CPUUsage et MemoryDemand.",
+      "links": [
+        {
+          "title": "Documentation Measure-VM",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/hyper-v/measure-vm"
+        }
+      ]
+    },
+    {
+      "id": "perf-top-cpu-processes",
+      "title": "Analyser les processus consommant le plus de CPU",
+      "description": "Identifie et affiche les processus consommant le plus de ressources CPU en temps réel avec leurs statistiques détaillées.",
+      "category": "⚡ Performance",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "performance",
+        "cpu",
+        "process",
+        "monitoring",
+        "diagnostic",
+        "troubleshooting",
+        "top"
+      ],
+      "windowsCommandTemplateId": "perf-top-cpu-processes-win",
+      "windowsCommandTemplate": {
+        "id": "perf-top-cpu-processes-win",
+        "platform": 0,
+        "name": "Get-Process",
+        "commandPattern": "Get-Process | Sort-Object CPU -Descending | Select-Object -First {topCount} ProcessName, Id, CPU, @{Name='MemoryMB';Expression={[Math]::Round($_.WorkingSet/1MB,2)}}, Handles, StartTime | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "topCount",
+            "label": "Nombre de processus",
+            "type": "string",
+            "defaultValue": "10",
+            "required": true,
+            "description": "Nombre de top processus à afficher"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "perf-top-cpu-processes-linux",
+      "linuxCommandTemplate": {
+        "id": "perf-top-cpu-processes-linux",
+        "platform": 1,
+        "name": "top",
+        "commandPattern": "top -b -n 1 | head -n 20",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 5",
+          "description": "Top 5 processus Windows par CPU"
+        },
+        {
+          "command": "ps aux --sort=-%cpu | head -n 11",
+          "description": "Top 10 processus Linux par CPU"
+        },
+        {
+          "command": "Get-Counter '\\Processor(_Total)\\% Processor Time' -Continuous -SampleInterval 1",
+          "description": "Surveillance CPU globale en continu"
+        }
+      ],
+      "notes": "CPU est le temps total cumulé. Pour une vue en temps réel, utilisez Task Manager/htop ou Get-Counter. Sur Linux, htop est plus interactif que top.",
+      "links": [
+        {
+          "title": "Documentation Get-Process",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process"
+        }
+      ]
+    },
+    {
+      "id": "perf-memory-analysis",
+      "title": "Analyser l'utilisation mémoire détaillée",
+      "description": "Analyse détaillée de l'utilisation de la mémoire système: RAM totale, disponible, utilisée, et répartition par processus.",
+      "category": "⚡ Performance",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "performance",
+        "memory",
+        "ram",
+        "diagnostic",
+        "monitoring",
+        "troubleshooting",
+        "capacity"
+      ],
+      "windowsCommandTemplateId": "perf-memory-analysis-win",
+      "windowsCommandTemplate": {
+        "id": "perf-memory-analysis-win",
+        "platform": 0,
+        "name": "Memory Analysis",
+        "commandPattern": "$os = Get-CimInstance Win32_OperatingSystem; $totalGB = [Math]::Round($os.TotalVisibleMemorySize/1MB, 2); $freeGB = [Math]::Round($os.FreePhysicalMemory/1MB, 2); $usedGB = $totalGB - $freeGB; $usedPct = [Math]::Round(($usedGB/$totalGB)*100, 2); Write-Host \"=== Memory Summary ===\"; Write-Host \"Total: $totalGB GB\"; Write-Host \"Used: $usedGB GB ($usedPct%)\"; Write-Host \"Free: $freeGB GB\"; Write-Host \"\n=== Top 10 Processes by Memory ===\"; Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10 ProcessName, Id, @{Name='MemoryMB';Expression={[Math]::Round($_.WorkingSet/1MB,2)}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "perf-memory-analysis-linux",
+      "linuxCommandTemplate": {
+        "id": "perf-memory-analysis-linux",
+        "platform": 1,
+        "name": "free",
+        "commandPattern": "free -h && echo '\n=== Top Memory Processes ===' && ps aux --sort=-%mem | head -n 11",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "systeminfo | findstr /C:\"Total Physical Memory\" /C:\"Available Physical Memory\"",
+          "description": "Mémoire système Windows (cmd.exe)"
+        },
+        {
+          "command": "Get-Process | Measure-Object WorkingSet -Sum | Select-Object @{Name='TotalMemoryGB';Expression={[Math]::Round($_.Sum/1GB,2)}}",
+          "description": "Mémoire totale utilisée par tous les processus"
+        },
+        {
+          "command": "free -h",
+          "description": "Affichage mémoire Linux (human-readable)"
+        }
+      ],
+      "notes": "WorkingSet = mémoire physique (RAM). PrivateMemorySize = mémoire virtuelle privée. Sur Linux, buff/cache est de la mémoire disponible.",
+      "links": [
+        {
+          "title": "Documentation Win32_OperatingSystem",
+          "url": "https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem"
+        }
+      ]
+    },
+    {
+      "id": "perf-disk-health",
+      "title": "Vérifier la santé des disques (SMART)",
+      "description": "Vérifie l'état de santé des disques physiques via SMART (Self-Monitoring, Analysis and Reporting Technology) pour détecter les problèmes potentiels.",
+      "category": "⚡ Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "disk",
+        "health",
+        "smart",
+        "diagnostic",
+        "storage",
+        "reliability",
+        "hardware",
+        "monitoring"
+      ],
+      "windowsCommandTemplateId": "perf-disk-health-cmd",
+      "windowsCommandTemplate": {
+        "id": "perf-disk-health-cmd",
+        "platform": 0,
+        "name": "Get-PhysicalDisk",
+        "commandPattern": "Get-PhysicalDisk | Select-Object FriendlyName, MediaType, OperationalStatus, HealthStatus, @{Name='SizeGB';Expression={[Math]::Round($_.Size/1GB,2)}}, BusType, SpindleSpeed | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-PhysicalDisk | Where-Object {$_.HealthStatus -ne 'Healthy'}",
+          "description": "Affiche uniquement les disques avec problèmes"
+        },
+        {
+          "command": "Get-Disk | Select-Object Number, FriendlyName, HealthStatus, OperationalStatus, PartitionStyle",
+          "description": "État détaillé de tous les disques"
+        },
+        {
+          "command": "wmic diskdrive get status,caption,size",
+          "description": "Alternative WMIC (legacy)"
+        }
+      ],
+      "notes": "HealthStatus peut être: Healthy, Warning, Unhealthy. MediaType: HDD, SSD, SCM. BusType indique l'interface (SATA, NVMe, etc.).",
+      "links": [
+        {
+          "title": "Documentation Get-PhysicalDisk",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/storage/get-physicaldisk"
+        }
+      ]
+    },
+    {
+      "id": "perf-network-connections",
+      "title": "Monitorer les connexions réseau actives",
+      "description": "Affiche toutes les connexions réseau TCP/UDP actives avec les ports locaux/distants, état et processus associé.",
+      "category": "⚡ Performance",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "network",
+        "connections",
+        "tcp",
+        "udp",
+        "monitoring",
+        "diagnostic",
+        "ports",
+        "netstat"
+      ],
+      "windowsCommandTemplateId": "perf-network-connections-win",
+      "windowsCommandTemplate": {
+        "id": "perf-network-connections-win",
+        "platform": 0,
+        "name": "Get-NetTCPConnection",
+        "commandPattern": "Get-NetTCPConnection | Where-Object {$_.State -eq 'Established'} | Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, State, @{Name='Process';Expression={(Get-Process -Id $_.OwningProcess).ProcessName}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "perf-network-connections-linux",
+      "linuxCommandTemplate": {
+        "id": "perf-network-connections-linux",
+        "platform": 1,
+        "name": "netstat",
+        "commandPattern": "netstat -tunap | grep ESTABLISHED",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-NetTCPConnection | Group-Object State | Select-Object Name, Count",
+          "description": "Nombre de connexions par état"
+        },
+        {
+          "command": "netstat -ano | findstr ESTABLISHED",
+          "description": "Connexions établies avec PID (Windows cmd)"
+        },
+        {
+          "command": "ss -tunap | grep ESTAB",
+          "description": "Alternative moderne sur Linux (ss au lieu de netstat)"
+        }
+      ],
+      "notes": "États TCP: Established, Listen, TimeWait, CloseWait. Pour UDP, utilisez Get-NetUDPEndpoint. ss est plus rapide que netstat sur Linux.",
+      "links": [
+        {
+          "title": "Documentation Get-NetTCPConnection",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-nettcpconnection"
+        }
+      ]
+    },
+    {
+      "id": "perf-process-handles",
+      "title": "Analyser les handles ouverts par processus",
+      "description": "Analyse et affiche le nombre de handles (fichiers, registre, threads, etc.) ouverts par chaque processus. Utile pour détecter les fuites de ressources.",
+      "category": "⚡ Performance",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "performance",
+        "handles",
+        "process",
+        "resources",
+        "leak",
+        "diagnostic",
+        "troubleshooting",
+        "monitoring"
+      ],
+      "windowsCommandTemplateId": "perf-process-handles-cmd",
+      "windowsCommandTemplate": {
+        "id": "perf-process-handles-cmd",
+        "platform": 0,
+        "name": "Get-Process",
+        "commandPattern": "Get-Process | Sort-Object Handles -Descending | Select-Object -First {topCount} ProcessName, Id, Handles, @{Name='Threads';Expression={$_.Threads.Count}}, @{Name='MemoryMB';Expression={[Math]::Round($_.WorkingSet/1MB,2)}}, StartTime | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "topCount",
+            "label": "Nombre de processus",
+            "type": "string",
+            "defaultValue": "15",
+            "required": true,
+            "description": "Nombre de processus à afficher"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object Handles -Descending | Select-Object -First 10",
+          "description": "Top 10 processus par nombre de handles"
+        },
+        {
+          "command": "Get-Process -Name 'myapp' | Select-Object ProcessName, Handles, Threads",
+          "description": "Handles d'un processus spécifique"
+        },
+        {
+          "command": "(Get-Process).Handles | Measure-Object -Sum",
+          "description": "Nombre total de handles système"
+        }
+      ],
+      "notes": "Un nombre excessif de handles peut indiquer une fuite de ressources. Les handles incluent: fichiers, clés de registre, threads, mutexes, etc.",
+      "links": [
+        {
+          "title": "Understanding Handles",
+          "url": "https://learn.microsoft.com/en-us/windows/win32/sysinfo/handles-and-objects"
         }
       ]
     }
