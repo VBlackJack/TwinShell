@@ -229,8 +229,9 @@
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8">
-                <StackPanel>
-                    <TextBlock Text="Categories"
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Categories"
                                FontSize="14"
                                FontWeight="SemiBold"
                                Padding="12"
@@ -240,6 +241,8 @@
                              SelectedItem="{Binding SelectedCategory}"
                              BorderThickness="0"
                              Background="Transparent"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              TabIndex="8"
                              AutomationProperties.Name="Categories list"
                              AutomationProperties.HelpText="Select a category to filter actions">
@@ -249,7 +252,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                </StackPanel>
+                </DockPanel>
             </Border>
 
             <!-- GridSplitter for Categories/Actions -->
