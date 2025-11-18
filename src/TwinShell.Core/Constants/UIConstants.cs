@@ -16,6 +16,11 @@ public static class UIConstants
     public const string FavoritesCategoryDisplay = "⭐ Favorites";
 
     /// <summary>
+    /// The display name for the "All" category (shows all commands).
+    /// </summary>
+    public const string AllCategoryDisplay = "📋 All Commands";
+
+    /// <summary>
     /// Maximum number of favorites a user can have.
     /// </summary>
     public const int MaxFavoritesCount = 50;

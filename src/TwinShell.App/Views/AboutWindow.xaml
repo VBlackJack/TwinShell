@@ -8,6 +8,7 @@
         Height="600" Width="550"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource BackgroundBrush}"
+        Icon="/Assets/twinshell-icon.png"
         ResizeMode="NoResize"
         WindowStyle="SingleBorderWindow">
 
@@ -69,18 +70,18 @@
 
         <!-- Header Section -->
         <StackPanel Grid.Row="0">
-            <!-- App Icon/Logo placeholder -->
-            <Border Width="80" Height="80"
-                    Background="{DynamicResource PrimaryBrush}"
-                    CornerRadius="40"
+            <!-- App Icon/Logo -->
+            <Border Width="100" Height="100"
                     Margin="0,0,0,16"
+                    CornerRadius="20"
                     HorizontalAlignment="Center">
-                <TextBlock Text="TS"
-                           FontSize="36"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
+                <Border.Clip>
+                    <RectangleGeometry Rect="0,0,100,100" RadiusX="20" RadiusY="20"/>
+                </Border.Clip>
+                <Image Source="/Assets/twinshell-icon.png"
+                       Width="100"
+                       Height="100"
+                       Stretch="Uniform"/>
             </Border>
 
             <TextBlock Text="TwinShell" Style="{StaticResource TitleStyle}"/>

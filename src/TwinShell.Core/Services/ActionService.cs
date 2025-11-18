@@ -80,4 +80,45 @@ public class ActionService : IActionService
     {
         await _repository.DeleteAsync(id);
     }
+
+    public async Task<int> GetActionCountByCategoryAsync(string category)
+    {
+        var actions = await _repository.GetByCategoryAsync(category);
+        return actions.Count();
+    }
+
+    public async Task<bool> RenameCategoryAsync(string oldName, string newName)
+    {
+        if (string.IsNullOrWhiteSpace(oldName) || string.IsNullOrWhiteSpace(newName))
+            return false;
+
+        if (oldName.Equals(newName, StringComparison.OrdinalIgnoreCase))
+            return true; // Nothing to do
+
+        var actions = await _repository.GetByCategoryAsync(oldName);
+        foreach (var action in actions)
+        {
+            action.Category = newName;
+            action.UpdatedAt = DateTime.UtcNow;
+            await _repository.UpdateAsync(action);
+        }
+
+        return true;
+    }
+
+    public async Task<bool> DeleteCategoryAsync(string categoryName)
+    {
+        if (string.IsNullOrWhiteSpace(categoryName))
+            return false;
+
+        var actions = await _repository.GetByCategoryAsync(categoryName);
+        foreach (var action in actions)
+        {
+            action.Category = string.Empty;
+            action.UpdatedAt = DateTime.UtcNow;
+            await _repository.UpdateAsync(action);
+        }
+
+        return true;
+    }
 }

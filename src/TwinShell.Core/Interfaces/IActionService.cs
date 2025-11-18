@@ -20,4 +20,19 @@ public interface IActionService
     Task<ActionModel> CreateActionAsync(ActionModel action);
     Task UpdateActionAsync(ActionModel action);
     Task DeleteActionAsync(string id);
+
+    /// <summary>
+    /// Gets the count of actions for a specific category
+    /// </summary>
+    Task<int> GetActionCountByCategoryAsync(string category);
+
+    /// <summary>
+    /// Renames a category across all actions that use it
+    /// </summary>
+    Task<bool> RenameCategoryAsync(string oldName, string newName);
+
+    /// <summary>
+    /// Deletes a category by removing it from all actions (sets to empty string)
+    /// </summary>
+    Task<bool> DeleteCategoryAsync(string categoryName);
 }

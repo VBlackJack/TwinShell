@@ -11,6 +11,7 @@
         Height="900" Width="1200"
         MinHeight="600" MinWidth="800"
         Background="{DynamicResource BackgroundBrush}"
+        Icon="Assets/twinshell-icon.png"
         AutomationProperties.Name="TwinShell Main Window"
         AutomationProperties.HelpText="PowerShell and Bash command manager application">
 
@@ -452,7 +453,7 @@
                             </Grid>
 
                             <!-- Badges -->
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                 <Border Style="{StaticResource PlatformBadgeStyle}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Platform, Converter={StaticResource PlatformToIconConverter}}"
@@ -469,6 +470,29 @@
                                                FontWeight="SemiBold"/>
                                 </Border>
                             </StackPanel>
+
+                            <!-- Tags -->
+                            <ItemsControl ItemsSource="{Binding Tags}" Margin="0,0,0,16">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource SurfaceBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="12"
+                                                Padding="8,4"
+                                                Margin="0,0,4,4">
+                                            <TextBlock Text="{Binding}"
+                                                       FontSize="11"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
                             <!-- UX: Danger banner with clearer English wording -->
                             <Border>
@@ -516,16 +540,24 @@
                                                 Margin="0,0,0,8"
                                                 CornerRadius="4">
                                             <StackPanel>
-                                                <TextBlock Text="{Binding Command}"
-                                                           FontFamily="Consolas"
-                                                           FontSize="12"
-                                                           Foreground="{DynamicResource CodeTextBrush}"
-                                                           TextWrapping="Wrap"/>
-                                                <TextBlock Text="{Binding Description}"
-                                                           FontSize="11"
-                                                           Foreground="{DynamicResource TextSecondaryBrush}"
-                                                           TextWrapping="Wrap"
-                                                           Margin="0,4,0,0"/>
+                                                <TextBox Text="{Binding Command, Mode=OneWay}"
+                                                         FontFamily="Consolas"
+                                                         FontSize="12"
+                                                         Foreground="{DynamicResource CodeTextBrush}"
+                                                         TextWrapping="Wrap"
+                                                         IsReadOnly="True"
+                                                         BorderThickness="0"
+                                                         Background="Transparent"
+                                                         IsTabStop="False"/>
+                                                <TextBox Text="{Binding Description, Mode=OneWay}"
+                                                         FontSize="11"
+                                                         Foreground="{DynamicResource TextSecondaryBrush}"
+                                                         TextWrapping="Wrap"
+                                                         Margin="0,4,0,0"
+                                                         IsReadOnly="True"
+                                                         BorderThickness="0"
+                                                         Background="Transparent"
+                                                         IsTabStop="False"/>
                                             </StackPanel>
                                         </Border>
                                     </DataTemplate>
@@ -662,12 +694,16 @@
                                             BorderThickness="1"
                                             CornerRadius="4"
                                             Padding="8">
-                                        <TextBlock x:Name="GeneratedCommandText"
-                                                   Text="{Binding GeneratedCommand}"
-                                                   FontFamily="Consolas"
-                                                   FontSize="12"
-                                                   Foreground="{DynamicResource CodeTextBrush}"
-                                                   TextWrapping="Wrap"/>
+                                        <TextBox x:Name="GeneratedCommandText"
+                                                 Text="{Binding GeneratedCommand, Mode=OneWay}"
+                                                 FontFamily="Consolas"
+                                                 FontSize="12"
+                                                 Foreground="{DynamicResource CodeTextBrush}"
+                                                 TextWrapping="Wrap"
+                                                 IsReadOnly="True"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 IsTabStop="False"/>
                                     </Border>
 
                                     <!-- UX: Action button (Execute hidden until Sprint 4 - reduces confusion and UI clutter) -->
