@@ -1,116 +1,108 @@
-# TwinShell
+# 🐚 TwinShell
 
-**Gestionnaire de commandes PowerShell & Bash pour administrateurs système**
+**Votre gestionnaire de commandes PowerShell et Bash pour l'administration système**
 
-TwinShell est une application Windows WPF (.NET 8) qui aide les administrateurs système à trouver rapidement les bonnes commandes PowerShell et Bash pour gérer une infrastructure mixte Windows/Linux.
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
+![.NET](https://img.shields.io/badge/.NET-8.0-purple)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## 🚀 Fonctionnalités
+---
 
-### Sprint 1 : MVP (Fonctionnalités de base)
+## 📖 Vue d'ensemble
 
-- ✅ **Référentiel de 30+ actions** couvrant :
-  - Active Directory (utilisateurs, GPO, diagnostics)
-  - DNS (requêtes, cache)
-  - Logs (EventLog Windows, journald Linux)
-  - Services (systemd, Windows Services)
-  - Network & System diagnostics
+**TwinShell** est une application Windows moderne qui aide les administrateurs système à trouver, organiser et utiliser rapidement les commandes PowerShell et Bash dont ils ont besoin au quotidien.
 
-- 🔍 **Recherche en temps réel** par titre, description, tags
-- 🏷️ **Filtres avancés** par Platform (Windows/Linux/Both) et Level (Info/Run/Dangerous)
-- 📂 **Navigation par catégories**
-- 🛠️ **Générateur de commandes** avec paramètres dynamiques
-- 📋 **Copie vers presse-papiers** en un clic
-- ⚠️ **Alertes de sécurité** pour les commandes dangereuses
+### À qui s'adresse TwinShell ?
 
-### Sprint 2 : Personnalisation & Historique
+- **Administrateurs système** gérant des infrastructures Windows et Linux
+- **DevOps** travaillant sur des environnements hybrides
+- **Techniciens IT** cherchant à centraliser leurs commandes fréquentes
+- **Ingénieurs réseau** ayant besoin d'un accès rapide aux diagnostics
 
-- 📜 **Historique des commandes** avec:
-  - Tracking automatique de chaque commande générée
-  - Recherche et filtrage (par texte, date, catégorie, plateforme)
-  - Visualisation avec horodatage et détails d'action
-  - Nettoyage automatique (90 jours de rétention par défaut)
-  - Copie et suppression d'entrées individuelles
+### Quel problème TwinShell résout-il ?
 
-- ⭐ **Système de favoris** avec:
-  - Marquer jusqu'à 50 actions comme favorites
-  - Bouton étoile (☆/★) avec effet hover doré
-  - Catégorie spéciale "⭐ Favorites" pour accès rapide
-  - Gestion des limites avec messages explicites
+En tant qu'administrateur système, vous jonglez constamment entre PowerShell et Bash, vous cherchez dans vos notes dispersées, et vous perdez du temps à retrouver la syntaxe exacte de commandes que vous utilisez rarement mais qui sont critiques.
 
-- 💾 **Export/Import de configuration** :
-  - Export au format JSON (favorites + historique)
-  - Import avec validation et mode fusion
-  - Préservation des données existantes
-  - Validation de l'intégrité des fichiers
+**TwinShell centralise tout cela** : une bibliothèque de 30+ commandes prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
 
-- 🕐 **Widget Commandes Récentes** :
-  - Affichage des 5 dernières commandes sur la page d'accueil
-  - Temps relatif ("5 min ago", "2h ago")
-  - Copie en un clic via click sur l'entrée
-  - Message d'état vide élégant
+---
 
-## 🏗️ Architecture
+## ✨ Fonctionnalités principales
 
-```
-TwinShell/
-├── src/
-│   ├── TwinShell.App/          # Application WPF (UI, ViewModels)
-│   ├── TwinShell.Core/          # Logique métier (Models, Services)
-│   ├── TwinShell.Persistence/   # EF Core + SQLite
-│   └── TwinShell.Infrastructure/# Services transverses (Clipboard, Seed)
-├── tests/
-│   ├── TwinShell.Core.Tests/
-│   └── TwinShell.Persistence.Tests/
-└── data/seed/
-    └── initial-actions.json     # Données de seed (30 actions)
-```
+### 🔍 Recherche Intelligente
+- **Recherche en temps réel** par titre, description, tags ou contenu de commande
+- **Normalisation automatique** : trouve "réseau" même si vous tapez "reseau"
+- **Recherche multi-mots** : "AD user" trouve toutes les commandes liées aux utilisateurs Active Directory
+- **Recherche fuzzy** : tolère les fautes de frappe (jusqu'à 30% de différence)
+- **Suggestions intelligentes** : l'historique de recherche propose des suggestions d'autocomplétion
 
-### Stack technique
+### 📂 Organisation Puissante
+- **Catégories prédéfinies** : Active Directory, DNS, Logs, Services, Réseau, etc.
+- **Catégories personnalisées** : Créez vos propres catégories avec icônes et couleurs
+- **Catégorie "📋 All Commands"** : Vue d'ensemble de toutes les commandes disponibles
+- **Filtres avancés** : Par plateforme (Windows/Linux), niveau de risque, catégorie
 
-- **.NET 8.0** - Framework de développement
-- **WPF** (Windows Presentation Foundation) - Interface utilisateur
-- **SQLite** + **Entity Framework Core** - Persistence
-- **MVVM** avec **CommunityToolkit.Mvvm** - Architecture
-- **xUnit** + **FluentAssertions** - Tests unitaires
+### ⭐ Favoris et Historique
+- **Système de favoris** : Marquez jusqu'à 50 commandes pour y accéder instantanément
+- **Historique complet** : Toutes vos commandes générées sont sauvegardées avec horodatage
+- **Widget des commandes récentes** : Les 5 dernières commandes affichées sur la page d'accueil
+- **Recherche dans l'historique** : Retrouvez une commande que vous avez utilisée il y a 3 semaines
+- **Export/Import** : Sauvegardez et partagez vos favoris et historique au format JSON
 
-## 📦 Prérequis
+### 🛠️ Générateur de Commandes
+- **Paramètres dynamiques** : Remplissez simplement les champs, la commande se génère automatiquement
+- **Exemples intégrés** : Chaque commande inclut des exemples d'utilisation (avec sélection de texte)
+- **Copie en un clic** : Copiez la commande générée vers le presse-papiers
+- **Affichage des tags** : Identifiez rapidement le type de commande grâce aux tags visuels
 
-- **Windows 10/11**
-- **.NET 8 SDK** ou **Visual Studio 2022** (17.8+)
-- **PowerShell** (pour exécuter les commandes générées)
+### 🌙 Personnalisation
+- **Thème sombre professionnel** : Réduisez la fatigue oculaire lors de longues sessions
+- **Mode système** : Suit automatiquement le thème Windows (clair/sombre)
+- **Contraste WCAG AAA** : Ratio de 7:1 pour une lisibilité optimale
+- **Paramètres personnalisables** : Rétention de l'historique, nombre de commandes récentes, etc.
 
-## 🛠️ Installation
+### ⚠️ Sécurité
+- **Alertes de sécurité** : Les commandes dangereuses affichent un bandeau d'avertissement rouge
+- **Confirmation avant exécution** : Option pour confirmer les commandes critiques
+- **Protection des catégories système** : Les catégories prédéfinies ne peuvent pas être supprimées
+- **Audit de sécurité complet** : 15 vulnérabilités critiques corrigées (injection, path traversal, etc.)
 
-### Option 1 : Visual Studio
+### ♿ Accessibilité
+- **Navigation clavier complète** : Raccourcis pour toutes les fonctionnalités (Ctrl+M, F5, etc.)
+- **Conformité WCAG AA** : Contraste, taille des cibles, animations
+- **Support lecteurs d'écran** : AutomationProperties configurées
+- **Fenêtre responsive** : S'adapte de 800x600 pixels au plein écran
 
-1. Cloner le repository :
-   ```bash
-   git clone https://github.com/VBlackJack/TwinShell.git
-   cd TwinShell
-   ```
+---
 
-2. Ouvrir `TwinShell.sln` dans Visual Studio 2022
+## 📦 Installation
 
-3. Restaurer les packages NuGet (automatique)
+### Prérequis
 
-4. **Appliquer les migrations EF Core** (requis pour Sprint 2) :
-   ```powershell
-   # Dans la Console du Gestionnaire de Package
-   Add-Migration AddCommandHistoryAndFavorites -Project TwinShell.Persistence -StartupProject TwinShell.App
-   Update-Database -Project TwinShell.Persistence -StartupProject TwinShell.App
-   ```
+- **Windows 10 ou Windows 11** (64-bit)
+- **.NET 8 Runtime** ([Télécharger ici](https://dotnet.microsoft.com/download/dotnet/8.0))
+- **PowerShell 5.1+** (inclus dans Windows)
+- Optionnel : **Bash** (via WSL) pour les commandes Linux
 
-   Ou via dotnet CLI :
-   ```bash
-   dotnet ef migrations add AddCommandHistoryAndFavorites --project src/TwinShell.Persistence --startup-project src/TwinShell.App
-   dotnet ef database update --project src/TwinShell.Persistence --startup-project src/TwinShell.App
-   ```
+### Installation Rapide
 
-5. Compiler la solution (F6)
+1. **Télécharger la dernière version**
+   - Rendez-vous sur la page [Releases](https://github.com/VBlackJack/TwinShell/releases)
+   - Téléchargez `TwinShell-Setup.exe` ou `TwinShell-Portable.zip`
 
-6. Lancer l'application (F5)
+2. **Installer l'application**
+   - **Version Setup** : Exécutez `TwinShell-Setup.exe` et suivez l'assistant
+   - **Version Portable** : Décompressez `TwinShell-Portable.zip` et lancez `TwinShell.exe`
 
-### Option 2 : Ligne de commande
+3. **Premier lancement**
+   - L'application crée automatiquement sa base de données SQLite
+   - 30+ commandes sont chargées automatiquement au démarrage
+   - Vous êtes prêt à utiliser TwinShell !
+
+### Installation depuis le Code Source
+
+Pour les développeurs souhaitant compiler le projet :
 
 ```bash
 # Cloner le repository
@@ -120,213 +112,352 @@ cd TwinShell
 # Restaurer les packages
 dotnet restore
 
-# Appliquer les migrations EF Core (requis pour Sprint 2)
-dotnet ef migrations add AddCommandHistoryAndFavorites --project src/TwinShell.Persistence --startup-project src/TwinShell.App
-dotnet ef database update --project src/TwinShell.Persistence --startup-project src/TwinShell.App
-
 # Compiler
-dotnet build
+dotnet build --configuration Release
 
 # Lancer l'application
 dotnet run --project src/TwinShell.App
 ```
 
-> **Note** : Les migrations sont automatiquement appliquées au premier lancement de l'application. L'étape manuelle ci-dessus est optionnelle mais recommandée pour détecter les erreurs de migration avant le lancement.
+👉 **Voir le [Guide de Démarrage Rapide](docs/QuickStart.md) pour plus de détails**
 
-## 🧪 Tests
+---
 
-Exécuter les tests unitaires :
+## 🚀 Guide d'Utilisation
 
-```bash
-# Tous les tests
-dotnet test
+### Premiers Pas
 
-# Avec couverture
-dotnet test --collect:"XPlat Code Coverage"
+#### 1. Interface Principale
+
+L'interface TwinShell est divisée en 3 panneaux :
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  [Recherche]  [Filtres: Platform | Level]          [Menu]  │
+├──────────────┬──────────────────────────┬───────────────────┤
+│              │                          │                   │
+│  Catégories  │   Liste des Commandes   │  Détails + Params │
+│              │                          │                   │
+│  • All Cmds  │  ✓ Get-Service          │  Title: Get-Svc   │
+│  • Favorites │    List Windows svcs    │  [param1] [____]  │
+│  • AD        │                          │  [param2] [____]  │
+│  • DNS       │  ✓ systemctl status     │                   │
+│  • Logs      │    Linux service info   │  Generated Cmd:   │
+│  • ...       │                          │  Get-Service...   │
+│              │  ✓ Get-EventLog         │                   │
+│              │    Windows event logs   │  [📋 Copy]        │
+│              │                          │                   │
+└──────────────┴──────────────────────────┴───────────────────┘
 ```
 
-## 📖 Utilisation
+#### 2. Rechercher une Commande
 
-### Fonctionnalités de base
+**Méthode 1 : Barre de recherche**
+1. Tapez dans la barre de recherche (ex: `"dns"`, `"service"`, `"AD user"`)
+2. La liste se filtre en temps réel
+3. La recherche ignore les accents, la casse, et tolère les fautes de frappe
 
-1. **Rechercher une action** : Tapez dans la barre de recherche (ex: "gpo", "dns", "service")
+**Méthode 2 : Navigation par catégories**
+1. Cliquez sur une catégorie dans le panneau de gauche
+2. Parcourez la liste des commandes de cette catégorie
+3. Cliquez sur "📋 All Commands" pour voir toutes les commandes
 
-2. **Filtrer** : Utilisez les checkboxes Platform/Level pour affiner les résultats
+**Méthode 3 : Filtres**
+- **Platform** : Cochez Windows, Linux ou Both pour filtrer par plateforme
+- **Level** : Filtrez par niveau de risque (Info, Run, Dangerous)
 
-3. **Sélectionner une catégorie** : Cliquez dans le panneau de gauche
+#### 3. Générer et Copier une Commande
 
-4. **Générer une commande** :
-   - Sélectionnez une action dans la liste
-   - Remplissez les paramètres dans le panneau de droite
-   - La commande se génère automatiquement
+1. **Sélectionnez une commande** dans la liste
+2. **Remplissez les paramètres** dans le panneau de droite (si applicable)
+   - Exemple : Pour "Get-Service", entrez le nom du service
+   - Les champs obligatoires sont marqués d'un astérisque (*)
+3. **La commande se génère automatiquement** en bas du panneau
+4. **Cliquez sur "📋 Copier dans le presse-papiers"**
+5. **Collez** dans votre terminal PowerShell ou Bash (Ctrl+V)
 
-5. **Copier** : Cliquez sur "Copier dans le presse-papiers"
+#### 4. Utiliser les Favoris
 
-### Nouvelles fonctionnalités (Sprint 2)
+**Ajouter un favori :**
+- Cliquez sur l'étoile (☆) à côté du titre de la commande
+- L'étoile devient pleine (★) et dorée
 
-6. **Favoris** :
-   - Cliquez sur l'étoile (☆) à côté du titre de l'action pour l'ajouter aux favoris
-   - Accédez rapidement à vos favoris via la catégorie "⭐ Favorites"
-   - Maximum de 50 favoris par utilisateur
+**Accéder aux favoris :**
+- Cliquez sur la catégorie "⭐ Favorites" dans le panneau de gauche
+- Vos commandes favorites s'affichent
 
-7. **Historique** :
-   - Consultez l'onglet "📜 History" pour voir toutes vos commandes générées
-   - Recherchez par texte, filtrez par date, catégorie ou plateforme
-   - Copiez ou supprimez des entrées individuelles
+**Limites :**
+- Maximum 50 favoris par utilisateur
+- Un message s'affiche si vous atteignez la limite
 
-8. **Commandes récentes** :
-   - Widget en haut de la page d'accueil affichant les 5 dernières commandes
-   - Cliquez sur une entrée pour copier la commande
+#### 5. Consulter l'Historique
 
-9. **Export/Import** :
-   - Menu **File → Export Configuration** pour sauvegarder vos favoris et historique
-   - Menu **File → Import Configuration** pour restaurer ou fusionner une configuration
-   - Format JSON pour faciliter le partage et le versioning
+1. Cliquez sur l'onglet **"📜 History"** dans le menu
+2. Vous voyez toutes vos commandes générées avec :
+   - Date et heure de génération
+   - Commande complète
+   - Catégorie et plateforme
+3. **Recherchez** dans l'historique avec la barre de recherche
+4. **Filtrez** par date, catégorie ou plateforme
+5. **Copiez** une commande passée en cliquant dessus
+6. **Supprimez** une entrée avec le bouton Supprimer
 
-## 🗄️ Base de données
+**Configuration :**
+- Par défaut, l'historique conserve 90 jours de commandes
+- Modifiable dans les paramètres (1 à 3650 jours)
 
-- **Emplacement** : `%LOCALAPPDATA%/TwinShell/twinshell.db`
-- **Type** : SQLite
-- **Migration** : Automatique au premier lancement
-- **Seeding** : 30 actions chargées depuis `data/seed/initial-actions.json`
+#### 6. Gérer les Catégories Personnalisées
 
-## 🔒 Sécurité
+**Ouvrir le gestionnaire :**
+- Menu **Tools → Manage Categories** (ou **Ctrl+M**)
 
-Les commandes de niveau **Dangerous** (rouge) affichent un bandeau d'alerte :
+**Créer une catégorie :**
+1. Cliquez sur **"+ Add New Category"**
+2. Remplissez :
+   - **Nom** : Ex. "Backup Quotidien"
+   - **Icône** : Choisissez parmi 24 icônes (folder, star, tools, etc.)
+   - **Couleur** : Sélectionnez une des 12 couleurs
+   - **Description** : (optionnel) Décrivez son usage
+3. Cliquez sur **"Save Category"**
 
-> ⚠️ ATTENTION : Cette commande peut causer des modifications importantes du système
+**Renommer une catégorie :**
+1. Sélectionnez la catégorie dans la liste
+2. Cliquez sur **"Rename Category"**
+3. Modifiez le nom et cliquez sur **"Save"**
 
-Exemples : `Clear-EventLog`, `Disable-ADAccount`, `Stop-Process -Force`
+**Supprimer une catégorie :**
+1. Sélectionnez la catégorie
+2. Cliquez sur **"Delete Category"**
+3. Confirmez la suppression
+4. ⚠️ Les catégories système (badge jaune) ne peuvent pas être supprimées
 
-### Audit de Sécurité & Corrections (Janvier 2025)
+**Réorganiser les catégories :**
+- Utilisez les boutons **"Move Up"** et **"Move Down"**
+- L'ordre est sauvegardé automatiquement
 
-**15 vulnérabilités critiques corrigées** :
-- ✅ Protection contre l'injection de commandes
-- ✅ Protection path traversal (validation stricte des chemins)
-- ✅ Correction de memory leaks (SemaphoreSlim non disposés)
-- ✅ Résolution de race conditions dans ViewModels
-- ✅ Protection contre l'information disclosure (exceptions)
-- ✅ Protection DoS (limites sur fichiers et collections)
-- ✅ Validation complète des entrées utilisateur
-- ✅ Thread-safety améliorée
+**Masquer/Afficher une catégorie :**
+- Bouton **"Hide"** pour masquer une catégorie de la navigation
+- Bouton **"Show"** pour la réafficher
 
-**8 problèmes de stabilité résolus** :
-- ✅ Gestion appropriée des ressources (IDisposable pattern)
-- ✅ Locks pour sections critiques
-- ✅ Timer cleanup dans ExecutionViewModel
-- ✅ Fragile checks remplacés par flags explicites
+#### 7. Changer le Thème
 
-**Voir [SECURITY.md](SECURITY.md) pour la politique de sécurité complète.**
+**Ouvrir les paramètres :**
+- Menu **File → Settings** (ou **Ctrl+,**)
 
-### Optimisations de Performance (Janvier 2025)
+**Choisir un thème :**
+1. Section **Appearance**
+2. Sélectionnez :
+   - **Light** : Thème clair (défaut)
+   - **Dark** : Thème sombre pour réduire la fatigue oculaire
+   - **System** : Suit automatiquement le thème Windows
+3. Cliquez sur **"Preview Theme"** pour voir le résultat
+4. Cliquez sur **"Save"** pour enregistrer
 
-- ⚡ **Pagination dans HistoryViewModel** : Charge 50 entrées au lieu de 1000
-- ⚡ **ObservableRangeCollection** : Single UI notification au lieu de N
-- ⚡ **Filtrage optimisé** : CustomCategoryRepository filtre avant de charger
-- ⚡ **Magic numbers** remplacés par constantes nommées
-- ⚡ **LINQ optimisé** : Énumérations uniques, ToHashSet() pour lookups
-- ⚡ **Timer interval** : 250ms au lieu de 100ms (60% CPU reduction)
+**Caractéristiques :**
+- Transition fluide sans clignotement
+- Contraste WCAG AAA (ratio 7:1)
+- Tous les écrans sont supportés
 
-## 🧩 Modèle de données
+#### 8. Exporter/Importer la Configuration
 
-### Action
-```csharp
-- Id: string
-- Title: string
-- Description: string
-- Category: string (AD, DNS, GPO, Logs, Linux Services...)
-- Platform: enum (Windows, Linux, Both)
-- Level: enum (Info, Run, Dangerous)
-- Tags: List<string>
-- WindowsCommandTemplate: CommandTemplate?
-- LinuxCommandTemplate: CommandTemplate?
-- Examples: List<CommandExample>
-- Notes: string?
-- Links: List<ExternalLink>
-```
+**Exporter :**
+1. Menu **File → Export Configuration** (ou **Ctrl+E**)
+2. Choisissez l'emplacement et le nom du fichier JSON
+3. Le fichier contient :
+   - Vos favoris
+   - Votre historique de commandes
+   - Vos paramètres
 
-### CommandTemplate
-```csharp
-- Id: string
-- Platform: enum
-- Name: string
-- CommandPattern: string (ex: "Get-ADUser -Identity {username}")
-- Parameters: List<TemplateParameter>
-```
+**Importer :**
+1. Menu **File → Import Configuration** (ou **Ctrl+I**)
+2. Sélectionnez le fichier JSON à importer
+3. Mode **fusion** : Les données existantes sont préservées
+4. Validation automatique de l'intégrité du fichier
 
-### CommandHistory (Sprint 2)
-```csharp
-- Id: string
-- UserId: string? (nullable pour mode single-user)
-- ActionId: string
-- GeneratedCommand: string
-- Parameters: Dictionary<string, string>
-- Platform: enum
-- CreatedAt: DateTime
-- Category: string (dénormalisé pour performance)
-- ActionTitle: string (dénormalisé pour performance)
-```
+---
 
-### UserFavorite (Sprint 2)
-```csharp
-- Id: string
-- UserId: string? (nullable pour mode single-user)
-- ActionId: string
-- CreatedAt: DateTime
-- DisplayOrder: int (pour réorganisation future)
-```
+## ⌨️ Raccourcis Clavier
+
+| Raccourci | Action |
+|-----------|--------|
+| **Ctrl+,** | Ouvrir les Paramètres |
+| **Ctrl+M** | Gérer les Catégories |
+| **Ctrl+E** | Exporter la Configuration |
+| **Ctrl+I** | Importer la Configuration |
+| **F1** | Afficher l'Aide |
+| **F5** | Actualiser les Actions |
+| **Tab** | Naviguer entre les contrôles |
+| **Esc** | Annuler/Fermer |
+
+👉 **Voir le [Guide Utilisateur Complet](docs/UserGuide.md) pour plus de détails**
+
+---
+
+## ❓ FAQ / Questions Fréquentes
+
+### Général
+
+**Q : TwinShell fonctionne-t-il sur Mac ou Linux ?**
+R : Non, TwinShell est une application Windows WPF. Elle nécessite Windows 10 ou 11.
+
+**Q : Puis-je exécuter les commandes directement depuis TwinShell ?**
+R : Non, TwinShell est un générateur de commandes. Vous copiez la commande et la collez dans votre terminal PowerShell ou Bash.
+
+**Q : Les commandes Bash fonctionnent-elles sur Windows ?**
+R : Oui, si vous avez installé WSL (Windows Subsystem for Linux). Les commandes Bash doivent être exécutées dans un terminal WSL.
+
+**Q : Où sont stockées mes données ?**
+R :
+- Base de données : `%LOCALAPPDATA%\TwinShell\twinshell.db` (SQLite)
+- Paramètres : `%APPDATA%\TwinShell\settings.json`
+
+### Recherche
+
+**Q : Pourquoi ma recherche "Get-Service" trouve-t-elle aussi "Get Service" ?**
+R : TwinShell normalise les tirets, underscores et points en espaces pour une recherche plus permissive. Cela permet de trouver des commandes même si vous ne tapez pas la syntaxe exacte.
+
+**Q : La recherche est-elle sensible aux accents ?**
+R : Non, les accents sont automatiquement ignorés. "réseau" et "reseau" donnent les mêmes résultats.
+
+**Q : Comment chercher plusieurs mots ?**
+R : Tapez simplement les mots séparés par des espaces (ex: "AD user"). TOUS les mots doivent être présents dans la commande (logique AND).
+
+### Fonctionnalités
+
+**Q : Puis-je ajouter mes propres commandes ?**
+R : Cette fonctionnalité n'est pas encore disponible dans l'interface. Vous pouvez modifier le fichier `data/seed/initial-actions.json` et relancer l'application.
+
+**Q : Combien de favoris puis-je avoir ?**
+R : Maximum 50 favoris par utilisateur.
+
+**Q : Combien de temps l'historique est-il conservé ?**
+R : Par défaut 90 jours, modifiable dans les paramètres (de 1 à 3650 jours).
+
+**Q : Puis-je partager mes favoris avec un collègue ?**
+R : Oui, utilisez la fonction Export/Import pour partager votre configuration au format JSON.
+
+### Dépannage
+
+**Q : Le thème ne change pas après sauvegarde**
+R : Vérifiez que vous avez bien cliqué sur "Save". Si le problème persiste, redémarrez l'application.
+
+**Q : Je ne peux pas modifier une catégorie**
+R : Vérifiez qu'il ne s'agit pas d'une catégorie système (badge jaune). Les catégories système sont protégées contre la modification et la suppression.
+
+**Q : L'application ne démarre pas**
+R :
+1. Vérifiez que .NET 8 Runtime est installé
+2. Vérifiez les permissions d'accès au dossier `%LOCALAPPDATA%\TwinShell`
+3. Consultez les logs dans `%LOCALAPPDATA%\TwinShell\logs`
+
+**Q : Les raccourcis clavier ne fonctionnent pas**
+R :
+1. Assurez-vous que la fenêtre TwinShell a le focus
+2. Vérifiez qu'aucune autre application n'intercepte le même raccourci
+3. Appuyez sur F1 pour voir la liste complète des raccourcis actifs
+
+👉 **Voir la [FAQ Complète](docs/FAQ.md) pour plus de questions**
+
+---
+
+## 🤝 Support et Contribution
+
+### Obtenir de l'Aide
+
+- 📖 **Documentation** : Consultez le [Guide Utilisateur](docs/UserGuide.md)
+- 💬 **Discussions** : [GitHub Discussions](https://github.com/VBlackJack/TwinShell/discussions)
+- 🐛 **Signaler un Bug** : [Issues GitHub](https://github.com/VBlackJack/TwinShell/issues)
+
+### Contribuer au Projet
+
+Les contributions sont les bienvenues ! Pour contribuer :
+
+1. **Forkez** le projet
+2. Créez une **branche** pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
+3. **Commitez** vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. **Pushez** vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrez une **Pull Request**
+
+👉 **Voir le [Guide de Contribution](docs/developer/CONTRIBUTING.md) pour les développeurs**
+
+---
+
+## 📝 Licence
+
+Ce projet est sous licence **MIT**. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+Vous êtes libre de :
+- ✅ Utiliser le logiciel à des fins personnelles et commerciales
+- ✅ Modifier le code source
+- ✅ Distribuer le logiciel
+- ✅ Utiliser le logiciel dans des projets privés
+
+Conditions :
+- ℹ️ Vous devez inclure la licence MIT dans toute copie du logiciel
+- ℹ️ Le logiciel est fourni "tel quel", sans garantie
+
+---
+
+## 👥 Auteurs et Remerciements
+
+### Auteur Principal
+
+- **VBlackJack** - *Développeur principal* - [GitHub](https://github.com/VBlackJack)
+
+### Remerciements
+
+- **Microsoft** - Documentation PowerShell et Active Directory
+- **Communauté Linux** - Documentation systemd et bash
+- **CommunityToolkit.Mvvm** - Framework MVVM moderne pour .NET
+- **Tous les contributeurs** qui améliorent TwinShell
+
+---
+
+## 🔗 Liens Utiles
+
+- 🏠 **Site Web** : [À venir]
+- 📦 **Releases** : [GitHub Releases](https://github.com/VBlackJack/TwinShell/releases)
+- 📖 **Documentation Complète** : [docs/](docs/)
+- 🔧 **Documentation Développeur** : [docs/developer/](docs/developer/)
+- 🐛 **Signaler un Bug** : [Issues](https://github.com/VBlackJack/TwinShell/issues)
+- 💬 **Discussions** : [GitHub Discussions](https://github.com/VBlackJack/TwinShell/discussions)
+
+---
 
 ## 🎯 Roadmap
 
-### ✅ Complété
+### ✅ Complété (v1.0)
 
-**Sprint 1 - MVP** (Janvier 2025)
-- Référentiel d'actions avec templates de commandes
-- Recherche et filtrage avancés
-- Générateur de commandes avec paramètres dynamiques
-- Copie vers presse-papiers
+- ✅ Référentiel de 30+ commandes PowerShell et Bash
+- ✅ Recherche intelligente avec normalisation et fuzzy matching
+- ✅ Système de favoris (max 50)
+- ✅ Historique des commandes avec recherche et filtrage
+- ✅ Export/Import de configuration JSON
+- ✅ Thèmes clair/sombre avec mode système
+- ✅ Catégories personnalisées avec icônes et couleurs
+- ✅ Navigation clavier complète
+- ✅ Conformité WCAG AA
+- ✅ Audit de sécurité complet
 
-**Sprint 2 - Personnalisation & Historique** (Janvier 2025)
-- Historique des commandes avec recherche et filtrage
-- Système de favoris (max 50)
-- Export/Import de configuration JSON
-- Widget des commandes récentes
+### 🔮 En Préparation (v1.1+)
 
-### 🔮 Sprints futurs
+- [ ] **Commandes personnalisées** : Ajoutez vos propres commandes via l'interface
+- [ ] **Partage de commandes** : Partagez des commandes entre utilisateurs
+- [ ] **Multi-langues** : Support de l'anglais et du français
+- [ ] **Intégration PowerShell** : Exécution directe depuis TwinShell
+- [ ] **Statistiques d'utilisation** : Commandes les plus utilisées, tendances
+- [ ] **Synchronisation cloud** : Synchronisez vos favoris entre machines (optionnel)
+- [ ] **Snippets de code** : Sauvegardez des fragments de scripts réutilisables
+- [ ] **Thèmes personnalisés** : Créez vos propres thèmes de couleurs
 
-**Sprint 3 - Collaboration & Productivité**
-- [ ] Catégories personnalisées
-- [ ] Partage d'actions entre utilisateurs
-- [ ] Templates de commandes personnalisés
-- [ ] Notes et annotations sur les actions
+---
 
-**Sprint 4 - Avancé**
-- [ ] Mode sombre
-- [ ] Support multi-langues (EN/FR)
-- [ ] Intégration PowerShell/Bash direct (exécution)
-- [ ] Statistiques d'utilisation
-- [ ] Synchronisation cloud (optionnelle)
+<div align="center">
 
-## 🤝 Contribution
+**TwinShell** - Votre Compagnon d'Administration Système
 
-Les contributions sont bienvenues ! Merci de :
+[![Star on GitHub](https://img.shields.io/github/stars/VBlackJack/TwinShell?style=social)](https://github.com/VBlackJack/TwinShell)
 
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
+*Développé avec ❤️ pour la communauté des Administrateurs Système*
 
-## 📝 License
-
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## 👥 Auteurs
-
-- **VBlackJack** - *Développeur principal*
-
-## 🙏 Remerciements
-
-- Documentation Microsoft pour PowerShell et Active Directory
-- Communauté Linux pour systemd et bash
-- Contributors de CommunityToolkit.Mvvm
+</div>
