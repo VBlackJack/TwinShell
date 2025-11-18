@@ -7,6 +7,22 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Assets\twinshell-icon.ico</ApplicationIcon>
+
+    <!-- Version Information -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Company>TwinShell</Company>
+    <Product>TwinShell - PowerShell Command Library</Product>
+    <Description>A comprehensive PowerShell command library for Windows system administrators</Description>
+    <Copyright>Copyright © 2025 TwinShell</Copyright>
+
+    <!-- Publishing Settings -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
