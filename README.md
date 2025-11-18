@@ -5,7 +5,7 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-Apache--2.0-blue)
 
 ---
 
@@ -24,7 +24,7 @@
 
 En tant qu'administrateur système, vous jonglez constamment entre PowerShell et Bash, vous cherchez dans vos notes dispersées, et vous perdez du temps à retrouver la syntaxe exacte de commandes que vous utilisez rarement mais qui sont critiques.
 
-**TwinShell centralise tout cela** : une bibliothèque de 30+ commandes prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
+**TwinShell centralise tout cela** : une bibliothèque de **500+ commandes PowerShell** prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
 
 ---
 
@@ -96,7 +96,7 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 
 3. **Premier lancement**
    - L'application crée automatiquement sa base de données SQLite
-   - 30+ commandes sont chargées automatiquement au démarrage
+   - 500+ commandes PowerShell sont chargées automatiquement au démarrage
    - Vous êtes prêt à utiliser TwinShell !
 
 ### Installation depuis le Code Source
@@ -204,6 +204,7 @@ L'interface TwinShell est divisée en 3 panneaux :
 **Configuration :**
 - Par défaut, l'historique conserve 90 jours de commandes
 - Modifiable dans les paramètres (1 à 3650 jours)
+- Limite d'affichage : 1000 commandes maximum (configurable dans les paramètres)
 
 #### 6. Gérer les Catégories Personnalisées
 
@@ -283,10 +284,13 @@ L'interface TwinShell est divisée en 3 panneaux :
 | **Ctrl+M** | Gérer les Catégories |
 | **Ctrl+E** | Exporter la Configuration |
 | **Ctrl+I** | Importer la Configuration |
+| **Ctrl+F** | Focus sur la barre de recherche |
+| **Ctrl+C** | Copier la commande générée |
 | **F1** | Afficher l'Aide |
-| **F5** | Actualiser les Actions |
+| **Enter** | Exécuter l'action sélectionnée |
 | **Tab** | Naviguer entre les contrôles |
-| **Esc** | Annuler/Fermer |
+| **Esc** | Annuler/Effacer la recherche |
+| **Alt+F4** | Quitter l'application |
 
 👉 **Voir le [Guide Utilisateur Complet](docs/UserGuide.md) pour plus de détails**
 
@@ -377,13 +381,13 @@ Les contributions sont les bienvenues ! Pour contribuer :
 4. **Pushez** vers la branche (`git push origin feature/AmazingFeature`)
 5. Ouvrez une **Pull Request**
 
-👉 **Voir le [Guide de Contribution](docs/developer/CONTRIBUTING.md) pour les développeurs**
+Pour toute question sur le développement, consultez les [Discussions GitHub](https://github.com/VBlackJack/TwinShell/discussions).
 
 ---
 
 ## 📝 Licence
 
-Ce projet est sous licence **MIT**. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+Ce projet est sous licence **Apache 2.0**. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 Vous êtes libre de :
 - ✅ Utiliser le logiciel à des fins personnelles et commerciales
