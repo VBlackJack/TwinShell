@@ -22357,6 +22357,2427 @@
           "url": "https://learn.microsoft.com/en-us/windows/win32/sysinfo/handles-and-objects"
         }
       ]
+    },
+    {
+      "id": "bitlocker-get-status-all",
+      "title": "Obtenir le statut BitLocker de tous les disques",
+      "description": "Affiche l'état de chiffrement BitLocker pour tous les volumes du système.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "bitlocker",
+        "encryption",
+        "status",
+        "security"
+      ],
+      "windowsCommandTemplateId": "bitlocker-get-status-all-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-get-status-all-cmd",
+        "platform": 0,
+        "name": "Get-BitLockerVolume",
+        "commandPattern": "Get-BitLockerVolume | Select-Object MountPoint,EncryptionMethod,VolumeStatus,ProtectionStatus,EncryptionPercentage | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-BitLockerVolume",
+          "description": "Affiche le statut BitLocker de tous les volumes avec tous les détails"
+        },
+        {
+          "command": "Get-BitLockerVolume | Select-Object MountPoint,VolumeStatus,ProtectionStatus",
+          "description": "Affiche uniquement le point de montage et les statuts de chiffrement"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.ProtectionStatus -eq 'On'}",
+          "description": "Liste uniquement les volumes avec BitLocker activé"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.VolumeStatus -eq 'FullyDecrypted'}",
+          "description": "Liste les volumes non chiffrés (vulnérables)"
+        },
+        {
+          "command": "Get-BitLockerVolume C: | Select-Object *",
+          "description": "Affiche toutes les propriétés détaillées du volume C:"
+        }
+      ],
+      "notes": "ProtectionStatus: On (protégé), Off (non protégé). VolumeStatus: FullyEncrypted, FullyDecrypted, EncryptionInProgress, DecryptionInProgress. EncryptionMethod: None, Aes128, Aes256, XtsAes128, XtsAes256.",
+      "links": [
+        {
+          "title": "Get-BitLockerVolume Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/get-bitlockervolume"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-enable-recovery",
+      "title": "Activer BitLocker avec mot de passe de récupération",
+      "description": "Active le chiffrement BitLocker sur un volume avec protection par mot de passe de récupération.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "enable",
+        "encryption",
+        "recovery"
+      ],
+      "windowsCommandTemplateId": "bitlocker-enable-recovery-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-enable-recovery-cmd",
+        "platform": 0,
+        "name": "Enable-BitLocker",
+        "commandPattern": "Enable-BitLocker -MountPoint \"{driveLetter}:\" -RecoveryPasswordProtector -UsedSpaceOnly",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume à chiffrer (ex: C, D, E)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Enable-BitLocker -MountPoint \"C:\" -RecoveryPasswordProtector -UsedSpaceOnly",
+          "description": "Active BitLocker sur C: en chiffrant uniquement l'espace utilisé (plus rapide)"
+        },
+        {
+          "command": "Enable-BitLocker -MountPoint \"D:\" -RecoveryPasswordProtector",
+          "description": "Active BitLocker sur D: en chiffrant tout le disque (plus sécurisé)"
+        },
+        {
+          "command": "Enable-BitLocker -MountPoint \"E:\" -RecoveryPasswordProtector -EncryptionMethod XtsAes256",
+          "description": "Active BitLocker avec chiffrement AES-256 (recommandé pour haute sécurité)"
+        },
+        {
+          "command": "$vol = Enable-BitLocker -MountPoint \"C:\" -RecoveryPasswordProtector -UsedSpaceOnly; $vol.KeyProtector[0].RecoveryPassword",
+          "description": "Active BitLocker et affiche immédiatement le mot de passe de récupération"
+        },
+        {
+          "command": "Enable-BitLocker -MountPoint \"D:\" -RecoveryPasswordProtector -SkipHardwareTest",
+          "description": "Active BitLocker en sautant le test matériel (attention: risque si matériel incompatible)"
+        }
+      ],
+      "notes": "⚠️ IMPORTANT: Sauvegardez immédiatement le mot de passe de récupération après activation! UsedSpaceOnly: chiffre uniquement l'espace utilisé (rapide). Sans cette option: chiffre tout le disque (lent mais plus sécurisé). EncryptionMethod: XtsAes256 recommandé pour Windows 10/11.",
+      "links": [
+        {
+          "title": "Enable-BitLocker Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/enable-bitlocker"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-get-recovery-password",
+      "title": "Obtenir le mot de passe de récupération BitLocker",
+      "description": "Récupère le mot de passe de récupération BitLocker d'un volume pour le sauvegarder.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "recovery",
+        "password",
+        "backup"
+      ],
+      "windowsCommandTemplateId": "bitlocker-get-recovery-password-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-get-recovery-password-cmd",
+        "platform": 0,
+        "name": "Get-BitLockerVolume",
+        "commandPattern": "(Get-BitLockerVolume -MountPoint \"{driveLetter}:\").KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'} | Select-Object KeyProtectorId,RecoveryPassword",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume (ex: C, D, E)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "(Get-BitLockerVolume -MountPoint C:).KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'}",
+          "description": "Affiche tous les mots de passe de récupération du volume C:"
+        },
+        {
+          "command": "(Get-BitLockerVolume -MountPoint C:).KeyProtector.RecoveryPassword",
+          "description": "Affiche uniquement les mots de passe de récupération (format court)"
+        },
+        {
+          "command": "Get-BitLockerVolume | ForEach-Object { Write-Host \"Volume: $($_.MountPoint)\"; $_.KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'} | Select-Object RecoveryPassword }",
+          "description": "Affiche les mots de passe de récupération de tous les volumes"
+        },
+        {
+          "command": "$recovery = (Get-BitLockerVolume C:).KeyProtector[0].RecoveryPassword; $recovery | Out-File C:\\BitLocker-Recovery-C.txt",
+          "description": "Sauvegarde le mot de passe de récupération dans un fichier texte"
+        },
+        {
+          "command": "(Get-BitLockerVolume C:).KeyProtector | Select-Object KeyProtectorType,KeyProtectorId",
+          "description": "Liste tous les protecteurs de clés (TPM, Password, RecoveryPassword, etc.)"
+        }
+      ],
+      "notes": "⚠️ CRITIQUE: Sauvegardez ce mot de passe dans un endroit sûr (coffre-fort numérique, Active Directory, gestionnaire de mots de passe). Sans ce mot de passe, vos données seront IRRÉCUPÉRABLES en cas de problème matériel. Format: 48 chiffres groupés par 6.",
+      "links": [
+        {
+          "title": "BitLocker Recovery Password",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/recovery-overview"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-backup-to-ad",
+      "title": "Sauvegarder le mot de passe BitLocker dans Active Directory",
+      "description": "Sauvegarde automatiquement le mot de passe de récupération BitLocker dans Active Directory.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "backup",
+        "ad",
+        "recovery"
+      ],
+      "windowsCommandTemplateId": "bitlocker-backup-to-ad-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-backup-to-ad-cmd",
+        "platform": 0,
+        "name": "Backup-BitLockerKeyProtector",
+        "commandPattern": "$keyProtector = (Get-BitLockerVolume -MountPoint \"{driveLetter}:\").KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'}; Backup-BitLockerKeyProtector -MountPoint \"{driveLetter}:\" -KeyProtectorId $keyProtector[0].KeyProtectorId",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume (ex: C, D, E)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$kp = (Get-BitLockerVolume C:).KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'}; Backup-BitLockerKeyProtector -MountPoint C: -KeyProtectorId $kp[0].KeyProtectorId",
+          "description": "Sauvegarde le mot de passe de récupération du volume C: dans AD"
+        },
+        {
+          "command": "Get-BitLockerVolume | ForEach-Object { $kp = $_.KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'}; if($kp) { Backup-BitLockerKeyProtector -MountPoint $_.MountPoint -KeyProtectorId $kp[0].KeyProtectorId } }",
+          "description": "Sauvegarde les mots de passe de tous les volumes dans AD"
+        },
+        {
+          "command": "Backup-BitLockerKeyProtector -MountPoint C: -KeyProtectorId '{12345678-1234-1234-1234-123456789012}'",
+          "description": "Sauvegarde un protecteur de clé spécifique par son ID"
+        }
+      ],
+      "notes": "Nécessite: ordinateur joint au domaine AD, droits d'écriture sur l'objet ordinateur dans AD, GPO configurée pour autoriser le stockage BitLocker dans AD. Permet la récupération centralisée par les admins AD.",
+      "links": [
+        {
+          "title": "Backup-BitLockerKeyProtector",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/backup-bitlockerkeyprotector"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-suspend",
+      "title": "Suspendre temporairement la protection BitLocker",
+      "description": "Suspend la protection BitLocker temporairement (utile pour mises à jour BIOS/firmware).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "suspend",
+        "maintenance"
+      ],
+      "windowsCommandTemplateId": "bitlocker-suspend-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-suspend-cmd",
+        "platform": 0,
+        "name": "Suspend-BitLocker",
+        "commandPattern": "Suspend-BitLocker -MountPoint \"{driveLetter}:\" -RebootCount {rebootCount}",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume (ex: C)"
+          },
+          {
+            "name": "rebootCount",
+            "label": "Nombre de redémarrages",
+            "type": "string",
+            "defaultValue": "1",
+            "required": false,
+            "description": "Nombre de redémarrages avant réactivation automatique"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Suspend-BitLocker -MountPoint C: -RebootCount 1",
+          "description": "Suspend BitLocker pour 1 redémarrage (réactivation auto après)"
+        },
+        {
+          "command": "Suspend-BitLocker -MountPoint C: -RebootCount 2",
+          "description": "Suspend BitLocker pour 2 redémarrages (mise à jour BIOS multi-étapes)"
+        },
+        {
+          "command": "Suspend-BitLocker -MountPoint C: -RebootCount 0",
+          "description": "Suspend BitLocker indéfiniment jusqu'à réactivation manuelle"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.ProtectionStatus -eq 'On'} | ForEach-Object { Suspend-BitLocker -MountPoint $_.MountPoint -RebootCount 1 }",
+          "description": "Suspend BitLocker sur tous les volumes protégés pour 1 redémarrage"
+        }
+      ],
+      "notes": "⚠️ Durant la suspension, le disque reste CHIFFRÉ mais ACCESSIBLE sans authentification! Utilisez uniquement pour maintenance (BIOS, firmware, drivers). RebootCount=0: suspension permanente jusqu'à Resume-BitLocker. RebootCount=1+: réactivation automatique après N redémarrages.",
+      "links": [
+        {
+          "title": "Suspend-BitLocker Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/suspend-bitlocker"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-disable",
+      "title": "Désactiver et déchiffrer BitLocker",
+      "description": "Désactive complètement BitLocker et déchiffre le volume (opération irréversible).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "disable",
+        "decrypt"
+      ],
+      "windowsCommandTemplateId": "bitlocker-disable-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-disable-cmd",
+        "platform": 0,
+        "name": "Disable-BitLocker",
+        "commandPattern": "Disable-BitLocker -MountPoint \"{driveLetter}:\"",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume à déchiffrer (ex: C, D, E)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Disable-BitLocker -MountPoint C:",
+          "description": "Désactive BitLocker et déchiffre complètement le volume C:"
+        },
+        {
+          "command": "Disable-BitLocker -MountPoint D:",
+          "description": "Désactive BitLocker sur le volume de données D:"
+        },
+        {
+          "command": "Get-BitLockerVolume D: | Select-Object VolumeStatus,EncryptionPercentage",
+          "description": "Surveille la progression du déchiffrement (à exécuter après Disable-BitLocker)"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Cette opération DÉCHIFFRE complètement le disque! Vos données ne seront PLUS PROTÉGÉES. Le déchiffrement peut prendre plusieurs heures selon la taille du disque. Pensez à Suspend-BitLocker pour des besoins temporaires. Disable-BitLocker est PERMANENT.",
+      "links": [
+        {
+          "title": "Disable-BitLocker Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/disable-bitlocker"
+        }
+      ]
+    },
+    {
+      "id": "defender-get-status",
+      "title": "Obtenir le statut complet de Windows Defender",
+      "description": "Affiche l'état détaillé de Windows Defender (protection temps réel, définitions, dernière analyse, etc.).",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "defender",
+        "antivirus",
+        "status",
+        "security"
+      ],
+      "windowsCommandTemplateId": "defender-get-status-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-get-status-cmd",
+        "platform": 0,
+        "name": "Get-MpComputerStatus",
+        "commandPattern": "Get-MpComputerStatus | Select-Object AntivirusEnabled,RealTimeProtectionEnabled,AntivirusSignatureLastUpdated,QuickScanAge,FullScanAge,NISEnabled | Format-List",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-MpComputerStatus",
+          "description": "Affiche tous les détails du statut Defender"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled,BehaviorMonitorEnabled,IoavProtectionEnabled,OnAccessProtectionEnabled",
+          "description": "Vérifie les 4 protections en temps réel essentielles"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object AntivirusSignatureVersion,AntivirusSignatureLastUpdated",
+          "description": "Affiche la version et date des définitions antivirus"
+        },
+        {
+          "command": "$status = Get-MpComputerStatus; if($status.RealTimeProtectionEnabled -eq $false) { Write-Host 'ALERTE: Protection temps réel désactivée!' -ForegroundColor Red }",
+          "description": "Script de vérification avec alerte si protection désactivée"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object QuickScanStartTime,QuickScanEndTime,FullScanStartTime,FullScanEndTime",
+          "description": "Affiche les dates des dernières analyses rapides et complètes"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object AMEngineVersion,AMProductVersion,AMServiceEnabled",
+          "description": "Vérifie les versions du moteur antimalware et du service"
+        }
+      ],
+      "notes": "RealTimeProtectionEnabled: protection en temps réel. BehaviorMonitorEnabled: surveillance comportementale. IoavProtectionEnabled: inspection à l'accès. NISEnabled: système d'inspection réseau. QuickScanAge/FullScanAge: nombre de jours depuis dernière analyse.",
+      "links": [
+        {
+          "title": "Get-MpComputerStatus Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/get-mpcomputerstatus"
+        }
+      ]
+    },
+    {
+      "id": "defender-update-signatures",
+      "title": "Mettre à jour les définitions Windows Defender",
+      "description": "Force la mise à jour immédiate des signatures antivirus et antimalware de Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "defender",
+        "update",
+        "signatures",
+        "antivirus"
+      ],
+      "windowsCommandTemplateId": "defender-update-signatures-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-update-signatures-cmd",
+        "platform": 0,
+        "name": "Update-MpSignature",
+        "commandPattern": "Update-MpSignature -Verbose",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Update-MpSignature",
+          "description": "Met à jour les signatures Defender depuis Microsoft Update"
+        },
+        {
+          "command": "Update-MpSignature -UpdateSource MicrosoftUpdateServer",
+          "description": "Force la mise à jour depuis les serveurs Microsoft Update"
+        },
+        {
+          "command": "Update-MpSignature -UpdateSource MMPC",
+          "description": "Met à jour depuis le Microsoft Malware Protection Center (backup)"
+        },
+        {
+          "command": "Update-MpSignature; Get-MpComputerStatus | Select-Object AntivirusSignatureVersion,AntivirusSignatureLastUpdated",
+          "description": "Met à jour puis affiche la version des signatures installées"
+        },
+        {
+          "command": "try { Update-MpSignature -ErrorAction Stop; Write-Host 'Mise à jour réussie' -ForegroundColor Green } catch { Write-Host 'Échec de la mise à jour' -ForegroundColor Red }",
+          "description": "Met à jour avec gestion d'erreur et message de confirmation"
+        }
+      ],
+      "notes": "Exécute une mise à jour immédiate (ne pas attendre la planification). UpdateSource: MicrosoftUpdateServer (WSUS/Windows Update), MMPC (serveurs Microsoft directs), FileShares (partage réseau). Nécessite une connexion Internet active.",
+      "links": [
+        {
+          "title": "Update-MpSignature Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/update-mpsignature"
+        }
+      ]
+    },
+    {
+      "id": "defender-quick-scan",
+      "title": "Lancer une analyse rapide Windows Defender",
+      "description": "Lance une analyse rapide des zones système critiques (mémoire, démarrage, fichiers actifs).",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "defender",
+        "scan",
+        "quick",
+        "antivirus"
+      ],
+      "windowsCommandTemplateId": "defender-quick-scan-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-quick-scan-cmd",
+        "platform": 0,
+        "name": "Start-MpScan",
+        "commandPattern": "Start-MpScan -ScanType QuickScan",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Start-MpScan -ScanType QuickScan",
+          "description": "Lance une analyse rapide (5-15 minutes généralement)"
+        },
+        {
+          "command": "Start-MpScan -ScanType FullScan",
+          "description": "Lance une analyse complète de tous les fichiers (peut prendre plusieurs heures)"
+        },
+        {
+          "command": "Start-MpScan -ScanType CustomScan -ScanPath 'C:\\Users\\UserName\\Downloads'",
+          "description": "Analyse uniquement le dossier Téléchargements de l'utilisateur"
+        },
+        {
+          "command": "Start-MpScan -ScanType CustomScan -ScanPath 'D:\\'",
+          "description": "Analyse complète du disque D:"
+        },
+        {
+          "command": "Update-MpSignature; Start-MpScan -ScanType QuickScan",
+          "description": "Met à jour les définitions puis lance une analyse rapide"
+        }
+      ],
+      "notes": "QuickScan: analyse rapide (zones critiques uniquement, ~5-15 min). FullScan: analyse complète (tous les fichiers, plusieurs heures). CustomScan: analyse d'un dossier spécifique. L'analyse s'exécute en arrière-plan.",
+      "links": [
+        {
+          "title": "Start-MpScan Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/start-mpscan"
+        }
+      ]
+    },
+    {
+      "id": "defender-add-exclusion-folder",
+      "title": "Ajouter une exclusion de dossier dans Defender",
+      "description": "Exclut un dossier de l'analyse en temps réel de Windows Defender (améliore performances).",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "exclusion",
+        "folder",
+        "performance"
+      ],
+      "windowsCommandTemplateId": "defender-add-exclusion-folder-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-add-exclusion-folder-cmd",
+        "platform": 0,
+        "name": "Add-MpPreference",
+        "commandPattern": "Add-MpPreference -ExclusionPath \"{folderPath}\"",
+        "parameters": [
+          {
+            "name": "folderPath",
+            "label": "Chemin du dossier",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin complet du dossier à exclure"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Add-MpPreference -ExclusionPath 'C:\\Dev'",
+          "description": "Exclut le dossier de développement (améliore perf compilation)"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionPath 'C:\\Program Files\\JetBrains'",
+          "description": "Exclut les IDE JetBrains (IntelliJ, PyCharm, etc.)"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionPath 'C:\\SteamLibrary'",
+          "description": "Exclut la bibliothèque Steam (améliore perf jeux)"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionPath 'C:\\VMs'",
+          "description": "Exclut les machines virtuelles (important pour performances VM)"
+        },
+        {
+          "command": "@('C:\\Dev','C:\\Git','C:\\node_modules') | ForEach-Object { Add-MpPreference -ExclusionPath $_ }",
+          "description": "Ajoute plusieurs exclusions développeur d'un coup"
+        },
+        {
+          "command": "Get-MpPreference | Select-Object -ExpandProperty ExclusionPath",
+          "description": "Liste toutes les exclusions de dossiers actuelles"
+        }
+      ],
+      "notes": "⚠️ SÉCURITÉ: N'excluez JAMAIS: Downloads, Documents, Desktop, AppData, Temp. Exclusions recommandées: dossiers de dev, bibliothèques de jeux, VMs, outils de build. Chaque exclusion réduit la sécurité mais améliore les performances.",
+      "links": [
+        {
+          "title": "Add-MpPreference Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/add-mppreference"
+        }
+      ]
+    },
+    {
+      "id": "defender-get-threats",
+      "title": "Lister les menaces détectées par Defender",
+      "description": "Affiche l'historique des menaces détectées et bloquées par Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "defender",
+        "threats",
+        "malware",
+        "history"
+      ],
+      "windowsCommandTemplateId": "defender-get-threats-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-get-threats-cmd",
+        "platform": 0,
+        "name": "Get-MpThreat",
+        "commandPattern": "Get-MpThreat | Select-Object ThreatName,SeverityID,Resources,InitialDetectionTime | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-MpThreat",
+          "description": "Liste toutes les menaces détectées récemment"
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.IsActive -eq $true}",
+          "description": "Liste uniquement les menaces ACTIVES (non résolues)"
+        },
+        {
+          "command": "Get-MpThreat | Select-Object ThreatName,SeverityID,Resources,InitialDetectionTime | Sort-Object InitialDetectionTime -Descending",
+          "description": "Liste les menaces triées par date (plus récentes en premier)"
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.SeverityID -ge 4}",
+          "description": "Liste uniquement les menaces graves et sévères (niveau 4-5)"
+        },
+        {
+          "command": "(Get-MpThreat).Count",
+          "description": "Compte le nombre total de menaces détectées"
+        },
+        {
+          "command": "Get-MpThreatDetection",
+          "description": "Affiche l'historique détaillé de toutes les détections avec actions"
+        }
+      ],
+      "notes": "SeverityID: 0=Unknown, 1=Low, 2=Medium, 4=High, 5=Severe. Resources: chemin des fichiers infectés. IsActive: $true si menace toujours présente. Get-MpThreatDetection: historique détaillé avec actions effectuées.",
+      "links": [
+        {
+          "title": "Get-MpThreat Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/get-mpthreat"
+        }
+      ]
+    },
+    {
+      "id": "defender-remove-exclusions",
+      "title": "Supprimer une exclusion Defender",
+      "description": "Retire un dossier, fichier ou processus de la liste des exclusions Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "exclusion",
+        "remove",
+        "security"
+      ],
+      "windowsCommandTemplateId": "defender-remove-exclusions-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-remove-exclusions-cmd",
+        "platform": 0,
+        "name": "Remove-MpPreference",
+        "commandPattern": "Remove-MpPreference -ExclusionPath \"{folderPath}\"",
+        "parameters": [
+          {
+            "name": "folderPath",
+            "label": "Chemin à retirer",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du dossier à retirer des exclusions"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Remove-MpPreference -ExclusionPath 'C:\\Temp'",
+          "description": "Retire C:\\Temp des exclusions (Defender va maintenant le scanner)"
+        },
+        {
+          "command": "Remove-MpPreference -ExclusionExtension '.exe'",
+          "description": "Retire l'exclusion des fichiers .exe"
+        },
+        {
+          "command": "Remove-MpPreference -ExclusionProcess 'devenv.exe'",
+          "description": "Retire Visual Studio des exclusions de processus"
+        },
+        {
+          "command": "Get-MpPreference | Select-Object -ExpandProperty ExclusionPath | ForEach-Object { Remove-MpPreference -ExclusionPath $_ }",
+          "description": "⚠️ Supprime TOUTES les exclusions de dossiers (réinitialisation complète)"
+        },
+        {
+          "command": "$exclusions = Get-MpPreference | Select-Object -ExpandProperty ExclusionPath; $exclusions",
+          "description": "Liste les exclusions actuelles avant suppression"
+        }
+      ],
+      "notes": "ExclusionPath: chemin de dossier/fichier. ExclusionExtension: extension (.exe, .dll, etc.). ExclusionProcess: nom de processus (chrome.exe, etc.). Retirer les exclusions améliore la sécurité mais peut réduire les performances.",
+      "links": [
+        {
+          "title": "Remove-MpPreference Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/remove-mppreference"
+        }
+      ]
+    },
+    {
+      "id": "laps-get-password",
+      "title": "Récupérer le mot de passe administrateur local LAPS",
+      "description": "Récupère le mot de passe administrateur local géré par LAPS pour un ordinateur du domaine.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "laps",
+        "password",
+        "admin",
+        "security"
+      ],
+      "windowsCommandTemplateId": "laps-get-password-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-get-password-cmd",
+        "platform": 0,
+        "name": "Get-AdmPwdPassword",
+        "commandPattern": "Get-AdmPwdPassword -ComputerName {computerName} | Select-Object ComputerName,Password,ExpirationTimestamp",
+        "parameters": [
+          {
+            "name": "computerName",
+            "label": "Nom de l'ordinateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom NetBIOS de l'ordinateur (ex: PC-001)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-AdmPwdPassword -ComputerName PC-001",
+          "description": "Récupère le mot de passe LAPS de PC-001"
+        },
+        {
+          "command": "Get-AdmPwdPassword -ComputerName PC-001 | Select-Object Password",
+          "description": "Affiche uniquement le mot de passe (format court)"
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'PC-*'} | ForEach-Object { Get-AdmPwdPassword -ComputerName $_.Name }",
+          "description": "Récupère les mots de passe LAPS de tous les PC commençant par 'PC-'"
+        },
+        {
+          "command": "$pwd = Get-AdmPwdPassword -ComputerName PC-001; Write-Host \"Mot de passe: $($pwd.Password) (expire le $($pwd.ExpirationTimestamp))\"",
+          "description": "Affiche le mot de passe avec sa date d'expiration formatée"
+        },
+        {
+          "command": "Get-AdmPwdPassword -ComputerName PC-001 | Export-Csv C:\\laps-backup.csv -Append -NoTypeInformation",
+          "description": "Sauvegarde le mot de passe dans un fichier CSV"
+        }
+      ],
+      "notes": "Nécessite: module LAPS PowerShell, droits de lecture sur attributs LAPS dans AD (ms-Mcs-AdmPwd). Le mot de passe affiché est celui du compte administrateur local. ⚠️ SENSIBLE: ne partagez jamais ce mot de passe par email/chat non chiffré!",
+      "links": [
+        {
+          "title": "LAPS Documentation",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-overview"
+        }
+      ]
+    },
+    {
+      "id": "laps-get-expiration",
+      "title": "Vérifier la date d'expiration du mot de passe LAPS",
+      "description": "Affiche la date d'expiration du mot de passe administrateur local géré par LAPS.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "laps",
+        "expiration",
+        "password"
+      ],
+      "windowsCommandTemplateId": "laps-get-expiration-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-get-expiration-cmd",
+        "platform": 0,
+        "name": "Get-AdmPwdPassword",
+        "commandPattern": "Get-AdmPwdPassword -ComputerName {computerName} | Select-Object ComputerName,ExpirationTimestamp",
+        "parameters": [
+          {
+            "name": "computerName",
+            "label": "Nom de l'ordinateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom NetBIOS de l'ordinateur"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-AdmPwdPassword -ComputerName PC-001 | Select-Object ExpirationTimestamp",
+          "description": "Affiche la date d'expiration du mot de passe LAPS"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwdExpirationTime | Select-Object Name,@{N='LAPSExpiration';E={[DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime')}}",
+          "description": "Liste tous les ordinateurs avec leurs dates d'expiration LAPS"
+        },
+        {
+          "command": "$exp = Get-AdmPwdPassword -ComputerName PC-001; $daysLeft = ([DateTime]$exp.ExpirationTimestamp - (Get-Date)).Days; Write-Host \"Expire dans $daysLeft jours\"",
+          "description": "Calcule le nombre de jours avant expiration du mot de passe"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwdExpirationTime | Where-Object {[DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime') -lt (Get-Date).AddDays(7)}",
+          "description": "Liste les ordinateurs dont le mot de passe LAPS expire dans moins de 7 jours"
+        }
+      ],
+      "notes": "ExpirationTimestamp: date/heure de prochaine rotation automatique. Par défaut LAPS rotate tous les 30 jours. Si expiré, le mot de passe sera renouvelé au prochain redémarrage ou au prochain intervalle de mise à jour GPO.",
+      "links": [
+        {
+          "title": "LAPS Password Expiration",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-management-policy-settings"
+        }
+      ]
+    },
+    {
+      "id": "laps-force-rotation",
+      "title": "Forcer la rotation immédiate du mot de passe LAPS",
+      "description": "Force le renouvellement immédiat du mot de passe administrateur local géré par LAPS.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "laps",
+        "rotate",
+        "password",
+        "security"
+      ],
+      "windowsCommandTemplateId": "laps-force-rotation-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-force-rotation-cmd",
+        "platform": 0,
+        "name": "Reset-AdmPwdPassword",
+        "commandPattern": "Reset-AdmPwdPassword -ComputerName {computerName}",
+        "parameters": [
+          {
+            "name": "computerName",
+            "label": "Nom de l'ordinateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom NetBIOS de l'ordinateur"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Reset-AdmPwdPassword -ComputerName PC-001",
+          "description": "Force la rotation du mot de passe LAPS de PC-001 au prochain cycle GPO"
+        },
+        {
+          "command": "Reset-AdmPwdPassword -ComputerName PC-001 -WhenEffective (Get-Date)",
+          "description": "Force la rotation immédiate du mot de passe"
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} | ForEach-Object { Reset-AdmPwdPassword -ComputerName $_.Name }",
+          "description": "Force la rotation sur tous les laptops (préfixe LAPTOP-)"
+        },
+        {
+          "command": "Reset-AdmPwdPassword -ComputerName PC-001; Start-Sleep 300; Get-AdmPwdPassword -ComputerName PC-001",
+          "description": "Rotation puis récupération du nouveau mot de passe après 5 minutes"
+        }
+      ],
+      "notes": "⚠️ SÉCURITÉ: Utilisez après une compromission suspectée du mot de passe admin local. La rotation prend effet au prochain cycle GPO (90-120 min par défaut) ou utilisez gpupdate /force sur la machine cible. Nécessite droits d'écriture sur ms-Mcs-AdmPwdExpirationTime.",
+      "links": [
+        {
+          "title": "Reset-AdmPwdPassword",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/admpwd.ps/reset-admpwdpassword"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-resume",
+      "title": "Réactiver la protection BitLocker",
+      "description": "Réactive la protection BitLocker après une suspension temporaire.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "resume",
+        "enable"
+      ],
+      "windowsCommandTemplateId": "bitlocker-resume-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-resume-cmd",
+        "platform": 0,
+        "name": "Resume-BitLocker",
+        "commandPattern": "Resume-BitLocker -MountPoint \"{driveLetter}:\"",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume (ex: C)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Resume-BitLocker -MountPoint C:",
+          "description": "Réactive immédiatement la protection BitLocker sur C:"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.ProtectionStatus -eq 'Off'} | ForEach-Object { Resume-BitLocker -MountPoint $_.MountPoint }",
+          "description": "Réactive BitLocker sur tous les volumes dont la protection est désactivée"
+        },
+        {
+          "command": "Resume-BitLocker -MountPoint C:; Get-BitLockerVolume C: | Select-Object MountPoint,ProtectionStatus",
+          "description": "Réactive BitLocker puis vérifie que la protection est bien active"
+        }
+      ],
+      "notes": "Utilisez après Suspend-BitLocker ou si la protection a été suspendue automatiquement. La réactivation est immédiate (pas besoin de redémarrage). Vérifiez que tous les protecteurs de clés sont toujours en place.",
+      "links": [
+        {
+          "title": "Resume-BitLocker Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/resume-bitlocker"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-unlock-password",
+      "title": "Déverrouiller un volume BitLocker avec mot de passe",
+      "description": "Déverrouille un volume BitLocker chiffré en utilisant le mot de passe de récupération.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "unlock",
+        "recovery"
+      ],
+      "windowsCommandTemplateId": "bitlocker-unlock-password-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-unlock-password-cmd",
+        "platform": 0,
+        "name": "Unlock-BitLocker",
+        "commandPattern": "Unlock-BitLocker -MountPoint \"{driveLetter}:\" -RecoveryPassword \"{recoveryPassword}\"",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "D",
+            "required": true,
+            "description": "Lettre du volume verrouillé"
+          },
+          {
+            "name": "recoveryPassword",
+            "label": "Mot de passe de récupération",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Mot de passe de récupération 48 chiffres"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Unlock-BitLocker -MountPoint D: -RecoveryPassword \"123456-789012-345678-901234-567890-123456-789012-890123\"",
+          "description": "Déverrouille le volume D: avec le mot de passe de récupération"
+        },
+        {
+          "command": "$pw = Read-Host -AsSecureString 'Recovery Password'; Unlock-BitLocker -MountPoint E: -RecoveryPassword $pw",
+          "description": "Déverrouille en demandant le mot de passe de manière sécurisée"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.LockStatus -eq 'Locked'}",
+          "description": "Liste tous les volumes BitLocker actuellement verrouillés"
+        }
+      ],
+      "notes": "Le mot de passe de récupération est composé de 48 chiffres groupés par 6 (8 groupes). Scénarios d'usage: disque déplacé vers un autre PC, panne TPM, changement de carte mère. Le déverrouillage est temporaire jusqu'au prochain redémarrage.",
+      "links": [
+        {
+          "title": "Unlock-BitLocker Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/unlock-bitlocker"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-lock",
+      "title": "Verrouiller un volume BitLocker",
+      "description": "Verrouille immédiatement un volume BitLocker (le rend inaccessible sans déverrouillage).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "lock",
+        "security"
+      ],
+      "windowsCommandTemplateId": "bitlocker-lock-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-lock-cmd",
+        "platform": 0,
+        "name": "Lock-BitLocker",
+        "commandPattern": "Lock-BitLocker -MountPoint \"{driveLetter}:\" -ForceDismount",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "D",
+            "required": true,
+            "description": "Lettre du volume à verrouiller (généralement un disque de données, PAS C:)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Lock-BitLocker -MountPoint D: -ForceDismount",
+          "description": "Verrouille immédiatement le volume D: (ferme tous les fichiers ouverts)"
+        },
+        {
+          "command": "Lock-BitLocker -MountPoint E:",
+          "description": "Verrouille E: sans forcer le démontage (échoue si fichiers ouverts)"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.VolumeType -eq 'Data' -and $_.ProtectionStatus -eq 'On'} | ForEach-Object { Lock-BitLocker -MountPoint $_.MountPoint -ForceDismount }",
+          "description": "Verrouille tous les volumes de données chiffrés (sécurité maximale)"
+        }
+      ],
+      "notes": "⚠️ Ne verrouillez JAMAIS le volume système (C:) pendant que Windows tourne! Utilisez pour sécuriser rapidement des disques externes ou de données. ForceDismount: ferme tous les fichiers ouverts (perte de données non sauvegardées possible). Sans ForceDismount: échoue si fichiers ouverts.",
+      "links": [
+        {
+          "title": "Lock-BitLocker Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/lock-bitlocker"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-add-tpm-protector",
+      "title": "Ajouter un protecteur TPM à BitLocker",
+      "description": "Ajoute une protection TPM (Trusted Platform Module) à un volume BitLocker existant.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "tpm",
+        "protector"
+      ],
+      "windowsCommandTemplateId": "bitlocker-add-tpm-protector-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-add-tpm-protector-cmd",
+        "platform": 0,
+        "name": "Add-BitLockerKeyProtector",
+        "commandPattern": "Add-BitLockerKeyProtector -MountPoint \"{driveLetter}:\" -TpmProtector",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Add-BitLockerKeyProtector -MountPoint C: -TpmProtector",
+          "description": "Ajoute la protection TPM seule (déverrouillage automatique au boot)"
+        },
+        {
+          "command": "Add-BitLockerKeyProtector -MountPoint C: -TpmAndPinProtector",
+          "description": "Ajoute TPM + PIN (saisie PIN au démarrage, sécurité renforcée)"
+        },
+        {
+          "command": "Add-BitLockerKeyProtector -MountPoint C: -TpmAndStartupKeyProtector -StartupKeyPath 'E:\\'",
+          "description": "Ajoute TPM + clé USB de démarrage (nécessite la clé USB au boot)"
+        },
+        {
+          "command": "(Get-Tpm).TpmReady",
+          "description": "Vérifie si le TPM est prêt et fonctionnel avant d'ajouter le protecteur"
+        }
+      ],
+      "notes": "TPM: déverrouillage transparent au boot (pratique mais moins sécurisé). TPM+PIN: saisie d'un code au démarrage (équilibre sécurité/praticité). TPM+StartupKey: nécessite une clé USB au démarrage (haute sécurité). Le PC doit avoir un TPM 1.2+ activé dans le BIOS.",
+      "links": [
+        {
+          "title": "Add-BitLockerKeyProtector Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/add-bitlockerkeyprotector"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-remove-protector",
+      "title": "Supprimer un protecteur de clé BitLocker",
+      "description": "Retire un protecteur de clé spécifique (TPM, Password, RecoveryPassword, etc.) d'un volume BitLocker.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "protector",
+        "remove"
+      ],
+      "windowsCommandTemplateId": "bitlocker-remove-protector-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-remove-protector-cmd",
+        "platform": 0,
+        "name": "Remove-BitLockerKeyProtector",
+        "commandPattern": "$protectors = (Get-BitLockerVolume -MountPoint \"{driveLetter}:\").KeyProtector; $protectors | Select-Object KeyProtectorId,KeyProtectorType | Format-Table",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "(Get-BitLockerVolume C:).KeyProtector | Select-Object KeyProtectorId,KeyProtectorType",
+          "description": "Liste tous les protecteurs de clés du volume C: avec leurs IDs"
+        },
+        {
+          "command": "Remove-BitLockerKeyProtector -MountPoint C: -KeyProtectorId '{12345678-1234-1234-1234-123456789012}'",
+          "description": "Supprime un protecteur spécifique par son ID"
+        },
+        {
+          "command": "$tpm = (Get-BitLockerVolume C:).KeyProtector | Where-Object {$_.KeyProtectorType -eq 'Tpm'}; Remove-BitLockerKeyProtector -MountPoint C: -KeyProtectorId $tpm[0].KeyProtectorId",
+          "description": "Supprime le protecteur TPM (utile avant remplacement carte mère)"
+        },
+        {
+          "command": "$oldRecovery = (Get-BitLockerVolume C:).KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'}; $oldRecovery | Select-Object -Skip 1 | ForEach-Object { Remove-BitLockerKeyProtector -MountPoint C: -KeyProtectorId $_.KeyProtectorId }",
+          "description": "Supprime tous les anciens mots de passe de récupération sauf le plus récent"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Ne supprimez JAMAIS tous les protecteurs! Gardez toujours au moins un RecoveryPassword. Cas d'usage: nettoyer les anciens protecteurs, retirer TPM avant changement matériel, réorganiser les méthodes de déverrouillage.",
+      "links": [
+        {
+          "title": "Remove-BitLockerKeyProtector Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/remove-bitlockerkeyprotector"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-test-protectors",
+      "title": "Tester les protecteurs de clé BitLocker",
+      "description": "Vérifie que tous les protecteurs de clé BitLocker d'un volume sont valides et fonctionnels.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "test",
+        "validation"
+      ],
+      "windowsCommandTemplateId": "bitlocker-test-protectors-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-test-protectors-cmd",
+        "platform": 0,
+        "name": "Get-BitLockerVolume",
+        "commandPattern": "$vol = Get-BitLockerVolume -MountPoint \"{driveLetter}:\"; Write-Host \"Volume: $($vol.MountPoint)\" -ForegroundColor Cyan; Write-Host \"Protection: $($vol.ProtectionStatus)\" -ForegroundColor $(if($vol.ProtectionStatus -eq 'On'){'Green'}else{'Red'}); Write-Host \"Protecteurs:\" -ForegroundColor Yellow; $vol.KeyProtector | Select-Object KeyProtectorType,KeyProtectorId | Format-Table",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$vol = Get-BitLockerVolume C:; $vol.KeyProtector | Group-Object KeyProtectorType | Select-Object Name,Count",
+          "description": "Compte les protecteurs par type (combien de Recovery, TPM, etc.)"
+        },
+        {
+          "command": "Get-BitLockerVolume | ForEach-Object { Write-Host \"`n$($_.MountPoint)\"; $_.KeyProtector | Select-Object KeyProtectorType }",
+          "description": "Liste les types de protecteurs pour tous les volumes"
+        },
+        {
+          "command": "$vol = Get-BitLockerVolume C:; if($vol.KeyProtector.KeyProtectorType -notcontains 'RecoveryPassword') { Write-Host 'ALERTE: Aucun mot de passe de récupération!' -ForegroundColor Red }",
+          "description": "Vérifie qu'il y a au moins un mot de passe de récupération"
+        },
+        {
+          "command": "(Get-Tpm).TpmPresent -and (Get-Tpm).TpmReady",
+          "description": "Vérifie que le TPM est présent et opérationnel"
+        }
+      ],
+      "notes": "Types de protecteurs: RecoveryPassword (obligatoire!), Tpm, TpmPin, TpmStartupKey, ExternalKey, Password. Bonne pratique: toujours avoir au moins 1 RecoveryPassword sauvegardé. Vérifiez régulièrement que le TPM est fonctionnel.",
+      "links": [
+        {
+          "title": "BitLocker Key Protectors",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/operations-guide"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-change-pin",
+      "title": "Changer le PIN BitLocker",
+      "description": "Modifie le code PIN utilisé pour déverrouiller BitLocker au démarrage (TPM+PIN).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "pin",
+        "change"
+      ],
+      "windowsCommandTemplateId": "bitlocker-change-pin-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-change-pin-cmd",
+        "platform": 0,
+        "name": "Enable-BitLockerAutoUnlock",
+        "commandPattern": "$newPin = Read-Host -AsSecureString 'Nouveau PIN'; Add-BitLockerKeyProtector -MountPoint \"{driveLetter}:\" -TpmAndPinProtector -Pin $newPin",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume système"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$newPin = ConvertTo-SecureString '123456' -AsPlainText -Force; Add-BitLockerKeyProtector -MountPoint C: -TpmAndPinProtector -Pin $newPin",
+          "description": "Ajoute un nouveau protecteur TPM+PIN avec le PIN '123456'"
+        },
+        {
+          "command": "$oldPin = (Get-BitLockerVolume C:).KeyProtector | Where-Object {$_.KeyProtectorType -eq 'TpmPin'}; Remove-BitLockerKeyProtector -MountPoint C: -KeyProtectorId $oldPin.KeyProtectorId",
+          "description": "Supprime l'ancien protecteur TPM+PIN"
+        },
+        {
+          "command": "$newPin = Read-Host -AsSecureString 'Nouveau PIN (6-20 chiffres)'; Add-BitLockerKeyProtector -MountPoint C: -TpmAndPinProtector -Pin $newPin",
+          "description": "Change le PIN de manière sécurisée (saisie masquée)"
+        }
+      ],
+      "notes": "Pour changer le PIN: 1) Ajouter nouveau protecteur TPM+PIN avec nouveau code, 2) Supprimer l'ancien protecteur TPM+PIN. Le PIN doit faire 6-20 caractères. Redémarrage requis pour tester le nouveau PIN. ⚠️ Conservez toujours le RecoveryPassword!",
+      "links": [
+        {
+          "title": "BitLocker PIN Management",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/faq"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-enable-autounlock",
+      "title": "Activer le déverrouillage automatique BitLocker",
+      "description": "Active le déverrouillage automatique pour un volume de données BitLocker (déverrouillé quand le volume système est déverrouillé).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "autounlock",
+        "convenience"
+      ],
+      "windowsCommandTemplateId": "bitlocker-enable-autounlock-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-enable-autounlock-cmd",
+        "platform": 0,
+        "name": "Enable-BitLockerAutoUnlock",
+        "commandPattern": "Enable-BitLockerAutoUnlock -MountPoint \"{driveLetter}:\"",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "D",
+            "required": true,
+            "description": "Lettre du volume de données (PAS C:)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Enable-BitLockerAutoUnlock -MountPoint D:",
+          "description": "Active le déverrouillage automatique pour le volume D:"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.VolumeType -eq 'Data' -and $_.ProtectionStatus -eq 'On'} | ForEach-Object { Enable-BitLockerAutoUnlock -MountPoint $_.MountPoint }",
+          "description": "Active le déverrouillage auto sur tous les volumes de données chiffrés"
+        },
+        {
+          "command": "Get-BitLockerVolume D: | Select-Object MountPoint,AutoUnlockEnabled,AutoUnlockKeyStored",
+          "description": "Vérifie si le déverrouillage auto est activé pour D:"
+        },
+        {
+          "command": "Disable-BitLockerAutoUnlock -MountPoint D:",
+          "description": "Désactive le déverrouillage automatique (nécessitera mot de passe à chaque boot)"
+        }
+      ],
+      "notes": "AutoUnlock: le volume de données se déverrouille automatiquement quand vous vous connectez à Windows. Fonctionne uniquement pour les volumes de données (pas C:). La clé est stockée chiffrée dans le volume système. Pratique pour disques internes, évitez pour disques externes amovibles.",
+      "links": [
+        {
+          "title": "Enable-BitLockerAutoUnlock Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/enable-bitlockerautounlock"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-check-encryption-progress",
+      "title": "Vérifier la progression du chiffrement BitLocker",
+      "description": "Affiche le pourcentage de progression du chiffrement ou déchiffrement d'un volume BitLocker.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "bitlocker",
+        "progress",
+        "status"
+      ],
+      "windowsCommandTemplateId": "bitlocker-check-encryption-progress-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-check-encryption-progress-cmd",
+        "platform": 0,
+        "name": "Get-BitLockerVolume",
+        "commandPattern": "Get-BitLockerVolume -MountPoint \"{driveLetter}:\" | Select-Object MountPoint,VolumeStatus,EncryptionPercentage,EncryptionMethod",
+        "parameters": [
+          {
+            "name": "driveLetter",
+            "label": "Lettre du disque",
+            "type": "string",
+            "defaultValue": "C",
+            "required": true,
+            "description": "Lettre du volume"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Get-BitLockerVolume C: | Select-Object VolumeStatus,EncryptionPercentage",
+          "description": "Affiche le statut et pourcentage de chiffrement de C:"
+        },
+        {
+          "command": "while($true) { Clear-Host; Get-BitLockerVolume D: | Select-Object MountPoint,VolumeStatus,EncryptionPercentage; Start-Sleep 30 }",
+          "description": "Surveille la progression en temps réel (rafraîchit toutes les 30 sec)"
+        },
+        {
+          "command": "Get-BitLockerVolume | Where-Object {$_.VolumeStatus -like '*Progress'} | Select-Object MountPoint,VolumeStatus,EncryptionPercentage",
+          "description": "Liste tous les volumes en cours de chiffrement/déchiffrement"
+        },
+        {
+          "command": "$vol = Get-BitLockerVolume C:; Write-Host \"$($vol.MountPoint): $($vol.EncryptionPercentage)% - $($vol.VolumeStatus)\" -ForegroundColor $(if($vol.EncryptionPercentage -eq 100){'Green'}else{'Yellow'})",
+          "description": "Affiche la progression avec couleur (vert si terminé)"
+        }
+      ],
+      "notes": "VolumeStatus: FullyEncrypted, FullyDecrypted, EncryptionInProgress, DecryptionInProgress, EncryptionSuspended. EncryptionPercentage: 0-100%. Le chiffrement peut prendre plusieurs heures selon la taille. Avec -UsedSpaceOnly: chiffrement rapide (30 min - 2h). Sans -UsedSpaceOnly: chiffrement complet (2-8h ou plus).",
+      "links": [
+        {
+          "title": "BitLocker Encryption Status",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/bitlocker/get-bitlockervolume"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-export-recovery-info",
+      "title": "Exporter toutes les informations de récupération BitLocker",
+      "description": "Exporte un rapport complet de tous les volumes BitLocker avec leurs mots de passe de récupération.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "backup",
+        "export",
+        "recovery"
+      ],
+      "windowsCommandTemplateId": "bitlocker-export-recovery-info-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-export-recovery-info-cmd",
+        "platform": 0,
+        "name": "Get-BitLockerVolume",
+        "commandPattern": "$report = @(); Get-BitLockerVolume | ForEach-Object { $vol = $_; $_.KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'} | ForEach-Object { $report += [PSCustomObject]@{ Volume=$vol.MountPoint; RecoveryPassword=$_.RecoveryPassword; KeyId=$_.KeyProtectorId } } }; $report | Export-Csv C:\\BitLocker-Recovery-Report.csv -NoTypeInformation; Write-Host 'Rapport sauvegardé: C:\\BitLocker-Recovery-Report.csv' -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "$report = @(); Get-BitLockerVolume | ForEach-Object { $vol = $_; $_.KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'} | ForEach-Object { $report += [PSCustomObject]@{Volume=$vol.MountPoint; Password=$_.RecoveryPassword} } }; $report | Format-Table",
+          "description": "Génère un rapport de tous les mots de passe de récupération"
+        },
+        {
+          "command": "Get-BitLockerVolume | ForEach-Object { $vol = $_; Write-Host \"`n=== $($vol.MountPoint) ===\"; $_.KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'} | Select-Object RecoveryPassword }",
+          "description": "Affiche tous les mots de passe de récupération groupés par volume"
+        },
+        {
+          "command": "$backup = Get-Date -Format 'yyyyMMdd'; Get-BitLockerVolume | ForEach-Object { $vol = $_; $_.KeyProtector | Where-Object {$_.KeyProtectorType -eq 'RecoveryPassword'} | ForEach-Object { \"$($vol.MountPoint): $($_.RecoveryPassword)\" | Out-File \"C:\\BitLocker-Backup-$backup.txt\" -Append } }",
+          "description": "Sauvegarde dans un fichier texte daté (ex: BitLocker-Backup-20250118.txt)"
+        }
+      ],
+      "notes": "⚠️ CRITIQUE: Sauvegardez ce rapport dans un coffre-fort sécurisé (gestionnaire de mots de passe, coffre physique, Active Directory). Ne l'envoyez JAMAIS par email non chiffré. Ne le stockez PAS sur le disque chiffré lui-même. Mettez à jour le rapport après chaque modification BitLocker.",
+      "links": [
+        {
+          "title": "BitLocker Recovery Keys Best Practices",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/recovery-overview"
+        }
+      ]
+    },
+    {
+      "id": "defender-enable-realtime",
+      "title": "Activer/Désactiver la protection temps réel Defender",
+      "description": "Active ou désactive la protection en temps réel de Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "defender",
+        "realtime",
+        "protection"
+      ],
+      "windowsCommandTemplateId": "defender-enable-realtime-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-enable-realtime-cmd",
+        "platform": 0,
+        "name": "Set-MpPreference",
+        "commandPattern": "Set-MpPreference -DisableRealtimeMonitoring ${enableDisable}",
+        "parameters": [
+          {
+            "name": "enableDisable",
+            "label": "Activer ou désactiver",
+            "type": "string",
+            "defaultValue": "$false",
+            "required": true,
+            "description": "$false pour activer, $true pour désactiver"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-MpPreference -DisableRealtimeMonitoring $false",
+          "description": "Active la protection temps réel"
+        },
+        {
+          "command": "Set-MpPreference -DisableRealtimeMonitoring $true",
+          "description": "⚠️ Désactive la protection temps réel (DANGEREUX - système non protégé!)"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled",
+          "description": "Vérifie si la protection temps réel est active"
+        },
+        {
+          "command": "Set-MpPreference -DisableRealtimeMonitoring $true; Start-Sleep 300; Set-MpPreference -DisableRealtimeMonitoring $false",
+          "description": "Désactive temporairement pour 5 minutes puis réactive automatiquement"
+        }
+      ],
+      "notes": "⚠️ SÉCURITÉ CRITIQUE: Ne désactivez JAMAIS la protection temps réel sauf pour dépannage temporaire! Votre système est VULNÉRABLE sans cette protection. DisableRealtimeMonitoring $true = DÉSACTIVE (dangereux). $false = ACTIVE (recommandé). Sur Windows 10/11, la protection peut se réactiver automatiquement.",
+      "links": [
+        {
+          "title": "Set-MpPreference Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference"
+        }
+      ]
+    },
+    {
+      "id": "defender-add-exclusion-process",
+      "title": "Ajouter une exclusion de processus Defender",
+      "description": "Exclut un processus spécifique de l'analyse Windows Defender (utile pour outils de dev).",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "exclusion",
+        "process"
+      ],
+      "windowsCommandTemplateId": "defender-add-exclusion-process-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-add-exclusion-process-cmd",
+        "platform": 0,
+        "name": "Add-MpPreference",
+        "commandPattern": "Add-MpPreference -ExclusionProcess \"{processName}\"",
+        "parameters": [
+          {
+            "name": "processName",
+            "label": "Nom du processus",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du fichier .exe (ex: devenv.exe)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Add-MpPreference -ExclusionProcess 'devenv.exe'",
+          "description": "Exclut Visual Studio (améliore perf compilation)"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionProcess 'node.exe'",
+          "description": "Exclut Node.js (améliore perf npm install/build)"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionProcess 'chrome.exe'",
+          "description": "Exclut Google Chrome (attention: réduit la sécurité web!)"
+        },
+        {
+          "command": "@('devenv.exe','msbuild.exe','dotnet.exe') | ForEach-Object { Add-MpPreference -ExclusionProcess $_ }",
+          "description": "Exclut plusieurs processus .NET de développement"
+        },
+        {
+          "command": "Get-MpPreference | Select-Object -ExpandProperty ExclusionProcess",
+          "description": "Liste toutes les exclusions de processus actuelles"
+        }
+      ],
+      "notes": "Exclusions processus recommandées: IDE (devenv.exe, rider64.exe), compilateurs (msbuild.exe, dotnet.exe, node.exe), outils build. ⚠️ N'excluez JAMAIS: navigateurs web (sauf besoin spécifique), clients email, outils de téléchargement.",
+      "links": [
+        {
+          "title": "Defender Process Exclusions",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-process-opened-file-exclusions-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-add-exclusion-extension",
+      "title": "Ajouter une exclusion d'extension de fichier Defender",
+      "description": "Exclut tous les fichiers d'une extension spécifique de l'analyse Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "exclusion",
+        "extension"
+      ],
+      "windowsCommandTemplateId": "defender-add-exclusion-extension-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-add-exclusion-extension-cmd",
+        "platform": 0,
+        "name": "Add-MpPreference",
+        "commandPattern": "Add-MpPreference -ExclusionExtension \"{extension}\"",
+        "parameters": [
+          {
+            "name": "extension",
+            "label": "Extension",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Extension à exclure (avec point, ex: .tmp)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Add-MpPreference -ExclusionExtension '.tmp'",
+          "description": "Exclut tous les fichiers temporaires .tmp"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionExtension '.bak'",
+          "description": "Exclut les fichiers de sauvegarde .bak"
+        },
+        {
+          "command": "Add-MpPreference -ExclusionExtension '.log'",
+          "description": "Exclut les fichiers de log (améliore perf si logs volumin eux)"
+        },
+        {
+          "command": "@('.tmp','.bak','.log','.cache') | ForEach-Object { Add-MpPreference -ExclusionExtension $_ }",
+          "description": "Exclut plusieurs extensions temporaires/cache"
+        },
+        {
+          "command": "Get-MpPreference | Select-Object -ExpandProperty ExclusionExtension",
+          "description": "Liste toutes les exclusions d'extensions actuelles"
+        }
+      ],
+      "notes": "⚠️ DANGER: N'excluez JAMAIS les extensions exécutables (.exe, .dll, .bat, .ps1, .vbs, .js, .msi, .scr). Exclusions sûres: .tmp, .bak, .log, .cache, .obj. Chaque exclusion augmente le risque de sécurité!",
+      "links": [
+        {
+          "title": "Defender Extension Exclusions",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-extension-file-exclusions-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-configure-cloud-protection",
+      "title": "Configurer la protection cloud Defender",
+      "description": "Active ou configure la protection cloud de Windows Defender (analyse dans le cloud Microsoft).",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "cloud",
+        "protection"
+      ],
+      "windowsCommandTemplateId": "defender-configure-cloud-protection-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-configure-cloud-protection-cmd",
+        "platform": 0,
+        "name": "Set-MpPreference",
+        "commandPattern": "Set-MpPreference -MAPSReporting ${level}",
+        "parameters": [
+          {
+            "name": "level",
+            "label": "Niveau de reporting",
+            "type": "string",
+            "defaultValue": "2",
+            "required": true,
+            "description": "0=Désactivé, 1=Basique, 2=Avancé (recommandé)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-MpPreference -MAPSReporting 2",
+          "description": "Active la protection cloud avancée (recommandé - meilleure détection)"
+        },
+        {
+          "command": "Set-MpPreference -MAPSReporting 1",
+          "description": "Active la protection cloud basique (moins de données envoyées)"
+        },
+        {
+          "command": "Set-MpPreference -MAPSReporting 0",
+          "description": "Désactive la protection cloud (réduit la sécurité!)"
+        },
+        {
+          "command": "Set-MpPreference -SubmitSamplesConsent 2",
+          "description": "Configure l'envoi automatique des échantillons suspects (0=Demander, 1=Envoyer sûrs, 2=Jamais, 3=Toujours)"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object MAPSReporting,SubmitSamplesConsent",
+          "description": "Vérifie les paramètres actuels de protection cloud"
+        },
+        {
+          "command": "Set-MpPreference -MAPSReporting 2 -SubmitSamplesConsent 1",
+          "description": "Configure protection cloud optimale (reporting avancé + envoi échantillons sûrs)"
+        }
+      ],
+      "notes": "MAPSReporting (Microsoft Active Protection Service): 0=Off, 1=Basic, 2=Advanced. Advanced recommandé: meilleure détection des menaces zero-day grâce à l'analyse cloud. SubmitSamplesConsent: 0=Toujours demander, 1=Envoyer échantillons sûrs auto, 2=Ne jamais envoyer, 3=Tout envoyer auto.",
+      "links": [
+        {
+          "title": "Defender Cloud Protection",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/cloud-protection-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-schedule-scan",
+      "title": "Planifier une analyse Defender automatique",
+      "description": "Configure une planification pour les analyses automatiques de Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "schedule",
+        "scan"
+      ],
+      "windowsCommandTemplateId": "defender-schedule-scan-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-schedule-scan-cmd",
+        "platform": 0,
+        "name": "Set-MpPreference",
+        "commandPattern": "Set-MpPreference -ScanScheduleDay ${day} -ScanScheduleTime ${time}",
+        "parameters": [
+          {
+            "name": "day",
+            "label": "Jour",
+            "type": "string",
+            "defaultValue": "0",
+            "required": true,
+            "description": "0=Tous les jours, 1=Dimanche, 2=Lundi... 7=Samedi, 8=Jamais"
+          },
+          {
+            "name": "time",
+            "label": "Heure",
+            "type": "string",
+            "defaultValue": "02:00:00",
+            "required": true,
+            "description": "Heure au format HH:mm:ss (ex: 02:00:00 pour 2h du matin)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-MpPreference -ScanScheduleDay 0 -ScanScheduleTime 02:00:00",
+          "description": "Planifie une analyse quotidienne à 2h du matin"
+        },
+        {
+          "command": "Set-MpPreference -ScanScheduleDay 7 -ScanScheduleTime 20:00:00",
+          "description": "Planifie une analyse tous les samedis à 20h"
+        },
+        {
+          "command": "Set-MpPreference -ScanScheduleDay 1 -ScanScheduleTime 12:00:00 -ScanParameters 1",
+          "description": "Analyse rapide tous les dimanches à midi (ScanParameters: 1=Quick, 2=Full)"
+        },
+        {
+          "command": "Get-MpPreference | Select-Object ScanScheduleDay,ScanScheduleTime,ScanParameters",
+          "description": "Affiche la planification actuelle des analyses"
+        },
+        {
+          "command": "Set-MpPreference -ScanScheduleDay 8",
+          "description": "Désactive les analyses planifiées (8=Jamais)"
+        }
+      ],
+      "notes": "ScanScheduleDay: 0=Quotidien, 1=Dimanche, 2=Lundi, 3=Mardi, 4=Mercredi, 5=Jeudi, 6=Vendredi, 7=Samedi, 8=Jamais. ScanParameters: 1=QuickScan (recommandé), 2=FullScan. Choisissez une heure où le PC est allumé mais peu utilisé.",
+      "links": [
+        {
+          "title": "Schedule Defender Scans",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/scheduled-catch-up-scans-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-restore-quarantine",
+      "title": "Restaurer un fichier de quarantaine Defender",
+      "description": "Restaure un fichier précédemment mis en quarantaine par Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "defender",
+        "quarantine",
+        "restore"
+      ],
+      "windowsCommandTemplateId": "defender-restore-quarantine-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-restore-quarantine-cmd",
+        "platform": 0,
+        "name": "Get-MpThreatDetection",
+        "commandPattern": "Get-MpThreatDetection | Select-Object ThreatID,ThreatName,Resources | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-MpThreatDetection | Select-Object ThreatID,ThreatName,Resources,RemediationTime",
+          "description": "Liste tous les fichiers en quarantaine avec leurs détails"
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.IsActive -eq $false}",
+          "description": "Liste les menaces nettoyées (potentiellement en quarantaine)"
+        },
+        {
+          "command": "$threat = Get-MpThreatDetection | Select-Object -First 1; Remove-MpThreat -ThreatID $threat.ThreatID",
+          "description": "⚠️ Supprime définitivement une menace de la quarantaine"
+        }
+      ],
+      "notes": "⚠️ ATTENTION: Restaurer un fichier détecté peut réinfecter votre système! Ne restaurez que si vous êtes CERTAIN qu'il s'agit d'un faux positif. Pour restaurer via GUI: Windows Security > Protection contre les virus > Historique de protection > Restaurer. PowerShell a des capacités limitées pour la restauration.",
+      "links": [
+        {
+          "title": "Defender Quarantine Management",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/restore-quarantined-files-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-set-cpu-limit",
+      "title": "Limiter l'utilisation CPU de Defender",
+      "description": "Configure la limite maximale d'utilisation CPU pour les analyses Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "performance",
+        "cpu"
+      ],
+      "windowsCommandTemplateId": "defender-set-cpu-limit-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-set-cpu-limit-cmd",
+        "platform": 0,
+        "name": "Set-MpPreference",
+        "commandPattern": "Set-MpPreference -ScanAvgCPULoadFactor {cpuPercent}",
+        "parameters": [
+          {
+            "name": "cpuPercent",
+            "label": "Pourcentage CPU max",
+            "type": "string",
+            "defaultValue": "25",
+            "required": true,
+            "description": "Limite CPU en % (1-100)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25",
+          "description": "Limite Defender à 25% CPU (équilibre perf/vitesse scan)"
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 10",
+          "description": "Limite Defender à 10% CPU (PC très lent, scan très long)"
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 50",
+          "description": "Limite Defender à 50% CPU (défaut Windows, scan rapide)"
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 100",
+          "description": "Pas de limite CPU (scan le plus rapide, PC peut ralentir beaucoup)"
+        },
+        {
+          "command": "Get-MpPreference | Select-Object ScanAvgCPULoadFactor",
+          "description": "Affiche la limite CPU actuelle"
+        }
+      ],
+      "notes": "Par défaut: 50% CPU. Recommandations: PC gaming/streaming: 10-15%, PC bureautique: 25%, PC serveur/dédié: 50-100%. Plus la limite est basse: analyses plus longues mais PC plus fluide. Plus la limite est haute: analyses rapides mais ralentissements possibles.",
+      "links": [
+        {
+          "title": "Defender Performance Tuning",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-advanced-scan-types-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-check-definition-version",
+      "title": "Vérifier la version des définitions Defender",
+      "description": "Affiche la version actuelle des définitions antivirus et vérifie si elles sont à jour.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "defender",
+        "definitions",
+        "version"
+      ],
+      "windowsCommandTemplateId": "defender-check-definition-version-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-check-definition-version-cmd",
+        "platform": 0,
+        "name": "Get-MpComputerStatus",
+        "commandPattern": "Get-MpComputerStatus | Select-Object AntivirusSignatureVersion,AntivirusSignatureLastUpdated,NISSignatureVersion,NISSignatureLastUpdated",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-MpComputerStatus | Select-Object AntivirusSignatureVersion,AntivirusSignatureLastUpdated",
+          "description": "Affiche la version et date de dernière mise à jour des signatures antivirus"
+        },
+        {
+          "command": "$status = Get-MpComputerStatus; $daysSinceUpdate = (Get-Date) - $status.AntivirusSignatureLastUpdated; if($daysSinceUpdate.Days -gt 2) { Write-Host \"ALERTE: Définitions obsolètes ($($daysSinceUpdate.Days) jours)\" -ForegroundColor Red }",
+          "description": "Alerte si les définitions ont plus de 2 jours"
+        },
+        {
+          "command": "Get-MpComputerStatus | Select-Object AMEngineVersion,AMProductVersion,AMServiceVersion",
+          "description": "Affiche les versions du moteur antimalware"
+        },
+        {
+          "command": "$status = Get-MpComputerStatus; [PSCustomObject]@{ AV_Version=$status.AntivirusSignatureVersion; AV_Updated=$status.AntivirusSignatureLastUpdated; NIS_Version=$status.NISSignatureVersion; NIS_Updated=$status.NISSignatureLastUpdated }",
+          "description": "Rapport complet formaté des versions AV et NIS"
+        }
+      ],
+      "notes": "AntivirusSignatureVersion: définitions antimalware (format: 1.xxx.xxxx.x). NISSignatureVersion: Network Inspection System signatures. Les définitions doivent être mises à jour quotidiennement (max 2-3 jours). Si obsolètes: Update-MpSignature.",
+      "links": [
+        {
+          "title": "Defender Signature Updates",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/manage-updates-baselines-microsoft-defender-antivirus"
+        }
+      ]
+    },
+    {
+      "id": "defender-remove-threat",
+      "title": "Supprimer une menace détectée manuellement",
+      "description": "Supprime manuellement une menace spécifique détectée par Windows Defender.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "defender",
+        "threat",
+        "remove"
+      ],
+      "windowsCommandTemplateId": "defender-remove-threat-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-remove-threat-cmd",
+        "platform": 0,
+        "name": "Remove-MpThreat",
+        "commandPattern": "Get-MpThreat | Select-Object ThreatID,ThreatName,SeverityID",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-MpThreat | Select-Object ThreatID,ThreatName,SeverityID,Resources",
+          "description": "Liste toutes les menaces avec leurs IDs"
+        },
+        {
+          "command": "Remove-MpThreat -ThreatID 123456",
+          "description": "Supprime la menace avec l'ID 123456"
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.IsActive -eq $true} | ForEach-Object { Remove-MpThreat -ThreatID $_.ThreatID }",
+          "description": "⚠️ Supprime TOUTES les menaces actives détectées"
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.SeverityID -ge 4} | ForEach-Object { Remove-MpThreat -ThreatID $_.ThreatID; Write-Host \"Supprimé: $($_.ThreatName)\" -ForegroundColor Green }",
+          "description": "Supprime toutes les menaces graves/sévères (niveau 4-5)"
+        }
+      ],
+      "notes": "Remove-MpThreat supprime définitivement la menace de la quarantaine. ThreatID: identifiant unique de chaque détection. Généralement Defender nettoie automatiquement, utilisez Remove-MpThreat uniquement si nécessaire. Pour voir les actions effectuées: Get-MpThreatDetection.",
+      "links": [
+        {
+          "title": "Remove-MpThreat Documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/remove-mpthreat"
+        }
+      ]
+    },
+    {
+      "id": "laps-get-computers-with-laps",
+      "title": "Lister tous les ordinateurs avec LAPS activé",
+      "description": "Affiche la liste de tous les ordinateurs du domaine qui ont LAPS configuré et actif.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 0,
+      "tags": [
+        "laps",
+        "inventory",
+        "computers"
+      ],
+      "windowsCommandTemplateId": "laps-get-computers-with-laps-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-get-computers-with-laps-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd,ms-Mcs-AdmPwdExpirationTime | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null} | Select-Object Name,@{N='PasswordSet';E={$_.'ms-Mcs-AdmPwd' -ne $null}},@{N='Expiration';E={if($_.'ms-Mcs-AdmPwdExpirationTime'){[DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime')}}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null} | Select-Object Name",
+          "description": "Liste simple de tous les ordinateurs avec LAPS configuré"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd,ms-Mcs-AdmPwdExpirationTime | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null} | Measure-Object",
+          "description": "Compte le nombre total d'ordinateurs avec LAPS actif"
+        },
+        {
+          "command": "$all = (Get-ADComputer -Filter *).Count; $laps = (Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null}).Count; Write-Host \"LAPS: $laps / $all ordinateurs ($(($laps/$all*100).ToString('N1'))%)\"",
+          "description": "Calcule le pourcentage de couverture LAPS dans le domaine"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd | Where-Object {$_.'ms-Mcs-AdmPwd' -eq $null} | Select-Object Name",
+          "description": "⚠️ Liste les ordinateurs SANS LAPS (vulnérables!)"
+        }
+      ],
+      "notes": "ms-Mcs-AdmPwd: attribut AD contenant le mot de passe chiffré. ms-Mcs-AdmPwdExpirationTime: date d'expiration. Si ms-Mcs-AdmPwd est $null: LAPS pas configuré sur ce PC (risque sécurité!). Vérifiez régulièrement la couverture LAPS de votre domaine.",
+      "links": [
+        {
+          "title": "LAPS Deployment Guide",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-scenarios-windows-server-active-directory"
+        }
+      ]
+    },
+    {
+      "id": "laps-set-expiration-time",
+      "title": "Modifier la durée d'expiration du mot de passe LAPS",
+      "description": "Configure la durée de validité du mot de passe administrateur local géré par LAPS.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "laps",
+        "configuration",
+        "expiration"
+      ],
+      "windowsCommandTemplateId": "laps-set-expiration-time-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-set-expiration-time-cmd",
+        "platform": 0,
+        "name": "Set-ADComputer",
+        "commandPattern": "$expDate = (Get-Date).AddDays({days}).ToFileTime(); Set-ADComputer -Identity {computerName} -Replace @{'ms-Mcs-AdmPwdExpirationTime'=$expDate}",
+        "parameters": [
+          {
+            "name": "computerName",
+            "label": "Nom de l'ordinateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom NetBIOS de l'ordinateur"
+          },
+          {
+            "name": "days",
+            "label": "Jours avant expiration",
+            "type": "string",
+            "defaultValue": "30",
+            "required": true,
+            "description": "Nombre de jours avant expiration (ex: 30, 60, 90)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$expDate = (Get-Date).AddDays(30).ToFileTime(); Set-ADComputer -Identity PC-001 -Replace @{'ms-Mcs-AdmPwdExpirationTime'=$expDate}",
+          "description": "Configure l'expiration du mot de passe dans 30 jours"
+        },
+        {
+          "command": "$expDate = (Get-Date).AddDays(1).ToFileTime(); Set-ADComputer -Identity PC-001 -Replace @{'ms-Mcs-AdmPwdExpirationTime'=$expDate}",
+          "description": "Force la rotation du mot de passe dans 24h"
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} | ForEach-Object { $expDate = (Get-Date).AddDays(7).ToFileTime(); Set-ADComputer -Identity $_.Name -Replace @{'ms-Mcs-AdmPwdExpirationTime'=$expDate} }",
+          "description": "Force la rotation dans 7 jours sur tous les laptops"
+        }
+      ],
+      "notes": "⚠️ Cette commande force une date d'expiration spécifique. Pour forcer rotation immédiate: utilisez Reset-AdmPwdPassword. La durée par défaut LAPS (GPO) est généralement 30 jours. Durées recommandées: Serveurs critiques: 14-30j, Postes de travail: 30-60j, Laptops: 30-45j.",
+      "links": [
+        {
+          "title": "LAPS Configuration",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-management-policy-settings"
+        }
+      ]
+    },
+    {
+      "id": "laps-check-password-complexity",
+      "title": "Vérifier la complexité des mots de passe LAPS",
+      "description": "Affiche et configure les paramètres de complexité des mots de passe générés par LAPS.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "laps",
+        "password",
+        "complexity"
+      ],
+      "windowsCommandTemplateId": "laps-check-password-complexity-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-check-password-complexity-cmd",
+        "platform": 0,
+        "name": "Get-ADObject",
+        "commandPattern": "$domain = Get-ADDomain; Get-GPO -All | Where-Object {$_.DisplayName -like '*LAPS*'} | ForEach-Object { Get-GPOReport -Guid $_.Id -ReportType Xml | Select-String -Pattern 'PasswordComplexity|PasswordLength' }",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "Get-GPO -All | Where-Object {$_.DisplayName -like '*LAPS*'}",
+          "description": "Liste toutes les GPO contenant 'LAPS' dans le nom"
+        },
+        {
+          "command": "$pwd = Get-AdmPwdPassword -ComputerName PC-001 | Select-Object -ExpandProperty Password; $pwd.Length",
+          "description": "Vérifie la longueur du mot de passe actuel LAPS"
+        },
+        {
+          "command": "$pwd = Get-AdmPwdPassword -ComputerName PC-001 | Select-Object -ExpandProperty Password; if($pwd -match '[A-Z]') { Write-Host 'Contient majuscules' } if($pwd -match '[0-9]') { Write-Host 'Contient chiffres' } if($pwd -match '[^a-zA-Z0-9]') { Write-Host 'Contient symboles' }",
+          "description": "Analyse la complexité du mot de passe (majuscules, chiffres, symboles)"
+        }
+      ],
+      "notes": "Configuration LAPS (via GPO): Longueur: 12-14 caractères minimum recommandé (jusqu'à 128), Complexité: Activée (majuscules + minuscules + chiffres + symboles), Expiration: 30 jours par défaut. Les paramètres sont définis dans les GPO Computer Configuration > Policies > Administrative Templates > LAPS.",
+      "links": [
+        {
+          "title": "LAPS Password Settings",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-management-policy-settings"
+        }
+      ]
+    },
+    {
+      "id": "laps-audit-permissions",
+      "title": "Auditer les permissions d'accès aux mots de passe LAPS",
+      "description": "Vérifie qui a les droits de lecture sur les attributs LAPS dans Active Directory.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "laps",
+        "security",
+        "audit",
+        "permissions"
+      ],
+      "windowsCommandTemplateId": "laps-audit-permissions-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-audit-permissions-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "$computer = Get-ADComputer -Identity {computerName}; $acl = Get-Acl \"AD:$($computer.DistinguishedName)\"; $acl.Access | Where-Object {$_.ActiveDirectoryRights -like '*ReadProperty*' -or $_.ActiveDirectoryRights -like '*GenericRead*'} | Select-Object IdentityReference,ActiveDirectoryRights,AccessControlType | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "computerName",
+            "label": "Nom de l'ordinateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom NetBIOS de l'ordinateur"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; $acl = Get-Acl \"AD:$($computer.DistinguishedName)\"; $acl.Access | Where-Object {$_.ActiveDirectoryRights -like '*ReadProperty*'} | Select-Object IdentityReference",
+          "description": "Liste tous les comptes pouvant lire les propriétés de PC-001"
+        },
+        {
+          "command": "$ou = Get-ADOrganizationalUnit -Filter {Name -eq 'Workstations'}; $acl = Get-Acl \"AD:$($ou.DistinguishedName)\"; $acl.Access | Where-Object {$_.ObjectType -eq '7D1E3A8C-7E99-11D2-9B5C-0000F87A57D4'} | Select-Object IdentityReference,AccessControlType",
+          "description": "Vérifie les permissions LAPS sur une OU (GUID ms-Mcs-AdmPwd)"
+        },
+        {
+          "command": "Import-Module AdmPwd.PS; Find-AdmPwdExtendedRights -Identity 'OU=Workstations,DC=contoso,DC=com'",
+          "description": "Utilise le module LAPS pour auditer les droits étendus sur une OU"
+        }
+      ],
+      "notes": "⚠️ SÉCURITÉ CRITIQUE: Limitez l'accès aux mots de passe LAPS! Seuls les admins de confiance doivent avoir ReadProperty sur ms-Mcs-AdmPwd. GUID important: ms-Mcs-AdmPwd = {7D1E3A8C-7E99-11D2-9B5C-0000F87A57D4}. Auditez régulièrement qui peut lire ces mots de passe. Utilisez des groupes AD dédiés.",
+      "links": [
+        {
+          "title": "LAPS Security",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-scenarios-legacy"
+        }
+      ]
+    },
+    {
+      "id": "laps-export-report",
+      "title": "Générer un rapport complet LAPS",
+      "description": "Génère un rapport CSV de tous les ordinateurs LAPS avec mots de passe et dates d'expiration.",
+      "category": "🔑 LAPS (Local Admin Password)",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "laps",
+        "report",
+        "export",
+        "audit"
+      ],
+      "windowsCommandTemplateId": "laps-export-report-cmd",
+      "windowsCommandTemplate": {
+        "id": "laps-export-report-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "$report = @(); Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd,ms-Mcs-AdmPwdExpirationTime | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null} | ForEach-Object { $report += [PSCustomObject]@{ Computer=$_.Name; Password=$_.'ms-Mcs-AdmPwd'; Expiration=[DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime') } }; $report | Export-Csv C:\\LAPS-Report-$(Get-Date -Format 'yyyyMMdd').csv -NoTypeInformation; Write-Host \"Rapport généré: C:\\LAPS-Report-$(Get-Date -Format 'yyyyMMdd').csv\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "$report = Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd,ms-Mcs-AdmPwdExpirationTime | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null} | Select-Object Name,@{N='Password';E={$_.'ms-Mcs-AdmPwd'}},@{N='Expiration';E={[DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime')}}; $report | Export-Csv C:\\LAPS-Full-Report.csv -NoTypeInformation",
+          "description": "Génère un rapport CSV complet avec tous les mots de passe LAPS"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd,ms-Mcs-AdmPwdExpirationTime | Where-Object {$_.'ms-Mcs-AdmPwd' -ne $null -and [DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime') -lt (Get-Date).AddDays(7)} | Select-Object Name,@{N='ExpiresIn';E={([DateTime]::FromFileTime($_.'ms-Mcs-AdmPwdExpirationTime') - (Get-Date)).Days}} | Export-Csv C:\\LAPS-Expiring-Soon.csv -NoTypeInformation",
+          "description": "Rapport des ordinateurs dont le mot de passe LAPS expire dans 7 jours"
+        },
+        {
+          "command": "$stats = Get-ADComputer -Filter * -Properties ms-Mcs-AdmPwd | Group-Object -Property {if($_.'ms-Mcs-AdmPwd'){'LAPS OK'}else{'NO LAPS'}} | Select-Object Name,Count; $stats",
+          "description": "Statistiques de couverture LAPS (combien avec/sans LAPS)"
+        }
+      ],
+      "notes": "⚠️ SÉCURITÉ MAXIMALE: Ce rapport contient TOUS les mots de passe admin locaux! Stockez-le dans un coffre-fort chiffré (gestionnaire de mots de passe, Azure Key Vault, coffre physique). NE JAMAIS envoyer par email non chiffré. Supprimez après consultation. Auditez qui génère ces rapports.",
+      "links": [
+        {
+          "title": "LAPS Reporting",
+          "url": "https://learn.microsoft.com/en-us/windows-server/identity/laps/laps-management-policy-settings"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-ad-get-recovery-keys",
+      "title": "Récupérer les clés BitLocker depuis Active Directory",
+      "description": "Récupère les clés de récupération BitLocker stockées dans Active Directory pour un ordinateur spécifique (commande admin domaine).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "ad",
+        "recovery",
+        "domain-admin"
+      ],
+      "windowsCommandTemplateId": "bitlocker-ad-get-recovery-keys-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-ad-get-recovery-keys-cmd",
+        "platform": 0,
+        "name": "Get-ADObject",
+        "commandPattern": "$computer = Get-ADComputer -Identity {computerName}; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,msFVE-RecoveryGuid,whenCreated | Select-Object @{N='ComputerName';E={{computerName}}},@{N='RecoveryPassword';E={$_.'msFVE-RecoveryPassword'}},@{N='RecoveryGuid';E={$_.'msFVE-RecoveryGuid'}},whenCreated | Format-Table -AutoSize",
+        "parameters": [
+          {
+            "name": "computerName",
+            "label": "Nom de l'ordinateur",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom NetBIOS de l'ordinateur (ex: PC-001)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword | Select-Object -ExpandProperty msFVE-RecoveryPassword",
+          "description": "Récupère le mot de passe de récupération BitLocker de PC-001 depuis AD"
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity LAPTOP-005; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,whenCreated | Select-Object @{N='RecoveryPassword';E={$_.'msFVE-RecoveryPassword'}},@{N='DateCreated';E={$_.whenCreated}}",
+          "description": "Récupère les clés BitLocker avec leur date de création"
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword; if($keys) { Write-Host \"$($_.Name): $($keys[0].'msFVE-RecoveryPassword')\" } }",
+          "description": "Récupère les clés BitLocker de tous les laptops depuis AD"
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,msFVE-RecoveryGuid; $keys | Select-Object @{N='Password';E={$_.'msFVE-RecoveryPassword'}},@{N='VolumeGUID';E={$_.'msFVE-RecoveryGuid'}}",
+          "description": "Récupère les clés avec leur GUID de volume (utile si plusieurs volumes chiffrés)"
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword; $keys.'msFVE-RecoveryPassword' | Out-File \"C:\\BitLocker-Keys-PC-001.txt\"",
+          "description": "Sauvegarde les clés de récupération dans un fichier sécurisé"
+        }
+      ],
+      "notes": "⚠️ ADMIN DOMAINE UNIQUEMENT: Cette commande récupère les clés depuis Active Directory (attributs msFVE-*). Nécessite droits de lecture sur les objets msFVE-RecoveryInformation. Les clés sont stockées sous chaque objet ordinateur AD. Plusieurs clés possibles si plusieurs volumes chiffrés. GUID format: {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}.",
+      "links": [
+        {
+          "title": "BitLocker Recovery in Active Directory",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/recovery-overview"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-ad-audit-domain",
+      "title": "Auditer BitLocker sur tout le domaine Active Directory",
+      "description": "Génère un rapport complet de tous les ordinateurs du domaine avec leur statut BitLocker (chiffré/non chiffré).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "ad",
+        "audit",
+        "compliance",
+        "domain-admin"
+      ],
+      "windowsCommandTemplateId": "bitlocker-ad-audit-domain-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-ad-audit-domain-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; $report += [PSCustomObject]@{ Computer=$_.Name; BitLockerEnabled=$hasKeys; DN=$_.DistinguishedName } }; $report | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; $report += [PSCustomObject]@{Computer=$_.Name; BitLocker=$hasKeys} }; $report | Format-Table",
+          "description": "Liste tous les ordinateurs avec leur statut BitLocker (True/False)"
+        },
+        {
+          "command": "$all = (Get-ADComputer -Filter *).Count; $encrypted = (Get-ADComputer -Filter * | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null }).Count; Write-Host \"BitLocker: $encrypted / $all ordinateurs ($(($encrypted/$all*100).ToString('N1'))%)\" -ForegroundColor Cyan",
+          "description": "Calcule le pourcentage de conformité BitLocker du domaine"
+        },
+        {
+          "command": "Get-ADComputer -Filter * | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -eq $null } | Select-Object Name",
+          "description": "⚠️ Liste les ordinateurs SANS BitLocker (non conformes!)"
+        },
+        {
+          "command": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties whenCreated -ErrorAction SilentlyContinue; $report += [PSCustomObject]@{Computer=$_.Name; HasBitLocker=($keys -ne $null); KeyCount=$keys.Count; LastKeyDate=($keys | Sort-Object whenCreated -Descending | Select-Object -First 1).whenCreated} }; $report | Export-Csv C:\\BitLocker-Domain-Audit-$(Get-Date -Format 'yyyyMMdd').csv -NoTypeInformation",
+          "description": "Génère un rapport CSV complet avec nombre de clés et date de dernière clé"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -SearchBase 'OU=Laptops,DC=contoso,DC=com' | ForEach-Object { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; [PSCustomObject]@{Laptop=$_.Name; Protected=$hasKeys} }",
+          "description": "Audit BitLocker uniquement pour une OU spécifique (ex: Laptops)"
+        }
+      ],
+      "notes": "⚠️ CONFORMITÉ CRITIQUE: Cette commande audit TOUT le domaine AD. Sur gros domaines (1000+ PCs): peut prendre plusieurs minutes. Utilisez -SearchBase pour limiter à une OU. Ordinateurs sans clés BitLocker = NON CONFORMES (risque sécurité!). Exécutez régulièrement (hebdo/mensuel) pour surveiller la conformité.",
+      "links": [
+        {
+          "title": "BitLocker Compliance Monitoring",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/operations-guide"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-ad-export-all-keys",
+      "title": "Exporter toutes les clés BitLocker du domaine",
+      "description": "Exporte un rapport CSV de tous les ordinateurs du domaine avec leurs clés de récupération BitLocker (admin domaine).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "bitlocker",
+        "ad",
+        "export",
+        "backup",
+        "domain-admin"
+      ],
+      "windowsCommandTemplateId": "bitlocker-ad-export-all-keys-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-ad-export-all-keys-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $computer = $_; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,msFVE-RecoveryGuid,whenCreated -ErrorAction SilentlyContinue; foreach($key in $keys) { $report += [PSCustomObject]@{ Computer=$computer.Name; RecoveryPassword=$key.'msFVE-RecoveryPassword'; VolumeGUID=$key.'msFVE-RecoveryGuid'; DateCreated=$key.whenCreated } } }; $report | Export-Csv C:\\BitLocker-All-Keys-$(Get-Date -Format 'yyyyMMdd-HHmm').csv -NoTypeInformation; Write-Host \"Rapport exporté: C:\\BitLocker-All-Keys-$(Get-Date -Format 'yyyyMMdd-HHmm').csv\" -ForegroundColor Green",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword -ErrorAction SilentlyContinue; foreach($k in $keys) { $report += [PSCustomObject]@{Computer=$_.Name; Password=$k.'msFVE-RecoveryPassword'} } }; $report | Export-Csv C:\\BitLocker-Keys-Full.csv -NoTypeInformation",
+          "description": "Exporte TOUTES les clés BitLocker du domaine dans un CSV"
+        },
+        {
+          "command": "Get-ADComputer -Filter * -SearchBase 'OU=Laptops,DC=contoso,DC=com' | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword -ErrorAction SilentlyContinue; if($keys) { Write-Host \"$($_.Name): $($keys[0].'msFVE-RecoveryPassword')\" } }",
+          "description": "Exporte les clés BitLocker uniquement pour une OU (ex: Laptops)"
+        },
+        {
+          "command": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword,whenCreated -ErrorAction SilentlyContinue; $report += [PSCustomObject]@{Computer=$_.Name; KeyCount=$keys.Count; LatestKey=($keys | Sort-Object whenCreated -Descending | Select-Object -First 1).'msFVE-RecoveryPassword'} }; $report | Where-Object {$_.KeyCount -gt 0}",
+          "description": "Rapport avec nombre de clés et dernière clé de récupération par ordinateur"
+        },
+        {
+          "command": "$date = Get-Date -Format 'yyyyMMdd'; Get-ADComputer -Filter * | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword -ErrorAction SilentlyContinue; foreach($k in $keys) { \"$($_.Name): $($k.'msFVE-RecoveryPassword')\" | Out-File \"C:\\BitLocker-Backup-$date.txt\" -Append } }",
+          "description": "Sauvegarde toutes les clés dans un fichier texte daté"
+        }
+      ],
+      "notes": "⚠️⚠️⚠️ ULTRA-SENSIBLE: Ce rapport contient TOUTES les clés BitLocker du domaine! STOCKAGE OBLIGATOIRE: Coffre-fort physique, Azure Key Vault, gestionnaire de mots de passe enterprise avec chiffrement hardware. NE JAMAIS: envoyer par email, stocker sur disque non chiffré, partager par Teams/Slack. ACCÈS: Limiter aux admins sécurité senior uniquement. AUDIT: Logger qui génère ce rapport. DESTRUCTION: Supprimer après sauvegarde sécurisée.",
+      "links": [
+        {
+          "title": "BitLocker Key Management Best Practices",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/operations-guide"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-ad-find-by-recovery-password",
+      "title": "Trouver un ordinateur par son mot de passe de récupération BitLocker",
+      "description": "Recherche dans AD quel ordinateur correspond à un mot de passe de récupération BitLocker donné (utile quand un utilisateur a le mot de passe mais pas le nom du PC).",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "ad",
+        "search",
+        "recovery",
+        "domain-admin"
+      ],
+      "windowsCommandTemplateId": "bitlocker-ad-find-by-recovery-password-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-ad-find-by-recovery-password-cmd",
+        "platform": 0,
+        "name": "Get-ADObject",
+        "commandPattern": "$searchPassword = '{recoveryPassword}'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Where-Object {$_.'msFVE-RecoveryPassword' -like \"*$searchPassword*\"} | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; $computer = Get-ADComputer -Identity $computerDN; [PSCustomObject]@{ Computer=$computer.Name; RecoveryPassword=$_.'msFVE-RecoveryPassword'; ComputerDN=$computer.DistinguishedName } }",
+        "parameters": [
+          {
+            "name": "recoveryPassword",
+            "label": "Mot de passe de récupération",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Mot de passe ou début du mot de passe (premiers chiffres)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "$search = '123456-789012'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Where-Object {$_.'msFVE-RecoveryPassword' -like \"*$search*\"} | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; (Get-ADComputer -Identity $computerDN).Name }",
+          "description": "Trouve l'ordinateur correspondant aux premiers chiffres du mot de passe"
+        },
+        {
+          "command": "$fullPassword = '123456-789012-345678-901234-567890-123456-789012-890123'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Where-Object {$_.'msFVE-RecoveryPassword' -eq $fullPassword} | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; Get-ADComputer -Identity $computerDN | Select-Object Name,DNSHostName }",
+          "description": "Trouve l'ordinateur avec le mot de passe complet exact"
+        },
+        {
+          "command": "$keyId = '{12345678-1234-1234-1234-123456789012}'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation' -and msFVE-RecoveryGuid -eq '$keyId'\" -Properties msFVE-RecoveryPassword | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; [PSCustomObject]@{Computer=(Get-ADComputer -Identity $computerDN).Name; Password=$_.'msFVE-RecoveryPassword'} }",
+          "description": "Trouve l'ordinateur par GUID de clé de récupération"
+        }
+      ],
+      "notes": "CAS D'USAGE: Utilisateur bloqué avec écran de récupération BitLocker, fournit les premiers chiffres du mot de passe, admin cherche à quel PC cela correspond. RECHERCHE PARTIELLE: Utilisez les premiers groupes de chiffres (ex: 123456-789012). RECHERCHE COMPLÈTE: Utilisez le mot de passe entier pour match exact. Très utile pour helpdesk!",
+      "links": [
+        {
+          "title": "BitLocker Recovery Scenarios",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/recovery-overview"
+        }
+      ]
+    },
+    {
+      "id": "bitlocker-ad-compliance-report",
+      "title": "Générer un rapport de conformité BitLocker pour la direction",
+      "description": "Génère un rapport exécutif de conformité BitLocker avec statistiques, graphiques et ordinateurs non conformes.",
+      "category": "🔒 BitLocker & Encryption",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "bitlocker",
+        "ad",
+        "compliance",
+        "report",
+        "domain-admin"
+      ],
+      "windowsCommandTemplateId": "bitlocker-ad-compliance-report-cmd",
+      "windowsCommandTemplate": {
+        "id": "bitlocker-ad-compliance-report-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "$allComputers = Get-ADComputer -Filter *; $total = $allComputers.Count; $encrypted = 0; $notEncrypted = @(); foreach($pc in $allComputers) { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $pc.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; if($hasKeys) { $encrypted++ } else { $notEncrypted += $pc.Name } }; $compliance = ($encrypted/$total*100).ToString('N1'); Write-Host \"`n=== RAPPORT DE CONFORMITÉ BITLOCKER ===\" -ForegroundColor Cyan; Write-Host \"Total ordinateurs: $total\" -ForegroundColor White; Write-Host \"Chiffrés: $encrypted ($compliance%)\" -ForegroundColor Green; Write-Host \"Non chiffrés: $($total-$encrypted) ($((($total-$encrypted)/$total*100).ToString('N1'))%)\" -ForegroundColor Red; Write-Host \"`nOrdinateurs NON CONFORMES:\" -ForegroundColor Yellow; $notEncrypted",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "$all = Get-ADComputer -Filter *; $total = $all.Count; $encrypted = ($all | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null }).Count; [PSCustomObject]@{ TotalComputers=$total; Encrypted=$encrypted; NotEncrypted=($total-$encrypted); ComplianceRate=\"$(($encrypted/$total*100).ToString('N1'))%\" }",
+          "description": "Rapport de conformité synthétique (une ligne)"
+        },
+        {
+          "command": "$report = @(); $ous = Get-ADOrganizationalUnit -Filter *; foreach($ou in $ous) { $computers = Get-ADComputer -Filter * -SearchBase $ou.DistinguishedName -SearchScope OneLevel; $total = $computers.Count; if($total -gt 0) { $encrypted = ($computers | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null }).Count; $report += [PSCustomObject]@{OU=$ou.Name; Total=$total; Encrypted=$encrypted; Compliance=\"$(($encrypted/$total*100).ToString('N0'))%\"} } }; $report | Format-Table",
+          "description": "Rapport de conformité par OU (département/site)"
+        },
+        {
+          "command": "$notCompliant = Get-ADComputer -Filter * | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -eq $null } | Select-Object Name,DistinguishedName; $notCompliant | Export-Csv C:\\BitLocker-NonCompliant-$(Get-Date -Format 'yyyyMMdd').csv -NoTypeInformation; Write-Host \"$($notCompliant.Count) ordinateurs non conformes exportés\"",
+          "description": "Exporte la liste des ordinateurs NON CONFORMES pour action corrective"
+        },
+        {
+          "command": "$laptops = Get-ADComputer -Filter * -SearchBase 'OU=Laptops,DC=contoso,DC=com'; $desktops = Get-ADComputer -Filter * -SearchBase 'OU=Desktops,DC=contoso,DC=com'; $laptopsEnc = ($laptops | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null }).Count; $desktopsEnc = ($desktops | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null }).Count; Write-Host \"Laptops: $laptopsEnc/$($laptops.Count) ($(($laptopsEnc/$laptops.Count*100).ToString('N0'))%)\"; Write-Host \"Desktops: $desktopsEnc/$($desktops.Count) ($(($desktopsEnc/$desktops.Count*100).ToString('N0'))%)\"",
+          "description": "Rapport de conformité séparé Laptops vs Desktops"
+        }
+      ],
+      "notes": "RAPPORT EXÉCUTIF: Pour direction/RSSI/audit. OBJECTIF: 100% conformité pour laptops (obligatoire!), 80-100% pour desktops selon politique. KPI: Taux de conformité, tendance, ordinateurs critiques non conformes. FRÉQUENCE: Mensuel recommandé. ACTION: Laptops non conformes = PRIORITÉ 1 (risque perte/vol).",
+      "links": [
+        {
+          "title": "BitLocker Compliance and Reporting",
+          "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/operations-guide"
+        }
+      ]
+    },
+    {
+      "id": "defender-ad-get-protection-status-domain",
+      "title": "Auditer l'état de Windows Defender sur tout le domaine",
+      "description": "Vérifie l'état de Windows Defender (protection active/inactive) sur tous les ordinateurs du domaine via requêtes à distance.",
+      "category": "🛡️ Windows Defender",
+      "platform": 0,
+      "level": 1,
+      "tags": [
+        "defender",
+        "ad",
+        "audit",
+        "domain-admin",
+        "compliance"
+      ],
+      "windowsCommandTemplateId": "defender-ad-get-protection-status-domain-cmd",
+      "windowsCommandTemplate": {
+        "id": "defender-ad-get-protection-status-domain-cmd",
+        "platform": 0,
+        "name": "Get-ADComputer",
+        "commandPattern": "$report = @(); Get-ADComputer -Filter {Enabled -eq $true} | ForEach-Object { try { $status = Invoke-Command -ComputerName $_.Name -ScriptBlock { Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled,AntivirusSignatureLastUpdated } -ErrorAction Stop; $report += [PSCustomObject]@{ Computer=$_.Name; RealtimeProtection=$status.RealTimeProtectionEnabled; LastUpdate=$status.AntivirusSignatureLastUpdated; Status='Online' } } catch { $report += [PSCustomObject]@{ Computer=$_.Name; RealtimeProtection='N/A'; LastUpdate='N/A'; Status='Offline/Error' } } }; $report | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "$computers = Get-ADComputer -Filter {Enabled -eq $true} -SearchBase 'OU=Workstations,DC=contoso,DC=com'; $results = @(); foreach($pc in $computers) { try { $status = Invoke-Command -ComputerName $pc.Name -ScriptBlock { (Get-MpComputerStatus).RealTimeProtectionEnabled } -ErrorAction Stop; $results += [PSCustomObject]@{Computer=$pc.Name; Protected=$status} } catch { $results += [PSCustomObject]@{Computer=$pc.Name; Protected='Offline'} } }; $results",
+          "description": "Vérifie la protection temps réel sur tous les postes d'une OU"
+        },
+        {
+          "command": "$unprotected = @(); Get-ADComputer -Filter {Enabled -eq $true} | ForEach-Object { try { $protected = Invoke-Command -ComputerName $_.Name -ScriptBlock { (Get-MpComputerStatus).RealTimeProtectionEnabled } -ErrorAction Stop; if(-not $protected) { $unprotected += $_.Name } } catch {} }; Write-Host \"⚠️ $($unprotected.Count) ordinateurs NON PROTÉGÉS:\" -ForegroundColor Red; $unprotected",
+          "description": "⚠️ Liste les ordinateurs avec protection Defender DÉSACTIVÉE"
+        },
+        {
+          "command": "$outdated = @(); Get-ADComputer -Filter {Enabled -eq $true} | ForEach-Object { try { $lastUpdate = Invoke-Command -ComputerName $_.Name -ScriptBlock { (Get-MpComputerStatus).AntivirusSignatureLastUpdated } -ErrorAction Stop; if($lastUpdate -lt (Get-Date).AddDays(-7)) { $outdated += [PSCustomObject]@{Computer=$_.Name; LastUpdate=$lastUpdate; DaysOld=((Get-Date) - $lastUpdate).Days} } } catch {} }; $outdated | Sort-Object DaysOld -Descending",
+          "description": "Liste les ordinateurs avec définitions Defender obsolètes (>7 jours)"
+        },
+        {
+          "command": "$all = (Get-ADComputer -Filter {Enabled -eq $true}).Count; $protected = 0; Get-ADComputer -Filter {Enabled -eq $true} | ForEach-Object { try { if(Invoke-Command -ComputerName $_.Name -ScriptBlock { (Get-MpComputerStatus).RealTimeProtectionEnabled } -ErrorAction Stop) { $protected++ } } catch {} }; Write-Host \"Defender actif: $protected / $all ($((protected/$all*100).ToString('N1'))%)\"",
+          "description": "Calcule le taux de conformité Defender du domaine"
+        }
+      ],
+      "notes": "⚠️ PERFORMANCE: Sur gros domaines, cette commande prend du temps (requêtes à distance). Optimisation: limitez avec -SearchBase à une OU. Nécessite: WinRM activé, droits admin sur machines cibles. Offline/Error: PC éteints, WinRM désactivé, firewall bloqué. COMPLIANCE: 100% protection temps réel obligatoire!",
+      "links": [
+        {
+          "title": "Remote Defender Management",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/defender/"
+        }
+      ]
     }
   ]
 }
