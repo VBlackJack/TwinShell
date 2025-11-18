@@ -1,3 +1,4 @@
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -61,6 +62,12 @@ public class ActionService : IActionService
 
     public async Task<ActionModel> CreateActionAsync(ActionModel action)
     {
+        // BUGFIX: Add validation to prevent invalid data from being saved
+        if (!ValidateAction(action, out var validationError))
+        {
+            throw new ArgumentException(validationError, nameof(action));
+        }
+
         action.Id = Guid.NewGuid().ToString();
         action.CreatedAt = DateTime.UtcNow;
         action.UpdatedAt = DateTime.UtcNow;
@@ -72,6 +79,12 @@ public class ActionService : IActionService
 
     public async Task UpdateActionAsync(ActionModel action)
     {
+        // BUGFIX: Add validation to prevent invalid data from being saved
+        if (!ValidateAction(action, out var validationError))
+        {
+            throw new ArgumentException(validationError, nameof(action));
+        }
+
         action.UpdatedAt = DateTime.UtcNow;
         await _repository.UpdateAsync(action);
     }
@@ -119,6 +132,72 @@ public class ActionService : IActionService
             await _repository.UpdateAsync(action);
         }
 
+        return true;
+    }
+
+    /// <summary>
+    /// Validates action data using centralized validation constants
+    /// </summary>
+    private static bool ValidateAction(ActionModel action, out string errorMessage)
+    {
+        // Check required fields
+        if (string.IsNullOrWhiteSpace(action?.Title))
+        {
+            errorMessage = "Title is required.";
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(action.Category))
+        {
+            errorMessage = "Category is required.";
+            return false;
+        }
+
+        // Check field lengths
+        if (action.Title.Length > ValidationConstants.MaxActionTitleLength)
+        {
+            errorMessage = $"Title cannot exceed {ValidationConstants.MaxActionTitleLength} characters.";
+            return false;
+        }
+
+        if (action.Category.Length > ValidationConstants.MaxActionCategoryLength)
+        {
+            errorMessage = $"Category cannot exceed {ValidationConstants.MaxActionCategoryLength} characters.";
+            return false;
+        }
+
+        if ((action.Description?.Length ?? 0) > ValidationConstants.MaxActionDescriptionLength)
+        {
+            errorMessage = $"Description cannot exceed {ValidationConstants.MaxActionDescriptionLength} characters.";
+            return false;
+        }
+
+        if ((action.Notes?.Length ?? 0) > ValidationConstants.MaxActionNotesLength)
+        {
+            errorMessage = $"Notes cannot exceed {ValidationConstants.MaxActionNotesLength} characters.";
+            return false;
+        }
+
+        // Check collections sizes
+        if ((action.Tags?.Count ?? 0) > ValidationConstants.MaxActionTagsCount)
+        {
+            errorMessage = $"Cannot have more than {ValidationConstants.MaxActionTagsCount} tags.";
+            return false;
+        }
+
+        if ((action.Examples?.Count ?? 0) > ValidationConstants.MaxActionExamplesCount)
+        {
+            errorMessage = $"Cannot have more than {ValidationConstants.MaxActionExamplesCount} examples.";
+            return false;
+        }
+
+        if ((action.Links?.Count ?? 0) > ValidationConstants.MaxActionLinksCount)
+        {
+            errorMessage = $"Cannot have more than {ValidationConstants.MaxActionLinksCount} links.";
+            return false;
+        }
+
+        errorMessage = string.Empty;
         return true;
     }
 }

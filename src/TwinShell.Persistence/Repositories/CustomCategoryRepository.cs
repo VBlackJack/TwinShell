@@ -20,7 +20,9 @@ public class CustomCategoryRepository : ICustomCategoryRepository
 
     public async Task<IEnumerable<CustomCategory>> GetAllAsync()
     {
+        // BUGFIX: Add AsNoTracking for read-only query performance
         var entities = await _context.CustomCategories
+            .AsNoTracking()
             .Include(c => c.ActionMappings)
             .OrderBy(c => c.DisplayOrder)
             .ToListAsync();
@@ -28,6 +30,7 @@ public class CustomCategoryRepository : ICustomCategoryRepository
         // PERFORMANCE: Only fetch mappings for returned categories instead of all mappings
         var categoryIds = entities.Select(e => e.Id).ToList();
         var mappings = await _context.ActionCategoryMappings
+            .AsNoTracking()
             .Where(m => categoryIds.Contains(m.CategoryId))
             .ToListAsync();
 
@@ -36,7 +39,9 @@ public class CustomCategoryRepository : ICustomCategoryRepository
 
     public async Task<CustomCategory?> GetByIdAsync(string id)
     {
+        // BUGFIX: Add AsNoTracking for read-only query performance
         var entity = await _context.CustomCategories
+            .AsNoTracking()
             .Include(c => c.ActionMappings)
             .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -90,6 +95,7 @@ public class CustomCategoryRepository : ICustomCategoryRepository
         // PERFORMANCE: Only fetch mappings for returned categories instead of all mappings
         var categoryIds = entities.Select(e => e.Id).ToList();
         var mappings = await _context.ActionCategoryMappings
+            .AsNoTracking()
             .Where(m => categoryIds.Contains(m.CategoryId))
             .ToListAsync();
 

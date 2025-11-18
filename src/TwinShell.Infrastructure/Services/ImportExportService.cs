@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using ActionModel = TwinShell.Core.Models.Action;
@@ -40,7 +41,8 @@ public class ImportExportService : IImportExportService
                     Platform = (int)a.Platform,
                     Level = (int)a.Level,
                     a.Tags,
-                    WindowsCommandTemplateId = a.WindowsCommandTemplate?.Id,
+                    // BUGFIX: Use ID field directly instead of navigation property to prevent data loss
+                    a.WindowsCommandTemplateId,
                     WindowsCommandTemplate = a.WindowsCommandTemplate != null ? new
                     {
                         a.WindowsCommandTemplate.Id,
@@ -57,7 +59,8 @@ public class ImportExportService : IImportExportService
                             p.Description
                         })
                     } : null,
-                    LinuxCommandTemplateId = a.LinuxCommandTemplate?.Id,
+                    // BUGFIX: Use ID field directly instead of navigation property to prevent data loss
+                    a.LinuxCommandTemplateId,
                     LinuxCommandTemplate = a.LinuxCommandTemplate != null ? new
                     {
                         a.LinuxCommandTemplate.Id,
@@ -196,7 +199,9 @@ public class ImportExportService : IImportExportService
                 {
                     // New action - import it
                     var newAction = MapToAction(actionData);
-                    newAction.IsUserCreated = true;
+                    // BUGFIX: Preserve IsUserCreated from import data instead of forcing to true
+                    // This allows re-importing system actions correctly
+                    newAction.IsUserCreated = actionData.IsUserCreated;
                     newAction.CreatedAt = DateTime.UtcNow;
                     newAction.UpdatedAt = DateTime.UtcNow;
                     await _actionRepository.AddAsync(newAction);
@@ -300,7 +305,7 @@ public class ImportExportService : IImportExportService
 
     /// <summary>
     /// SECURITY: Validates action data to prevent injection of malicious content
-    /// Reuses validation logic from JsonSeedService
+    /// Uses centralized validation constants for consistency
     /// </summary>
     private static bool ValidateActionData(ActionModel action)
     {
@@ -312,27 +317,19 @@ public class ImportExportService : IImportExportService
         }
 
         // SECURITY: Check field lengths to prevent oversized data
-        const int MaxTitleLength = 200;
-        const int MaxDescriptionLength = 2000;
-        const int MaxCategoryLength = 100;
-        const int MaxNotesLength = 5000;
-
-        if (action.Title.Length > MaxTitleLength ||
-            action.Category.Length > MaxCategoryLength ||
-            (action.Description?.Length ?? 0) > MaxDescriptionLength ||
-            (action.Notes?.Length ?? 0) > MaxNotesLength)
+        // BUGFIX: Use centralized constants for validation consistency
+        if (action.Title.Length > ValidationConstants.MaxActionTitleLength ||
+            action.Category.Length > ValidationConstants.MaxActionCategoryLength ||
+            (action.Description?.Length ?? 0) > ValidationConstants.MaxActionDescriptionLength ||
+            (action.Notes?.Length ?? 0) > ValidationConstants.MaxActionNotesLength)
         {
             return false;
         }
 
         // SECURITY: Check collections sizes
-        const int MaxTagsCount = 20;
-        const int MaxExamplesCount = 10;
-        const int MaxLinksCount = 10;
-
-        if ((action.Tags?.Count ?? 0) > MaxTagsCount ||
-            (action.Examples?.Count ?? 0) > MaxExamplesCount ||
-            (action.Links?.Count ?? 0) > MaxLinksCount)
+        if ((action.Tags?.Count ?? 0) > ValidationConstants.MaxActionTagsCount ||
+            (action.Examples?.Count ?? 0) > ValidationConstants.MaxActionExamplesCount ||
+            (action.Links?.Count ?? 0) > ValidationConstants.MaxActionLinksCount)
         {
             return false;
         }

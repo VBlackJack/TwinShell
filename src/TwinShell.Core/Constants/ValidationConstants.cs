@@ -79,4 +79,51 @@ public static class ValidationConstants
     /// Maximum number of history entries in import (10000 items).
     /// </summary>
     public const int MaxHistoryInImport = 10000;
+
+    // ===== Action Field Length Constraints =====
+
+    /// <summary>
+    /// Maximum length for action title (200 characters).
+    /// </summary>
+    public const int MaxActionTitleLength = 200;
+
+    /// <summary>
+    /// Maximum length for action description (2000 characters).
+    /// </summary>
+    public const int MaxActionDescriptionLength = 2000;
+
+    /// <summary>
+    /// Maximum length for action category name (100 characters).
+    /// </summary>
+    public const int MaxActionCategoryLength = 100;
+
+    /// <summary>
+    /// Maximum length for action notes (5000 characters).
+    /// </summary>
+    public const int MaxActionNotesLength = 5000;
+
+    /// <summary>
+    /// Maximum number of tags per action (20 tags).
+    /// </summary>
+    public const int MaxActionTagsCount = 20;
+
+    /// <summary>
+    /// Maximum number of examples per action (10 examples).
+    /// </summary>
+    public const int MaxActionExamplesCount = 10;
+
+    /// <summary>
+    /// Maximum number of links per action (10 links).
+    /// </summary>
+    public const int MaxActionLinksCount = 10;
+
+    /// <summary>
+    /// Maximum length for command template name (200 characters).
+    /// </summary>
+    public const int MaxTemplateNameLength = 200;
+
+    /// <summary>
+    /// Maximum length for command template pattern (1000 characters).
+    /// </summary>
+    public const int MaxTemplateCommandPatternLength = 1000;
 }

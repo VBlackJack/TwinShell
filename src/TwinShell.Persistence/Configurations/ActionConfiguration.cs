@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TwinShell.Core.Constants;
 using TwinShell.Persistence.Entities;
 
 namespace TwinShell.Persistence.Configurations;
@@ -16,17 +17,18 @@ public class ActionConfiguration : IEntityTypeConfiguration<ActionEntity>
             .IsRequired()
             .HasMaxLength(50);
 
+        // BUGFIX: Use centralized constants and fix length mismatches
         builder.Property(e => e.Title)
             .IsRequired()
-            .HasMaxLength(300);
+            .HasMaxLength(ValidationConstants.MaxActionTitleLength); // 200
 
         builder.Property(e => e.Description)
             .IsRequired()
-            .HasMaxLength(2000);
+            .HasMaxLength(ValidationConstants.MaxActionDescriptionLength); // 2000
 
         builder.Property(e => e.Category)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(ValidationConstants.MaxActionCategoryLength); // 100
 
         builder.Property(e => e.Platform)
             .IsRequired()
@@ -48,8 +50,9 @@ public class ActionConfiguration : IEntityTypeConfiguration<ActionEntity>
             .IsRequired()
             .HasColumnType("TEXT");
 
+        // BUGFIX: Increase from 2000 to 5000 to match UI/validation
         builder.Property(e => e.Notes)
-            .HasMaxLength(2000);
+            .HasMaxLength(ValidationConstants.MaxActionNotesLength); // 5000
 
         builder.Property(e => e.CreatedAt)
             .IsRequired();
