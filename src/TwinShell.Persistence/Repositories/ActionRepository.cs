@@ -95,6 +95,35 @@ public class ActionRepository : IActionRepository
 
     public async Task UpdateAsync(Core.Models.Action action)
     {
+        // BUGFIX: Handle command templates when updating actions (import/export support)
+        // Add or update Windows command template if it exists
+        if (action.WindowsCommandTemplate != null)
+        {
+            var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
+            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == windowsTemplateEntity.Id))
+            {
+                _context.CommandTemplates.Add(windowsTemplateEntity);
+            }
+            else
+            {
+                _context.CommandTemplates.Update(windowsTemplateEntity);
+            }
+        }
+
+        // Add or update Linux command template if it exists
+        if (action.LinuxCommandTemplate != null)
+        {
+            var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
+            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == linuxTemplateEntity.Id))
+            {
+                _context.CommandTemplates.Add(linuxTemplateEntity);
+            }
+            else
+            {
+                _context.CommandTemplates.Update(linuxTemplateEntity);
+            }
+        }
+
         var entity = ActionMapper.ToEntity(action);
         _context.Actions.Update(entity);
         await _context.SaveChangesAsync();

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TwinShell.Core.Constants;
 using TwinShell.Persistence.Entities;
 
 namespace TwinShell.Persistence.Configurations;
@@ -18,11 +19,11 @@ public class CommandTemplateConfiguration : IEntityTypeConfiguration<CommandTemp
 
         builder.Property(e => e.Name)
             .IsRequired()
-            .HasMaxLength(200);
+            .HasMaxLength(ValidationConstants.MaxTemplateNameLength); // 200
 
         builder.Property(e => e.CommandPattern)
             .IsRequired()
-            .HasMaxLength(1000);
+            .HasMaxLength(ValidationConstants.MaxTemplateCommandPatternLength); // 1000
 
         builder.Property(e => e.Platform)
             .IsRequired()
