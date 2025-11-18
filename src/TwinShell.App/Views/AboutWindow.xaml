@@ -1,0 +1,167 @@
+<Window x:Class="TwinShell.App.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="À propos de TwinShell"
+        Height="600" Width="550"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BackgroundBrush}"
+        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow">
+
+    <Window.Resources>
+        <!-- Title Style -->
+        <Style x:Key="TitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Subtitle Style -->
+        <Style x:Key="SubtitleStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <!-- Section Header Style -->
+        <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,16,0,8"/>
+        </Style>
+
+        <!-- Info Style -->
+        <Style x:Key="InfoStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <!-- Feature Style -->
+        <Style x:Key="FeatureStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+            <Setter Property="Margin" Value="0,3"/>
+        </Style>
+
+        <!-- Copyright Style -->
+        <Style x:Key="CopyrightStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,8,0,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <StackPanel Grid.Row="0">
+            <!-- App Icon/Logo placeholder -->
+            <Border Width="80" Height="80"
+                    Background="{DynamicResource PrimaryBrush}"
+                    CornerRadius="40"
+                    Margin="0,0,0,16"
+                    HorizontalAlignment="Center">
+                <TextBlock Text="TS"
+                           FontSize="36"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+
+            <TextBlock Text="TwinShell" Style="{StaticResource TitleStyle}"/>
+            <TextBlock Text="Version 1.0"
+                       FontSize="14"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       HorizontalAlignment="Center"
+                       Margin="0,4,0,8"/>
+            <TextBlock Text="Gestionnaire de Commandes PowerShell &amp; Bash"
+                       Style="{StaticResource SubtitleStyle}"
+                       Margin="0,0,0,4"/>
+            <TextBlock Text="Pour Administrateurs Système"
+                       Style="{StaticResource SubtitleStyle}"/>
+        </StackPanel>
+
+        <!-- Content Section -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+            <StackPanel>
+                <!-- Description -->
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="16"
+                        Margin="0,0,0,12">
+                    <TextBlock Style="{StaticResource InfoStyle}">
+                        <Run Text="TwinShell est un outil professionnel conçu pour simplifier la gestion et l'exécution de commandes système. Que vous travailliez sur Windows ou Linux, TwinShell centralise vos commandes fréquentes et vous permet de les exécuter rapidement."/>
+                    </TextBlock>
+                </Border>
+
+                <!-- Author Info -->
+                <TextBlock Text="Développement" Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="16"
+                        Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource InfoStyle}">
+                            <Run Text="Auteur: " FontWeight="SemiBold"/>
+                            <Run Text="Julien Bombled"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Features -->
+                <TextBlock Text="Fonctionnalités Principales" Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="✓ Bibliothèque de commandes PowerShell et Bash" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Exécution directe avec remplissage de paramètres" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Historique complet des exécutions" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Gestion par catégories et tags" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Mode batch pour exécutions multiples" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Recherche avancée et filtrage" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Thèmes clair/sombre" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Import/Export de commandes" Style="{StaticResource FeatureStyle}"/>
+                        <TextBlock Text="✓ Support multi-plateforme" Style="{StaticResource FeatureStyle}"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer Section -->
+        <StackPanel Grid.Row="2" Margin="0,16,0,0">
+            <TextBlock Text="© 2025 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
+            <TextBlock Text="Tous droits réservés" Style="{StaticResource CopyrightStyle}" Margin="0,2,0,16"/>
+
+            <!-- Close Button -->
+            <Button Content="Fermer"
+                    Click="CloseButton_Click"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    HorizontalAlignment="Center"
+                    Padding="32,10"
+                    MinWidth="120"
+                    MinHeight="44"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -25,7 +25,11 @@ public class SearchService : ISearchService
             a.Description.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0 ||
             a.Category.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0 ||
             a.Tags.Any(t => t.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
-            (a.Notes != null && a.Notes.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0));
+            (a.Notes != null && a.Notes.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+            (a.WindowsCommandTemplate?.Name != null && a.WindowsCommandTemplate.Name.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+            (a.WindowsCommandTemplate?.CommandPattern != null && a.WindowsCommandTemplate.CommandPattern.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+            (a.LinuxCommandTemplate?.Name != null && a.LinuxCommandTemplate.Name.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0) ||
+            (a.LinuxCommandTemplate?.CommandPattern != null && a.LinuxCommandTemplate.CommandPattern.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0));
 
         return await Task.FromResult(results);
     }
