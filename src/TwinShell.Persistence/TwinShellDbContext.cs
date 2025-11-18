@@ -23,6 +23,7 @@ public class TwinShellDbContext : DbContext
     public DbSet<ActionTranslationEntity> ActionTranslations => Set<ActionTranslationEntity>();
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
     public DbSet<CommandBatchEntity> CommandBatches => Set<CommandBatchEntity>();
+    public DbSet<SearchHistoryEntity> SearchHistories => Set<SearchHistoryEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,5 +38,6 @@ public class TwinShellDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ActionTranslationConfiguration());
         modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
         modelBuilder.ApplyConfiguration(new CommandBatchConfiguration());
+        modelBuilder.ApplyConfiguration(new SearchHistoryConfiguration());
     }
 }

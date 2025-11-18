@@ -387,26 +387,132 @@ Après le déploiement, testez les scénarios suivants dans l'interface :
 
 ---
 
-## 11. RECOMMANDATIONS FUTURES
+## 11. NOUVELLES FONCTIONNALITÉS (2025-01-XX)
 
-### Améliorations Prioritaires
+### ✅ Implémentées
 
-#### 1. Recherche Fuzzy (Tolérance aux Fautes)
-- Permettre des fautes de frappe mineures
-- Exemple : "serviec" → "service"
-- Implémentation possible : Algorithme de distance de Levenshtein
+#### 1. ✅ Recherche Fuzzy (Tolérance aux Fautes)
+**Status : IMPLÉMENTÉ**
 
-#### 2. Scoring de Pertinence
-- Trier les résultats par pertinence :
-  - Match dans le titre (priorité haute)
-  - Match dans les tags (priorité moyenne)
-  - Match dans la description (priorité basse)
-- Afficher un indicateur de pertinence dans l'UI
+La recherche fuzzy utilise l'algorithme de distance de Levenshtein pour tolérer les fautes de frappe jusqu'à 30% de différence.
 
-#### 3. Historique de Recherche
-- Mémoriser les dernières recherches
-- Autocomplétion basée sur l'historique
-- Suggestions de requêtes populaires
+**Exemples :**
+- `"serviec"` → trouve `"service"` (2 caractères inversés)
+- `"usr"` → trouve `"user"` (1 caractère manquant)
+- `"netwrok"` → trouve `"network"` (1 caractère mal placé)
+
+**Implémentation :**
+- `TextNormalizer.LevenshteinDistance()` : Calcule la distance entre deux chaînes
+- `TextNormalizer.IsFuzzyMatch()` : Vérifie si deux chaînes sont similaires (seuil 30%)
+- `TextNormalizer.GetFuzzyMatchScore()` : Retourne un score de similarité (0.0 - 1.0)
+- Activé automatiquement quand aucune correspondance exacte n'est trouvée
+
+#### 2. ✅ Scoring de Pertinence
+**Status : IMPLÉMENTÉ**
+
+Les résultats de recherche sont maintenant triés par pertinence avec un système de scoring pondéré :
+
+**Poids de scoring :**
+- 🥇 **Titre** : 100 points (priorité maximale)
+- 🥈 **Tags** : 70 points (priorité haute)
+- 🥉 **Description** : 50 points (priorité moyenne)
+- ⭐ **Catégorie** : 40 points
+- 📝 **Templates** : 30 points
+- 📋 **Notes** : 20 points
+- 🎯 **Bonus Fuzzy** : jusqu'à 20 points supplémentaires
+
+**Modèle de données :**
+```csharp
+public class SearchResult
+{
+    public ActionModel Action { get; init; }
+    public double Score { get; init; }
+    public SearchScoreBreakdown Breakdown { get; init; }
+    public bool IsExactMatch { get; init; }
+}
+```
+
+**Exemple de scoring :**
+- Recherche : `"Get Service"`
+- Action A : Titre = "Get-Service" → **Score : 100** (match titre exact)
+- Action B : Description = "Get all services" → **Score : 50** (match description)
+- Action C : Tags = ["service", "list"] → **Score : 70** (match tags)
+- → **Résultat trié : A, C, B**
+
+#### 3. ✅ Historique de Recherche
+**Status : IMPLÉMENTÉ**
+
+L'historique de recherche mémorise les recherches récentes et populaires pour améliorer l'expérience utilisateur.
+
+**Fonctionnalités :**
+- ✅ Mémorisation automatique des recherches
+- ✅ Compteur de fréquence (nombre de fois qu'une recherche a été effectuée)
+- ✅ Horodatage de la dernière recherche
+- ✅ Suggestions d'autocomplétion basées sur l'historique
+- ✅ Recherches populaires (triées par fréquence)
+- ✅ Nettoyage automatique des anciennes entrées
+
+**Modèle de données :**
+```csharp
+public class SearchHistory
+{
+    public string Id { get; set; }
+    public string SearchTerm { get; set; }
+    public string NormalizedSearchTerm { get; set; }
+    public int SearchCount { get; set; }
+    public int ResultCount { get; set; }
+    public DateTime LastSearchedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public bool WasSuccessful { get; set; }
+    public string? UserId { get; set; }
+}
+```
+
+**API du service :**
+```csharp
+Task AddSearchAsync(string searchTerm, int resultCount, string? userId = null);
+Task<IEnumerable<SearchHistory>> GetRecentSearchesAsync(int limit = 10, string? userId = null);
+Task<IEnumerable<string>> GetSearchSuggestionsAsync(string partialTerm, int limit = 5, string? userId = null);
+Task<IEnumerable<SearchHistory>> GetPopularSearchesAsync(int limit = 10, string? userId = null);
+Task ClearHistoryAsync(string? userId = null);
+Task DeleteSearchAsync(string id);
+```
+
+#### 4. ✅ Métriques UI/UX
+**Status : IMPLÉMENTÉ**
+
+L'interface affiche maintenant des métriques de recherche en temps réel :
+
+**Métriques affichées :**
+- 📊 **Nombre de résultats** : Affiche combien d'actions correspondent à la recherche
+- ⏱️ **Temps de recherche** : Temps d'exécution de la recherche (en ms ou secondes)
+- 💡 **Suggestions** : Liste des suggestions d'autocomplétion basées sur l'historique
+
+**Propriétés ViewModel :**
+```csharp
+[ObservableProperty]
+private int _searchResultCount;
+
+[ObservableProperty]
+private string _searchTime = string.Empty;
+
+[ObservableProperty]
+private bool _showSearchMetrics;
+
+[ObservableProperty]
+private ObservableCollection<string> _searchSuggestions = new();
+```
+
+**Exemple d'affichage :**
+```
+Recherche : "service"
+📊 142 résultats trouvés en ⏱️ 23ms
+💡 Suggestions : "service windows", "service linux", "service network"
+```
+
+## 12. RECOMMANDATIONS FUTURES
+
+### Améliorations Additionnelles
 
 #### 4. Recherche Avancée (Opérateurs)
 - Support de `OR` : `"service | firewall"`
@@ -424,7 +530,157 @@ Après le déploiement, testez les scénarios suivants dans l'interface :
 
 ---
 
-## 12. CHANGEMENTS TECHNIQUES DÉTAILLÉS
+## 12. CHANGEMENTS TECHNIQUES (2025-01-XX)
+
+### Fichiers Créés
+
+#### Modèles (Core/Models)
+1. **`SearchResult.cs`**
+   - Nouveau modèle pour les résultats de recherche avec scoring
+   - Contient : Action, Score, Breakdown, IsExactMatch
+   - Utilisé par SearchService pour retourner des résultats triés
+
+2. **`SearchHistory.cs`**
+   - Modèle pour l'historique de recherche
+   - Champs : SearchTerm, NormalizedSearchTerm, SearchCount, ResultCount, etc.
+   - Support multi-utilisateurs avec UserId optionnel
+
+#### Services
+3. **`SearchHistoryService.cs`**
+   - Service pour gérer l'historique de recherche
+   - Méthodes : AddSearchAsync, GetRecentSearchesAsync, GetSearchSuggestionsAsync, etc.
+
+#### Interfaces
+4. **`ISearchHistoryService.cs`**
+   - Interface pour SearchHistoryService
+
+5. **`ISearchHistoryRepository.cs`**
+   - Interface pour le repository de l'historique de recherche
+
+#### Persistence
+6. **`SearchHistoryEntity.cs`**
+   - Entité EF Core pour l'historique de recherche
+
+7. **`SearchHistoryConfiguration.cs`**
+   - Configuration EF Core avec index pour performance
+   - Index sur : LastSearchedAt, SearchCount, NormalizedSearchTerm, UserId
+
+8. **`SearchHistoryRepository.cs`**
+   - Implémentation du repository avec requêtes optimisées
+
+9. **`SearchHistoryMapper.cs`**
+   - Mapper entre SearchHistory (modèle) et SearchHistoryEntity
+
+### Fichiers Modifiés
+
+#### TextNormalizer.cs
+**Nouvelles méthodes ajoutées :**
+- `LevenshteinDistance(string source, string target)` : Calcule la distance de Levenshtein
+- `IsFuzzyMatch(string source, string target, double maxDistanceRatio = 0.3)` : Vérifie la similarité fuzzy
+- `GetFuzzyMatchScore(string searchableText, string searchToken)` : Retourne le score de similarité (0.0-1.0)
+
+#### SearchService.cs
+**Refactorisation majeure :**
+- Ajout de constantes pour les poids de scoring
+- Nouvelle méthode `SearchWithScoringAsync()` : Retourne des SearchResult avec scores
+- Modification de `SearchAsync()` : Utilise maintenant le scoring en interne
+- Nouvelles méthodes privées :
+  - `CalculateRelevanceScore()` : Calcule le score de pertinence par champ
+  - `CalculateFuzzyMatchScore()` : Calcule le score fuzzy si aucune correspondance exacte
+
+#### TwinShellDbContext.cs
+- Ajout du DbSet `SearchHistories`
+- Ajout de la configuration `SearchHistoryConfiguration`
+
+#### MainViewModel.cs
+**Nouvelles propriétés observables :**
+- `SearchResultCount` : Nombre de résultats
+- `SearchTime` : Temps de recherche
+- `ShowSearchMetrics` : Afficher/masquer les métriques
+- `SearchSuggestions` : Collection de suggestions d'autocomplétion
+
+**Champ ajouté :**
+- `ISearchHistoryService _searchHistoryService` : Service d'historique de recherche
+
+**Modifications de méthodes :**
+- `ApplyFiltersAsync()` :
+  - Ajout de chronométrage avec Stopwatch
+  - Enregistrement automatique dans l'historique de recherche
+  - Mise à jour des métriques UI
+  - Appel de `UpdateSearchSuggestionsAsync()`
+- Nouvelle méthode `UpdateSearchSuggestionsAsync()` : Met à jour les suggestions
+
+#### App.xaml.cs
+**Enregistrement DI :**
+- `services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>()`
+- `services.AddScoped<ISearchHistoryService, SearchHistoryService>()`
+
+### Architecture de la Nouvelle Fonctionnalité
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      MainViewModel.cs                        │
+│  • ApplyFiltersAsync() - Chronométrage et métriques         │
+│  • UpdateSearchSuggestionsAsync() - Suggestions             │
+│  • SearchResultCount, SearchTime, SearchSuggestions         │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      SearchService.cs                        │
+│  • SearchWithScoringAsync() - Recherche avec scoring        │
+│  • CalculateRelevanceScore() - Calcul du score              │
+│  • CalculateFuzzyMatchScore() - Score fuzzy                 │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     TextNormalizer.cs                        │
+│  • LevenshteinDistance() - Distance entre chaînes           │
+│  • IsFuzzyMatch() - Vérification similarité                 │
+│  • GetFuzzyMatchScore() - Score de similarité               │
+└─────────────────────────────────────────────────────────────┘
+
+                         +
+
+┌─────────────────────────────────────────────────────────────┐
+│                  SearchHistoryService.cs                     │
+│  • AddSearchAsync() - Enregistre une recherche              │
+│  • GetSearchSuggestionsAsync() - Suggestions                │
+│  • GetRecentSearchesAsync() - Historique récent             │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                SearchHistoryRepository.cs                    │
+│  • AddOrUpdateAsync() - Upsert avec compteur               │
+│  • SearchAsync() - Recherche partielle avec Like           │
+│  • GetRecentAsync() - Top N récents                         │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  TwinShellDbContext.cs                       │
+│  • DbSet<SearchHistoryEntity> SearchHistories              │
+│  • Table : SearchHistories (SQLite)                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Statistiques de Code
+
+| Composant | Lignes Ajoutées | Fichiers Créés | Fichiers Modifiés |
+|-----------|-----------------|----------------|-------------------|
+| **TextNormalizer** | ~130 | 0 | 1 |
+| **SearchService** | ~150 | 1 (SearchResult.cs) | 1 |
+| **SearchHistory** | ~300 | 7 | 0 |
+| **MainViewModel** | ~100 | 0 | 1 |
+| **Persistence** | ~180 | 4 | 1 (DbContext) |
+| **DI / App** | ~2 | 0 | 1 |
+| **Total** | **~862** | **12** | **5** |
+
+---
+
+## 13. CHANGEMENTS TECHNIQUES DÉTAILLÉS (AUDIT INITIAL)
 
 ### Fichiers Créés
 

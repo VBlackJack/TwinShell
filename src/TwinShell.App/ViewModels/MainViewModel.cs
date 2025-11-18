@@ -16,6 +16,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 {
     private readonly IActionService _actionService;
     private readonly ISearchService _searchService;
+    private readonly ISearchHistoryService _searchHistoryService;
     private readonly ICommandGeneratorService _commandGeneratorService;
     private readonly IClipboardService _clipboardService;
     private readonly ICommandHistoryService _commandHistoryService;
@@ -85,6 +86,18 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private Platform _selectedPlatformForGenerator = Platform.Windows;
 
+    [ObservableProperty]
+    private int _searchResultCount;
+
+    [ObservableProperty]
+    private string _searchTime = string.Empty;
+
+    [ObservableProperty]
+    private bool _showSearchMetrics;
+
+    [ObservableProperty]
+    private ObservableCollection<string> _searchSuggestions = new();
+
     /// <summary>
     /// Reference to the ExecutionViewModel (set from MainWindow)
     /// </summary>
@@ -93,6 +106,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public MainViewModel(
         IActionService actionService,
         ISearchService searchService,
+        ISearchHistoryService searchHistoryService,
         ICommandGeneratorService commandGeneratorService,
         IClipboardService clipboardService,
         ICommandHistoryService commandHistoryService,
@@ -105,6 +119,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     {
         _actionService = actionService;
         _searchService = searchService;
+        _searchHistoryService = searchHistoryService;
         _commandGeneratorService = commandGeneratorService;
         _clipboardService = clipboardService;
         _commandHistoryService = commandHistoryService;
@@ -189,6 +204,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         await _filterSemaphore.WaitAsync();
         try
         {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             var filtered = _allActions.AsEnumerable();
 
             // UX: When search is active, ignore category filter to show all matching results
@@ -239,12 +255,79 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 filtered = filtered.Where(a => levelFilters.Contains(a.Level));
             }
 
+            // Materialize results and stop timing
+            var results = filtered.ToList();
+            sw.Stop();
+
+            // Update search metrics
+            if (hasActiveSearch)
+            {
+                SearchResultCount = results.Count;
+                SearchTime = sw.ElapsedMilliseconds < 1000
+                    ? $"{sw.ElapsedMilliseconds}ms"
+                    : $"{sw.Elapsed.TotalSeconds:F2}s";
+                ShowSearchMetrics = true;
+
+                // Save to search history (async, don't await to avoid blocking UI)
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _searchHistoryService.AddSearchAsync(SearchText, results.Count);
+                    }
+                    catch
+                    {
+                        // Silently ignore search history errors to not disrupt user experience
+                    }
+                });
+
+                // Update search suggestions
+                await UpdateSearchSuggestionsAsync();
+            }
+            else
+            {
+                ShowSearchMetrics = false;
+                SearchSuggestions.Clear();
+            }
+
             // PERFORMANCE: Use ReplaceRange() instead of recreating collection - single UI notification
-            FilteredActions.ReplaceRange(filtered);
+            FilteredActions.ReplaceRange(results);
         }
         finally
         {
             _filterSemaphore.Release();
+        }
+    }
+
+    /// <summary>
+    /// Updates search suggestions based on current search text
+    /// </summary>
+    private async Task UpdateSearchSuggestionsAsync()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(SearchText) || SearchText.Length < 2)
+            {
+                SearchSuggestions.Clear();
+                return;
+            }
+
+            var suggestions = await _searchHistoryService.GetSearchSuggestionsAsync(SearchText, limit: 5);
+            var filteredSuggestions = suggestions
+                .Where(s => !s.Equals(SearchText, StringComparison.OrdinalIgnoreCase))
+                .Take(5)
+                .ToList();
+
+            SearchSuggestions.Clear();
+            foreach (var suggestion in filteredSuggestions)
+            {
+                SearchSuggestions.Add(suggestion);
+            }
+        }
+        catch
+        {
+            // Silently ignore errors to not disrupt user experience
+            SearchSuggestions.Clear();
         }
     }
 

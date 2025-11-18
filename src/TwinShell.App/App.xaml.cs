@@ -141,10 +141,12 @@ public partial class App : Application
         services.AddScoped<ICustomCategoryRepository, CustomCategoryRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IBatchRepository, BatchRepository>();
+        services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
         services.AddScoped<ISearchService, SearchService>();
+        services.AddScoped<ISearchHistoryService, SearchHistoryService>();
         services.AddScoped<ICommandGeneratorService, CommandGeneratorService>();
         services.AddScoped<ICommandHistoryService, CommandHistoryService>();
         services.AddScoped<IFavoritesService, FavoritesService>();
