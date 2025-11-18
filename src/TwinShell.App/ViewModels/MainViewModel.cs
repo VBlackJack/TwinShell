@@ -156,8 +156,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         var categories = (await _actionService.GetAllCategoriesAsync()).ToList();
 
-        // Add "Favorites" as first category
+        // Add special categories at the beginning
         categories.Insert(0, UIConstants.FavoritesCategoryDisplay);
+        categories.Insert(0, UIConstants.AllCategoryDisplay);
         Categories = new ObservableCollection<string>(categories);
 
         await ApplyFiltersAsync();
@@ -214,6 +215,11 @@ public partial class MainViewModel : ObservableObject, IDisposable
             if (!hasActiveSearch && SelectedCategory == UIConstants.FavoritesCategoryDisplay)
             {
                 filtered = filtered.Where(a => _favoriteActionIds.Contains(a.Id));
+            }
+            // All category (special category - shows everything, no filter)
+            else if (!hasActiveSearch && SelectedCategory == UIConstants.AllCategoryDisplay)
+            {
+                // No filtering - show all actions
             }
             // Category filter (only apply if no active search)
             else if (!hasActiveSearch && !string.IsNullOrEmpty(SelectedCategory))

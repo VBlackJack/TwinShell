@@ -77,139 +77,20 @@
                                         CornerRadius="4"
                                         Padding="12"
                                         Margin="0,4">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Color Indicator -->
-                                        <Border Grid.Column="0"
-                                                Width="16"
-                                                Height="16"
-                                                CornerRadius="8"
-                                                Margin="0,0,12,0"
-                                                VerticalAlignment="Center">
-                                            <Border.Background>
-                                                <SolidColorBrush Color="{Binding ColorHex}"/>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <!-- Category Info -->
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="{Binding Name}"
-                                                       FontWeight="Medium"
-                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                            <TextBlock FontSize="10"
-                                                       Foreground="{DynamicResource TextSecondaryBrush}">
-                                                <Run Text="{Binding ActionCount, Mode=OneWay}"/>
-                                                <Run Text="actions"/>
-                                                <Run Text="•"/>
-                                                <Run Text="{Binding IconKey}"/>
-                                            </TextBlock>
-                                        </StackPanel>
-
-                                        <!-- Badges -->
-                                        <StackPanel Grid.Column="2"
-                                                    Orientation="Horizontal"
-                                                    VerticalAlignment="Center">
-                                            <Border Background="#FFC107"
-                                                    CornerRadius="3"
-                                                    Padding="4,2"
-                                                    Margin="4,0"
-                                                    Visibility="{Binding IsSystemCategory, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="System"
-                                                           FontSize="9"
-                                                           Foreground="White"/>
-                                            </Border>
-                                            <Border Background="#9E9E9E"
-                                                    CornerRadius="3"
-                                                    Padding="4,2"
-                                                    Visibility="{Binding IsHidden, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                <TextBlock Text="Hidden"
-                                                           FontSize="9"
-                                                           Foreground="White"/>
-                                            </Border>
-                                        </StackPanel>
-                                    </Grid>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"
+                                                   FontWeight="Medium"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                        <TextBlock FontSize="10"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}">
+                                            <Run Text="{Binding ActionCount, Mode=OneWay}"/>
+                                            <Run Text="actions"/>
+                                        </TextBlock>
+                                    </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
-                    <!-- Reorder Buttons -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-                        <Button Content="↑ Move Up"
-                                Command="{Binding MoveUpCommand}"
-                                Padding="10,10"
-                                MinWidth="44"
-                                MinHeight="44"
-                                Margin="0,0,8,0"
-                                Background="{DynamicResource SurfaceBrush}"
-                                Foreground="{DynamicResource TextPrimaryBrush}"
-                                BorderBrush="{DynamicResource BorderBrush}"
-                                BorderThickness="1"
-                                Cursor="Hand"
-                                ToolTip="Move the selected category up in the list"
-                                AutomationProperties.Name="Move category up"
-                                AutomationProperties.HelpText="Move the selected category up in the display order">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="4"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <Button Content="↓ Move Down"
-                                Command="{Binding MoveDownCommand}"
-                                Padding="10,10"
-                                MinWidth="44"
-                                MinHeight="44"
-                                Background="{DynamicResource SurfaceBrush}"
-                                Foreground="{DynamicResource TextPrimaryBrush}"
-                                BorderBrush="{DynamicResource BorderBrush}"
-                                BorderThickness="1"
-                                Cursor="Hand"
-                                ToolTip="Move the selected category down in the list"
-                                AutomationProperties.Name="Move category down"
-                                AutomationProperties.HelpText="Move the selected category down in the display order">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            CornerRadius="4"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -222,7 +103,7 @@
                     Padding="16">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <!-- Add/Edit Form -->
+                        <!-- Add Form -->
                         <StackPanel Visibility="{Binding IsAddMode, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="Add New Category"
                                        FontSize="18"
@@ -241,59 +122,11 @@
                                      AutomationProperties.Name="Category name"
                                      AutomationProperties.HelpText="Enter a unique name for the category"/>
 
-                            <TextBlock Text="Icon"
-                                       Foreground="{DynamicResource TextPrimaryBrush}"
-                                       FontWeight="Medium"
-                                       Margin="0,16,0,4"/>
-                            <ComboBox ItemsSource="{Binding AvailableIcons}"
-                                      SelectedItem="{Binding NewCategoryIcon, Mode=TwoWay}"
-                                      Padding="8"
-                                      BorderBrush="{DynamicResource BorderBrush}"
-                                      TabIndex="3"
-                                      AutomationProperties.Name="Category icon"
-                                      AutomationProperties.HelpText="Select an icon for the category"/>
-
-                            <TextBlock Text="Color"
-                                       Foreground="{DynamicResource TextPrimaryBrush}"
-                                       FontWeight="Medium"
-                                       Margin="0,16,0,4"/>
-                            <ComboBox ItemsSource="{Binding AvailableColors}"
-                                      SelectedItem="{Binding NewCategoryColor, Mode=TwoWay}"
-                                      Padding="8"
-                                      BorderBrush="{DynamicResource BorderBrush}"
-                                      TabIndex="4"
-                                      AutomationProperties.Name="Category color"
-                                      AutomationProperties.HelpText="Select a color for the category">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Border Width="16"
-                                                    Height="16"
-                                                    CornerRadius="8"
-                                                    Margin="0,0,8,0">
-                                                <Border.Background>
-                                                    <SolidColorBrush Color="{Binding}"/>
-                                                </Border.Background>
-                                            </Border>
-                                            <TextBlock Text="{Binding}"
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-
-                            <TextBlock Text="Description (Optional)"
-                                       Foreground="{DynamicResource TextPrimaryBrush}"
-                                       FontWeight="Medium"
-                                       Margin="0,16,0,4"/>
-                            <TextBox Text="{Binding NewCategoryDescription, Mode=TwoWay}"
-                                     Style="{StaticResource ModernTextBoxStyle}"
-                                     TextWrapping="Wrap"
-                                     Height="80"
-                                     AcceptsReturn="True"
-                                     TabIndex="5"
-                                     AutomationProperties.Name="Category description"
-                                     AutomationProperties.HelpText="Optional description for the category"/>
+                            <TextBlock Text="Note: Categories are automatically created when you assign them to actions. This form simply validates the category name."
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       FontSize="11"
+                                       TextWrapping="Wrap"
+                                       Margin="0,12,0,0"/>
 
                             <!-- Error Message -->
                             <Border Background="{DynamicResource DangerBackgroundBrush}"
@@ -312,16 +145,85 @@
 
                             <!-- Action Buttons -->
                             <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
-                                <Button Content="Save Category"
+                                <Button Content="Validate Name"
                                         Command="{Binding SaveNewCommand}"
                                         Style="{StaticResource PrimaryButtonStyle}"
                                         Margin="0,0,8,0"
                                         Padding="12,10"
                                         MinWidth="44"
                                         MinHeight="44"
+                                        TabIndex="3"
+                                        AutomationProperties.Name="Validate category name"
+                                        AutomationProperties.HelpText="Validate the category name"/>
+                                <Button Content="Cancel"
+                                        Command="{Binding CancelEditCommand}"
+                                        Padding="12,10"
+                                        MinWidth="44"
+                                        MinHeight="44"
+                                        TabIndex="4"
+                                        Background="{DynamicResource SurfaceBrush}"
+                                        Foreground="{DynamicResource TextPrimaryBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        AutomationProperties.Name="Cancel"
+                                        AutomationProperties.HelpText="Cancel and return to list"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Edit Form -->
+                        <StackPanel Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="Edit Category"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryBrush}"
+                                       Margin="0,0,0,16"/>
+
+                            <TextBlock Text="Category Name *"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       FontWeight="Medium"
+                                       Margin="0,8,0,4"/>
+                            <TextBox Text="{Binding SelectedCategory.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBoxStyle}"
+                                     TabIndex="5"
+                                     AutomationProperties.Name="Category name"
+                                     AutomationProperties.HelpText="Edit the category name"/>
+
+                            <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                       FontSize="11"
+                                       TextWrapping="Wrap"
+                                       Margin="0,12,0,0">
+                                <Run Text="Renaming this category will update all"/>
+                                <Run Text="{Binding SelectedCategory.ActionCount, Mode=OneWay}"/>
+                                <Run Text="action(s) that use it."/>
+                            </TextBlock>
+
+                            <!-- Error Message -->
+                            <Border Background="{DynamicResource DangerBackgroundBrush}"
+                                    BorderBrush="{DynamicResource DangerBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="4"
+                                    Padding="12"
+                                    Margin="0,16,0,0"
+                                    Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    AutomationProperties.LiveSetting="Assertive"
+                                    AutomationProperties.Name="Error message">
+                                <TextBlock Text="{Binding ErrorMessage}"
+                                           Foreground="{DynamicResource DangerBrush}"
+                                           TextWrapping="Wrap"/>
+                            </Border>
+
+                            <!-- Action Buttons -->
+                            <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                                <Button Content="Save Changes"
+                                        Command="{Binding SaveEditCommand}"
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Margin="0,0,8,0"
+                                        Padding="12,10"
+                                        MinWidth="44"
+                                        MinHeight="44"
                                         TabIndex="6"
-                                        AutomationProperties.Name="Save category"
-                                        AutomationProperties.HelpText="Save the new category"/>
+                                        AutomationProperties.Name="Save changes"
+                                        AutomationProperties.HelpText="Save category name changes"/>
                                 <Button Content="Cancel"
                                         Command="{Binding CancelEditCommand}"
                                         Padding="12,10"
@@ -333,12 +235,12 @@
                                         BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         AutomationProperties.Name="Cancel"
-                                        AutomationProperties.HelpText="Cancel editing and return to list"/>
+                                        AutomationProperties.HelpText="Cancel editing and return to details"/>
                             </StackPanel>
                         </StackPanel>
 
                         <!-- Selected Category Details -->
-                        <StackPanel Visibility="{Binding SelectedCategory, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel Visibility="{Binding SelectedCategory, Converter={StaticResource NullToVisibilityConverter}}">
                             <Grid Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
                                 <StackPanel>
                                     <TextBlock Text="Category Details"
@@ -347,67 +249,25 @@
                                                Foreground="{DynamicResource PrimaryBrush}"
                                                Margin="0,0,0,16"/>
 
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Border Grid.Column="0"
-                                                Width="32"
-                                                Height="32"
-                                                CornerRadius="16"
-                                                Margin="0,0,12,0"
-                                                VerticalAlignment="Top">
-                                            <Border.Background>
-                                                <SolidColorBrush Color="{Binding SelectedCategory.ColorHex}"/>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock Text="{Binding SelectedCategory.Name}"
-                                                       FontSize="20"
-                                                       FontWeight="SemiBold"
-                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                            <TextBlock Text="{Binding SelectedCategory.Description}"
-                                                       Foreground="{DynamicResource TextSecondaryBrush}"
-                                                       TextWrapping="Wrap"
-                                                       Margin="0,4,0,0"/>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Separator Margin="0,16"/>
+                                    <TextBlock Text="{Binding SelectedCategory.Name}"
+                                               FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               Margin="0,0,0,16"/>
 
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="120"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
 
-                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Icon:" FontWeight="Medium" Margin="0,4"/>
-                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCategory.IconKey}" Margin="0,4"/>
-
-                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Color:" FontWeight="Medium" Margin="0,4"/>
-                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedCategory.ColorHex}" Margin="0,4"/>
-
-                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Actions:" FontWeight="Medium" Margin="0,4"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedCategory.ActionCount}" Margin="0,4"/>
-
-                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Status:" FontWeight="Medium" Margin="0,4"/>
-                                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0,4">
-                                            <Run Text="{Binding SelectedCategory.IsHidden, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Hidden:Visible}"/>
-                                        </TextBlock>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Actions:" FontWeight="Medium" Margin="0,4"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCategory.ActionCount}" Margin="0,4"/>
                                     </Grid>
 
                                     <!-- Action Buttons -->
                                     <StackPanel Margin="0,24,0,0">
-                                        <Button Content="Edit Category"
+                                        <Button Content="Rename Category"
                                                 Command="{Binding StartEditCommand}"
                                                 Style="{StaticResource PrimaryButtonStyle}"
                                                 HorizontalAlignment="Stretch"
@@ -415,45 +275,9 @@
                                                 MinWidth="44"
                                                 MinHeight="44"
                                                 Margin="0,0,0,8"
-                                                ToolTip="Edit category properties"
-                                                AutomationProperties.Name="Edit category"
-                                                AutomationProperties.HelpText="Edit the selected category's name, icon, color, and description"/>
-                                        <Button Content="{Binding SelectedCategory.IsHidden, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='Show:Hide'}"
-                                                Command="{Binding ToggleVisibilityCommand}"
-                                                Padding="12,10"
-                                                MinWidth="44"
-                                                MinHeight="44"
-                                                HorizontalAlignment="Stretch"
-                                                Background="{DynamicResource SurfaceBrush}"
-                                                Foreground="{DynamicResource TextPrimaryBrush}"
-                                                BorderBrush="{DynamicResource BorderBrush}"
-                                                BorderThickness="1"
-                                                Cursor="Hand"
-                                                Margin="0,0,0,8"
-                                                ToolTip="Toggle category visibility"
-                                                AutomationProperties.Name="Toggle visibility"
-                                                AutomationProperties.HelpText="Show or hide this category in the main view">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}"
-                                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                                            CornerRadius="4"
-                                                            Padding="{TemplateBinding Padding}">
-                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Background" Value="{DynamicResource HoverBackgroundBrush}"/>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
+                                                ToolTip="Rename this category"
+                                                AutomationProperties.Name="Rename category"
+                                                AutomationProperties.HelpText="Rename the selected category"/>
                                         <Button Content="Delete Category"
                                                 Command="{Binding DeleteCommand}"
                                                 Padding="12,10"
@@ -464,9 +288,9 @@
                                                 Foreground="White"
                                                 BorderThickness="0"
                                                 Cursor="Hand"
-                                                ToolTip="Delete this category permanently"
+                                                ToolTip="Delete this category from all actions"
                                                 AutomationProperties.Name="Delete category"
-                                                AutomationProperties.HelpText="Permanently delete the selected category">
+                                                AutomationProperties.HelpText="Delete the category from all actions">
                                             <Button.Template>
                                                 <ControlTemplate TargetType="Button">
                                                     <Border Background="{TemplateBinding Background}"

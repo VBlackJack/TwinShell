@@ -7,11 +7,11 @@ using TwinShell.Core.Interfaces;
 namespace TwinShell.App.ViewModels;
 
 /// <summary>
-/// ViewModel for managing custom categories.
+/// ViewModel for managing action categories.
 /// </summary>
 public partial class CategoryManagementViewModel : ObservableObject
 {
-    private readonly ICustomCategoryService _categoryService;
+    private readonly IActionService _actionService;
 
     [ObservableProperty]
     private ObservableCollection<CategoryViewModel> _categories = new();
@@ -29,46 +29,11 @@ public partial class CategoryManagementViewModel : ObservableObject
     private string _newCategoryName = string.Empty;
 
     [ObservableProperty]
-    private string _newCategoryIcon = "folder";
-
-    [ObservableProperty]
-    private string _newCategoryColor = "#2196F3";
-
-    [ObservableProperty]
-    private string? _newCategoryDescription;
-
-    [ObservableProperty]
     private string? _errorMessage;
 
-    // Available icons for selection
-    public ObservableCollection<string> AvailableIcons { get; } = new()
+    public CategoryManagementViewModel(IActionService actionService)
     {
-        "folder", "star", "tools", "database", "server", "cloud",
-        "network", "security", "code", "terminal", "settings", "user",
-        "group", "file", "document", "archive", "script", "key",
-        "lock", "shield", "monitor", "laptop", "disk", "backup"
-    };
-
-    // Available colors for selection
-    public ObservableCollection<string> AvailableColors { get; } = new()
-    {
-        "#2196F3", // Blue
-        "#4CAF50", // Green
-        "#FFC107", // Amber
-        "#F44336", // Red
-        "#9C27B0", // Purple
-        "#FF9800", // Orange
-        "#00BCD4", // Cyan
-        "#E91E63", // Pink
-        "#795548", // Brown
-        "#607D8B", // Blue Grey
-        "#673AB7", // Deep Purple
-        "#3F51B5"  // Indigo
-    };
-
-    public CategoryManagementViewModel(ICustomCategoryService categoryService)
-    {
-        _categoryService = categoryService;
+        _actionService = actionService;
     }
 
     /// <summary>
@@ -84,12 +49,16 @@ public partial class CategoryManagementViewModel : ObservableObject
     /// </summary>
     private async Task LoadCategoriesAsync()
     {
-        var categories = await _categoryService.GetAllCategoriesAsync();
+        var categoryNames = await _actionService.GetAllCategoriesAsync();
         Categories.Clear();
 
-        foreach (var category in categories)
+        foreach (var categoryName in categoryNames.OrderBy(c => c))
         {
-            Categories.Add(new CategoryViewModel(category));
+            if (string.IsNullOrWhiteSpace(categoryName))
+                continue;
+
+            var count = await _actionService.GetActionCountByCategoryAsync(categoryName);
+            Categories.Add(new CategoryViewModel(categoryName, count));
         }
     }
 
@@ -102,14 +71,12 @@ public partial class CategoryManagementViewModel : ObservableObject
         IsAddMode = true;
         IsEditMode = false;
         NewCategoryName = string.Empty;
-        NewCategoryIcon = "folder";
-        NewCategoryColor = "#2196F3";
-        NewCategoryDescription = null;
         ErrorMessage = null;
     }
 
     /// <summary>
-    /// Saves a new category.
+    /// Saves a new category (not applicable for action-based categories).
+    /// Categories are automatically created when assigned to actions.
     /// </summary>
     [RelayCommand]
     private async Task SaveNewAsync()
@@ -124,21 +91,27 @@ public partial class CategoryManagementViewModel : ObservableObject
                 return;
             }
 
-            var newCategory = await _categoryService.CreateCategoryAsync(
-                NewCategoryName,
-                NewCategoryIcon,
-                NewCategoryColor,
-                NewCategoryDescription);
-
-            await LoadCategoriesAsync();
+            // Check if category already exists
+            var existingCategories = await _actionService.GetAllCategoriesAsync();
+            if (existingCategories.Any(c => c.Equals(NewCategoryName, StringComparison.OrdinalIgnoreCase)))
+            {
+                ErrorMessage = "A category with this name already exists.";
+                return;
+            }
 
             IsAddMode = false;
-            MessageBox.Show($"Category '{newCategory.Name}' created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(
+                $"Category name '{NewCategoryName}' is ready to use.\n\nTo use this category, edit an action and assign it to this category.",
+                "Category Registered",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+
+            NewCategoryName = string.Empty;
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
-            ErrorMessage = "An error occurred while saving the category";
+            ErrorMessage = "An error occurred while processing the category";
         }
     }
 
@@ -162,19 +135,13 @@ public partial class CategoryManagementViewModel : ObservableObject
         if (SelectedCategory == null)
             return;
 
-        if (SelectedCategory.IsSystemCategory)
-        {
-            MessageBox.Show("System categories cannot be edited.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            return;
-        }
-
         IsEditMode = true;
         IsAddMode = false;
         ErrorMessage = null;
     }
 
     /// <summary>
-    /// Saves changes to the selected category.
+    /// Saves changes to the selected category (renames it).
     /// </summary>
     [RelayCommand]
     private async Task SaveEditAsync()
@@ -186,18 +153,35 @@ public partial class CategoryManagementViewModel : ObservableObject
         {
             ErrorMessage = null;
 
-            var updatedCategory = SelectedCategory.ToModel();
-            var success = await _categoryService.UpdateCategoryAsync(updatedCategory);
+            if (string.IsNullOrWhiteSpace(SelectedCategory.Name))
+            {
+                ErrorMessage = "Category name cannot be empty.";
+                return;
+            }
+
+            // Check if new name already exists (and it's different from original)
+            if (!SelectedCategory.Name.Equals(SelectedCategory.OriginalName, StringComparison.OrdinalIgnoreCase))
+            {
+                var existingCategories = await _actionService.GetAllCategoriesAsync();
+                if (existingCategories.Any(c => c.Equals(SelectedCategory.Name, StringComparison.OrdinalIgnoreCase)))
+                {
+                    ErrorMessage = "A category with this name already exists.";
+                    return;
+                }
+            }
+
+            var success = await _actionService.RenameCategoryAsync(SelectedCategory.OriginalName, SelectedCategory.Name);
 
             if (success)
             {
                 await LoadCategoriesAsync();
                 IsEditMode = false;
-                MessageBox.Show("Category updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                SelectedCategory = null;
+                MessageBox.Show("Category renamed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                ErrorMessage = "Failed to update category.";
+                ErrorMessage = "Failed to rename category.";
             }
         }
         catch (Exception ex)
@@ -208,7 +192,7 @@ public partial class CategoryManagementViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Deletes the selected category.
+    /// Deletes the selected category by removing it from all actions.
     /// </summary>
     [RelayCommand]
     private async Task DeleteAsync()
@@ -216,14 +200,8 @@ public partial class CategoryManagementViewModel : ObservableObject
         if (SelectedCategory == null)
             return;
 
-        if (SelectedCategory.IsSystemCategory)
-        {
-            MessageBox.Show("System categories cannot be deleted.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            return;
-        }
-
         var result = MessageBox.Show(
-            $"Are you sure you want to delete the category '{SelectedCategory.Name}'?\n\nThis will remove all action assignments from this category.",
+            $"Are you sure you want to delete the category '{SelectedCategory.Name}'?\n\nThis will remove the category from all {SelectedCategory.ActionCount} action(s) that use it.",
             "Confirm Delete",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
@@ -232,7 +210,7 @@ public partial class CategoryManagementViewModel : ObservableObject
         {
             try
             {
-                var success = await _categoryService.DeleteCategoryAsync(SelectedCategory.Id);
+                var success = await _actionService.DeleteCategoryAsync(SelectedCategory.Name);
                 if (success)
                 {
                     await LoadCategoriesAsync();
@@ -243,76 +221,9 @@ public partial class CategoryManagementViewModel : ObservableObject
             catch (Exception ex)
             {
                 // SECURITY: Don't expose exception details to users
-                // BUGFIX: Corrected error message from "saving" to "deleting"
                 ErrorMessage = "An error occurred while deleting the category";
             }
         }
     }
 
-    /// <summary>
-    /// Toggles the visibility of the selected category.
-    /// </summary>
-    [RelayCommand]
-    private async Task ToggleVisibilityAsync()
-    {
-        if (SelectedCategory == null)
-            return;
-
-        try
-        {
-            var success = await _categoryService.ToggleCategoryVisibilityAsync(SelectedCategory.Id);
-            if (success)
-            {
-                await LoadCategoriesAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            // SECURITY: Don't expose exception details to users
-            ErrorMessage = "An error occurred while saving the category";
-        }
-    }
-
-    /// <summary>
-    /// Moves the selected category up in the display order.
-    /// </summary>
-    [RelayCommand]
-    private async Task MoveUpAsync()
-    {
-        if (SelectedCategory == null)
-            return;
-
-        var index = Categories.IndexOf(SelectedCategory);
-        if (index > 0)
-        {
-            Categories.Move(index, index - 1);
-            await SaveOrderAsync();
-        }
-    }
-
-    /// <summary>
-    /// Moves the selected category down in the display order.
-    /// </summary>
-    [RelayCommand]
-    private async Task MoveDownAsync()
-    {
-        if (SelectedCategory == null)
-            return;
-
-        var index = Categories.IndexOf(SelectedCategory);
-        if (index < Categories.Count - 1)
-        {
-            Categories.Move(index, index + 1);
-            await SaveOrderAsync();
-        }
-    }
-
-    /// <summary>
-    /// Saves the current category order to the database.
-    /// </summary>
-    private async Task SaveOrderAsync()
-    {
-        var categoryIds = Categories.Select(c => c.Id).ToList();
-        await _categoryService.ReorderCategoriesAsync(categoryIds);
-    }
 }
