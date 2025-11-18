@@ -133,19 +133,19 @@ L'interface TwinShell est divisée en 3 panneaux :
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  [Recherche]  [Filtres: Platform | Level]          [Menu]  │
+│  [Recherche]  [Filtres: Platform | Level]          [Menu]   │
 ├──────────────┬──────────────────────────┬───────────────────┤
 │              │                          │                   │
-│  Catégories  │   Liste des Commandes   │  Détails + Params │
+│  Catégories  │   Liste des Commandes    │  Détails + Params │
 │              │                          │                   │
-│  • All Cmds  │  ✓ Get-Service          │  Title: Get-Svc   │
-│  • Favorites │    List Windows svcs    │  [param1] [____]  │
+│  • All Cmds  │  ✓ Get-Service           │  Title: Get-Svc   │
+│  • Favorites │    List Windows svcs     │  [param1] [____]  │
 │  • AD        │                          │  [param2] [____]  │
-│  • DNS       │  ✓ systemctl status     │                   │
-│  • Logs      │    Linux service info   │  Generated Cmd:   │
+│  • DNS       │  ✓ systemctl status      │                   │
+│  • Logs      │    Linux service info    │  Generated Cmd:   │
 │  • ...       │                          │  Get-Service...   │
-│              │  ✓ Get-EventLog         │                   │
-│              │    Windows event logs   │  [📋 Copy]        │
+│              │  ✓ Get-EventLog          │                   │
+│              │    Windows event logs    │  [📋 Copy]        │
 │              │                          │                   │
 └──────────────┴──────────────────────────┴───────────────────┘
 ```
@@ -393,7 +393,7 @@ Vous êtes libre de :
 - ✅ Utiliser le logiciel dans des projets privés
 
 Conditions :
-- ℹ️ Vous devez inclure la licence MIT dans toute copie du logiciel
+- ℹ️ Vous devez inclure la licence Apache 2.0 dans toute copie du logiciel
 - ℹ️ Le logiciel est fourni "tel quel", sans garantie
 
 ---
@@ -421,34 +421,6 @@ Conditions :
 - 🔧 **Documentation Développeur** : [docs/developer/](docs/developer/)
 - 🐛 **Signaler un Bug** : [Issues](https://github.com/VBlackJack/TwinShell/issues)
 - 💬 **Discussions** : [GitHub Discussions](https://github.com/VBlackJack/TwinShell/discussions)
-
----
-
-## 🎯 Roadmap
-
-### ✅ Complété (v1.0)
-
-- ✅ Référentiel de 30+ commandes PowerShell et Bash
-- ✅ Recherche intelligente avec normalisation et fuzzy matching
-- ✅ Système de favoris (max 50)
-- ✅ Historique des commandes avec recherche et filtrage
-- ✅ Export/Import de configuration JSON
-- ✅ Thèmes clair/sombre avec mode système
-- ✅ Catégories personnalisées avec icônes et couleurs
-- ✅ Navigation clavier complète
-- ✅ Conformité WCAG AA
-- ✅ Audit de sécurité complet
-
-### 🔮 En Préparation (v1.1+)
-
-- [ ] **Commandes personnalisées** : Ajoutez vos propres commandes via l'interface
-- [ ] **Partage de commandes** : Partagez des commandes entre utilisateurs
-- [ ] **Multi-langues** : Support de l'anglais et du français
-- [ ] **Intégration PowerShell** : Exécution directe depuis TwinShell
-- [ ] **Statistiques d'utilisation** : Commandes les plus utilisées, tendances
-- [ ] **Synchronisation cloud** : Synchronisez vos favoris entre machines (optionnel)
-- [ ] **Snippets de code** : Sauvegardez des fragments de scripts réutilisables
-- [ ] **Thèmes personnalisés** : Créez vos propres thèmes de couleurs
 
 ---
 
