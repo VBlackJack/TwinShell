@@ -157,12 +157,21 @@
                         </TextBox.InputBindings>
                     </TextBox>
 
-                    <TextBlock Grid.Column="1"
-                               Text="Ctrl+K to clear"
-                               VerticalAlignment="Center"
-                               Margin="12,0,0,0"
-                               FontSize="11"
-                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <Button Grid.Column="1"
+                            Content="✕"
+                            Command="{Binding ClearFiltersCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            VerticalAlignment="Center"
+                            Margin="8,0,0,0"
+                            Padding="12,8"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            MinWidth="44"
+                            MinHeight="44"
+                            TabIndex="2"
+                            ToolTip="Clear search and filters (Ctrl+K)"
+                            AutomationProperties.Name="Clear search"
+                            AutomationProperties.HelpText="Clear search text and reset all filters"/>
                 </Grid>
 
                 <!-- UX: Filters with consistent English labels and lighter weight -->
