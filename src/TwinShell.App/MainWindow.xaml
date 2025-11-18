@@ -281,6 +281,10 @@
                              BorderThickness="0"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ItemContainerStyle="{StaticResource ActionListBoxItemStyle}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             VirtualizingPanel.CacheLength="20,20"
+                             VirtualizingPanel.CacheLengthUnit="Item"
                              TabIndex="9"
                              AutomationProperties.Name="Actions list"
                              AutomationProperties.HelpText="Select an action to view details and generate commands">

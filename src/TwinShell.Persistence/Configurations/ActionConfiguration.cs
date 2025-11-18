@@ -75,8 +75,19 @@ public class ActionConfiguration : IEntityTypeConfiguration<ActionEntity>
             .OnDelete(DeleteBehavior.SetNull);
 
         // Indexes for common queries
-        builder.HasIndex(e => e.Category);
-        builder.HasIndex(e => e.Platform);
-        builder.HasIndex(e => e.Level);
+        builder.HasIndex(e => e.Title)
+            .HasDatabaseName("IX_Actions_Title");
+
+        builder.HasIndex(e => e.Category)
+            .HasDatabaseName("IX_Actions_Category");
+
+        builder.HasIndex(e => e.Platform)
+            .HasDatabaseName("IX_Actions_Platform");
+
+        builder.HasIndex(e => e.Level)
+            .HasDatabaseName("IX_Actions_Level");
+
+        builder.HasIndex(e => e.IsUserCreated)
+            .HasDatabaseName("IX_Actions_IsUserCreated");
     }
 }
