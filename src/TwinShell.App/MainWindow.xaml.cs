@@ -134,23 +134,10 @@ public partial class MainWindow : Window
 
     private void About_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show(
-            "TwinShell v1.0\n\n" +
-            "PowerShell & Bash Command Manager\n" +
-            "For System Administrators\n\n" +
-            "Author: Julien Bombled\n\n" +
-            "Sprint 4: Advanced Features & Integration\n\n" +
-            "Features:\n" +
-            "• Direct PowerShell/Bash Execution\n" +
-            "• Dark Mode Support\n" +
-            "• Command History Tracking\n" +
-            "• Favorites System\n" +
-            "• Export/Import Configuration\n" +
-            "• Customizable Settings\n" +
-            "• Search and Filter\n\n" +
-            "© 2025 TwinShell Project",
-            "About TwinShell",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
+        var aboutWindow = new AboutWindow
+        {
+            Owner = this
+        };
+        aboutWindow.ShowDialog();
     }
 }

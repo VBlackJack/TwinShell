@@ -600,15 +600,6 @@ public partial class MainViewModel : ObservableObject, IDisposable
     {
         if (SelectedAction == null) return;
 
-        // SECURITY: Verify it's a user-created action
-        if (!SelectedAction.IsUserCreated)
-        {
-            _dialogService.ShowWarning(
-                "Impossible d'éditer une commande système. Seules les commandes créées par l'utilisateur peuvent être modifiées.",
-                "Édition interdite");
-            return;
-        }
-
         try
         {
             var editorVm = ActivatorUtilities.CreateInstance<ActionEditorViewModel>(_serviceProvider);
@@ -644,18 +635,11 @@ public partial class MainViewModel : ObservableObject, IDisposable
     {
         if (SelectedAction == null) return;
 
-        // SECURITY: Verify it's a user-created action
-        if (!SelectedAction.IsUserCreated)
-        {
-            _dialogService.ShowWarning(
-                "Impossible de supprimer une commande système. Seules les commandes créées par l'utilisateur peuvent être supprimées.",
-                "Suppression interdite");
-            return;
-        }
+        var warningMessage = SelectedAction.IsUserCreated
+            ? $"Voulez-vous vraiment supprimer la commande '{SelectedAction.Title}' ?\n\nCette action est irréversible."
+            : $"Voulez-vous vraiment supprimer la commande système '{SelectedAction.Title}' ?\n\nCette action est irréversible.\n\nNote: Pour restaurer une commande système supprimée, vous devrez supprimer la base de données.";
 
-        var confirmed = _dialogService.ShowQuestion(
-            $"Voulez-vous vraiment supprimer la commande '{SelectedAction.Title}' ?\n\nCette action est irréversible.",
-            "Confirmer la suppression");
+        var confirmed = _dialogService.ShowQuestion(warningMessage, "Confirmer la suppression");
 
         if (confirmed)
         {
@@ -679,7 +663,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     /// <summary>
     /// Check if the selected action can be edited or deleted
     /// </summary>
-    private bool CanEditOrDelete() => SelectedAction?.IsUserCreated == true;
+    private bool CanEditOrDelete() => SelectedAction != null;
 
     /// <summary>
     /// Export actions database to JSON file

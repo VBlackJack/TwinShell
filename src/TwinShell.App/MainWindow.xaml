@@ -83,10 +83,10 @@
                 <Separator/>
                 <MenuItem Header="_Éditer la commande sélectionnée..."
                           Command="{Binding EditActionCommand}"
-                          ToolTip="Modifier la commande sélectionnée (commandes utilisateur uniquement)"/>
+                          ToolTip="Modifier la commande sélectionnée"/>
                 <MenuItem Header="_Supprimer la commande sélectionnée"
                           Command="{Binding DeleteActionCommand}"
-                          ToolTip="Supprimer la commande sélectionnée (commandes utilisateur uniquement)"/>
+                          ToolTip="Supprimer la commande sélectionnée (supprime définitivement de la base de données)"/>
                 <Separator/>
                 <MenuItem Header="_Preferences..."
                           Click="Settings_Click"

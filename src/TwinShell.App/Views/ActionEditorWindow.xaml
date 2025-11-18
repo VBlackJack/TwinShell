@@ -330,6 +330,64 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
+
+            <!-- Tab Examples -->
+            <TabItem Header="Exemples">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <TextBlock Text="Exemples de commandes" Style="{StaticResource LabelTextStyle}" Margin="0"/>
+                            <Button Content="+ Ajouter un exemple"
+                                    Command="{Binding AddExampleCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Padding="8,4"
+                                    Margin="12,0,0,0"/>
+                        </StackPanel>
+                        <TextBlock Text="Les exemples aident les utilisateurs à comprendre comment utiliser la commande."
+                                   Style="{StaticResource HintTextStyle}"
+                                   Margin="0,0,0,16"/>
+
+                        <ItemsControl ItemsSource="{Binding Examples}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource ParameterBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="Commande d'exemple" FontSize="11" Margin="0,0,0,2"/>
+                                                <TextBox Text="{Binding Command, UpdateSourceTrigger=PropertyChanged}"
+                                                         FontFamily="Consolas"
+                                                         TextWrapping="Wrap"
+                                                         AcceptsReturn="True"
+                                                         Height="80"
+                                                         Margin="0,0,0,8"/>
+
+                                                <TextBlock Text="Description de l'exemple" FontSize="11" Margin="0,0,0,2"/>
+                                                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                                         TextWrapping="Wrap"
+                                                         Height="60"/>
+                                            </StackPanel>
+
+                                            <Button Grid.Column="1" Content="🗑️"
+                                                    Command="{Binding DataContext.RemoveExampleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding}"
+                                                    Padding="8"
+                                                    VerticalAlignment="Top"
+                                                    Background="Transparent"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    ToolTip="Supprimer cet exemple"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
         </TabControl>
 
         <!-- Validation Error -->

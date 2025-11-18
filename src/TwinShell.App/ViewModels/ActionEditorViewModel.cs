@@ -35,13 +35,15 @@ public partial class ActionEditorViewModel : ObservableObject
 
     [ObservableProperty] private string? _validationError;
 
+    [ObservableProperty] private ObservableCollection<ExampleEditorViewModel> _examples = new();
+
     private bool _isEditMode;
     private ActionModel? _originalAction;
 
     /// <summary>
     /// Dialog result (true if saved, false if cancelled)
     /// </summary>
-    public bool? DialogResult { get; private set; }
+    [ObservableProperty] private bool? _dialogResult;
 
     public ActionEditorViewModel(
         IActionService actionService,
@@ -127,6 +129,20 @@ public partial class ActionEditorViewModel : ObservableObject
                 }
             }
         }
+
+        // Load examples
+        if (action.Examples != null)
+        {
+            Examples.Clear();
+            foreach (var example in action.Examples)
+            {
+                Examples.Add(new ExampleEditorViewModel
+                {
+                    Command = example.Command,
+                    Description = example.Description ?? string.Empty
+                });
+            }
+        }
     }
 
     private async Task LoadCategoriesAsync()
@@ -160,7 +176,11 @@ public partial class ActionEditorViewModel : ObservableObject
                           .Where(t => !string.IsNullOrEmpty(t))
                           .ToList(),
                 Notes = Notes.Trim(),
-                Examples = new List<CommandExample>(),
+                Examples = Examples.Select(e => new CommandExample
+                {
+                    Command = e.Command,
+                    Description = e.Description
+                }).ToList(),
                 Links = new List<ExternalLink>()
             };
 
@@ -271,6 +291,22 @@ public partial class ActionEditorViewModel : ObservableObject
     private void RemoveLinuxParameter(ParameterEditorViewModel param)
     {
         LinuxParameters.Remove(param);
+    }
+
+    [RelayCommand]
+    private void AddExample()
+    {
+        Examples.Add(new ExampleEditorViewModel
+        {
+            Command = string.Empty,
+            Description = "Description de l'exemple"
+        });
+    }
+
+    [RelayCommand]
+    private void RemoveExample(ExampleEditorViewModel example)
+    {
+        Examples.Remove(example);
     }
 
     /// <summary>
@@ -397,5 +433,14 @@ public partial class ParameterEditorViewModel : ObservableObject
     [ObservableProperty] private string _type = "string";
     [ObservableProperty] private string _defaultValue = string.Empty;
     [ObservableProperty] private bool _required;
+    [ObservableProperty] private string _description = string.Empty;
+}
+
+/// <summary>
+/// ViewModel for editing a command example
+/// </summary>
+public partial class ExampleEditorViewModel : ObservableObject
+{
+    [ObservableProperty] private string _command = string.Empty;
     [ObservableProperty] private string _description = string.Empty;
 }
