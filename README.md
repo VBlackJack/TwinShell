@@ -46,7 +46,6 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 ### ⭐ Favoris et Historique
 - **Système de favoris** : Marquez jusqu'à 50 commandes pour y accéder instantanément
 - **Historique complet** : Toutes vos commandes générées sont sauvegardées avec horodatage
-- **Widget des commandes récentes** : Les 5 dernières commandes affichées sur la page d'accueil
 - **Recherche dans l'historique** : Retrouvez une commande que vous avez utilisée il y a 3 semaines
 - **Export/Import** : Sauvegardez et partagez vos favoris et historique au format JSON
 
