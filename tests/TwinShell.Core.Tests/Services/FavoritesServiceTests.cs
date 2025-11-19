@@ -292,4 +292,14 @@ internal class FakeFavoritesRepository : IFavoritesRepository
         }
         return Task.CompletedTask;
     }
+
+    public Task AddRangeAsync(IEnumerable<UserFavorite> favorites)
+    {
+        // Stub implementation for testing
+        foreach (var favorite in favorites)
+        {
+            Favorites.Add(favorite);
+        }
+        return Task.CompletedTask;
+    }
 }

@@ -297,4 +297,26 @@ internal class FakeCommandHistoryRepository : ICommandHistoryRepository
         History.Clear();
         return Task.CompletedTask;
     }
+
+    public Task AddRangeAsync(IEnumerable<CommandHistory> histories)
+    {
+        // Stub implementation for testing
+        foreach (var history in histories)
+        {
+            History.Add(history);
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateAsync(CommandHistory history)
+    {
+        // Stub implementation for testing
+        var existing = History.FirstOrDefault(h => h.Id == history.Id);
+        if (existing != null)
+        {
+            History.Remove(existing);
+            History.Add(history);
+        }
+        return Task.CompletedTask;
+    }
 }

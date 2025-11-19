@@ -1,4 +1,6 @@
 using System.Net;
+using TwinShell.Core.Enums;
+using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using TwinShell.Core.Services;
 using Xunit;
@@ -460,8 +462,8 @@ public class SecurityTests
         return new ConfigurationService(favoritesRepo, historyRepo, actionRepo);
     }
 
-    // Fake repositories for testing
-    private class FakeRepository<T> : IRepository<T> where T : class
+    // Fake repository for UserFavorite testing (simplified stub)
+    private class FakeRepository<T> where T : class
     {
         public Task<T?> GetByIdAsync(string id) => Task.FromResult<T?>(null);
         public Task<IEnumerable<T>> GetAllAsync(string? userId = null) => Task.FromResult(Enumerable.Empty<T>());
@@ -474,25 +476,29 @@ public class SecurityTests
     private class FakeCommandHistoryRepository : ICommandHistoryRepository
     {
         public Task<CommandHistory?> GetByIdAsync(string id) => Task.FromResult<CommandHistory?>(null);
-        public Task<IEnumerable<CommandHistory>> GetAllAsync(string? userId = null) => Task.FromResult(Enumerable.Empty<CommandHistory>());
         public Task AddAsync(CommandHistory entity) => Task.CompletedTask;
+        public Task AddRangeAsync(IEnumerable<CommandHistory> histories) => Task.CompletedTask;
         public Task UpdateAsync(CommandHistory entity) => Task.CompletedTask;
         public Task DeleteAsync(string id) => Task.CompletedTask;
-        public Task<IEnumerable<CommandHistory>> GetRecentAsync(int count, string? userId = null) => Task.FromResult(Enumerable.Empty<CommandHistory>());
-        public Task<IEnumerable<CommandHistory>> GetByActionIdAsync(string actionId, string? userId = null) => Task.FromResult(Enumerable.Empty<CommandHistory>());
-        public Task ClearOldHistoryAsync(DateTime olderThan, string? userId = null) => Task.CompletedTask;
-        public Task ClearAllAsync(string? userId = null) => Task.CompletedTask;
+        public Task DeleteRangeAsync(IEnumerable<string> ids) => Task.CompletedTask;
+        public Task DeleteOlderThanAsync(DateTime date) => Task.CompletedTask;
+        public Task<IEnumerable<CommandHistory>> GetRecentAsync(int count = 50) => Task.FromResult(Enumerable.Empty<CommandHistory>());
+        public Task<IEnumerable<CommandHistory>> SearchAsync(string? searchText = null, DateTime? fromDate = null, DateTime? toDate = null, Platform? platform = null, string? category = null) => Task.FromResult(Enumerable.Empty<CommandHistory>());
+        public Task<int> CountAsync() => Task.FromResult(0);
+        public Task ClearAllAsync() => Task.CompletedTask;
     }
 
     private class FakeActionRepository : IActionRepository
     {
         public Task<TwinShell.Core.Models.Action?> GetByIdAsync(string id) => Task.FromResult<TwinShell.Core.Models.Action?>(null);
-        public Task<IEnumerable<TwinShell.Core.Models.Action>> GetAllAsync(string? userId = null) => Task.FromResult(Enumerable.Empty<TwinShell.Core.Models.Action>());
+        public Task<IEnumerable<TwinShell.Core.Models.Action>> GetAllAsync() => Task.FromResult(Enumerable.Empty<TwinShell.Core.Models.Action>());
         public Task AddAsync(TwinShell.Core.Models.Action entity) => Task.CompletedTask;
         public Task UpdateAsync(TwinShell.Core.Models.Action entity) => Task.CompletedTask;
         public Task DeleteAsync(string id) => Task.CompletedTask;
         public Task<IEnumerable<TwinShell.Core.Models.Action>> SearchAsync(string query) => Task.FromResult(Enumerable.Empty<TwinShell.Core.Models.Action>());
-        public Task<IEnumerable<TwinShell.Core.Models.Action>> GetByCategoryAsync(string category, string? userId = null) => Task.FromResult(Enumerable.Empty<TwinShell.Core.Models.Action>());
+        public Task<IEnumerable<TwinShell.Core.Models.Action>> GetByCategoryAsync(string category) => Task.FromResult(Enumerable.Empty<TwinShell.Core.Models.Action>());
+        public Task<IEnumerable<string>> GetAllCategoriesAsync() => Task.FromResult(Enumerable.Empty<string>());
+        public Task<int> CountAsync() => Task.FromResult(0);
         public Task<bool> ExistsAsync(string id) => Task.FromResult(false);
     }
 

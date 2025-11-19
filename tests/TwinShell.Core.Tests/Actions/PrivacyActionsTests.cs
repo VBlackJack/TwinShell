@@ -1,8 +1,6 @@
-using FluentAssertions;
 using System.Text.Json;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Models;
-using Action = TwinShell.Core.Models.Action;
 
 namespace TwinShell.Core.Tests.Actions;
 
