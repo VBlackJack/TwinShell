@@ -205,8 +205,8 @@ public class BatchRepositoryTests : IDisposable
             Id = id,
             Name = name,
             Description = "Test description",
-            ExecutionMode = ExecutionMode.Sequential,
-            Actions = new List<BatchAction>(),
+            ExecutionMode = BatchExecutionMode.StopOnError,
+            Commands = new List<BatchCommandItem>(),
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
