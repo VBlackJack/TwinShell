@@ -402,3 +402,20 @@ FodyWeavers.xsd
 *.db
 *.db-shm
 *.db-wal
+
+# TwinShell specific
+Output/
+Releases/
+*.exe
+nul
+
+# Inno Setup
+build-installer.iss.bak
+Setup-*.exe
+
+# .NET 8 / Modern tooling
+.dotnet/
+.tools/
+*.swp
+*.*~
+.DS_Store

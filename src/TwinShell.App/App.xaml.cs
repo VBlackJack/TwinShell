@@ -170,7 +170,44 @@ public partial class App : Application
         services.AddScoped<IImportExportService, ImportExportService>();
 
         // Seed Service
-        var seedFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
+        // ARCHITECTURE FIX: Use AppData for seed files to avoid Program Files read-only issues
+        var appDataSeedPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "TwinShell",
+            "data",
+            "seed",
+            "initial-actions.json");
+
+        // Ensure seed directory exists in AppData
+        var appDataSeedDir = Path.GetDirectoryName(appDataSeedPath);
+        if (!string.IsNullOrEmpty(appDataSeedDir) && !Directory.Exists(appDataSeedDir))
+        {
+            Directory.CreateDirectory(appDataSeedDir);
+        }
+
+        // Copy seed file from installation to AppData if not already present
+        if (!File.Exists(appDataSeedPath))
+        {
+            var installSeedPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
+            if (File.Exists(installSeedPath))
+            {
+                try
+                {
+                    File.Copy(installSeedPath, appDataSeedPath, overwrite: false);
+                    LogInfo($"Seed file copied to AppData: {appDataSeedPath}");
+                }
+                catch (Exception ex)
+                {
+                    LogError("Failed to copy seed file to AppData, will use installation path as fallback", ex);
+                }
+            }
+        }
+
+        // Use AppData path if available, fallback to installation path
+        var seedFilePath = File.Exists(appDataSeedPath)
+            ? appDataSeedPath
+            : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
+
         services.AddScoped<ISeedService>(sp =>
             new JsonSeedService(sp.GetRequiredService<IActionRepository>(), seedFilePath));
 
