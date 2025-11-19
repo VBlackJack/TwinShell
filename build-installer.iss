@@ -2,7 +2,7 @@
 ; Requires Inno Setup 6.0 or later: https://jrsoftware.org/isinfo.php
 
 #define MyAppName "TwinShell"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "TwinShell"
 #define MyAppURL "https://github.com/yourusername/TwinShell"
 #define MyAppExeName "TwinShell.App.exe"
@@ -28,7 +28,7 @@ DisableProgramGroupPage=yes
 ; Output
 OutputDir=publish\release
 OutputBaseFilename=TwinShell-v{#MyAppVersion}-Setup-win-x64
-SetupIconFile=src\TwinShell.App\Assets\twinshell-icon.ico
+; SetupIconFile=src\TwinShell.App\Assets\twinshell-icon.ico  ; TODO: Icon file corrupted (126 bytes), needs regeneration
 UninstallDisplayIcon={app}\{#MyAppExeName}
 
 ; Compression
@@ -45,7 +45,7 @@ ArchitecturesInstallIn64BitMode=x64
 ; UI
 WizardStyle=modern
 DisableWelcomePage=no
-LicenseFile=LICENSE.txt
+LicenseFile=LICENSE
 InfoBeforeFile=
 InfoAfterFile=
 
