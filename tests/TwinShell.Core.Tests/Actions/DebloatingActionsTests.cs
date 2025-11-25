@@ -162,7 +162,7 @@ public class DebloatingActionsTests
         action.Should().NotBeNull();
         action!.Level.Should().Be(CriticalityLevel.Info,
             "Listing apps should be informational only");
-        action.Description.Should().Contain("liste", StringComparison.OrdinalIgnoreCase);
+        action.Description.Should().ContainEquivalentOf("liste");
     }
 
     #endregion

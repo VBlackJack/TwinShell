@@ -1,7 +1,9 @@
 using FluentAssertions;
+using Moq;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Models;
 using TwinShell.Core.Services;
+using TwinShell.Core.Interfaces;
 
 namespace TwinShell.Core.Tests.Services;
 
@@ -11,7 +13,8 @@ public class CommandGeneratorServiceTests
 
     public CommandGeneratorServiceTests()
     {
-        _service = new CommandGeneratorService();
+        var mockLocalizationService = new Mock<ILocalizationService>();
+        _service = new CommandGeneratorService(mockLocalizationService.Object);
     }
 
     [Fact]

@@ -4,6 +4,7 @@ using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using TwinShell.Core.Services;
 using Xunit;
+using Moq;
 
 namespace TwinShell.Core.Tests.Security;
 
@@ -19,7 +20,7 @@ public class SecurityTests
     public void GenerateCommand_RejectsCommandInjectionAttempt_WithAmpersand()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             CommandPattern = "Get-ChildItem {path}",
@@ -42,7 +43,7 @@ public class SecurityTests
     public void GenerateCommand_RejectsCommandInjectionAttempt_WithPipe()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             CommandPattern = "Get-Process {name}",
@@ -65,7 +66,7 @@ public class SecurityTests
     public void GenerateCommand_RejectsCommandInjectionAttempt_WithSemicolon()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             CommandPattern = "ping {host}",
@@ -88,7 +89,7 @@ public class SecurityTests
     public void GenerateCommand_RejectsCommandInjectionAttempt_WithBacktick()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             CommandPattern = "echo {message}",
@@ -111,7 +112,7 @@ public class SecurityTests
     public void GenerateCommand_RejectsCommandInjectionAttempt_WithDollarSign()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             CommandPattern = "Write-Host {text}",
@@ -138,7 +139,7 @@ public class SecurityTests
     public void ValidateParameters_RejectsTooLongString()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -163,7 +164,7 @@ public class SecurityTests
     public void ValidateParameters_RejectsInvalidHostname()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -188,7 +189,7 @@ public class SecurityTests
     public void ValidateParameters_AcceptsValidHostname()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -213,7 +214,7 @@ public class SecurityTests
     public void ValidateParameters_RejectsInvalidIPAddress()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -238,7 +239,7 @@ public class SecurityTests
     public void ValidateParameters_AcceptsValidIPAddress()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -332,7 +333,7 @@ public class SecurityTests
     public void ValidateParameters_RejectsExcessivelyLongString()
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -367,7 +368,7 @@ public class SecurityTests
     public void ValidateParameters_RejectsDangerousCharacters(string maliciousValue)
     {
         // Arrange
-        var service = new CommandGeneratorService();
+        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -429,8 +430,8 @@ public class SecurityTests
         var settings = new UserSettings
         {
             AutoCleanupDays = 100,
-            MaxHistoryItems = 5000,
-            RecentCommandsCount = 25
+            MaxHistoryItems = 5000
+            // RecentCommandsCount = 25 // OBSOLETE - property removed
         };
 
         // Act - Save encrypted
@@ -442,7 +443,7 @@ public class SecurityTests
         // Assert
         Assert.Equal(settings.AutoCleanupDays, loadedSettings.AutoCleanupDays);
         Assert.Equal(settings.MaxHistoryItems, loadedSettings.MaxHistoryItems);
-        Assert.Equal(settings.RecentCommandsCount, loadedSettings.RecentCommandsCount);
+        // Assert.Equal(settings.RecentCommandsCount, loadedSettings.RecentCommandsCount); // OBSOLETE - RecentCommandsCount removed
 
         // Cleanup
         var settingsPath = service.GetSettingsFilePath();
@@ -455,11 +456,11 @@ public class SecurityTests
 
     private ConfigurationService CreateConfigurationService()
     {
-        var favoritesRepo = new FakeRepository<UserFavorite>();
+        var mockFavoritesRepo = new Mock<IFavoritesRepository>();
         var historyRepo = new FakeCommandHistoryRepository();
         var actionRepo = new FakeActionRepository();
 
-        return new ConfigurationService(favoritesRepo, historyRepo, actionRepo);
+        return new ConfigurationService(mockFavoritesRepo.Object, historyRepo, actionRepo);
     }
 
     // Fake repository for UserFavorite testing (simplified stub)

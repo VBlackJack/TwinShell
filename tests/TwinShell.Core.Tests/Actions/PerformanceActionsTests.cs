@@ -409,7 +409,7 @@ public class PerformanceActionsTests
 
         // Assert
         action.Should().NotBeNull();
-        action!.Title.Should().Contain("exclusions", StringComparison.OrdinalIgnoreCase);
+        action!.Title.Should().ContainEquivalentOf("exclusions");
     }
 
     #endregion

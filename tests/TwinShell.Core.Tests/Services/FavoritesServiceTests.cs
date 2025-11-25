@@ -219,7 +219,7 @@ internal class FakeFavoritesRepository : IFavoritesRepository
             query = query.Where(f => f.UserId == null);
         }
 
-        return Task.FromResult(query.OrderBy(f => f.DisplayOrder));
+        return Task.FromResult(query.OrderBy(f => f.DisplayOrder).AsEnumerable());
     }
 
     public Task<UserFavorite?> GetByActionIdAsync(string actionId, string? userId = null)
