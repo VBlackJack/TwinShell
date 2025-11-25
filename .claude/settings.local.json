@@ -12,7 +12,9 @@
       "Bash(dotnet add:*)",
       "Bash(dotnet publish:*)",
       "Bash(dir /B *.exe)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
