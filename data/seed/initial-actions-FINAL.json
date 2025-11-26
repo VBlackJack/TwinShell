@@ -3732,7 +3732,7 @@
       "id": "file-ownership-linux",
       "title": "Changer le propriétaire de fichiers (Linux)",
       "description": "Modifie le propriétaire et le groupe d'un fichier ou dossier.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -3811,7 +3811,7 @@
       "id": "file-directory-size-linux",
       "title": "Taille d'un répertoire (Linux)",
       "description": "Calcule la taille totale d'un répertoire et de son contenu.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -3866,7 +3866,7 @@
       "id": "archive-zip-windows",
       "title": "Créer une archive ZIP (Windows)",
       "description": "Compresse des fichiers ou dossiers dans une archive ZIP.",
-      "category": "📦 Compression & Archives",
+      "category": "📁 Files & Storage",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -3934,7 +3934,7 @@
       "id": "archive-unzip-windows",
       "title": "Extraire une archive ZIP (Windows)",
       "description": "Extrait le contenu d'une archive ZIP.",
-      "category": "📦 Compression & Archives",
+      "category": "📁 Files & Storage",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -4002,7 +4002,7 @@
       "id": "archive-tar-linux",
       "title": "Créer une archive TAR/GZ (Linux)",
       "description": "Compresse des fichiers ou dossiers dans une archive tar.gz.",
-      "category": "📦 Compression & Archives",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -4074,7 +4074,7 @@
       "id": "archive-untar-linux",
       "title": "Extraire une archive TAR/GZ (Linux)",
       "description": "Extrait le contenu d'une archive tar ou tar.gz.",
-      "category": "📦 Compression & Archives",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -4145,7 +4145,7 @@
       "id": "build-dotnet-build",
       "title": "Compiler un projet .NET",
       "description": "Compile un projet ou une solution .NET.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4243,7 +4243,7 @@
       "id": "build-dotnet-publish",
       "title": "Publier un projet .NET",
       "description": "Publie un projet .NET pour le déploiement.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4341,7 +4341,7 @@
       "id": "build-npm-install",
       "title": "Installer les dépendances npm",
       "description": "Installe les dépendances Node.js d'un projet.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4396,7 +4396,7 @@
       "id": "build-npm-build",
       "title": "Construire un projet npm",
       "description": "Exécute le script de build défini dans package.json.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4450,7 +4450,7 @@
       "id": "build-maven",
       "title": "Construire un projet Maven",
       "description": "Compile et package un projet Java avec Maven.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4504,7 +4504,7 @@
       "id": "build-gradle",
       "title": "Construire un projet Gradle",
       "description": "Compile et package un projet avec Gradle.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4558,7 +4558,7 @@
       "id": "build-make",
       "title": "Compiler avec Make",
       "description": "Exécute un Makefile pour compiler un projet C/C++.",
-      "category": "🔨 Build & Development",
+      "category": "🔧 Development",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -4618,7 +4618,7 @@
       "id": "run-dotnet",
       "title": "Exécuter un projet .NET",
       "description": "Lance un projet .NET en mode développement.",
-      "category": "▶️ Exécution & Run",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4699,7 +4699,7 @@
       "id": "run-npm-start",
       "title": "Démarrer un projet npm",
       "description": "Exécute le script de démarrage d'un projet Node.js.",
-      "category": "▶️ Exécution & Run",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4754,7 +4754,7 @@
       "id": "run-python-script",
       "title": "Exécuter un script Python",
       "description": "Lance un script Python.",
-      "category": "▶️ Exécution & Run",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -4830,7 +4830,7 @@
       "id": "run-java-jar",
       "title": "Exécuter un fichier JAR Java",
       "description": "Lance une application Java packagée en JAR.",
-      "category": "▶️ Exécution & Run",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -5195,7 +5195,7 @@
       "id": "linux-service-start",
       "title": "Démarrer un service (Linux)",
       "description": "Démarre un service systemd arrêté.",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -5250,7 +5250,7 @@
       "id": "linux-service-stop",
       "title": "Arrêter un service (Linux)",
       "description": "Arrête un service systemd en cours d'exécution.",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -5305,7 +5305,7 @@
       "id": "linux-service-enable",
       "title": "Activer un service au démarrage (Linux)",
       "description": "Configure un service systemd pour démarrer automatiquement au boot.",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -5361,7 +5361,7 @@
       "id": "linux-service-disable",
       "title": "Désactiver un service au démarrage (Linux)",
       "description": "Empêche un service systemd de démarrer automatiquement au boot.",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 2,
       "tags": [
@@ -5416,7 +5416,7 @@
       "id": "linux-list-services",
       "title": "Lister tous les services (Linux)",
       "description": "Affiche la liste de tous les services systemd avec leur état.",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -5630,7 +5630,7 @@
       "id": "process-list",
       "title": "Lister les processus en cours",
       "description": "Affiche la liste de tous les processus en cours d'exécution.",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -5701,7 +5701,7 @@
       "id": "process-kill",
       "title": "Terminer un processus",
       "description": "Force l'arrêt d'un processus spécifique par son ID ou son nom.",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 2,
       "level": 2,
       "tags": [
@@ -5772,7 +5772,7 @@
       "id": "system-uptime",
       "title": "Afficher le temps de fonctionnement du système",
       "description": "Montre depuis combien de temps le système est démarré.",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -5825,7 +5825,7 @@
       "id": "WIN-PKG-001",
       "title": "Installer une application via Winget",
       "description": "Installe une application Windows à l'aide du gestionnaire de packages Winget.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5886,7 +5886,7 @@
       "id": "WIN-PKG-002",
       "title": "Lister les applications installées via Winget",
       "description": "Affiche la liste de toutes les applications installées et gérées par Winget.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -5934,7 +5934,7 @@
       "id": "WIN-PKG-003",
       "title": "Mettre à jour une application Winget",
       "description": "Met à jour une application spécifique vers sa dernière version disponible via Winget.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -5991,7 +5991,7 @@
       "id": "WIN-PKG-004",
       "title": "Mettre à jour toutes les applications Winget",
       "description": "Met à jour toutes les applications installées vers leurs dernières versions disponibles.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -6035,7 +6035,7 @@
       "id": "WIN-PKG-005",
       "title": "Désinstaller une application Winget",
       "description": "Désinstalle une application précédemment installée via Winget.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -6092,7 +6092,7 @@
       "id": "WIN-PKG-006",
       "title": "Rechercher un package Winget",
       "description": "Recherche des packages disponibles dans les sources Winget configurées.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -6153,7 +6153,7 @@
       "id": "WIN-PKG-007",
       "title": "Afficher les détails d'un package Winget",
       "description": "Affiche les informations détaillées d'un package spécifique (version, éditeur, description, etc.).",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -6210,7 +6210,7 @@
       "id": "WIN-PKG-008",
       "title": "Ajouter une source Winget",
       "description": "Ajoute une nouvelle source de packages Winget personnalisée.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -6279,7 +6279,7 @@
       "id": "WIN-PKG-101",
       "title": "Installer un package Chocolatey",
       "description": "Installe un package Windows à l'aide du gestionnaire Chocolatey.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -6340,7 +6340,7 @@
       "id": "WIN-PKG-102",
       "title": "Lister les packages Chocolatey installés",
       "description": "Affiche la liste de tous les packages installés via Chocolatey.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -6388,7 +6388,7 @@
       "id": "WIN-PKG-103",
       "title": "Mettre à jour un package Chocolatey",
       "description": "Met à jour un package spécifique vers sa dernière version disponible via Chocolatey.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -6445,7 +6445,7 @@
       "id": "WIN-PKG-104",
       "title": "Mettre à jour tous les packages Chocolatey",
       "description": "Met à jour tous les packages installés vers leurs dernières versions disponibles.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -6493,7 +6493,7 @@
       "id": "WIN-PKG-105",
       "title": "Désinstaller un package Chocolatey",
       "description": "Désinstalle un package précédemment installé via Chocolatey.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -6550,7 +6550,7 @@
       "id": "WIN-PKG-106",
       "title": "Rechercher un package Chocolatey",
       "description": "Recherche des packages disponibles dans le dépôt Chocolatey.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -6611,7 +6611,7 @@
       "id": "WIN-PKG-107",
       "title": "Ajouter une source Chocolatey",
       "description": "Ajoute une nouvelle source de packages Chocolatey personnalisée.",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -14301,7 +14301,7 @@
       "id": "security-audit-ntfs-permissions",
       "title": "Auditer les permissions NTFS d'un dossier",
       "description": "Affiche les permissions NTFS détaillées d'un dossier ou fichier avec les droits accordés à chaque utilisateur/groupe",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -14366,7 +14366,7 @@
       "id": "security-audit-ntfs-recursive",
       "title": "Auditer récursivement les permissions NTFS",
       "description": "Analyse récursivement tous les sous-dossiers et génère un rapport des permissions NTFS",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -14439,7 +14439,7 @@
       "id": "security-enable-rdp-firewall",
       "title": "Activer la règle pare-feu pour RDP",
       "description": "Active la règle de pare-feu Windows permettant les connexions Bureau à distance (RDP)",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -14490,7 +14490,7 @@
       "id": "security-list-local-users",
       "title": "Lister tous les utilisateurs locaux",
       "description": "Affiche tous les comptes utilisateurs locaux avec leur statut (activé/désactivé) et dernière connexion",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -14541,7 +14541,7 @@
       "id": "security-check-password-policy",
       "title": "Vérifier la politique de mot de passe locale",
       "description": "Affiche les paramètres de la politique de mot de passe locale (longueur minimale, âge, complexité)",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -14588,7 +14588,7 @@
       "id": "security-audit-rdp-sessions",
       "title": "Auditer les connexions RDP récentes",
       "description": "Liste les événements de connexion Bureau à distance (RDP) réussies et échouées",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -14653,7 +14653,7 @@
       "id": "security-check-admin-group",
       "title": "Lister les membres du groupe Administrateurs local",
       "description": "Affiche tous les utilisateurs et groupes membres du groupe Administrateurs local",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -15616,7 +15616,7 @@
       "id": "apt-update",
       "title": "Mettre à jour la liste des paquets APT",
       "description": "Rafraîchit la liste des paquets disponibles depuis les dépôts configurés (Debian/Ubuntu)",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -15672,7 +15672,7 @@
       "id": "apt-upgrade",
       "title": "Mettre à niveau les paquets installés",
       "description": "Met à jour tous les paquets installés vers leurs dernières versions disponibles",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -15728,7 +15728,7 @@
       "id": "apt-install",
       "title": "Installer un paquet avec APT",
       "description": "Installe un ou plusieurs paquets avec leurs dépendances (Debian/Ubuntu)",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -15797,7 +15797,7 @@
       "id": "apt-remove",
       "title": "Désinstaller un paquet APT",
       "description": "Supprime un paquet installé tout en conservant les fichiers de configuration",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -15866,7 +15866,7 @@
       "id": "apt-search",
       "title": "Rechercher un paquet dans les dépôts",
       "description": "Recherche des paquets disponibles par nom ou description",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -15934,7 +15934,7 @@
       "id": "apt-autoremove",
       "title": "Supprimer les paquets inutilisés",
       "description": "Supprime les paquets de dépendances qui ne sont plus nécessaires",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -15989,7 +15989,7 @@
       "id": "apt-clean",
       "title": "Nettoyer le cache APT",
       "description": "Supprime les fichiers .deb téléchargés du cache local",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -16049,7 +16049,7 @@
       "id": "apt-list-installed",
       "title": "Lister les paquets installés",
       "description": "Affiche la liste de tous les paquets installés sur le système",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -16117,7 +16117,7 @@
       "id": "yum-install",
       "title": "Installer un paquet avec YUM",
       "description": "Installe un paquet avec YUM sur RHEL/CentOS (anciennes versions)",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16186,7 +16186,7 @@
       "id": "dnf-update",
       "title": "Mettre à jour les paquets avec DNF",
       "description": "Met à jour tous les paquets avec DNF (RHEL 8+/Fedora)",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16242,7 +16242,7 @@
       "id": "dnf-remove",
       "title": "Désinstaller un paquet avec DNF",
       "description": "Supprime un paquet installé avec DNF",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16311,7 +16311,7 @@
       "id": "zypper-install",
       "title": "Installer un paquet avec Zypper",
       "description": "Installe un paquet avec Zypper (openSUSE/SLES)",
-      "category": "🐧 Package Management",
+      "category": "📦 Package Management",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16372,7 +16372,7 @@
       "id": "systemctl-start",
       "title": "Démarrer un service systemd",
       "description": "Démarre immédiatement un service systemd",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16432,7 +16432,7 @@
       "id": "systemctl-stop",
       "title": "Arrêter un service systemd",
       "description": "Arrête immédiatement un service systemd en cours d'exécution",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16492,7 +16492,7 @@
       "id": "systemctl-restart",
       "title": "Redémarrer un service systemd",
       "description": "Redémarre un service (arrêt puis démarrage)",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16552,7 +16552,7 @@
       "id": "systemctl-enable",
       "title": "Activer un service au démarrage",
       "description": "Configure un service pour démarrer automatiquement au boot",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16613,7 +16613,7 @@
       "id": "systemctl-disable",
       "title": "Désactiver un service au démarrage",
       "description": "Empêche un service de démarrer automatiquement au boot",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16673,7 +16673,7 @@
       "id": "systemctl-status",
       "title": "Vérifier l'état d'un service",
       "description": "Affiche l'état détaillé d'une unité systemd (actif, logs récents, etc.)",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -16737,7 +16737,7 @@
       "id": "systemctl-list-services",
       "title": "Lister tous les services systemd",
       "description": "Affiche la liste de toutes les unités de type service",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -16801,7 +16801,7 @@
       "id": "systemctl-reload",
       "title": "Recharger la configuration d'un service",
       "description": "Recharge la configuration du service sans l'arrêter (si supporté)",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16861,7 +16861,7 @@
       "id": "systemctl-daemon-reload",
       "title": "Recharger la configuration systemd",
       "description": "Recharge tous les fichiers d'unités systemd après modification",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -16912,7 +16912,7 @@
       "id": "systemd-analyze",
       "title": "Analyser le temps de démarrage",
       "description": "Analyse et affiche le temps de démarrage du système et des services",
-      "category": "🐧 Services",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -18433,7 +18433,7 @@
       "id": "usermod-modify-user",
       "title": "Modifier un utilisateur existant",
       "description": "Modifie les propriétés d'un compte utilisateur (groupes, shell, home, etc.)",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -18638,7 +18638,7 @@
       "id": "unified-file-hash",
       "title": "Calculer le hash d'un fichier",
       "description": "Calcule l'empreinte cryptographique (hash SHA256) d'un fichier pour vérification d'intégrité.",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -18759,7 +18759,7 @@
       "id": "unified-file-copy",
       "title": "Copier des fichiers ou dossiers",
       "description": "Copie des fichiers ou des répertoires avec leurs sous-dossiers.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -18897,7 +18897,7 @@
       "id": "unified-file-move",
       "title": "Déplacer ou renommer des fichiers",
       "description": "Déplace ou renomme des fichiers et dossiers.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19036,7 +19036,7 @@
       "id": "unified-file-delete",
       "title": "Supprimer des fichiers ou dossiers",
       "description": "Supprime des fichiers ou des répertoires de manière permanente.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19163,7 +19163,7 @@
       "id": "unified-file-create-directory",
       "title": "Créer un répertoire",
       "description": "Crée un nouveau dossier, y compris les dossiers parents si nécessaire.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19279,7 +19279,7 @@
       "id": "unified-file-permissions",
       "title": "Modifier les permissions de fichiers",
       "description": "Modifie les permissions NTFS d'un fichier ou dossier.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19425,7 +19425,7 @@
       "id": "unified-file-disk-usage",
       "title": "Vérifier l'espace disque",
       "description": "Affiche l'utilisation de l'espace disque pour les volumes.",
-      "category": "📁 Gestion de Fichiers",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19513,7 +19513,7 @@
       "id": "unified-find-files",
       "title": "Rechercher des fichiers par nom",
       "description": "Recherche des fichiers ou dossiers par nom ou motif.",
-      "category": "🔍 Recherche & Exploration",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19659,7 +19659,7 @@
       "id": "unified-search-content",
       "title": "Rechercher dans le contenu de fichiers",
       "description": "Recherche une chaîne de caractères dans le contenu des fichiers.",
-      "category": "🔍 Recherche & Exploration",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19813,7 +19813,7 @@
       "id": "unified-tree",
       "title": "Afficher l'arborescence de dossiers",
       "description": "Affiche la structure hiérarchique d'un répertoire.",
-      "category": "🔍 Recherche & Exploration",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -19925,7 +19925,7 @@
       "id": "unified-service-status",
       "title": "Vérifier le statut d'un service",
       "description": "Affiche l'état actuel d'un service Windows.",
-      "category": "⚙️ Services",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -20037,7 +20037,7 @@
       "id": "unified-service-restart",
       "title": "Redémarrer un service",
       "description": "Redémarre un service Windows.",
-      "category": "⚙️ Services",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "supportedPlatforms": [
         0,
@@ -20145,7 +20145,7 @@
       "id": "chmod-permissions",
       "title": "Modifier les permissions d'un fichier",
       "description": "Change les permissions (lecture, écriture, exécution) d'un fichier ou répertoire",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -20221,7 +20221,7 @@
       "id": "chown-ownership",
       "title": "Modifier le propriétaire d'un fichier",
       "description": "Change le propriétaire (user et/ou group) d'un fichier ou répertoire",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -20306,7 +20306,7 @@
       "id": "getfacl-show-acl",
       "title": "Afficher les ACL d'un fichier",
       "description": "Affiche les listes de contrôle d'accès (ACL) étendues d'un fichier",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -20366,7 +20366,7 @@
       "id": "setfacl-modify-acl",
       "title": "Modifier les ACL d'un fichier",
       "description": "Définit ou modifie les listes de contrôle d'accès (ACL) étendues",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -20442,7 +20442,7 @@
       "id": "passwd-change-password",
       "title": "Changer le mot de passe d'un utilisateur",
       "description": "Modifie le mot de passe d'un compte utilisateur",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -20506,7 +20506,7 @@
       "id": "groups-list-groups",
       "title": "Lister les groupes d'un utilisateur",
       "description": "Affiche tous les groupes auxquels appartient un utilisateur",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -20569,7 +20569,7 @@
       "id": "sudo-visudo",
       "title": "Éditer la configuration sudo",
       "description": "Édite le fichier sudoers de manière sécurisée pour configurer les droits sudo",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 2,
       "tags": [
@@ -20621,7 +20621,7 @@
       "id": "lsblk-list-disks",
       "title": "Lister les disques et partitions",
       "description": "Affiche tous les périphériques de bloc (disques, partitions) en arborescence",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -20686,7 +20686,7 @@
       "id": "fdisk-partition",
       "title": "Gérer les partitions avec fdisk",
       "description": "Outil de partitionnement de disques (MBR/GPT)",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 2,
       "tags": [
@@ -20747,7 +20747,7 @@
       "id": "mkfs-format",
       "title": "Formater une partition",
       "description": "Crée un système de fichiers sur une partition",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 2,
       "tags": [
@@ -20820,7 +20820,7 @@
       "id": "mount-filesystem",
       "title": "Monter un système de fichiers",
       "description": "Monte une partition ou un périphérique sur un point de montage",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -20895,7 +20895,7 @@
       "id": "lvm-list-volumes",
       "title": "Lister les volumes logiques LVM",
       "description": "Affiche les volumes logiques, groupes de volumes et volumes physiques LVM",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -20960,7 +20960,7 @@
       "id": "fsck-check-filesystem",
       "title": "Vérifier et réparer un filesystem",
       "description": "Vérifie l'intégrité d'un système de fichiers et tente de réparer les erreurs",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 2,
       "tags": [
@@ -21033,7 +21033,7 @@
       "id": "blkid-show-uuid",
       "title": "Afficher les UUID des partitions",
       "description": "Affiche les UUID et informations des périphériques de bloc",
-      "category": "🐧 System Administration",
+      "category": "🐧 Linux Administration",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21093,7 +21093,7 @@
       "id": "rsync-sync-files",
       "title": "Synchroniser des fichiers avec rsync",
       "description": "Synchronise et copie des fichiers localement ou à distance de manière incrémentale",
-      "category": "💾 Storage & Backups",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -21178,7 +21178,7 @@
       "id": "tar-create-archive",
       "title": "Créer une archive tar",
       "description": "Crée une archive compressée de fichiers et répertoires",
-      "category": "💾 Storage & Backups",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21263,7 +21263,7 @@
       "id": "scp-copy-remote",
       "title": "Copier des fichiers via SSH",
       "description": "Copie des fichiers de manière sécurisée entre systèmes via SSH",
-      "category": "💾 Storage & Backups",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21348,7 +21348,7 @@
       "id": "dd-disk-image",
       "title": "Créer une image disque",
       "description": "Copie bit à bit des données (disques, partitions, fichiers)",
-      "category": "💾 Storage & Backups",
+      "category": "📁 Files & Storage",
       "platform": 1,
       "level": 2,
       "tags": [
@@ -21433,7 +21433,7 @@
       "id": "find-suid-files",
       "title": "Rechercher les fichiers SUID/SGID",
       "description": "Liste tous les fichiers avec bits SUID ou SGID (potentiellement dangereux)",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21506,7 +21506,7 @@
       "id": "fail2ban-status",
       "title": "Vérifier l'état de Fail2ban",
       "description": "Affiche l'état des jails Fail2ban et les IP bannies",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21571,7 +21571,7 @@
       "id": "selinux-status",
       "title": "Vérifier l'état de SELinux",
       "description": "Affiche l'état et le mode de SELinux (Security-Enhanced Linux)",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21623,7 +21623,7 @@
       "id": "lynis-audit",
       "title": "Audit de sécurité avec Lynis",
       "description": "Lance un audit de sécurité complet du système avec Lynis",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -21675,7 +21675,7 @@
       "id": "ss-established-connections",
       "title": "Lister les connexions établies",
       "description": "Affiche toutes les connexions réseau actuellement établies",
-      "category": "🔐 Security",
+      "category": "🔒 Security & Encryption",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -22023,7 +22023,7 @@
       "id": "docker-ps",
       "title": "Lister les conteneurs Docker",
       "description": "Affiche la liste des conteneurs Docker en cours d'exécution",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -22144,7 +22144,7 @@
       "id": "docker-logs",
       "title": "Consulter les logs d'un conteneur",
       "description": "Affiche les logs stdout/stderr d'un conteneur Docker",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -22289,7 +22289,7 @@
       "id": "docker-exec",
       "title": "Exécuter une commande dans un conteneur",
       "description": "Exécute une commande dans un conteneur Docker en cours d'exécution",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -22451,7 +22451,7 @@
       "id": "docker-stats",
       "title": "Statistiques des conteneurs Docker",
       "description": "Affiche en temps réel l'utilisation CPU, mémoire, réseau et I/O des conteneurs",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -22573,7 +22573,7 @@
       "id": "docker-compose-up",
       "title": "Démarrer une stack Docker Compose",
       "description": "Lance tous les services définis dans un fichier docker-compose.yml",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -22694,7 +22694,7 @@
       "id": "podman-ps",
       "title": "Lister les conteneurs Podman",
       "description": "Affiche les conteneurs Podman (alternative rootless à Docker)",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -22758,7 +22758,7 @@
       "id": "crontab-list",
       "title": "Lister les tâches cron",
       "description": "Affiche les tâches planifiées cron de l'utilisateur",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -22835,7 +22835,7 @@
       "id": "systemd-timer-list",
       "title": "Lister les timers systemd",
       "description": "Affiche tous les timers systemd (alternative moderne à cron)",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -22900,7 +22900,7 @@
       "id": "at-schedule-task",
       "title": "Planifier une tâche ponctuelle",
       "description": "Planifie l'exécution d'une commande à une date/heure précise (usage unique)",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 1,
       "tags": [
@@ -22977,7 +22977,7 @@
       "id": "watch-repeat-command",
       "title": "Répéter une commande périodiquement",
       "description": "Exécute une commande à intervalle régulier et affiche le résultat",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -23054,7 +23054,7 @@
       "id": "get-scheduledtask",
       "title": "Lister les tâches planifiées Windows",
       "description": "Affiche toutes les tâches planifiées configurées dans le Planificateur de tâches Windows",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -23131,7 +23131,7 @@
       "id": "register-scheduledtask",
       "title": "Créer une tâche planifiée",
       "description": "Enregistre une nouvelle tâche planifiée dans le Planificateur de tâches Windows",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -23232,7 +23232,7 @@
       "id": "unregister-scheduledtask",
       "title": "Supprimer une tâche planifiée",
       "description": "Supprime une tâche planifiée du Planificateur de tâches Windows",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -23301,7 +23301,7 @@
       "id": "start-scheduledtask",
       "title": "Démarrer une tâche planifiée",
       "description": "Démarre immédiatement l'exécution d'une tâche planifiée",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -23378,7 +23378,7 @@
       "id": "stop-scheduledtask",
       "title": "Arrêter une tâche planifiée",
       "description": "Arrête l'exécution en cours d'une tâche planifiée",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -23451,7 +23451,7 @@
       "id": "enable-scheduledtask",
       "title": "Activer une tâche planifiée",
       "description": "Active une tâche planifiée désactivée pour qu'elle puisse s'exécuter selon son planning",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -23528,7 +23528,7 @@
       "id": "disable-scheduledtask",
       "title": "Désactiver une tâche planifiée",
       "description": "Désactive une tâche planifiée pour empêcher son exécution automatique",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -23605,7 +23605,7 @@
       "id": "get-scheduledtaskinfo",
       "title": "Voir l'historique d'une tâche planifiée",
       "description": "Affiche les informations d'exécution et l'historique d'une tâche planifiée",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -23682,7 +23682,7 @@
       "id": "export-scheduledtask",
       "title": "Exporter une tâche planifiée",
       "description": "Exporte la définition d'une tâche planifiée au format XML pour sauvegarde ou migration",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -23763,7 +23763,7 @@
       "id": "set-scheduledtask",
       "title": "Modifier une tâche planifiée",
       "description": "Modifie les propriétés d'une tâche planifiée existante",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -23840,7 +23840,7 @@
       "id": "get-service-windows",
       "title": "Lister les services Windows",
       "description": "Affiche tous les services Windows avec leur état (Running, Stopped, etc.)",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -23917,7 +23917,7 @@
       "id": "restart-service",
       "title": "Redémarrer un service Windows",
       "description": "Arrête puis redémarre un service Windows",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -23994,7 +23994,7 @@
       "id": "set-service-starttype",
       "title": "Changer le type de démarrage d'un service",
       "description": "Modifie le type de démarrage d'un service (Automatic, Manual, Disabled)",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -24075,7 +24075,7 @@
       "id": "invoke-command-remote",
       "title": "Exécuter une commande à distance",
       "description": "Exécute une commande PowerShell sur un ou plusieurs ordinateurs distants via PSRemoting",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -24160,7 +24160,7 @@
       "id": "get-eventlog-latest",
       "title": "Consulter les événements Windows récents",
       "description": "Affiche les derniers événements du journal Windows (System, Application, Security)",
-      "category": "⚙️ Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -24385,7 +24385,7 @@
       "id": "systemd-detect-virt",
       "title": "Détecter la virtualisation",
       "description": "Détecte si le système tourne dans un environnement virtualisé",
-      "category": "🐳 Containers",
+      "category": "🐳 Containers & VMs",
       "platform": 1,
       "level": 0,
       "tags": [
@@ -24652,7 +24652,7 @@
       "id": "ansible-playbook-run",
       "title": "Exécuter un playbook Ansible",
       "description": "Exécute un playbook Ansible sur les hôtes définis dans l'inventaire",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -24749,7 +24749,7 @@
       "id": "ansible-ad-hoc",
       "title": "Exécuter une commande Ansible ad-hoc",
       "description": "Exécute une commande ponctuelle sur un groupe d'hôtes sans playbook",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -24865,7 +24865,7 @@
       "id": "ansible-galaxy-install",
       "title": "Installer un rôle Ansible Galaxy",
       "description": "Télécharge et installe un rôle depuis Ansible Galaxy",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -24942,7 +24942,7 @@
       "id": "ansible-vault-encrypt",
       "title": "Chiffrer un fichier avec Ansible Vault",
       "description": "Chiffre un fichier contenant des données sensibles avec Ansible Vault",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25019,7 +25019,7 @@
       "id": "ansible-inventory-list",
       "title": "Lister l'inventaire Ansible",
       "description": "Affiche la liste complète des hôtes dans l'inventaire Ansible",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -25095,7 +25095,7 @@
       "id": "ansible-playbook-check",
       "title": "Exécuter un playbook en mode dry-run (--check)",
       "description": "Exécute un playbook Ansible en mode test sans appliquer les changements",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25193,7 +25193,7 @@
       "id": "ansible-playbook-tags",
       "title": "Exécuter des tâches spécifiques avec --tags",
       "description": "Exécute uniquement les tâches marquées avec des tags spécifiques",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25310,7 +25310,7 @@
       "id": "ansible-playbook-limit",
       "title": "Limiter l'exécution à certains hôtes (--limit)",
       "description": "Exécute un playbook uniquement sur un sous-ensemble d'hôtes",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25427,7 +25427,7 @@
       "id": "ansible-config-view",
       "title": "Afficher la configuration Ansible",
       "description": "Affiche la configuration actuelle d'Ansible avec toutes les sources",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -25486,7 +25486,7 @@
       "id": "ansible-doc-module",
       "title": "Consulter la documentation d'un module",
       "description": "Affiche la documentation complète d'un module Ansible",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -25568,7 +25568,7 @@
       "id": "ansible-vault-edit",
       "title": "Éditer un fichier chiffré avec Ansible Vault",
       "description": "Ouvre un fichier chiffré dans l'éditeur pour modification",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25646,7 +25646,7 @@
       "id": "ansible-vault-view",
       "title": "Visualiser un fichier chiffré",
       "description": "Affiche le contenu d'un fichier chiffré sans le modifier",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -25723,7 +25723,7 @@
       "id": "ansible-vault-decrypt",
       "title": "Déchiffrer un fichier Ansible Vault",
       "description": "Déchiffre définitivement un fichier chiffré avec Ansible Vault",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25800,7 +25800,7 @@
       "id": "ansible-vault-rekey",
       "title": "Changer le mot de passe Vault",
       "description": "Modifie le mot de passe de chiffrement d'un fichier Ansible Vault",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -25878,7 +25878,7 @@
       "id": "ansible-galaxy-search",
       "title": "Rechercher des rôles Ansible Galaxy",
       "description": "Recherche des rôles disponibles sur Ansible Galaxy",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -25955,7 +25955,7 @@
       "id": "ansible-galaxy-list",
       "title": "Lister les rôles installés",
       "description": "Affiche la liste de tous les rôles Ansible installés localement",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -26014,7 +26014,7 @@
       "id": "ansible-galaxy-remove",
       "title": "Supprimer un rôle installé",
       "description": "Supprime un rôle Ansible Galaxy installé localement",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -26092,7 +26092,7 @@
       "id": "ansible-pull",
       "title": "Exécuter Ansible en mode pull",
       "description": "Configure un système pour récupérer et exécuter automatiquement des playbooks depuis un dépôt Git",
-      "category": "🚀 Ansible & Automation",
+      "category": "⚙️ Services & Automation",
       "platform": 2,
       "level": 2,
       "tags": [
@@ -26189,7 +26189,7 @@
       "id": "git-clone",
       "title": "Cloner un dépôt Git",
       "description": "Clone un dépôt Git distant vers un répertoire local",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -26285,7 +26285,7 @@
       "id": "git-status",
       "title": "Afficher le statut Git",
       "description": "Affiche l'état des fichiers dans le répertoire de travail et l'index",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -26343,7 +26343,7 @@
       "id": "git-add",
       "title": "Ajouter des fichiers à l'index Git",
       "description": "Ajoute les modifications de fichiers à l'index (staging area)",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -26419,7 +26419,7 @@
       "id": "git-commit",
       "title": "Créer un commit Git",
       "description": "Enregistre les modifications de l'index dans l'historique du dépôt",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -26495,7 +26495,7 @@
       "id": "git-push",
       "title": "Pousser les commits vers le dépôt distant",
       "description": "Envoie les commits locaux vers le dépôt distant",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -26591,7 +26591,7 @@
       "id": "git-pull",
       "title": "Récupérer et fusionner depuis le dépôt distant",
       "description": "Récupère les modifications du dépôt distant et les fusionne avec la branche locale",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -26688,7 +26688,7 @@
       "id": "git-branch",
       "title": "Gérer les branches Git",
       "description": "Crée, liste ou supprime des branches",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -26768,7 +26768,7 @@
       "id": "git-checkout",
       "title": "Changer de branche ou restaurer des fichiers",
       "description": "Bascule sur une autre branche ou restaure des fichiers du working directory",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 1,
       "tags": [
@@ -26848,7 +26848,7 @@
       "id": "git-merge",
       "title": "Fusionner des branches",
       "description": "Fusionne une ou plusieurs branches dans la branche actuelle",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 2,
       "tags": [
@@ -26924,7 +26924,7 @@
       "id": "git-log",
       "title": "Afficher l'historique des commits",
       "description": "Affiche l'historique des commits du dépôt",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -27004,7 +27004,7 @@
       "id": "git-diff",
       "title": "Afficher les différences",
       "description": "Affiche les différences entre commits, branches ou fichiers",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -27084,7 +27084,7 @@
       "id": "git-stash",
       "title": "Sauvegarder temporairement des modifications",
       "description": "Met de côté temporairement les modifications non commitées",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -27142,7 +27142,7 @@
       "id": "git-reset",
       "title": "Réinitialiser l'état du dépôt",
       "description": "Réinitialise HEAD à un état spécifique",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 2,
       "tags": [
@@ -27238,7 +27238,7 @@
       "id": "git-rebase",
       "title": "Rebaser une branche",
       "description": "Réapplique des commits sur une nouvelle base",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 2,
       "tags": [
@@ -27314,7 +27314,7 @@
       "id": "git-tag",
       "title": "Gérer les tags Git",
       "description": "Crée, liste ou supprime des tags (versions)",
-      "category": "🔀 Git & Version Control",
+      "category": "🔧 Development",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -27395,7 +27395,7 @@
       "id": "iis-list-sites",
       "title": "Lister tous les sites IIS",
       "description": "Affiche la liste complète de tous les sites web configurés dans Internet Information Services avec leur état, bindings et pool d'application associé.",
-      "category": "🌐 IIS Management",
+      "category": "🌐 Network & DNS",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -27453,7 +27453,7 @@
       "id": "iis-manage-site",
       "title": "Démarrer ou arrêter un site IIS",
       "description": "Permet de démarrer, arrêter ou redémarrer un site web IIS spécifique. Utile pour la maintenance ou le troubleshooting.",
-      "category": "🌐 IIS Management",
+      "category": "🌐 Network & DNS",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -27525,7 +27525,7 @@
       "id": "iis-create-site",
       "title": "Créer un nouveau site IIS",
       "description": "Crée un nouveau site web dans IIS avec un nom, un chemin physique et un binding spécifiques.",
-      "category": "🌐 IIS Management",
+      "category": "🌐 Network & DNS",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -27621,7 +27621,7 @@
       "id": "iis-list-apppools",
       "title": "Lister tous les pools d'application IIS",
       "description": "Affiche tous les pools d'application (Application Pools) configurés dans IIS avec leur état, version .NET et mode de pipeline.",
-      "category": "🌐 IIS Management",
+      "category": "🌐 Network & DNS",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -27679,7 +27679,7 @@
       "id": "iis-recycle-apppool",
       "title": "Recycler un pool d'application IIS",
       "description": "Force le recyclage (redémarrage) d'un pool d'application IIS. Utile pour appliquer des changements de configuration ou libérer de la mémoire.",
-      "category": "🌐 IIS Management",
+      "category": "🌐 Network & DNS",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -27746,7 +27746,7 @@
       "id": "sql-list-databases",
       "title": "Lister toutes les bases de données SQL Server",
       "description": "Affiche la liste complète de toutes les bases de données sur une instance SQL Server avec leur taille, état et mode de récupération.",
-      "category": "💽 SQL Server",
+      "category": "💽 Database",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -27809,7 +27809,7 @@
       "id": "sql-backup-database",
       "title": "Sauvegarder une base de données SQL Server",
       "description": "Effectue une sauvegarde complète (FULL) d'une base de données SQL Server vers un fichier .bak spécifié.",
-      "category": "💽 SQL Server",
+      "category": "💽 Database",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -27892,7 +27892,7 @@
       "id": "sql-restore-database",
       "title": "Restaurer une base de données SQL Server",
       "description": "Restaure une base de données SQL Server à partir d'un fichier de sauvegarde .bak.",
-      "category": "💽 SQL Server",
+      "category": "💽 Database",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -27975,7 +27975,7 @@
       "id": "sql-check-space",
       "title": "Vérifier l'espace disque des bases SQL",
       "description": "Analyse l'espace disque utilisé et disponible pour chaque base de données SQL Server, incluant les fichiers de données (.mdf) et journaux (.ldf).",
-      "category": "💽 SQL Server",
+      "category": "💽 Database",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -28039,7 +28039,7 @@
       "id": "sql-list-jobs",
       "title": "Lister les jobs SQL Server Agent",
       "description": "Affiche tous les jobs configurés dans SQL Server Agent avec leur statut, dernière exécution et prochaine planification.",
-      "category": "💽 SQL Server",
+      "category": "💽 Database",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -28103,7 +28103,7 @@
       "id": "cert-list-all",
       "title": "Lister tous les certificats installés",
       "description": "Affiche tous les certificats installés dans les magasins Windows Certificate Store (LocalMachine et CurrentUser) avec leur expiration et usage.",
-      "category": "🔒 Certificate Management",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -28162,7 +28162,7 @@
       "id": "cert-import",
       "title": "Importer un certificat",
       "description": "Importe un certificat (.cer, .pfx, .p12) dans un magasin de certificats Windows spécifique.",
-      "category": "🔒 Certificate Management",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -28234,7 +28234,7 @@
       "id": "cert-export",
       "title": "Exporter un certificat",
       "description": "Exporte un certificat du magasin Windows vers un fichier .cer ou .pfx.",
-      "category": "🔒 Certificate Management",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -28314,7 +28314,7 @@
       "id": "cert-check-expiration",
       "title": "Vérifier l'expiration des certificats",
       "description": "Analyse tous les certificats installés et identifie ceux qui sont expirés ou proches de l'expiration (< 30 jours).",
-      "category": "🔒 Certificate Management",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -28386,7 +28386,7 @@
       "id": "cert-create-selfsigned",
       "title": "Créer un certificat auto-signé",
       "description": "Génère un nouveau certificat auto-signé pour des tests, développement ou usage interne. Non recommandé pour la production publique.",
-      "category": "🔒 Certificate Management",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -28466,7 +28466,7 @@
       "id": "hyperv-list-vms",
       "title": "Lister toutes les machines virtuelles Hyper-V",
       "description": "Affiche la liste complète de toutes les machines virtuelles configurées dans Hyper-V avec leur état, mémoire allouée et version de configuration.",
-      "category": "💠 Hyper-V",
+      "category": "🐳 Containers & VMs",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -28524,7 +28524,7 @@
       "id": "hyperv-manage-vm",
       "title": "Démarrer, arrêter ou suspendre une VM",
       "description": "Permet de contrôler l'état d'une machine virtuelle Hyper-V: démarrage, arrêt propre, arrêt forcé, suspension ou reprise.",
-      "category": "💠 Hyper-V",
+      "category": "🐳 Containers & VMs",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -28600,7 +28600,7 @@
       "id": "hyperv-create-snapshot",
       "title": "Créer un snapshot (point de contrôle) d'une VM",
       "description": "Crée un point de contrôle (snapshot) d'une machine virtuelle Hyper-V, capturant son état actuel pour une restauration ultérieure.",
-      "category": "💠 Hyper-V",
+      "category": "🐳 Containers & VMs",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -28671,7 +28671,7 @@
       "id": "hyperv-export-vm",
       "title": "Exporter une machine virtuelle",
       "description": "Exporte une VM Hyper-V complète (configuration, disques virtuels, snapshots) vers un dossier pour sauvegarde ou migration.",
-      "category": "💠 Hyper-V",
+      "category": "🐳 Containers & VMs",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -28742,7 +28742,7 @@
       "id": "hyperv-get-vm-stats",
       "title": "Obtenir les statistiques d'une VM",
       "description": "Affiche des statistiques détaillées d'utilisation des ressources (CPU, mémoire, disque, réseau) pour une machine virtuelle Hyper-V.",
-      "category": "💠 Hyper-V",
+      "category": "🐳 Containers & VMs",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -29137,7 +29137,7 @@
       "id": "bitlocker-get-status-all",
       "title": "Obtenir le statut BitLocker de tous les disques",
       "description": "Affiche l'état de chiffrement BitLocker pour tous les volumes du système.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -29188,7 +29188,7 @@
       "id": "bitlocker-enable-recovery",
       "title": "Activer BitLocker avec mot de passe de récupération",
       "description": "Active le chiffrement BitLocker sur un volume avec protection par mot de passe de récupération.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -29252,7 +29252,7 @@
       "id": "bitlocker-get-recovery-password",
       "title": "Obtenir le mot de passe de récupération BitLocker",
       "description": "Récupère le mot de passe de récupération BitLocker d'un volume pour le sauvegarder.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -29316,7 +29316,7 @@
       "id": "bitlocker-backup-to-ad",
       "title": "Sauvegarder le mot de passe BitLocker dans Active Directory",
       "description": "Sauvegarde automatiquement le mot de passe de récupération BitLocker dans Active Directory.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -29384,7 +29384,7 @@
       "id": "bitlocker-suspend",
       "title": "Suspendre temporairement la protection BitLocker",
       "description": "Suspend la protection BitLocker temporairement (utile pour mises à jour BIOS/firmware).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -29455,7 +29455,7 @@
       "id": "bitlocker-disable",
       "title": "Désactiver et déchiffrer BitLocker",
       "description": "Désactive complètement BitLocker et déchiffre le volume (opération irréversible).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -29522,7 +29522,7 @@
       "id": "defender-get-status",
       "title": "Obtenir le statut complet de Windows Defender",
       "description": "Affiche l'état détaillé de Windows Defender (protection temps réel, définitions, dernière analyse, etc.).",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -29577,7 +29577,7 @@
       "id": "defender-update-signatures",
       "title": "Mettre à jour les définitions Windows Defender",
       "description": "Force la mise à jour immédiate des signatures antivirus et antimalware de Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -29628,7 +29628,7 @@
       "id": "defender-quick-scan",
       "title": "Lancer une analyse rapide Windows Defender",
       "description": "Lance une analyse rapide des zones système critiques (mémoire, démarrage, fichiers actifs).",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -29679,7 +29679,7 @@
       "id": "defender-add-exclusion-folder",
       "title": "Ajouter une exclusion de dossier dans Defender",
       "description": "Exclut un dossier de l'analyse en temps réel de Windows Defender (améliore performances).",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -29747,7 +29747,7 @@
       "id": "defender-get-threats",
       "title": "Lister les menaces détectées par Defender",
       "description": "Affiche l'historique des menaces détectées et bloquées par Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -29802,7 +29802,7 @@
       "id": "defender-remove-exclusions",
       "title": "Supprimer une exclusion Defender",
       "description": "Retire un dossier, fichier ou processus de la liste des exclusions Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -29866,7 +29866,7 @@
       "id": "laps-get-password",
       "title": "Récupérer le mot de passe administrateur local LAPS",
       "description": "Récupère le mot de passe administrateur local géré par LAPS pour un ordinateur du domaine.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -29930,7 +29930,7 @@
       "id": "laps-get-expiration",
       "title": "Vérifier la date d'expiration du mot de passe LAPS",
       "description": "Affiche la date d'expiration du mot de passe administrateur local géré par LAPS.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -30001,7 +30001,7 @@
       "id": "laps-force-rotation",
       "title": "Forcer la rotation immédiate du mot de passe LAPS",
       "description": "Force le renouvellement immédiat du mot de passe administrateur local géré par LAPS.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30061,7 +30061,7 @@
       "id": "bitlocker-resume",
       "title": "Réactiver la protection BitLocker",
       "description": "Réactive la protection BitLocker après une suspension temporaire.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30120,7 +30120,7 @@
       "id": "bitlocker-unlock-password",
       "title": "Déverrouiller un volume BitLocker avec mot de passe",
       "description": "Déverrouille un volume BitLocker chiffré en utilisant le mot de passe de récupération.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30187,7 +30187,7 @@
       "id": "bitlocker-lock",
       "title": "Verrouiller un volume BitLocker",
       "description": "Verrouille immédiatement un volume BitLocker (le rend inaccessible sans déverrouillage).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30246,7 +30246,7 @@
       "id": "bitlocker-add-tpm-protector",
       "title": "Ajouter un protecteur TPM à BitLocker",
       "description": "Ajoute une protection TPM (Trusted Platform Module) à un volume BitLocker existant.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30305,7 +30305,7 @@
       "id": "bitlocker-remove-protector",
       "title": "Supprimer un protecteur de clé BitLocker",
       "description": "Retire un protecteur de clé spécifique (TPM, Password, RecoveryPassword, etc.) d'un volume BitLocker.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30372,7 +30372,7 @@
       "id": "bitlocker-test-protectors",
       "title": "Tester les protecteurs de clé BitLocker",
       "description": "Vérifie que tous les protecteurs de clé BitLocker d'un volume sont valides et fonctionnels.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30439,7 +30439,7 @@
       "id": "bitlocker-change-pin",
       "title": "Changer le PIN BitLocker",
       "description": "Modifie le code PIN utilisé pour déverrouiller BitLocker au démarrage (TPM+PIN).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30498,7 +30498,7 @@
       "id": "bitlocker-enable-autounlock",
       "title": "Activer le déverrouillage automatique BitLocker",
       "description": "Active le déverrouillage automatique pour un volume de données BitLocker (déverrouillé quand le volume système est déverrouillé).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30565,7 +30565,7 @@
       "id": "bitlocker-check-encryption-progress",
       "title": "Vérifier la progression du chiffrement BitLocker",
       "description": "Affiche le pourcentage de progression du chiffrement ou déchiffrement d'un volume BitLocker.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -30636,7 +30636,7 @@
       "id": "bitlocker-export-recovery-info",
       "title": "Exporter toutes les informations de récupération BitLocker",
       "description": "Exporte un rapport complet de tous les volumes BitLocker avec leurs mots de passe de récupération.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30691,7 +30691,7 @@
       "id": "defender-enable-realtime",
       "title": "Activer/Désactiver la protection temps réel Defender",
       "description": "Active ou désactive la protection en temps réel de Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -30762,7 +30762,7 @@
       "id": "defender-add-exclusion-process",
       "title": "Ajouter une exclusion de processus Defender",
       "description": "Exclut un processus spécifique de l'analyse Windows Defender (utile pour outils de dev).",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30825,7 +30825,7 @@
       "id": "defender-add-exclusion-extension",
       "title": "Ajouter une exclusion d'extension de fichier Defender",
       "description": "Exclut tous les fichiers d'une extension spécifique de l'analyse Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30888,7 +30888,7 @@
       "id": "defender-configure-cloud-protection",
       "title": "Configurer la protection cloud Defender",
       "description": "Active ou configure la protection cloud de Windows Defender (analyse dans le cloud Microsoft).",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -30955,7 +30955,7 @@
       "id": "defender-schedule-scan",
       "title": "Planifier une analyse Defender automatique",
       "description": "Configure une planification pour les analyses automatiques de Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31030,7 +31030,7 @@
       "id": "defender-restore-quarantine",
       "title": "Restaurer un fichier de quarantaine Defender",
       "description": "Restaure un fichier précédemment mis en quarantaine par Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -31084,7 +31084,7 @@
       "id": "defender-set-cpu-limit",
       "title": "Limiter l'utilisation CPU de Defender",
       "description": "Configure la limite maximale d'utilisation CPU pour les analyses Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31147,7 +31147,7 @@
       "id": "defender-check-definition-version",
       "title": "Vérifier la version des définitions Defender",
       "description": "Affiche la version actuelle des définitions antivirus et vérifie si elles sont à jour.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -31209,7 +31209,7 @@
       "id": "defender-remove-threat",
       "title": "Supprimer une menace détectée manuellement",
       "description": "Supprime manuellement une menace spécifique détectée par Windows Defender.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -31271,7 +31271,7 @@
       "id": "laps-get-computers-with-laps",
       "title": "Lister tous les ordinateurs avec LAPS activé",
       "description": "Affiche la liste de tous les ordinateurs du domaine qui ont LAPS configuré et actif.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 0,
       "tags": [
@@ -31325,7 +31325,7 @@
       "id": "laps-set-expiration-time",
       "title": "Modifier la durée d'expiration du mot de passe LAPS",
       "description": "Configure la durée de validité du mot de passe administrateur local géré par LAPS.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -31400,7 +31400,7 @@
       "id": "laps-check-password-complexity",
       "title": "Vérifier la complexité des mots de passe LAPS",
       "description": "Affiche et configure les paramètres de complexité des mots de passe générés par LAPS.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31458,7 +31458,7 @@
       "id": "laps-audit-permissions",
       "title": "Auditer les permissions d'accès aux mots de passe LAPS",
       "description": "Vérifie qui a les droits de lecture sur les attributs LAPS dans Active Directory.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -31526,7 +31526,7 @@
       "id": "laps-export-report",
       "title": "Générer un rapport complet LAPS",
       "description": "Génère un rapport CSV de tous les ordinateurs LAPS avec mots de passe et dates d'expiration.",
-      "category": "🔑 LAPS (Local Admin Password)",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31577,7 +31577,7 @@
       "id": "bitlocker-ad-get-recovery-keys",
       "title": "Récupérer les clés BitLocker depuis Active Directory",
       "description": "Récupère les clés de récupération BitLocker stockées dans Active Directory pour un ordinateur spécifique (commande admin domaine).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31641,7 +31641,7 @@
       "id": "bitlocker-ad-audit-domain",
       "title": "Auditer BitLocker sur tout le domaine Active Directory",
       "description": "Génère un rapport complet de tous les ordinateurs du domaine avec leur statut BitLocker (chiffré/non chiffré).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31693,7 +31693,7 @@
       "id": "bitlocker-ad-export-all-keys",
       "title": "Exporter toutes les clés BitLocker du domaine",
       "description": "Exporte un rapport CSV de tous les ordinateurs du domaine avec leurs clés de récupération BitLocker (admin domaine).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 2,
       "tags": [
@@ -31753,7 +31753,7 @@
       "id": "bitlocker-ad-find-by-recovery-password",
       "title": "Trouver un ordinateur par son mot de passe de récupération BitLocker",
       "description": "Recherche dans AD quel ordinateur correspond à un mot de passe de récupération BitLocker donné (utile quand un utilisateur a le mot de passe mais pas le nom du PC).",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31822,7 +31822,7 @@
       "id": "bitlocker-ad-compliance-report",
       "title": "Générer un rapport de conformité BitLocker pour la direction",
       "description": "Génère un rapport exécutif de conformité BitLocker avec statistiques, graphiques et ordinateurs non conformes.",
-      "category": "🔒 BitLocker & Encryption",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -31886,7 +31886,7 @@
       "id": "defender-ad-get-protection-status-domain",
       "title": "Auditer l'état de Windows Defender sur tout le domaine",
       "description": "Vérifie l'état de Windows Defender (protection active/inactive) sur tous les ordinateurs du domaine via requêtes à distance.",
-      "category": "🛡️ Windows Defender",
+      "category": "🔒 Security & Encryption",
       "platform": 0,
       "level": 1,
       "tags": [
@@ -32099,7 +32099,7 @@
       "id": "unified-disk-space",
       "title": "Afficher l'espace disque disponible",
       "description": "Affiche l'espace disque utilisé et disponible sur les partitions",
-      "category": "💾 Disk & Storage",
+      "category": "📁 Files & Storage",
       "platform": 2,
       "level": 0,
       "tags": [
@@ -32181,7 +32181,7 @@
       "id": "unified-firewall-rules",
       "title": "Lister les règles de pare-feu actives",
       "description": "Affiche toutes les règles de pare-feu actives sur le système",
-      "category": "🔐 Security & Firewall",
+      "category": "🔒 Security & Encryption",
       "platform": 2,
       "level": 0,
       "tags": [
