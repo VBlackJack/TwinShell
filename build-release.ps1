@@ -2,7 +2,7 @@
 # Creates both portable and installer-ready builds
 
 param(
-    [string]$Version = "1.0.0",
+    [string]$Version = "1.2.0",
     [switch]$SkipClean
 )
 
@@ -79,7 +79,7 @@ System Requirements:
 - Windows 10/11 (64-bit)
 - .NET 8.0 Runtime (included - self-contained)
 
-For more information, visit: https://github.com/yourusername/TwinShell
+For more information, visit: https://github.com/VBlackJack/TwinShell
 "@
 
 $portableReadme | Out-File -FilePath (Join-Path $PortablePath "README.txt") -Encoding UTF8

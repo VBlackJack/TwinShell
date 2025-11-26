@@ -477,7 +477,7 @@ Vérifiez la valeur de `Theme` :
 3. Modifiez `ThemeService.cs` pour charger votre thème
 4. Recompilez l'application
 
-**À venir :** Un éditeur de thèmes est prévu dans une future version (v1.2+).
+**À venir :** Un éditeur de thèmes est prévu dans une future version.
 
 ---
 
@@ -719,7 +719,7 @@ Appuyez sur **F1** pour afficher la liste complète des raccourcis.
 
 ### Q : Quand pourrai-je ajouter mes propres commandes via l'interface ?
 
-**R :** Cette fonctionnalité est **prévue pour la version 1.1** (Q2 2025).
+**R :** Cette fonctionnalité est **disponible depuis la version 1.2.0**.
 
 **Fonctionnalités attendues :**
 - Créer une nouvelle commande via un formulaire
@@ -733,7 +733,7 @@ Appuyez sur **F1** pour afficher la liste complète des raccourcis.
 
 ### Q : Y aura-t-il un support multi-langues (anglais) ?
 
-**R :** Oui, prévu pour la **version 1.1+**.
+**R :** Prévu pour une **future version**.
 
 **Langues prévues :**
 - 🇫🇷 Français (actuel)
@@ -747,7 +747,7 @@ Settings → **Language** → Français | English
 
 ### Q : Est-il prévu d'intégrer un terminal directement dans TwinShell ?
 
-**R :** Oui, c'est dans la **roadmap pour v1.2+**.
+**R :** Oui, c'est dans la **roadmap pour une future version**.
 
 **Fonctionnalités envisagées :**
 - Terminal PowerShell intégré

@@ -4,7 +4,7 @@
 #define MyAppName "TwinShell"
 #define MyAppVersion "1.2.0"
 #define MyAppPublisher "TwinShell"
-#define MyAppURL "https://github.com/yourusername/TwinShell"
+#define MyAppURL "https://github.com/VBlackJack/TwinShell"
 #define MyAppExeName "TwinShell.App.exe"
 #define MyAppDescription "A comprehensive PowerShell command library for Windows system administrators"
 

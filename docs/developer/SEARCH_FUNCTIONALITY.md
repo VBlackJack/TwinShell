@@ -387,7 +387,7 @@ Après le déploiement, testez les scénarios suivants dans l'interface :
 
 ---
 
-## 11. NOUVELLES FONCTIONNALITÉS (2025-01-XX)
+## 11. NOUVELLES FONCTIONNALITÉS (2025-01)
 
 ### ✅ Implémentées
 
@@ -530,7 +530,7 @@ Recherche : "service"
 
 ---
 
-## 12. CHANGEMENTS TECHNIQUES (2025-01-XX)
+## 12. CHANGEMENTS TECHNIQUES (2025-01)
 
 ### Fichiers Créés
 
@@ -812,7 +812,7 @@ var results3 = await searchService.SearchAsync(allActions, "réseau");
 
 ### C. Changelog
 
-#### Version 1.1.0 (2025-01-XX)
+#### Version 1.1.0 (2025-01)
 
 **Nouvelles Fonctionnalités :**
 - ✨ Normalisation complète des accents/diacritiques
@@ -834,7 +834,7 @@ var results3 = await searchService.SearchAsync(allActions, "réseau");
 
 ---
 
-**Document créé le :** 2025-01-XX
-**Dernière mise à jour :** 2025-01-XX
-**Version :** 1.1.0
+**Document créé le :** 2025-01
+**Dernière mise à jour :** 2025-11-26
+**Version :** 1.2.0
 **Auteur :** Audit de la fonctionnalité de recherche TwinShell

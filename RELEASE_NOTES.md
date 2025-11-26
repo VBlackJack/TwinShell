@@ -140,9 +140,9 @@ None at this time.
 
 ## Feedback and Support
 
-- **Issues**: Report bugs at https://github.com/yourusername/TwinShell/issues
-- **Discussions**: Join the conversation at https://github.com/yourusername/TwinShell/discussions
-- **Documentation**: Visit https://github.com/yourusername/TwinShell/wiki
+- **Issues**: Report bugs at https://github.com/VBlackJack/TwinShell/issues
+- **Discussions**: Join the conversation at https://github.com/VBlackJack/TwinShell/discussions
+- **Documentation**: Visit https://github.com/VBlackJack/TwinShell/wiki
 
 ## License
 

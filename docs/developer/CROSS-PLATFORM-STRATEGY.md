@@ -31,7 +31,7 @@
 [Setup]
 MinVersion=10.0                          # Windows 10+ requis
 ArchitecturesAllowed=x64                # x64 uniquement
-OutputBaseFilename=TwinShell-v1.0.0-Setup-win-x64
+OutputBaseFilename=TwinShell-v{#MyAppVersion}-Setup-win-x64
 ```
 
 **Limitations**:
@@ -78,7 +78,7 @@ dotnet publish -c Release -r osx-x64 --self-contained
          -c Release -r win-x64 --self-contained `
          -o ./portable
        Compress-Archive -Path ./portable/* `
-         -DestinationPath TwinShell-v1.0.0-Portable-win-x64.zip
+         -DestinationPath TwinShell-v$VERSION-Portable-win-x64.zip
    ```
 3. **Documenter** les Runtime Identifiers supportés dans README
 
