@@ -541,65 +541,6 @@
       }
     },
     {
-      "id": "network-show-open-ports",
-      "title": "Lister les processus",
-      "description": "Liste tous les ports TCP/UDP en écoute et les connexions établies avec les processus associés",
-      "category": "⚙️ Processus",
-      "platform": 2,
-      "supportedPlatforms": [
-        0
-      ],
-      "level": 0,
-      "tags": [
-        "diagnostic",
-        "network",
-        "listening",
-        "ports",
-        "connections"
-      ],
-      "notes": "Windows: State = Listen (en écoute), Established (connecté), TimeWait (fermeture en cours). Nécessite droits administrateur pour voir les processus.",
-      "links": [
-        {
-          "title": "Get-NetTCPConnection Documentation",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-nettcpconnection"
-        }
-      ],
-      "windowsCommandTemplateId": "network-show-open-ports-cmd",
-      "windowsCommandTemplate": {
-        "id": "network-show-open-ports-cmd",
-        "platform": 0,
-        "name": "Get-NetTCPConnection",
-        "commandPattern": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,@{Name='ProcessName';Expression={(Get-Process -Id $_.OwningProcess).ProcessName}},OwningProcess | Sort-Object LocalPort | Format-Table -AutoSize",
-        "parameters": []
-      },
-      "windowsExamples": [
-        {
-          "command": "Get-NetTCPConnection -State Listen | Sort-Object LocalPort",
-          "description": "Affiche tous les ports en écoute"
-        },
-        {
-          "command": "Get-NetTCPConnection -State Established | Format-Table",
-          "description": "Affiche toutes les connexions établies"
-        },
-        {
-          "command": "netstat -anob",
-          "description": "Alternative classique avec le nom des exécutables"
-        },
-        {
-          "command": "Get-NetTCPConnection -State Listen | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "Get-NetTCPConnection -State Listen | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "Get-NetTCPConnection -State Listen | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ]
-    },
-    {
       "id": "kill-process",
       "title": "Terminer un processus",
       "description": "Envoie un signal à un processus pour le terminer (par défaut SIGTERM)",
@@ -1531,7 +1472,7 @@
     },
     {
       "id": "unified-search-content",
-      "title": "Rechercher des fichiers",
+      "title": "Rechercher dans le contenu de fichiers",
       "description": "Recherche une chaîne de caractères dans le contenu des fichiers.",
       "category": "📁 Fichiers",
       "platform": 2,
@@ -1550,7 +1491,7 @@
         "contenu",
         "windows"
       ],
-      "notes": "Windows: Select-String est l'équivalent PowerShell de grep. Supporte les regex.\nLinux: -name sensible à la casse, -iname insensible. -type f pour fichiers, -type d pour dossiers.",
+      "notes": "Windows: Select-String est l'équivalent PowerShell de grep. Supporte les regex.\nLinux: -r récursif, -i insensible à la casse, -n affiche les numéros de ligne.",
       "links": [
         {
           "title": "Documentation Select-String",
@@ -1620,68 +1561,59 @@
           "description": "Exemple utilisant le paramètre 'searchPath': Dossier où chercher. Remplacez <searchPath> par la valeur appropriée selon votre environnement."
         }
       ],
-      "linuxCommandTemplateId": "search-find-files-linux-cmd",
+      "linuxCommandTemplateId": "search-content-linux-cmd",
       "linuxCommandTemplate": {
-        "id": "search-find-files-linux-cmd",
+        "id": "search-content-linux-cmd",
         "platform": 1,
-        "name": "find",
-        "commandPattern": "find \"{searchPath}\" -name \"{pattern}\"",
+        "name": "grep",
+        "commandPattern": "grep -r \"{searchTerm}\" \"{searchPath}\"",
         "parameters": [
+          {
+            "name": "searchTerm",
+            "label": "Terme recherché",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Texte ou regex à rechercher"
+          },
           {
             "name": "searchPath",
             "label": "Chemin de recherche",
             "type": "string",
-            "defaultValue": "/",
+            "defaultValue": ".",
             "required": true,
-            "description": "Dossier où commencer la recherche"
-          },
-          {
-            "name": "pattern",
-            "label": "Motif de recherche",
-            "type": "string",
-            "defaultValue": "*.txt",
-            "required": true,
-            "description": "Motif de nom de fichier (ex: *.txt, *.log)"
+            "description": "Dossier où chercher"
           }
         ]
       },
       "linuxExamples": [
         {
-          "command": "find /home -name \"*.pdf\"",
-          "description": "Trouve tous les fichiers PDF dans /home"
+          "command": "grep -r \"ERROR\" /var/log",
+          "description": "Cherche ERROR dans tous les fichiers de /var/log"
         },
         {
-          "command": "find / -name \"config.json\" 2>/dev/null",
-          "description": "Cherche config.json en ignorant les erreurs"
+          "command": "grep -rn \"TODO\" --include=\"*.py\"",
+          "description": "Trouve TODO dans les fichiers Python avec numéros de ligne"
         },
         {
-          "command": "find . -type f -mtime -7",
-          "description": "Fichiers modifiés dans les 7 derniers jours"
+          "command": "grep -i \"password\" config.txt",
+          "description": "Recherche insensible à la casse"
         },
         {
-          "command": "find --help",
-          "description": "Affiche l'aide complète de la commande find. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
+          "command": "grep --help",
+          "description": "Affiche l'aide complète de la commande grep."
         },
         {
-          "command": "man find",
-          "description": "Affiche le manuel complet de find. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "find \"/\" -name \"{pattern}\"",
-          "description": "Exemple utilisant le paramètre 'searchPath': Dossier où commencer la recherche. Remplacez <searchPath> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "find \"{searchPath}\" -name \"*.txt\"",
-          "description": "Exemple utilisant le paramètre 'pattern': Motif de nom de fichier (ex: *.txt, *.log). Remplacez <pattern> par la valeur appropriée selon votre environnement."
+          "command": "man grep",
+          "description": "Affiche le manuel complet de grep."
         }
       ],
       "crossPlatformNotes": {
         "differences": [
-          "Windows utilise 3 paramètre(s), Linux en utilise 2",
-          "Syntaxe: Windows utilise 'Select-String', Linux utilise 'find'"
+          "Syntaxe: Windows utilise 'Select-String', Linux utilise 'grep'"
         ],
         "commonalities": [
-          "Les deux permettent de rechercher des fichiers",
+          "Les deux permettent de rechercher dans le contenu des fichiers",
           "Fonctionnalité équivalente sur les deux plateformes"
         ]
       }
@@ -2467,6 +2399,388 @@
         ],
         "commonalities": [
           "Les deux permettent de modifier les permissions de fichiers",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-file-copy",
+      "title": "Copier des fichiers ou dossiers",
+      "description": "Copie des fichiers ou des répertoires avec leurs sous-dossiers.",
+      "category": "📁 Gestion de Fichiers",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 0,
+      "tags": [
+        "fichier",
+        "copie",
+        "copy",
+        "cp",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: -Recurse copie les sous-dossiers. -Force écrase les fichiers existants.\nLinux: -r pour récursif (dossiers), -v pour verbeux, -p pour préserver les permissions.",
+      "links": [
+        {
+          "title": "Documentation Copy-Item",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item"
+        },
+        {
+          "title": "cp documentation",
+          "url": "https://man7.org/linux/man-pages/man1/cp.1.html"
+        }
+      ],
+      "windowsCommandTemplateId": "file-copy-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "file-copy-windows-cmd",
+        "platform": 0,
+        "name": "Copy-Item",
+        "commandPattern": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
+        "parameters": [
+          {
+            "name": "sourcePath",
+            "label": "Chemin source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier à copier"
+          },
+          {
+            "name": "destinationPath",
+            "label": "Chemin destination",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin de destination"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "Copy-Item -Path \"C:\\Source\\*\" -Destination \"D:\\Backup\" -Recurse -Force",
+          "description": "Copie tout le contenu de C:\\Source vers D:\\Backup"
+        },
+        {
+          "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Copy-Item -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
+        },
+        {
+          "command": "Copy-Item -Path \"<sourcePath>\" -Destination \"{destinationPath}\" -Recurse -Force",
+          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à copier. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
+        },
+        {
+          "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"<destinationPath>\" -Recurse -Force",
+          "description": "Exemple utilisant le paramètre 'destinationPath': Chemin de destination. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
+        },
+        {
+          "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
+          "description": "Cas d'usage standard. Copie des fichiers ou des répertoires avec leurs sous-dossiers. Consultez la documentation pour des paramètres avancés et des options de filtrage."
+        }
+      ],
+      "linuxCommandTemplateId": "file-copy-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "file-copy-linux-cmd",
+        "platform": 1,
+        "name": "cp",
+        "commandPattern": "cp -r \"{sourcePath}\" \"{destinationPath}\"",
+        "parameters": [
+          {
+            "name": "sourcePath",
+            "label": "Chemin source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier à copier"
+          },
+          {
+            "name": "destinationPath",
+            "label": "Chemin destination",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin de destination"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "cp -r /home/user/documents /backup/documents",
+          "description": "Copie le dossier documents vers le backup"
+        },
+        {
+          "command": "cp -v file.txt /destination/",
+          "description": "Copie un fichier en mode verbeux"
+        },
+        {
+          "command": "cp -rp /source /dest",
+          "description": "Copie récursive en préservant les permissions"
+        },
+        {
+          "command": "cp --help",
+          "description": "Affiche l'aide complète de la commande cp."
+        },
+        {
+          "command": "man cp",
+          "description": "Affiche le manuel complet de cp."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Copy-Item', Linux utilise 'cp'"
+        ],
+        "commonalities": [
+          "Les deux permettent de copier des fichiers et dossiers",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-system-update",
+      "title": "Vérifier les mises à jour système",
+      "description": "Liste les mises à jour disponibles pour le système d'exploitation.",
+      "category": "🔄 Updates",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 0,
+      "tags": [
+        "update",
+        "mise à jour",
+        "windows-update",
+        "apt",
+        "packages",
+        "système"
+      ],
+      "notes": "Windows: Nécessite le module PSWindowsUpdate (Install-Module PSWindowsUpdate). Droits administrateur requis.\nLinux: Nécessite sudo. À exécuter avant apt upgrade. N'installe aucun paquet, ne fait que rafraîchir les métadonnées.",
+      "links": [
+        {
+          "title": "PSWindowsUpdate Module",
+          "url": "https://www.powershellgallery.com/packages/PSWindowsUpdate"
+        },
+        {
+          "title": "APT documentation",
+          "url": "https://manpages.ubuntu.com/manpages/jammy/man8/apt.8.html"
+        }
+      ],
+      "windowsCommandTemplateId": "windowsupdate-check-pending-cmd",
+      "windowsCommandTemplate": {
+        "id": "windowsupdate-check-pending-cmd",
+        "platform": 0,
+        "name": "Get-WindowsUpdate",
+        "commandPattern": "Get-WindowsUpdate -MicrosoftUpdate -Verbose",
+        "parameters": []
+      },
+      "windowsExamples": [
+        {
+          "command": "Get-WindowsUpdate -MicrosoftUpdate",
+          "description": "Liste toutes les mises à jour disponibles depuis Windows Update et Microsoft Update"
+        },
+        {
+          "command": "Get-WindowsUpdate -NotCategory 'Drivers'",
+          "description": "Liste les mises à jour en excluant les pilotes"
+        },
+        {
+          "command": "Get-WindowsUpdate -MicrosoftUpdate -Verbose | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
+        },
+        {
+          "command": "Get-WindowsUpdate -MicrosoftUpdate -Verbose | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées."
+        },
+        {
+          "command": "Get-WindowsUpdate -MicrosoftUpdate -Verbose | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
+        },
+        {
+          "command": "Get-WindowsUpdate -MicrosoftUpdate -Verbose | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
+        }
+      ],
+      "linuxCommandTemplateId": "apt-update-cmd",
+      "linuxCommandTemplate": {
+        "id": "apt-update-cmd",
+        "platform": 1,
+        "name": "apt",
+        "commandPattern": "sudo apt update",
+        "parameters": []
+      },
+      "linuxExamples": [
+        {
+          "command": "sudo apt update",
+          "description": "Met à jour la liste des paquets disponibles"
+        },
+        {
+          "command": "sudo apt update && apt list --upgradable",
+          "description": "Met à jour et liste les paquets pouvant être mis à niveau"
+        },
+        {
+          "command": "sudo apt update -y",
+          "description": "Met à jour sans demander de confirmation"
+        },
+        {
+          "command": "apt --help",
+          "description": "Affiche l'aide complète de la commande apt."
+        },
+        {
+          "command": "man apt",
+          "description": "Affiche le manuel complet de apt."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Get-WindowsUpdate', Linux utilise 'apt update'"
+        ],
+        "commonalities": [
+          "Les deux permettent de vérifier les mises à jour disponibles",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-find-files",
+      "title": "Rechercher des fichiers par nom",
+      "description": "Recherche des fichiers ou dossiers par nom ou motif (pattern).",
+      "category": "🔍 Recherche & Exploration",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 0,
+      "tags": [
+        "recherche",
+        "find",
+        "search",
+        "fichier",
+        "nom",
+        "pattern",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: -Recurse cherche dans les sous-dossiers. -ErrorAction SilentlyContinue ignore les erreurs d'accès.\nLinux: -name sensible à la casse, -iname insensible. -type f pour fichiers, -type d pour dossiers.",
+      "links": [
+        {
+          "title": "Documentation Get-ChildItem",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem"
+        },
+        {
+          "title": "find documentation",
+          "url": "https://man7.org/linux/man-pages/man1/find.1.html"
+        }
+      ],
+      "windowsCommandTemplateId": "search-find-files-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "search-find-files-windows-cmd",
+        "platform": 0,
+        "name": "Get-ChildItem",
+        "commandPattern": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName,Length,LastWriteTime",
+        "parameters": [
+          {
+            "name": "searchPath",
+            "label": "Chemin de recherche",
+            "type": "string",
+            "defaultValue": "C:\\",
+            "required": true,
+            "description": "Dossier où commencer la recherche"
+          },
+          {
+            "name": "pattern",
+            "label": "Motif de recherche",
+            "type": "string",
+            "defaultValue": "*.txt",
+            "required": true,
+            "description": "Motif de nom de fichier (ex: *.txt, *.log)"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "Get-ChildItem -Path \"C:\\Users\" -Filter \"*.pdf\" -Recurse -ErrorAction SilentlyContinue",
+          "description": "Trouve tous les fichiers PDF dans C:\\Users"
+        },
+        {
+          "command": "Get-ChildItem -Path \"C:\\\" -Filter \"config.json\" -Recurse",
+          "description": "Cherche tous les fichiers config.json"
+        },
+        {
+          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
+        },
+        {
+          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées."
+        },
+        {
+          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
+        },
+        {
+          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
+        },
+        {
+          "command": "Get-ChildItem -Path \"C:\\\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName,Length,LastWriteTime",
+          "description": "Exemple utilisant le paramètre 'searchPath': Dossier où commencer la recherche. Remplacez <searchPath> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "linuxCommandTemplateId": "find-files-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "find-files-linux-cmd",
+        "platform": 1,
+        "name": "find",
+        "commandPattern": "find \"{searchPath}\" -name \"{pattern}\"",
+        "parameters": [
+          {
+            "name": "searchPath",
+            "label": "Chemin de recherche",
+            "type": "string",
+            "defaultValue": "/",
+            "required": true,
+            "description": "Dossier où commencer la recherche"
+          },
+          {
+            "name": "pattern",
+            "label": "Motif de recherche",
+            "type": "string",
+            "defaultValue": "*.txt",
+            "required": true,
+            "description": "Motif de nom de fichier (ex: *.txt, *.log)"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "find /home -name \"*.pdf\"",
+          "description": "Trouve tous les fichiers PDF dans /home"
+        },
+        {
+          "command": "find . -name \"config.json\"",
+          "description": "Cherche tous les fichiers config.json"
+        },
+        {
+          "command": "find /var -type f -name \"*.log\" -mtime -7",
+          "description": "Fichiers .log modifiés dans les 7 derniers jours"
+        },
+        {
+          "command": "find --help",
+          "description": "Affiche l'aide complète de la commande find."
+        },
+        {
+          "command": "man find",
+          "description": "Affiche le manuel complet de find."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Get-ChildItem', Linux utilise 'find'"
+        ],
+        "commonalities": [
+          "Les deux permettent de rechercher des fichiers par nom",
           "Fonctionnalité équivalente sur les deux plateformes"
         ]
       }
@@ -6102,151 +6416,6 @@
       ],
       "notes": "Le filtrage de sécurité limite l'application de la GPO aux groupes/utilisateurs spécifiés. Nécessite aussi Read.",
       "links": []
-    },
-    {
-      "id": "file-copy-windows",
-      "title": "Copier des fichiers ou dossiers (Windows)",
-      "description": "Copie des fichiers ou des répertoires avec leurs sous-dossiers.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "fichier",
-        "copie",
-        "copy",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "file-copy-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "file-copy-windows-cmd",
-        "platform": 0,
-        "name": "Copy-Item",
-        "commandPattern": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
-        "parameters": [
-          {
-            "name": "sourcePath",
-            "label": "Chemin source",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier à copier"
-          },
-          {
-            "name": "destinationPath",
-            "label": "Chemin destination",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin de destination"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "Copy-Item -Path \"C:\\Source\\*\" -Destination \"D:\\Backup\" -Recurse -Force",
-          "description": "Copie tout le contenu de C:\\Source vers D:\\Backup"
-        },
-        {
-          "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Copy-Item -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
-        },
-        {
-          "command": "Copy-Item -Path \"<sourcePath>\" -Destination \"{destinationPath}\" -Recurse -Force",
-          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à copier. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"<destinationPath>\" -Recurse -Force",
-          "description": "Exemple utilisant le paramètre 'destinationPath': Chemin de destination. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
-          "description": "Cas d'usage standard. Copie des fichiers ou des répertoires avec leurs sous-dossiers. Consultez la documentation pour des paramètres avancés et des options de filtrage."
-        }
-      ],
-      "notes": "-Recurse copie les sous-dossiers. -Force écrase les fichiers existants.",
-      "links": [
-        {
-          "title": "Documentation Copy-Item",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item"
-        }
-      ]
-    },
-    {
-      "id": "search-find-files-windows",
-      "title": "Rechercher des fichiers par nom (Windows)",
-      "description": "Recherche des fichiers ou dossiers par nom ou motif.",
-      "category": "🔍 Recherche & Exploration",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "recherche",
-        "find",
-        "search",
-        "fichier",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "search-find-files-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "search-find-files-windows-cmd",
-        "platform": 0,
-        "name": "Get-ChildItem",
-        "commandPattern": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName,Length,LastWriteTime",
-        "parameters": [
-          {
-            "name": "searchPath",
-            "label": "Chemin de recherche",
-            "type": "string",
-            "defaultValue": "C:\\",
-            "required": true,
-            "description": "Dossier où commencer la recherche"
-          },
-          {
-            "name": "pattern",
-            "label": "Motif de recherche",
-            "type": "string",
-            "defaultValue": "*.txt",
-            "required": true,
-            "description": "Motif de nom de fichier (ex: *.txt, *.log)"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "Get-ChildItem -Path \"C:\\Users\" -Filter \"*.pdf\" -Recurse -ErrorAction SilentlyContinue",
-          "description": "Trouve tous les fichiers PDF dans C:\\Users"
-        },
-        {
-          "command": "Get-ChildItem -Path \"C:\\\" -Filter \"config.json\" -Recurse",
-          "description": "Cherche tous les fichiers config.json"
-        },
-        {
-          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Format-Table -AutoSize",
-          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées."
-        },
-        {
-          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "Get-ChildItem -Path \"{searchPath}\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        },
-        {
-          "command": "Get-ChildItem -Path \"C:\\\" -Filter \"{pattern}\" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName,Length,LastWriteTime",
-          "description": "Exemple utilisant le paramètre 'searchPath': Dossier où commencer la recherche. Remplacez <searchPath> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "-Recurse cherche dans les sous-dossiers. -ErrorAction SilentlyContinue ignore les erreurs d'accès.",
-      "links": [
-        {
-          "title": "Documentation Get-ChildItem",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem"
-        }
-      ]
     },
     {
       "id": "search-tree-windows",
@@ -20845,78 +21014,6 @@
       "links": []
     },
     {
-      "id": "search-content-linux",
-      "title": "Rechercher dans le contenu de fichiers (Linux)",
-      "description": "Recherche une chaîne de caractères dans le contenu des fichiers.",
-      "category": "🔍 Recherche & Exploration",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "recherche",
-        "contenu",
-        "grep",
-        "search",
-        "linux"
-      ],
-      "linuxCommandTemplateId": "search-content-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "search-content-linux-cmd",
-        "platform": 1,
-        "name": "grep",
-        "commandPattern": "grep -r \"{searchTerm}\" \"{searchPath}\"",
-        "parameters": [
-          {
-            "name": "searchTerm",
-            "label": "Terme recherché",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Texte ou regex à rechercher"
-          },
-          {
-            "name": "searchPath",
-            "label": "Chemin de recherche",
-            "type": "string",
-            "defaultValue": ".",
-            "required": true,
-            "description": "Dossier où chercher"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "grep -r \"ERROR\" /var/log",
-          "description": "Cherche ERROR dans tous les fichiers de /var/log"
-        },
-        {
-          "command": "grep -rn \"TODO\" --include=\"*.py\"",
-          "description": "Trouve TODO dans les fichiers Python avec numéros de ligne"
-        },
-        {
-          "command": "grep -i \"password\" config.txt",
-          "description": "Recherche insensible à la casse"
-        },
-        {
-          "command": "grep --help",
-          "description": "Affiche l'aide complète de la commande grep. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man grep",
-          "description": "Affiche le manuel complet de grep. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "grep -r \"<searchTerm>\" \"{searchPath}\"",
-          "description": "Exemple utilisant le paramètre 'searchTerm': Texte ou regex à rechercher. Remplacez <searchTerm> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "grep -r \"{searchTerm}\" \".\"",
-          "description": "Exemple utilisant le paramètre 'searchPath': Dossier où chercher. Remplacez <searchPath> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "-r récursif, -i insensible à la casse, -n affiche les numéros de ligne. --include pour filtrer les fichiers.",
-      "links": []
-    },
-    {
       "id": "search-tree-linux",
       "title": "Afficher l'arborescence de dossiers (Linux)",
       "description": "Affiche la structure hiérarchique d'un répertoire.",
@@ -27754,6 +27851,88 @@
         {
           "title": "mpstat documentation",
           "url": "https://man7.org/linux/man-pages/man1/mpstat.1.html"
+        }
+      ]
+    },
+    {
+      "id": "file-sync-rsync",
+      "title": "Synchroniser des fichiers (rsync)",
+      "description": "Synchronise des fichiers et dossiers localement ou via SSH avec rsync.",
+      "category": "📁 Gestion de Fichiers",
+      "platform": 1,
+      "level": 1,
+      "tags": [
+        "sync",
+        "backup",
+        "rsync",
+        "ssh",
+        "transfer",
+        "linux"
+      ],
+      "notes": "rsync est l'outil de synchronisation le plus puissant sous Linux. Le / final sur source change le comportement. --delete supprime les fichiers manquants côté destination.",
+      "links": [
+        {
+          "title": "rsync documentation",
+          "url": "https://man7.org/linux/man-pages/man1/rsync.1.html"
+        }
+      ],
+      "linuxCommandTemplateId": "rsync-cmd",
+      "linuxCommandTemplate": {
+        "id": "rsync-cmd",
+        "platform": 1,
+        "name": "rsync",
+        "commandPattern": "rsync -{options} \"{source}\" \"{destination}\"",
+        "parameters": [
+          {
+            "name": "options",
+            "label": "Options",
+            "type": "string",
+            "defaultValue": "avz",
+            "required": true,
+            "description": "Options (a=archive, v=verbose, z=compress, --delete, etc.)"
+          },
+          {
+            "name": "source",
+            "label": "Source",
+            "type": "string",
+            "defaultValue": "/source/path/",
+            "required": true,
+            "description": "Répertoire source"
+          },
+          {
+            "name": "destination",
+            "label": "Destination",
+            "type": "string",
+            "defaultValue": "/dest/path/",
+            "required": true,
+            "description": "Répertoire destination (local ou distant)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "rsync -avz /source/ /backup/",
+          "description": "Sauvegarde locale avec compression"
+        },
+        {
+          "command": "rsync -avz /data/ user@server:/backup/",
+          "description": "Sauvegarde distante via SSH"
+        },
+        {
+          "command": "rsync -avz --delete /source/ /backup/",
+          "description": "Synchronisation miroir (supprime fichiers en trop)"
+        },
+        {
+          "command": "rsync -avzn /source/ /dest/",
+          "description": "Simulation (dry-run) sans modification"
+        },
+        {
+          "command": "rsync --help",
+          "description": "Affiche l'aide complète de la commande rsync."
+        },
+        {
+          "command": "man rsync",
+          "description": "Affiche le manuel complet de rsync."
         }
       ]
     }
