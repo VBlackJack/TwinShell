@@ -228,26 +228,40 @@ Get-Service -Name Spooler
 systemctl status nginx
 ```
 
-### Exemples Intégrés
+### Exemples Interactifs (v1.2.0)
 
-Chaque commande inclut des **exemples d'utilisation** :
+Chaque commande inclut des **exemples d'utilisation** que vous pouvez **appliquer directement** au générateur :
+
+#### Mode Template (par défaut)
+Utilisez les paramètres prédéfinis du template de commande.
+
+#### Mode Exemple
+1. **Cliquez sur un exemple** dans la liste des exemples
+2. Le générateur **s'adapte automatiquement** à l'exemple sélectionné
+3. Les champs de paramètres sont **pré-remplis** avec les valeurs de l'exemple
+4. Modifiez les valeurs selon vos besoins
+5. Un badge **"Example Mode"** s'affiche pour indiquer le mode actif
+6. Cliquez sur **"Reset to Template"** pour revenir au mode template
+
+#### Scripts Complexes Éditables
+Pour les commandes complexes (contenant `foreach`, `ForEach-Object`, `while`, pipelines multiples, etc.), TwinShell affiche un **éditeur multiligne** :
 
 ```
-Exemple 1 : Lister tous les services
-Get-Service
-
-Exemple 2 : Obtenir un service spécifique
-Get-Service -Name Spooler
-
-Exemple 3 : Filtrer les services en cours d'exécution
-Get-Service | Where-Object {$_.Status -eq 'Running'}
-
-Exemple 4 : Génération de certificat (OpenSSL)
-openssl req -new -newkey rsa:2048 -nodes -keyout domain.key -out domain.csr
-(Génère automatiquement une clé privée RSA 2048 bits et une demande de signature CSR)
+┌─────────────────────────────────────────────────────────────────┐
+│  Command:                                                        │
+│  ┌─────────────────────────────────────────────────────────────┐ │
+│  │ 1..100 | ForEach-Object {                                   │ │
+│  │   Test-NetConnection 192.168.1.$_ -Port 80                  │ │
+│  │ } | Where-Object {$_.TcpTestSucceeded -eq $true}            │ │
+│  └─────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-> 💡 **Astuce** : Vous pouvez **sélectionner le texte** dans les exemples pour le copier manuellement.
+- Modifiez directement la commande dans l'éditeur
+- La police monospace (Consolas) facilite la lecture du code
+- La commande générée reflète vos modifications en temps réel
+
+> 💡 **Astuce** : Vous pouvez aussi **sélectionner le texte** dans les exemples pour le copier manuellement.
 
 ### Alertes de Sécurité
 

@@ -51,7 +51,8 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 
 ### 🛠️ Générateur de Commandes
 - **Paramètres dynamiques** : Remplissez simplement les champs, la commande se génère automatiquement
-- **Exemples intégrés** : Chaque commande inclut des exemples d'utilisation (avec sélection de texte)
+- **Exemples interactifs** : Sélectionnez un exemple et le générateur s'adapte automatiquement avec les bons champs
+- **Scripts complexes éditables** : Les commandes avec `foreach`, pipelines, etc. s'affichent dans un éditeur multiligne
 - **Copie en un clic** : Copiez la commande générée vers le presse-papiers
 - **Affichage des tags** : Identifiez rapidement le type de commande grâce aux tags visuels
 
@@ -168,12 +169,13 @@ L'interface TwinShell est divisée en 3 panneaux :
 #### 3. Générer et Copier une Commande
 
 1. **Sélectionnez une commande** dans la liste
-2. **Remplissez les paramètres** dans le panneau de droite (si applicable)
-   - Exemple : Pour "Get-Service", entrez le nom du service
-   - Les champs obligatoires sont marqués d'un astérisque (*)
-3. **La commande se génère automatiquement** en bas du panneau
-4. **Cliquez sur "📋 Copier dans le presse-papiers"**
-5. **Collez** dans votre terminal PowerShell ou Bash (Ctrl+V)
+2. **Utilisez le générateur de deux façons :**
+   - **Mode Template** : Remplissez les paramètres définis par le template
+   - **Mode Exemple** : Cliquez sur un exemple pour adapter le générateur à cet exemple
+3. **Pour les scripts complexes** (foreach, pipelines, etc.) : Un éditeur multiligne s'affiche pour modifier la commande
+4. **La commande se génère automatiquement** en bas du panneau
+5. **Cliquez sur "📋 Copier dans le presse-papiers"**
+6. **Collez** dans votre terminal PowerShell ou Bash (Ctrl+V)
 
 #### 4. Utiliser les Favoris
 
