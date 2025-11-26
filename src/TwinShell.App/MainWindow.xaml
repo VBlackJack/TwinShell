@@ -912,11 +912,35 @@
                                                             </TextBlock.Style>
                                                         </TextBlock>
                                                     </StackPanel>
-                                                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
-                                                             Style="{StaticResource ModernTextBoxStyle}"
+                                                    <!-- TextBox with dynamic style based on Type -->
+                                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Margin="0,4,0,0"
                                                              AutomationProperties.LabeledBy="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=Children[0]}"
-                                                             AutomationProperties.HelpText="{Binding Description}"/>
+                                                             AutomationProperties.HelpText="{Binding Description}">
+                                                        <TextBox.Style>
+                                                            <Style TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
+                                                                <Setter Property="MinHeight" Value="0"/>
+                                                                <Setter Property="MaxHeight" Value="Infinity"/>
+                                                                <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                                <Setter Property="AcceptsReturn" Value="False"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Type}" Value="multiline">
+                                                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                                                        <Setter Property="FontSize" Value="12"/>
+                                                                        <Setter Property="MinHeight" Value="80"/>
+                                                                        <Setter Property="MaxHeight" Value="200"/>
+                                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                                        <Setter Property="AcceptsReturn" Value="True"/>
+                                                                        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                                                                        <Setter Property="Background" Value="{DynamicResource CodeBackgroundBrush}"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource CodeTextBrush}"/>
+                                                                        <Setter Property="BorderBrush" Value="{DynamicResource CodeBorderBrush}"/>
+                                                                        <Setter Property="Padding" Value="8"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBox.Style>
+                                                    </TextBox>
                                                     <TextBlock Text="{Binding Description}"
                                                                FontSize="10"
                                                                Foreground="{DynamicResource TextSecondaryBrush}"

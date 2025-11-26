@@ -159,6 +159,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     /// Parse an example command and create dynamic parameters based on its structure.
     /// Handles PowerShell-style commands (Verb-Noun value -Param value) and Linux commands.
     /// For complex commands with pipes, parses the first command and preserves the rest.
+    /// For script-like commands (foreach, if, while, etc.), displays as-is without parsing.
     /// </summary>
     private void ParseExampleAndCreateParameters(string exampleCommand)
     {
@@ -167,6 +168,29 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         IsUsingExampleMode = true;
         CommandParameters.Clear();
+
+        // Check if this is a complex script that shouldn't be parsed
+        if (IsComplexScript(exampleCommand))
+        {
+            // Create a single editable "Command" field for complex scripts
+            _exampleCommandPattern = "{0}"; // Simple placeholder for the whole command
+
+            var paramVm = new ParameterViewModel
+            {
+                Name = "command",
+                Label = "Command",
+                Type = "multiline",
+                Required = false,
+                Description = "Edit this command as needed",
+                Value = exampleCommand
+            };
+
+            paramVm.ValueChanged += () => GenerateCommandFromExample();
+            CommandParameters.Add(paramVm);
+
+            GenerateCommandFromExample();
+            return;
+        }
 
         // Check for pipes - parse first command, keep rest as suffix
         string commandToParse = exampleCommand;
@@ -185,6 +209,14 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             pipeSuffix = commandToParse.Substring(semicolonIndex) + pipeSuffix;
             commandToParse = commandToParse.Substring(0, semicolonIndex).Trim();
+        }
+
+        // If the first part is also a complex script, don't parse
+        if (IsComplexScript(commandToParse))
+        {
+            _exampleCommandPattern = exampleCommand;
+            GeneratedCommand = exampleCommand;
+            return;
         }
 
         // Detect if it's a PowerShell command or Linux command
@@ -226,6 +258,112 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         // Generate the initial command
         GenerateCommandFromExample();
+    }
+
+    /// <summary>
+    /// Check if a command is a complex script that shouldn't be parsed into parameters.
+    /// These include: foreach loops, if statements, while loops, variable assignments with scripts,
+    /// powershell -Command with embedded scripts, watch commands, etc.
+    /// </summary>
+    private bool IsComplexScript(string command)
+    {
+        if (string.IsNullOrWhiteSpace(command))
+            return false;
+
+        var trimmed = command.TrimStart();
+
+        // PowerShell script patterns - statements
+        if (trimmed.StartsWith("foreach", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.StartsWith("for ", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.StartsWith("while", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.StartsWith("if ", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.StartsWith("if(", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.StartsWith("switch", StringComparison.OrdinalIgnoreCase) ||
+            trimmed.StartsWith("try", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        // PowerShell pipeline cmdlets with script blocks (ForEach-Object, Where-Object, etc.)
+        if (command.Contains("ForEach-Object", StringComparison.OrdinalIgnoreCase) ||
+            command.Contains("Where-Object", StringComparison.OrdinalIgnoreCase) ||
+            command.Contains("Select-Object", StringComparison.OrdinalIgnoreCase) ||
+            command.Contains("Sort-Object", StringComparison.OrdinalIgnoreCase) ||
+            command.Contains("Group-Object", StringComparison.OrdinalIgnoreCase) ||
+            command.Contains("Measure-Object", StringComparison.OrdinalIgnoreCase))
+        {
+            // If it has script blocks, it's complex
+            if (command.Contains("{") && command.Contains("}"))
+            {
+                return true;
+            }
+        }
+
+        // PowerShell range operator (1..100, $start..$end)
+        if (System.Text.RegularExpressions.Regex.IsMatch(trimmed, @"^\d+\.\.\d+"))
+        {
+            return true;
+        }
+
+        // Variable assignment followed by complex logic (semicolon indicates multi-statement script)
+        if (trimmed.StartsWith("$") && trimmed.Contains(";"))
+        {
+            return true;
+        }
+
+        // Commands starting with powercfg followed by complex logic
+        if (trimmed.StartsWith("powercfg", StringComparison.OrdinalIgnoreCase) && trimmed.Contains(";"))
+        {
+            return true;
+        }
+
+        // Register-ScheduledTask with embedded XML/script
+        if (command.Contains("Register-ScheduledTask", StringComparison.OrdinalIgnoreCase) &&
+            (command.Contains("(Get-Content") || command.Contains("-Xml")))
+        {
+            return true;
+        }
+
+        // powershell -Command "..." with embedded script
+        if (trimmed.StartsWith("powershell", StringComparison.OrdinalIgnoreCase) &&
+            trimmed.Contains("-Command"))
+        {
+            return true;
+        }
+
+        // Linux watch command with embedded command
+        if (trimmed.StartsWith("watch ", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        // Linux for/while loops
+        if (trimmed.StartsWith("for ", StringComparison.Ordinal) && trimmed.Contains("; do"))
+        {
+            return true;
+        }
+
+        // Commands with script blocks containing multiple pipes
+        int pipeCount = command.Count(c => c == '|');
+        int braceCount = command.Count(c => c == '{');
+        if (pipeCount >= 2 && braceCount >= 1)
+        {
+            return true;
+        }
+
+        // Commands with unbalanced quotes/braces (complex multi-part scripts)
+        int braceOpen = command.Count(c => c == '{');
+        int braceClose = command.Count(c => c == '}');
+        int parenOpen = command.Count(c => c == '(');
+        int parenClose = command.Count(c => c == ')');
+
+        // If things are unbalanced, it's likely a complex script
+        if (braceOpen != braceClose || parenOpen != parenClose)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -1446,11 +1584,20 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
 public partial class ParameterViewModel : ObservableObject
 {
-    public string Name { get; set; } = string.Empty;
-    public string Label { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty;
-    public bool Required { get; set; }
-    public string Description { get; set; } = string.Empty;
+    [ObservableProperty]
+    private string _name = string.Empty;
+
+    [ObservableProperty]
+    private string _label = string.Empty;
+
+    [ObservableProperty]
+    private string _type = string.Empty;
+
+    [ObservableProperty]
+    private bool _required;
+
+    [ObservableProperty]
+    private string _description = string.Empty;
 
     [ObservableProperty]
     private string _value = string.Empty;
