@@ -15,7 +15,13 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(powershell -Command \"Write-Host $env:LOCALAPPDATA\\TwinShell\")",
+      "Bash(powershell -Command \"[Environment]::GetFolderPath(''LocalApplicationData'') + ''\\TwinShell''\")",
+      "Bash(powershell -Command \"Get-ChildItem ''C:\\Users\\User\\AppData\\Local\\TwinShell'' -Recurse | Select-Object FullName, LastWriteTime\")",
+      "Bash(powershell:*)",
+      "Bash(start src/TwinShell.App/bin/Release/net8.0-windows/win-x64/TwinShell.App.exe)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": []

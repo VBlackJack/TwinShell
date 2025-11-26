@@ -399,11 +399,6 @@
           "command": "Get-GPO -All | Measure-Object",
           "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
           "platform": 2
-        },
-        {
-          "command": "Get-GPO -All | Select-Object DisplayName,Id,GpoStatus,CreationTime | Format-Table -AutoSize",
-          "description": "Cas d'usage standard. Affiche la liste complète des stratégies de groupe (GPO) configurées dans le domaine. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Nécessite le module Group Policy PowerShell.",
@@ -458,11 +453,6 @@
         {
           "command": "gpresult /R /S localhost",
           "description": "Exemple utilisant le paramètre 'targetHost': Nom de la machine cible (localhost par défaut). Remplacez <targetHost> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "gpresult /R /S {targetHost}",
-          "description": "Cas d'usage standard. Affiche toutes les stratégies de groupe appliquées à un ordinateur spécifique. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -1988,11 +1978,6 @@
           "command": "Get-ADOrganizationalUnit -Filter * -Properties Description | Measure-Object",
           "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
           "platform": 2
-        },
-        {
-          "command": "Get-ADOrganizationalUnit -Filter * -Properties Description | Select-Object Name,DistinguishedName,Description | Format-Table -AutoSize",
-          "description": "Cas d'usage standard. Affiche la liste de toutes les unités d'organisation dans Active Directory. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Affiche toutes les OUs du domaine. Utile pour identifier les chemins pour la création d'objets.",
@@ -2152,11 +2137,6 @@
           "command": "Move-ADObject -Identity \"{objectDN}\" -TargetPath \"<targetOU>\"",
           "description": "Exemple utilisant le paramètre 'targetOU': Distinguished Name de l'OU de destination. Remplacez <targetOU> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "Move-ADObject -Identity \"{objectDN}\" -TargetPath \"{targetOU}\"",
-          "description": "Cas d'usage standard. Déplace un utilisateur, ordinateur ou autre objet vers une unité d'organisation différente. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Nécessite le DN complet de l'objet. Utiliser Get-ADUser/Get-ADComputer -Identity xxx pour obtenir le DN.",
@@ -2308,11 +2288,6 @@
         {
           "command": "Get-ADDomainController -Filter * | Measure-Object",
           "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
-          "platform": 2
-        },
-        {
-          "command": "Get-ADDomainController -Filter * | Select-Object Name,Domain,Forest,OperatingSystem,IPv4Address | Format-Table -AutoSize",
-          "description": "Cas d'usage standard. Affiche la liste de tous les contrôleurs de domaine Active Directory. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -2863,11 +2838,6 @@
           "command": "Copy-GPO -SourceName \"{sourceGPO}\" -TargetName \"<targetGPO>\"",
           "description": "Exemple utilisant le paramètre 'targetGPO': Nom de la nouvelle GPO. Remplacez <targetGPO> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "Copy-GPO -SourceName \"{sourceGPO}\" -TargetName \"{targetGPO}\"",
-          "description": "Cas d'usage standard. Crée une copie d'une stratégie de groupe existante. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Copie tous les paramètres mais pas les liens GPO. Les liens doivent être recréés manuellement.",
@@ -3253,11 +3223,6 @@
           "command": "Backup-GPO -Name \"{gpoName}\" -Path \"C:\\GPOBackups\"",
           "description": "Exemple utilisant le paramètre 'backupPath': Chemin du dossier de sauvegarde. Remplacez <backupPath> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "Backup-GPO -Name \"{gpoName}\" -Path \"{backupPath}\"",
-          "description": "Cas d'usage standard. Crée une sauvegarde d'une stratégie de groupe spécifique. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Le dossier de destination doit exister. La sauvegarde inclut tous les paramètres de la GPO.",
@@ -3307,16 +3272,6 @@
         {
           "command": "Backup-GPO -All -Path \"{backupPath}\"",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Backup-GPO -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Backup-GPO -All -Path \"C:\\GPOBackups\"",
-          "description": "Exemple utilisant le paramètre 'backupPath': Chemin du dossier de sauvegarde. Remplacez <backupPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "Backup-GPO -All -Path \"{backupPath}\"",
-          "description": "Cas d'usage standard. Crée une sauvegarde de toutes les stratégies de groupe du domaine. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -3380,11 +3335,6 @@
         {
           "command": "Restore-GPO -Name \"{gpoName}\" -Path \"C:\\GPOBackups\"",
           "description": "Exemple utilisant le paramètre 'backupPath': Chemin du dossier de sauvegarde. Remplacez <backupPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "Restore-GPO -Name \"{gpoName}\" -Path \"{backupPath}\"",
-          "description": "Cas d'usage standard. Restaure une stratégie de groupe à partir d'une sauvegarde. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -3683,11 +3633,6 @@
           "command": "gpresult /R /USER <username>",
           "description": "Exemple utilisant le paramètre 'username': Nom d'utilisateur (format DOMAIN\\username). Remplacez <username> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "gpresult /R /USER {username}",
-          "description": "Cas d'usage standard. Affiche toutes les GPO appliquées à un utilisateur spécifique. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Pour un rapport HTML détaillé, utiliser /H au lieu de /R. Nécessite des droits administrateur.",
@@ -3732,16 +3677,6 @@
         {
           "command": "gpresult /H \"{outputPath}\" /F",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help gpresult -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "gpresult /H \"C:\\GPOReports\\rsop.html\" /F",
-          "description": "Exemple utilisant le paramètre 'outputPath': Chemin complet du fichier HTML à créer. Remplacez <outputPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "gpresult /H \"{outputPath}\" /F",
-          "description": "Cas d'usage standard. Génère un rapport RSoP détaillé des stratégies appliquées à un utilisateur/ordinateur. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -4345,11 +4280,6 @@
           "command": "Expand-Archive -Path \"{zipPath}\" -DestinationPath \".\" -Force",
           "description": "Exemple utilisant le paramètre 'destinationPath': Dossier de destination. Remplacez <destinationPath> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "Expand-Archive -Path \"{zipPath}\" -DestinationPath \"{destinationPath}\" -Force",
-          "description": "Cas d'usage standard. Extrait le contenu d'une archive ZIP. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "-Force écrase les fichiers existants.",
@@ -4585,32 +4515,37 @@
         {
           "command": "dotnet build MyApp.csproj --configuration Release",
           "description": "Compile en mode Release",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet build --no-restore",
           "description": "Compile sans restaurer les packages",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet --help",
           "description": "Affiche l'aide complète de la commande dotnet. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "man dotnet",
           "description": "Affiche le manuel complet de dotnet. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet build \".\" --configuration {configuration}",
           "description": "Exemple utilisant le paramètre 'projectPath': Chemin du .csproj, .sln ou dossier. Remplacez <projectPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet build \"{projectPath}\" --configuration Release",
           "description": "Exemple utilisant le paramètre 'configuration': Debug ou Release. Remplacez <configuration> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
+        },
+        {
+          "command": "dotnet build \"<projectPath>\" --configuration <configuration>",
+          "description": "Exemple Linux utilisant dotnet build. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 1
         }
       ],
       "notes": "--no-restore évite la restauration des packages. --output pour spécifier le dossier de sortie.",
@@ -4689,32 +4624,37 @@
         {
           "command": "dotnet publish -c Release -o ./publish",
           "description": "Publie en mode Release",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet publish --self-contained --runtime win-x64",
           "description": "Publie avec runtime inclus pour Windows x64",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet --help",
           "description": "Affiche l'aide complète de la commande dotnet. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "man dotnet",
           "description": "Affiche le manuel complet de dotnet. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet publish \".\" --configuration Release --output \"{outputPath}\"",
           "description": "Exemple utilisant le paramètre 'projectPath': Chemin du projet. Remplacez <projectPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet publish \"{projectPath}\" --configuration Release --output \"./publish\"",
           "description": "Exemple utilisant le paramètre 'outputPath': Dossier où publier. Remplacez <outputPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
+        },
+        {
+          "command": "dotnet publish \"<projectPath>\" --configuration Release --output \"<outputPath>\"",
+          "description": "Exemple Linux utilisant dotnet publish. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 1
         }
       ],
       "notes": "--self-contained inclut le runtime. --runtime spécifie la plateforme cible (win-x64, linux-x64, osx-x64).",
@@ -4759,27 +4699,27 @@
         {
           "command": "npm install",
           "description": "Installe toutes les dépendances de package.json",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm install --production",
           "description": "Installe uniquement les dépendances de production",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm ci",
           "description": "Installation propre pour CI/CD",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm --help",
           "description": "Affiche l'aide complète de la commande npm. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man npm",
           "description": "Affiche le manuel complet de npm. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "npm ci est plus rapide et déterministe pour CI/CD. --save-dev pour dev dependencies.",
@@ -4818,27 +4758,22 @@
         {
           "command": "npm run build",
           "description": "Exécute le script build de package.json",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm run build:prod",
           "description": "Exécute un script build personnalisé",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm --help",
           "description": "Affiche l'aide complète de la commande npm. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man npm",
           "description": "Affiche le manuel complet de npm. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "npm run build",
-          "description": "Cas d'usage standard. Exécute le script de build défini dans package.json. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Le script doit être défini dans package.json. npm run liste tous les scripts disponibles.",
@@ -4892,12 +4827,12 @@
         {
           "command": "mvn --help",
           "description": "Affiche l'aide complète de la commande mvn. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man mvn",
           "description": "Affiche le manuel complet de mvn. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "clean supprime le dossier target. package crée le JAR/WAR. install met dans le repo local Maven.",
@@ -4946,17 +4881,22 @@
         {
           "command": "./gradlew build",
           "description": "Utilise le wrapper Gradle",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "gradle --help",
           "description": "Affiche l'aide complète de la commande gradle. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man gradle",
           "description": "Affiche le manuel complet de gradle. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "gradlew.bat build",
+          "description": "Utilise le wrapper Gradle",
+          "platform": 0
         }
       ],
       "notes": "Préférer ./gradlew (wrapper) pour la portabilité. --no-daemon pour CI/CD.",
@@ -5079,32 +5019,37 @@
         {
           "command": "dotnet run",
           "description": "Lance le projet du dossier courant",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet run --configuration Release",
           "description": "Lance en mode Release",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet run -- arg1 arg2",
           "description": "Lance avec des arguments",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet --help",
           "description": "Affiche l'aide complète de la commande dotnet. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "man dotnet",
           "description": "Affiche le manuel complet de dotnet. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "dotnet run --project \".\"",
           "description": "Exemple utilisant le paramètre 'projectPath': Chemin du projet .csproj. Remplacez <projectPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
+        },
+        {
+          "command": "dotnet run --project \"<projectPath>\"",
+          "description": "Exemple Linux utilisant dotnet run. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 1
         }
       ],
       "notes": "Les arguments après -- sont passés à l'application. --no-build évite la recompilation.",
@@ -5149,27 +5094,22 @@
         {
           "command": "npm start",
           "description": "Démarre l'application selon package.json",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm run dev",
           "description": "Lance le script dev (mode développement)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "npm --help",
           "description": "Affiche l'aide complète de la commande npm. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man npm",
           "description": "Affiche le manuel complet de npm. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "npm start",
-          "description": "Cas d'usage standard. Exécute le script de démarrage d'un projet Node.js. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "npm start exécute le script 'start' de package.json. npm run dev pour le mode développement.",
@@ -5226,32 +5166,42 @@
         {
           "command": "python3 script.py",
           "description": "Exécute un script Python",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "python3 -m module_name",
           "description": "Exécute un module Python",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "python3 script.py arg1 arg2",
           "description": "Exécute avec des arguments",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "python3 --help",
           "description": "Affiche l'aide complète de la commande python3. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man python3",
           "description": "Affiche le manuel complet de python3. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "python \"<scriptPath>\"",
           "description": "Exemple utilisant le paramètre 'scriptPath': Chemin du fichier .py. Remplacez <scriptPath> par la valeur appropriée selon votre environnement.",
           "platform": 2
+        },
+        {
+          "command": "python script.py",
+          "description": "Exécute un script Python",
+          "platform": 0
+        },
+        {
+          "command": "python -m module_name",
+          "description": "Exécute un module Python",
+          "platform": 0
         }
       ],
       "notes": "python3 pour Linux/Mac, python pour Windows. -m pour exécuter un module.",
@@ -5323,12 +5273,12 @@
         {
           "command": "java --help",
           "description": "Affiche l'aide complète de la commande java. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man java",
           "description": "Affiche le manuel complet de java. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "java -jar \"<jarPath>\"",
@@ -5406,42 +5356,47 @@
         {
           "command": "Resolve-DnsName google.com",
           "description": "Résout le nom de domaine google.com en adresse(s) IP. Équivalent PowerShell de 'nslookup'. Retourne tous les enregistrements A (IPv4) et AAAA (IPv6) associés. Utilise le serveur DNS configuré sur la machine.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Resolve-DnsName google.com -Type MX",
           "description": "Interroge les enregistrements MX (Mail eXchange) de google.com. Les enregistrements MX indiquent les serveurs de messagerie responsables du domaine. Retourne les serveurs mail avec leur priorité. Essentiel pour diagnostiquer les problèmes d'email et vérifier les configurations SMTP.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Resolve-DnsName contoso.com -Type ALL -Server 8.8.8.8",
           "description": "Interroge TOUS les types d'enregistrements DNS (A, AAAA, MX, TXT, NS, SOA, etc.) en utilisant le serveur DNS public de Google (8.8.8.8). -Type ALL retourne absolument tous les enregistrements disponibles. -Server force l'utilisation d'un DNS spécifique au lieu du DNS local. Utile pour comparer les résolutions ou diagnostiquer des problèmes de propagation DNS.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Resolve-DnsName _spf.google.com -Type TXT",
           "description": "Interroge les enregistrements TXT, souvent utilisés pour SPF (Sender Policy Framework), DKIM, DMARC et vérifications de domaine. Les enregistrements TXT contiennent du texte libre utilisé pour la configuration d'email, la sécurité et les validations de propriété de domaine.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Resolve-DnsName 8.8.8.8 -Type PTR",
           "description": "Résolution DNS inverse (reverse lookup) : cherche le nom de domaine associé à l'IP 8.8.8.8. Les enregistrements PTR mappent IP → nom (inverse de A qui mappe nom → IP). Utile pour identifier un serveur à partir de son IP ou vérifier la cohérence des configurations DNS.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Resolve-DnsName contoso.com -Type NS",
           "description": "Interroge les enregistrements NS (Name Server) qui indiquent quels serveurs DNS sont autoritaires pour le domaine. Les enregistrements NS définissent où sont hébergées les zones DNS. Essentiel lors de migrations DNS ou pour identifier l'hébergeur DNS d'un domaine.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Resolve-DnsName google.com -DnsOnly",
           "description": "Force une vraie requête DNS en désactivant le cache local. Le switch -DnsOnly ignore complètement le cache de résolution Windows et force une interrogation du serveur DNS. Utile pour vérifier les changements DNS récents ou diagnostiquer des problèmes de cache.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Get-Content C:\\domains.txt | ForEach-Object {Resolve-DnsName $_ -ErrorAction SilentlyContinue} | Select-Object Name,IPAddress",
           "description": "Résout en masse une liste de domaines depuis un fichier. Get-Content charge le fichier. ForEach-Object résout chaque ligne. -ErrorAction SilentlyContinue ignore les erreurs (domaines inexistants). Select-Object formate les résultats. Idéal pour valider une liste de domaines ou créer un inventaire DNS.",
-          "platform": 2
+          "platform": 0
+        },
+        {
+          "command": "dig <domainName> <recordType>",
+          "description": "Exemple Linux utilisant dig. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 1
         }
       ],
       "notes": "Sur Linux, installer bind-utils pour utiliser dig. Alternative : nslookup disponible sur les deux plateformes.",
@@ -5480,27 +5435,22 @@
         {
           "command": "ipconfig /flushdns",
           "description": "Vide le cache DNS sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "sudo systemd-resolve --flush-caches",
           "description": "Vide le cache DNS sur Linux (systemd)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "sudo --help",
           "description": "Affiche l'aide complète de la commande sudo. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man sudo",
           "description": "Affiche le manuel complet de sudo. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "ipconfig /flushdns",
-          "description": "Cas d'usage standard. Efface le cache DNS local pour forcer la résolution fraîche des noms de domaine. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Utile après modification d'enregistrements DNS. Sur certaines distributions Linux, utiliser 'sudo systemctl restart nscd'.",
@@ -5530,16 +5480,6 @@
         {
           "command": "ipconfig /displaydns",
           "description": "Affiche tous les enregistrements en cache DNS",
-          "platform": 2
-        },
-        {
-          "command": "ipconfig /displaydns",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help ipconfig -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "ipconfig /displaydns",
-          "description": "Cas d'usage standard. Affiche le contenu actuel du cache DNS local. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -5585,16 +5525,6 @@
         {
           "command": "Clear-EventLog -LogName {logName}",
           "description": "Exécution standard de la commande Clear. Consultez la documentation officielle avec Get-Help Clear-EventLog -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Clear-EventLog -LogName Application",
-          "description": "Exemple utilisant le paramètre 'logName': Nom du journal à vider (System, Application, Security). Remplacez <logName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "Clear-EventLog -LogName {logName}",
-          "description": "Cas d'usage standard. Efface tous les événements d'un journal Windows spécifique. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -5642,11 +5572,6 @@
         {
           "command": "man tail",
           "description": "Affiche le manuel complet de tail. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "tail -f /var/log/syslog",
-          "description": "Cas d'usage standard. Affiche en continu les nouvelles entrées du journal système Linux. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -5935,11 +5860,6 @@
           "command": "man systemctl",
           "description": "Affiche le manuel complet de systemctl. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "systemctl list-units --type=service --all",
-          "description": "Cas d'usage standard. Affiche la liste de tous les services systemd avec leur état. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Utiliser --state=failed pour voir les services en échec.",
@@ -6012,37 +5932,42 @@
         {
           "command": "Test-Connection -ComputerName google.com -Count 4",
           "description": "Envoie 4 paquets ICMP (ping) vers google.com. Équivalent PowerShell de 'ping'. Retourne le temps de réponse, le TTL et le statut. Le paramètre -Count limite le nombre de paquets (par défaut : 4). Utile pour vérifier la connectivité Internet basique.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Test-Connection -ComputerName 192.168.1.1 -Count 1 -Quiet",
           "description": "Test de connectivité rapide qui retourne uniquement $true ou $false. Le switch -Quiet supprime tous les détails et retourne un booléen simple. Parfait pour les scripts de monitoring : if (Test-Connection -ComputerName server01 -Quiet) { ... }",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Test-Connection -ComputerName server01,server02,server03 -Count 2",
           "description": "Teste plusieurs hôtes simultanément. -ComputerName accepte un tableau de noms/IPs. PowerShell teste tous les hôtes en parallèle, ce qui est beaucoup plus rapide que des commandes séquentielles. Idéal pour vérifier rapidement la disponibilité d'une liste de serveurs.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Test-Connection -ComputerName 8.8.8.8 -Count 100 -Delay 1",
           "description": "Test de connectivité prolongé avec 100 paquets espacés de 1 seconde. Utile pour diagnostiquer des problèmes intermittents, mesurer la stabilité de la connexion et détecter les pertes de paquets. Laissez tourner pendant le troubleshooting.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Test-Connection -ComputerName server01 -Source DC01",
           "description": "Exécute le ping depuis un ordinateur distant (DC01 vers server01). Nécessite WinRM activé et des droits admin sur la source. Utile pour tester la connectivité entre deux serveurs distants sans s'y connecter physiquement.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Get-Content C:\\servers.txt | ForEach-Object {Test-Connection $_ -Count 1 -Quiet} | Where-Object {$_ -eq $false}",
           "description": "Lit une liste de serveurs depuis un fichier et identifie lesquels sont inaccessibles. Get-Content charge le fichier ligne par ligne. Test-Connection -Quiet retourne $true/$false. Where-Object filtre les échecs. Parfait pour les vérifications quotidiennes de disponibilité.",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Test-Connection -ComputerName google.com -Count 4 | Select-Object Address,ResponseTime | Format-Table -AutoSize",
           "description": "Affiche uniquement l'adresse et le temps de réponse dans un tableau propre. Select-Object filtre les colonnes pertinentes. Format-Table -AutoSize optimise l'affichage. Utile pour des rapports de performance réseau lisibles.",
-          "platform": 2
+          "platform": 0
+        },
+        {
+          "command": "ping -c <count> <target>",
+          "description": "Exemple Linux utilisant ping. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 1
         }
       ],
       "notes": "Un pare-feu peut bloquer les requêtes ICMP. Utiliser -t (Windows) ou sans -c (Linux) pour ping continu.",
@@ -6099,27 +6024,27 @@
         {
           "command": "tracert google.com",
           "description": "Trace la route vers google.com (Windows)",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "traceroute google.com",
           "description": "Trace la route vers google.com (Linux)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "traceroute --help",
           "description": "Affiche l'aide complète de la commande traceroute. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man traceroute",
           "description": "Affiche le manuel complet de traceroute. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "tracert <target>",
           "description": "Exemple utilisant le paramètre 'target': Adresse IP ou nom d'hôte. Remplacez <target> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
         }
       ],
       "notes": "Peut être lent. Sur Linux, installer traceroute si non disponible : sudo apt install traceroute",
@@ -6175,27 +6100,27 @@
         {
           "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 20",
           "description": "Top 20 processus par CPU (Windows)",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "ps aux --sort=-%cpu | head -n 20",
           "description": "Top 20 processus par CPU (Linux)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ps --help",
           "description": "Affiche l'aide complète de la commande ps. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ps",
           "description": "Affiche le manuel complet de ps. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 20 Name,CPU,PM,Id",
           "description": "Exemple utilisant le paramètre 'count': Nombre de processus à afficher. Remplacez <count> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
         }
       ],
       "notes": "Sur Linux, utiliser 'top' ou 'htop' pour monitoring interactif.",
@@ -6251,27 +6176,27 @@
         {
           "command": "Stop-Process -Id 1234 -Force",
           "description": "Termine le processus 1234 (Windows)",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "kill -9 1234",
           "description": "Termine le processus 1234 (Linux)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "kill --help",
           "description": "Affiche l'aide complète de la commande kill. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man kill",
           "description": "Affiche le manuel complet de kill. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "Stop-Process -Id <processId> -Force",
           "description": "Exemple utilisant le paramètre 'processId': ID numérique du processus à terminer. Remplacez <processId> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
         }
       ],
       "notes": "⚠️ ATTENTION : Peut causer une perte de données non sauvegardées. -9 (SIGKILL) est un arrêt forcé.",
@@ -6309,27 +6234,22 @@
         {
           "command": "(Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime",
           "description": "Affiche la date/heure du dernier démarrage (Windows)",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "uptime -p",
           "description": "Affiche l'uptime en format lisible (Linux)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "uptime --help",
           "description": "Affiche l'aide complète de la commande uptime. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man uptime",
           "description": "Affiche le manuel complet de uptime. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "(Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime",
-          "description": "Cas d'usage standard. Montre depuis combien de temps le système est démarré. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Sur Windows, calculer la différence avec Get-Date pour obtenir la durée. Sur Linux, 'uptime' sans option donne plus d'infos.",
@@ -6386,11 +6306,6 @@
           "command": "winget install <packageName> --silent --accept-package-agreements --accept-source-agreements",
           "description": "Exemple utilisant le paramètre 'packageName': Nom ou ID du package à installer (ex: Microsoft.PowerToys). Remplacez <packageName> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "winget install {packageName} --silent --accept-package-agreements --accept-source-agreements",
-          "description": "Cas d'usage standard. Installe une application Windows à l'aide du gestionnaire de packages Winget. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Nécessite Windows 10 1809 ou supérieur. L'option --silent évite les interactions utilisateur.",
@@ -6432,16 +6347,6 @@
         {
           "command": "winget list --source winget",
           "description": "Liste uniquement les applications du store Winget",
-          "platform": 2
-        },
-        {
-          "command": "winget list",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help winget -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "winget list",
-          "description": "Cas d'usage standard. Affiche la liste de toutes les applications installées et gérées par Winget. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -6499,11 +6404,6 @@
           "command": "winget upgrade <packageName> --silent --accept-package-agreements --accept-source-agreements",
           "description": "Exemple utilisant le paramètre 'packageName': Nom ou ID du package à mettre à jour. Remplacez <packageName> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "winget upgrade {packageName} --silent --accept-package-agreements --accept-source-agreements",
-          "description": "Cas d'usage standard. Met à jour une application spécifique vers sa dernière version disponible via Winget. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Vérifie d'abord si une mise à jour est disponible avant d'installer.",
@@ -6545,11 +6445,6 @@
         {
           "command": "winget upgrade --all --silent --accept-package-agreements --accept-source-agreements",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help winget -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "winget upgrade --all --silent --accept-package-agreements --accept-source-agreements",
-          "description": "Cas d'usage standard. Met à jour toutes les applications installées vers leurs dernières versions disponibles. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -6606,11 +6501,6 @@
         {
           "command": "winget uninstall <packageName> --silent",
           "description": "Exemple utilisant le paramètre 'packageName': Nom ou ID du package à désinstaller. Remplacez <packageName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "winget uninstall {packageName} --silent",
-          "description": "Cas d'usage standard. Désinstalle une application précédemment installée via Winget. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -6673,11 +6563,6 @@
           "command": "winget search <searchTerm>",
           "description": "Exemple utilisant le paramètre 'searchTerm': Mot-clé ou nom du package à rechercher. Remplacez <searchTerm> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "winget search {searchTerm}",
-          "description": "Cas d'usage standard. Recherche des packages disponibles dans les sources Winget configurées. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Recherche dans toutes les sources configurées. Utiliser --exact pour une correspondance exacte.",
@@ -6733,11 +6618,6 @@
         {
           "command": "winget show <packageName>",
           "description": "Exemple utilisant le paramètre 'packageName': Nom ou ID du package à afficher. Remplacez <packageName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "winget show {packageName}",
-          "description": "Cas d'usage standard. Affiche les informations détaillées d'un package spécifique (version, éditeur, description, etc.). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -6808,11 +6688,6 @@
           "command": "winget source add --name {name} <url>",
           "description": "Exemple utilisant le paramètre 'url': URL du dépôt de packages. Remplacez <url> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "winget source add --name {name} {url}",
-          "description": "Cas d'usage standard. Ajoute une nouvelle source de packages Winget personnalisée. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Nécessite des droits administrateur. Vérifier la fiabilité de la source avant de l'ajouter.",
@@ -6874,11 +6749,6 @@
           "command": "choco install <packageName> -y",
           "description": "Exemple utilisant le paramètre 'packageName': Nom du package à installer (ex: googlechrome, vscode). Remplacez <packageName> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "choco install {packageName} -y",
-          "description": "Cas d'usage standard. Installe un package Windows à l'aide du gestionnaire Chocolatey. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Nécessite Chocolatey installé. L'option -y accepte automatiquement les prompts.",
@@ -6920,16 +6790,6 @@
         {
           "command": "choco list --local-only --limit-output",
           "description": "Liste avec sortie simplifiée (nom|version)",
-          "platform": 2
-        },
-        {
-          "command": "choco list --local-only",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help choco -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "choco list --local-only",
-          "description": "Cas d'usage standard. Affiche la liste de tous les packages installés via Chocolatey. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -6987,11 +6847,6 @@
           "command": "choco upgrade <packageName> -y",
           "description": "Exemple utilisant le paramètre 'packageName': Nom du package à mettre à jour. Remplacez <packageName> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "choco upgrade {packageName} -y",
-          "description": "Cas d'usage standard. Met à jour un package spécifique vers sa dernière version disponible via Chocolatey. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Vérifie automatiquement si une mise à jour est disponible avant d'installer.",
@@ -7033,16 +6888,6 @@
         {
           "command": "choco upgrade all -y --except=\"package1,package2\"",
           "description": "Met à jour tous sauf certains packages",
-          "platform": 2
-        },
-        {
-          "command": "choco upgrade all -y",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help choco -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "choco upgrade all -y",
-          "description": "Cas d'usage standard. Met à jour tous les packages installés vers leurs dernières versions disponibles. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -7099,11 +6944,6 @@
         {
           "command": "choco uninstall <packageName> -y",
           "description": "Exemple utilisant le paramètre 'packageName': Nom du package à désinstaller. Remplacez <packageName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "choco uninstall {packageName} -y",
-          "description": "Cas d'usage standard. Désinstalle un package précédemment installé via Chocolatey. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -7165,11 +7005,6 @@
         {
           "command": "choco search <searchTerm>",
           "description": "Exemple utilisant le paramètre 'searchTerm': Mot-clé ou nom du package à rechercher. Remplacez <searchTerm> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "choco search {searchTerm}",
-          "description": "Cas d'usage standard. Recherche des packages disponibles dans le dépôt Chocolatey. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -7239,11 +7074,6 @@
         {
           "command": "choco source add --name={name} --source=<url>",
           "description": "Exemple utilisant le paramètre 'url': URL du dépôt de packages. Remplacez <url> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "choco source add --name={name} --source={url}",
-          "description": "Cas d'usage standard. Ajoute une nouvelle source de packages Chocolatey personnalisée. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -10589,11 +10419,6 @@
           "command": "powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c; Write-Host \"Plan Hautes performances activé\" -ForegroundColor Green",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powercfg -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "powercfg /setactive 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c; Write-Host \"Plan Hautes performances activé\" -ForegroundColor Green",
-          "description": "Cas d'usage standard. Active le plan d'alimentation Hautes performances (équilibre entre performance et consommation). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Plan Hautes performances: bon compromis entre performance et consommation. Maintient le CPU à fréquence maximale. Acceptable sur portables branchés sur secteur. Moins agressif que Ultimate Performance.",
@@ -10632,11 +10457,6 @@
           "command": "powercfg /hibernate off; Write-Host \"Hibernation désactivée. Le fichier hiberfil.sys sera supprimé\" -ForegroundColor Green",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powercfg -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "powercfg /hibernate off; Write-Host \"Hibernation désactivée. Le fichier hiberfil.sys sera supprimé\" -ForegroundColor Green",
-          "description": "Cas d'usage standard. Désactive l'hibernation Windows et supprime le fichier hiberfil.sys pour libérer de l'espace disque (souvent plusieurs Go). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Désactiver l'hibernation: libère de l'espace disque égal à la RAM (8-32 Go typiquement). Supprime hiberfil.sys. Vous perdrez la fonctionnalité de mise en veille prolongée. La mise en veille normale (RAM) reste disponible.",
@@ -10674,11 +10494,6 @@
         {
           "command": "powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setdcvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setactive SCHEME_CURRENT; Write-Host \"Mode veille hybride désactivé\" -ForegroundColor Green",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powercfg -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setdcvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setactive SCHEME_CURRENT; Write-Host \"Mode veille hybride désactivé\" -ForegroundColor Green",
-          "description": "Cas d'usage standard. Désactive le mode veille hybride pour accélérer la mise en veille et le réveil du PC. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -11442,11 +11257,6 @@
         {
           "command": "Add-MpPreference -ExclusionPath 'C:\\Program Files (x86)\\Steam\\steamapps\\common'; Write-Host \"Exclusion ajoutée: C:\\Program Files (x86)\\Steam\\steamapps\\common\" -ForegroundColor Green; Write-Warning \"Attention: n'excluez que des dossiers de confiance (jeux, dev tools)\"",
           "description": "Exemple utilisant le paramètre 'Path': Chemin complet du dossier ou fichier à exclure (ex: C:\\Games, C:\\Dev). Remplacez <Path> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "Add-MpPreference -ExclusionPath '{Path}'; Write-Host \"Exclusion ajoutée: {Path}\" -ForegroundColor Green; Write-Warning \"Attention: n'excluez que des dossiers de confiance (jeux, dev tools)\"",
-          "description": "Cas d'usage standard. Ajoute des exclusions à Windows Defender pour améliorer les performances (dossiers de jeux, outils de dev, etc.). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -12240,11 +12050,6 @@
           "command": "Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Verbose",
           "description": "Exécution standard de la commande Install. Consultez la documentation officielle avec Get-Help Install-WindowsUpdate -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -Verbose",
-          "description": "Cas d'usage standard. Télécharge et installe automatiquement toutes les mises à jour Windows disponibles Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "ATTENTION: Cette commande peut nécessiter un redémarrage. Utilisez -IgnoreReboot pour empêcher le redémarrage automatique. Nécessite PSWindowsUpdate.",
@@ -12366,11 +12171,6 @@
           "command": "Hide-WindowsUpdate -KBArticleID KB5001234 -Confirm:$false",
           "description": "Exemple utilisant le paramètre 'kbNumber': Numéro KB de la mise à jour à masquer (ex: KB5001234). Remplacez <kbNumber> par la valeur appropriée selon votre environnement.",
           "platform": 2
-        },
-        {
-          "command": "Hide-WindowsUpdate -KBArticleID {kbNumber} -Confirm:$false",
-          "description": "Cas d'usage standard. Masque une mise à jour Windows pour empêcher son installation automatique Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "ATTENTION: Masquer des mises à jour de sécurité peut créer des vulnérabilités. Nécessite PSWindowsUpdate.",
@@ -12425,16 +12225,6 @@
         {
           "command": "Show-WindowsUpdate -KBArticleID {kbNumber}",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Show-WindowsUpdate -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Show-WindowsUpdate -KBArticleID KB5001234",
-          "description": "Exemple utilisant le paramètre 'kbNumber': Numéro KB de la mise à jour à réafficher. Remplacez <kbNumber> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "Show-WindowsUpdate -KBArticleID {kbNumber}",
-          "description": "Cas d'usage standard. Réaffiche une mise à jour précédemment masquée pour permettre son installation Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -12495,11 +12285,6 @@
         {
           "command": "Uninstall-WindowsUpdate -KBArticleID KB5001234 -Confirm:$false",
           "description": "Exemple utilisant le paramètre 'kbNumber': Numéro KB de la mise à jour à désinstaller. Remplacez <kbNumber> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "Uninstall-WindowsUpdate -KBArticleID {kbNumber} -Confirm:$false",
-          "description": "Cas d'usage standard. Désinstalle une mise à jour Windows spécifique par son numéro KB Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -12728,11 +12513,6 @@
         {
           "command": "Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false",
           "description": "Exécution standard de la commande Add. Consultez la documentation officielle avec Get-Help Add-WUServiceManager -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Add-WUServiceManager -ServiceID 7971f918-a847-4430-9279-4a52d1efe18d -Confirm:$false",
-          "description": "Cas d'usage standard. Ajoute Microsoft Update comme source de mises à jour (inclut Office, SQL, etc.) Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -13079,16 +12859,6 @@
           "command": "sfc /verifyonly",
           "description": "Scanne sans réparer (diagnostic uniquement)",
           "platform": 2
-        },
-        {
-          "command": "sfc /scannow",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help sfc -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "sfc /scannow",
-          "description": "Cas d'usage standard. Exécute System File Checker pour détecter et réparer les fichiers système corrompus Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Nécessite des droits administrateur. Peut prendre 15-30 minutes. Logs disponibles dans C:\\Windows\\Logs\\CBS\\CBS.log. Exécuter DISM avant SFC si SFC échoue.",
@@ -13242,16 +13012,6 @@
           "command": "wuauclt /detectnow /updatenow",
           "description": "Force la recherche de mises à jour (Windows 7/8)",
           "platform": 2
-        },
-        {
-          "command": "usoclient StartScan",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help usoclient -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "usoclient StartScan",
-          "description": "Cas d'usage standard. Force Windows Update à rechercher immédiatement de nouvelles mises à jour Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "usoclient (Update Session Orchestrator) est l'outil recommandé pour Windows 10/11. Sur systèmes plus anciens, utiliser wuauclt.",
@@ -13375,16 +13135,6 @@
         {
           "command": "usoclient StartScan",
           "description": "Alternative pour Windows 10/11",
-          "platform": 2
-        },
-        {
-          "command": "wuauclt /detectnow /reportnow",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help wuauclt -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "wuauclt /detectnow /reportnow",
-          "description": "Cas d'usage standard. Force le client Windows Update à se synchroniser immédiatement avec le serveur WSUS Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -13544,11 +13294,6 @@
           "command": "[void][reflection.assembly]::LoadWithPartialName('Microsoft.UpdateServices.Administration'); $wsus = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer(); $subscription = $wsus.GetSubscription(); $subscription.StartSynchronization()",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help [void][reflection.assembly]::LoadWithPartialName('Microsoft.UpdateServices.Administration'); -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "[void][reflection.assembly]::LoadWithPartialName('Microsoft.UpdateServices.Administration'); $wsus = [Microsoft.UpdateServices.Administration.AdminProxy]::GetUpdateServer(); $subscription = $wsus.GetSubscription(); $subscription.StartSynchronization()",
-          "description": "Cas d'usage standard. Lance la synchronisation du serveur WSUS avec Microsoft Update pour récupérer les nouvelles mises à jour Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "À exécuter sur le serveur WSUS. Nécessite droits administrateur et module UpdateServices. La synchronisation peut prendre plusieurs minutes.",
@@ -13652,11 +13397,6 @@
           "command": "Invoke-WsusServerCleanup -CleanupObsoleteUpdates -CleanupUnneededContentFiles -CompressUpdates -DeclineExpiredUpdates -DeclineSupersededUpdates",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WsusServerCleanup -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "Invoke-WsusServerCleanup -CleanupObsoleteUpdates -CleanupUnneededContentFiles -CompressUpdates -DeclineExpiredUpdates -DeclineSupersededUpdates",
-          "description": "Cas d'usage standard. Exécute les tâches de maintenance WSUS: suppression des mises à jour obsolètes, dépassées et des ordinateurs inactifs Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "À exécuter sur le serveur WSUS. Peut prendre du temps selon la taille de la base WSUS. Libère de l'espace disque. Nécessite droits administrateur.",
@@ -13703,11 +13443,6 @@
           "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}' -ErrorAction Stop",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}' -ErrorAction Stop",
-          "description": "Cas d'usage standard. Force le client SCCM à récupérer et appliquer immédiatement les stratégies machine depuis le serveur Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Schedule ID {21} = Machine Policy Retrieval, {22} = Machine Policy Evaluation. Nécessite le client SCCM installé. Vérifier CCM.log pour confirmation.",
@@ -13748,11 +13483,6 @@
         {
           "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}' -ErrorAction Stop",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}' -ErrorAction Stop",
-          "description": "Cas d'usage standard. Déclenche immédiatement la collecte de l'inventaire matériel et l'envoie au serveur SCCM Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -13795,11 +13525,6 @@
           "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}' -ErrorAction Stop",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}' -ErrorAction Stop",
-          "description": "Cas d'usage standard. Déclenche immédiatement la collecte de l'inventaire logiciel et l'envoie au serveur SCCM Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Schedule ID {02} = Software Inventory Cycle. L'inventaire logiciel collecte les informations sur les fichiers et applications installés.",
@@ -13840,11 +13565,6 @@
         {
           "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}' -ErrorAction Stop",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}' -ErrorAction Stop",
-          "description": "Cas d'usage standard. Force l'évaluation de tous les déploiements d'applications SCCM pour vérifier les nouvelles applications disponibles Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -13891,11 +13611,6 @@
         {
           "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}' -ErrorAction Stop",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}' -ErrorAction Stop",
-          "description": "Cas d'usage standard. Force le client SCCM à analyser immédiatement les mises à jour logicielles disponibles Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -13994,16 +13709,6 @@
           "command": "& 'C:\\Windows\\CCM\\ccmrepair.exe'",
           "description": "Alternative: lance l'outil de réparation via l'exécutable",
           "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name RepairClient",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name RepairClient",
-          "description": "Cas d'usage standard. Exécute la réparation automatique du client SCCM pour résoudre les problèmes de communication Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "ATTENTION: La réparation peut prendre plusieurs minutes. Le client SCCM réinstallera les composants endommagés. Vérifier les logs dans C:\\Windows\\CCM\\Logs\\ccmrepair.log",
@@ -14040,11 +13745,6 @@
           "command": "net stop wuauserv && net stop cryptSvc && net stop bits && net stop msiserver && ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old && ren C:\\Windows\\System32\\catroot2 catroot2.old && net start wuauserv && net start cryptSvc && net start bits && net start msiserver",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help net -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "net stop wuauserv && net stop cryptSvc && net stop bits && net stop msiserver && ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old && ren C:\\Windows\\System32\\catroot2 catroot2.old && net start wuauserv && net start cryptSvc && net start bits && net start msiserver",
-          "description": "Cas d'usage standard. Arrête les services WU, supprime les caches SoftwareDistribution et Catroot2, puis redémarre les services Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "⚠️ Nécessite redémarrage du PC après exécution. Supprime tout l'historique de mises à jour. Commande à exécuter avec droits administrateur.",
@@ -14079,11 +13779,6 @@
         {
           "command": "regsvr32 /s wuaueng.dll && regsvr32 /s wuapi.dll && regsvr32 /s wups.dll && regsvr32 /s wups2.dll && regsvr32 /s wucltux.dll && regsvr32 /s wuwebv.dll && regsvr32 /s qmgr.dll && regsvr32 /s qmgrprxy.dll",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help regsvr32 -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "regsvr32 /s wuaueng.dll && regsvr32 /s wuapi.dll && regsvr32 /s wups.dll && regsvr32 /s wups2.dll && regsvr32 /s wucltux.dll && regsvr32 /s wuwebv.dll && regsvr32 /s qmgr.dll && regsvr32 /s qmgrprxy.dll",
-          "description": "Cas d'usage standard. Réenregistre toutes les DLL critiques du système Windows Update Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -14146,11 +13841,6 @@
         {
           "command": "C:\\Windows\\ccmsetup\\ccmsetup.exe /mp:{mp_server} SMSSITECODE=<site_code> /forceinstall",
           "description": "Exemple utilisant le paramètre 'site_code': Code du site SCCM (3 caractères). Remplacez <site_code> par la valeur appropriée selon votre environnement.",
-          "platform": 2
-        },
-        {
-          "command": "C:\\Windows\\ccmsetup\\ccmsetup.exe /mp:{mp_server} SMSSITECODE={site_code} /forceinstall",
-          "description": "Cas d'usage standard. Lance la réparation forcée du client Configuration Manager avec réinstallation Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -14237,16 +13927,6 @@
           "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
           "description": "Réinitialise toutes les stratégies SCCM",
           "platform": 2
-        },
-        {
-          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powershell -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
-          "description": "Cas d'usage standard. Supprime toutes les stratégies machine et utilisateur du client SCCM Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Supprime toutes les stratégies. Le client les re-téléchargera automatiquement. Droits administrateur requis.",
@@ -14277,16 +13957,6 @@
           "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
           "description": "Lance un inventaire matériel immédiat",
           "platform": 2
-        },
-        {
-          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powershell -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
-          "description": "Cas d'usage standard. Force l'exécution immédiate d'un cycle d'inventaire matériel Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Droits administrateur requis. GUID {00000000-0000-0000-0000-000000000001} = Hardware Inventory.",
@@ -14316,16 +13986,6 @@
         {
           "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
           "description": "Force le scan des mises à jour SCCM",
-          "platform": 2
-        },
-        {
-          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powershell -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
-          "description": "Cas d'usage standard. Force la recherche immédiate des mises à jour disponibles Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -14361,11 +14021,6 @@
         {
           "command": "net stop wuauserv && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientId /f && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientIdValidation /f && net start wuauserv && wuauclt /resetauthorization /detectnow",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help net -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "net stop wuauserv && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientId /f && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientIdValidation /f && net start wuauserv && wuauclt /resetauthorization /detectnow",
-          "description": "Cas d'usage standard. Supprime le SusClientId pour forcer la re-création lors de la prochaine connexion Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -14407,11 +14062,6 @@
         {
           "command": "DISM /Online /Cleanup-Image /RestoreHealth && sfc /scannow",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help DISM -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "DISM /Online /Cleanup-Image /RestoreHealth && sfc /scannow",
-          "description": "Cas d'usage standard. Utilise l'outil DISM pour réparer les composants Windows Update corrompus Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -14608,11 +14258,6 @@
           "command": "wuauclt /detectnow /updatenow",
           "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help wuauclt -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
           "platform": 2
-        },
-        {
-          "command": "wuauclt /detectnow /updatenow",
-          "description": "Cas d'usage standard. Force Windows Update à rechercher immédiatement les nouvelles mises à jour Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Droits administrateur requis. Sur Windows 10/11, préférer 'usoclient StartScan'.",
@@ -14642,16 +14287,6 @@
         {
           "command": "wsreset.exe",
           "description": "Réinitialise le cache du Windows Store",
-          "platform": 2
-        },
-        {
-          "command": "wsreset.exe",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help wsreset.exe -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "wsreset.exe",
-          "description": "Cas d'usage standard. Réinitialise le cache du Windows Store qui peut affecter Windows Update Consultez la documentation pour des paramètres avancés et des options de filtrage.",
           "platform": 2
         }
       ],
@@ -15906,16 +15541,6 @@
           "command": "Get-LocalUser | Select-Object Name,PasswordRequired,PasswordChangeableDate,PasswordExpires",
           "description": "Détails des mots de passe par utilisateur",
           "platform": 2
-        },
-        {
-          "command": "net accounts",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help net -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-          "platform": 2
-        },
-        {
-          "command": "net accounts",
-          "description": "Cas d'usage standard. Affiche les paramètres de la politique de mot de passe locale (longueur minimale, âge, complexité) Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Minimum password length = longueur minimale recommandée ≥12. Maximum password age = âge max recommandé ≤90 jours. Password complexity = complexité requise.",
@@ -16633,11 +16258,6 @@
           "command": "man cat",
           "description": "Affiche le manuel complet de cat. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "cat /var/lib/logrotate/status",
-          "description": "Cas d'usage standard. Affiche l'état actuel de la rotation des logs système Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Le fichier status peut être à /var/lib/logrotate.status selon la distribution.",
@@ -16697,11 +16317,6 @@
         {
           "command": "man grep",
           "description": "Affiche le manuel complet de grep. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "grep \"Failed password\" /var/log/auth.log | tail -n 50",
-          "description": "Exemple utilisant le paramètre 'lines': Nombre d'échecs à afficher. Remplacez <lines> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -17399,11 +17014,6 @@
         {
           "command": "man apt",
           "description": "Affiche le manuel complet de apt. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "apt search nginx",
-          "description": "Exemple utilisant le paramètre 'keyword': Mot-clé à rechercher dans les noms et descriptions. Remplacez <keyword> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -18349,11 +17959,6 @@
           "command": "man systemctl",
           "description": "Affiche le manuel complet de systemctl. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "systemctl list-units --type=service --state=running",
-          "description": "Exemple utilisant le paramètre 'state': État à filtrer (running, failed, active, inactive, all). Remplacez <state> par la valeur appropriée selon votre environnement.",
-          "platform": 2
         }
       ],
       "notes": "Ne nécessite pas sudo. --all affiche aussi les unités inactives.",
@@ -18750,11 +18355,6 @@
         {
           "command": "man ps",
           "description": "Affiche le manuel complet de ps. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "ps aux",
-          "description": "Exemple utilisant le paramètre 'options': Options ps (aux, -ef, -u username, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -19426,11 +19026,6 @@
           "command": "man traceroute",
           "description": "Affiche le manuel complet de traceroute. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "traceroute google.com",
-          "description": "Exemple utilisant le paramètre 'host': Adresse IP ou nom d'hôte de destination. Remplacez <host> par la valeur appropriée selon votre environnement.",
-          "platform": 2
         }
       ],
       "notes": "Peut nécessiter sudo. mtr combine ping et traceroute. -n désactive la résolution DNS.",
@@ -19585,11 +19180,6 @@
         {
           "command": "man ss",
           "description": "Affiche le manuel complet de ss. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "ss -tulpn",
-          "description": "Exemple utilisant le paramètre 'options': Options (t=TCP, u=UDP, l=listening, p=process, n=numeric). Remplacez <options> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -22585,11 +22175,6 @@
           "command": "man lsblk",
           "description": "Affiche le manuel complet de lsblk. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "lsblk -f",
-          "description": "Exemple utilisant le paramètre 'options': Options (-f=filesystems, -o=columns, -a=all). Remplacez <options> par la valeur appropriée selon votre environnement.",
-          "platform": 2
         }
       ],
       "notes": "Ne nécessite pas sudo. Très utile pour identifier les disques avant partitionnement.",
@@ -23716,11 +23301,6 @@
           "command": "man ss",
           "description": "Affiche le manuel complet de ss. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "ss -tn state established",
-          "description": "Cas d'usage standard. Affiche toutes les connexions réseau actuellement établies Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
         }
       ],
       "notes": "Utile pour détecter des connexions suspectes. -p nécessite sudo.",
@@ -23954,11 +23534,6 @@
         {
           "command": "man sysctl",
           "description": "Affiche le manuel complet de sysctl. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "sysctl -a",
-          "description": "Exemple utilisant le paramètre 'parameter': Paramètre kernel (-a=all, param.name, param=value). Remplacez <parameter> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -24844,11 +24419,6 @@
           "command": "man podman",
           "description": "Affiche le manuel complet de podman. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
           "platform": 2
-        },
-        {
-          "command": "podman ps -a",
-          "description": "Exemple utilisant le paramètre 'options': Options (-a=all, -q=quiet, --pod, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
-          "platform": 2
         }
       ],
       "notes": "Podman est compatible Docker mais ne nécessite pas de daemon. Rootless par défaut.",
@@ -24998,11 +24568,6 @@
         {
           "command": "man systemctl",
           "description": "Affiche le manuel complet de systemctl. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "systemctl list-timers --all",
-          "description": "Exemple utilisant le paramètre 'options': Options (--all, --state=active, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -26986,32 +26551,37 @@
         {
           "command": "ansible-playbook site.yml -i production",
           "description": "Exécute le playbook sur l'inventaire de production",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook deploy.yml -i staging --check",
           "description": "Mode dry-run sur l'environnement de staging",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook --help",
           "description": "Affiche l'aide complète de la commande ansible-playbook. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-playbook",
           "description": "Affiche le manuel complet de ansible-playbook. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook site.yml -i {inventory}",
           "description": "Exemple utilisant le paramètre 'playbookPath': Chemin vers le fichier playbook YAML. Remplacez <playbookPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook {playbookPath} -i inventory.ini",
           "description": "Exemple utilisant le paramètre 'inventory': Fichier d'inventaire des hôtes. Remplacez <inventory> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-playbook <playbookPath> -i <inventory>",
+          "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Utiliser --check pour un dry-run, --diff pour voir les changements, -v/-vv/-vvv pour plus de verbosité.",
@@ -27104,37 +26674,42 @@
         {
           "command": "ansible all -m ping",
           "description": "Teste la connectivité sur tous les hôtes",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible webservers -m shell -a 'uptime'",
           "description": "Exécute la commande uptime sur les serveurs web",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible --help",
           "description": "Affiche l'aide complète de la commande ansible. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible",
           "description": "Affiche le manuel complet de ansible. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible all -m {module} -a \"{args}\"",
           "description": "Exemple utilisant le paramètre 'hostPattern': Pattern pour cibler les hôtes (all, webservers, etc.). Remplacez <hostPattern> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible {hostPattern} -m ping -a \"{args}\"",
           "description": "Exemple utilisant le paramètre 'module': Module Ansible à utiliser. Remplacez <module> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible {hostPattern} -m {module} -a \"<args>\"",
           "description": "Exemple utilisant le paramètre 'args': Arguments pour le module. Remplacez <args> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible <hostPattern> -m <module> -a \"<args>\"",
+          "description": "Exemple Windows utilisant ansible. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Les commandes ad-hoc sont parfaites pour les tâches ponctuelles sans nécessiter un playbook complet.",
@@ -27196,27 +26771,32 @@
         {
           "command": "ansible-galaxy install geerlingguy.docker",
           "description": "Installe le rôle Docker de geerlingguy",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy install -r requirements.yml",
           "description": "Installe tous les rôles listés dans requirements.yml",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy --help",
           "description": "Affiche l'aide complète de la commande ansible-galaxy. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-galaxy",
           "description": "Affiche le manuel complet de ansible-galaxy. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy install geerlingguy.apache",
           "description": "Exemple utilisant le paramètre 'roleName': Nom du rôle à installer depuis Galaxy. Remplacez <roleName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-galaxy install <roleName>",
+          "description": "Exemple Windows utilisant ansible-galaxy. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Ansible Galaxy est le dépôt officiel de rôles Ansible réutilisables.",
@@ -27278,27 +26858,32 @@
         {
           "command": "ansible-vault encrypt vars/secrets.yml",
           "description": "Chiffre le fichier de secrets",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault decrypt vars/secrets.yml",
           "description": "Déchiffre le fichier de secrets",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault --help",
           "description": "Affiche l'aide complète de la commande ansible-vault. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-vault",
           "description": "Affiche le manuel complet de ansible-vault. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault encrypt secrets.yml",
           "description": "Exemple utilisant le paramètre 'filePath': Chemin du fichier à chiffrer. Remplacez <filePath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-vault encrypt <filePath>",
+          "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Utilisez un mot de passe fort et stockez-le de manière sécurisée. Pour exécuter un playbook avec des fichiers chiffrés, utilisez --ask-vault-pass.",
@@ -27359,27 +26944,32 @@
         {
           "command": "ansible-inventory --list -i production",
           "description": "Liste l'inventaire de production au format JSON",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-inventory --graph",
           "description": "Affiche l'inventaire sous forme d'arbre",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-inventory --help",
           "description": "Affiche l'aide complète de la commande ansible-inventory. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-inventory",
           "description": "Affiche le manuel complet de ansible-inventory. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-inventory --list -i inventory.ini",
           "description": "Exemple utilisant le paramètre 'inventory': Fichier d'inventaire. Remplacez <inventory> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-inventory --list -i <inventory>",
+          "description": "Exemple Windows utilisant ansible-inventory. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Utilisez --graph pour une vue hiérarchique de l'inventaire.",
@@ -27458,32 +27048,37 @@
         {
           "command": "ansible-playbook deploy.yml -i production --check --diff",
           "description": "Simule le déploiement et affiche les modifications",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook update.yml --check -v",
           "description": "Test avec sortie verbeux",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook --help",
           "description": "Affiche l'aide complète de la commande ansible-playbook. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-playbook",
           "description": "Affiche le manuel complet de ansible-playbook. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook site.yml -i {inventory} --check --diff",
           "description": "Exemple utilisant le paramètre 'playbookPath': Chemin vers le fichier playbook YAML. Remplacez <playbookPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook {playbookPath} -i inventory.ini --check --diff",
           "description": "Exemple utilisant le paramètre 'inventory': Fichier d'inventaire des hôtes. Remplacez <inventory> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-playbook <playbookPath> -i <inventory> --check --diff",
+          "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Le mode --check simule l'exécution sans appliquer les changements. --diff affiche les différences avant/après.",
@@ -27577,37 +27172,42 @@
         {
           "command": "ansible-playbook site.yml --tags \"deploy,configure\"",
           "description": "Exécute uniquement les tâches avec les tags deploy et configure",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook site.yml --skip-tags \"backup\"",
           "description": "Exécute toutes les tâches sauf celles avec le tag backup",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook --help",
           "description": "Affiche l'aide complète de la commande ansible-playbook. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-playbook",
           "description": "Affiche le manuel complet de ansible-playbook. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook site.yml -i {inventory} --tags \"{tags}\"",
           "description": "Exemple utilisant le paramètre 'playbookPath': Chemin vers le fichier playbook YAML. Remplacez <playbookPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook {playbookPath} -i inventory.ini --tags \"{tags}\"",
           "description": "Exemple utilisant le paramètre 'inventory': Fichier d'inventaire des hôtes. Remplacez <inventory> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook {playbookPath} -i {inventory} --tags \"deploy\"",
           "description": "Exemple utilisant le paramètre 'tags': Tags des tâches à exécuter (séparés par des virgules). Remplacez <tags> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-playbook <playbookPath> -i <inventory> --tags \"<tags>\"",
+          "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Les tags permettent d'exécuter sélectivement des parties d'un playbook. Utilisez --skip-tags pour exclure certaines tâches.",
@@ -27701,37 +27301,42 @@
         {
           "command": "ansible-playbook site.yml --limit \"webservers\"",
           "description": "Exécute uniquement sur le groupe webservers",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook update.yml --limit \"server1.example.com,server2.example.com\"",
           "description": "Exécute uniquement sur les hôtes spécifiés",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook --help",
           "description": "Affiche l'aide complète de la commande ansible-playbook. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-playbook",
           "description": "Affiche le manuel complet de ansible-playbook. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook site.yml -i {inventory} --limit \"{hostPattern}\"",
           "description": "Exemple utilisant le paramètre 'playbookPath': Chemin vers le fichier playbook YAML. Remplacez <playbookPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook {playbookPath} -i inventory.ini --limit \"{hostPattern}\"",
           "description": "Exemple utilisant le paramètre 'inventory': Fichier d'inventaire des hôtes. Remplacez <inventory> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-playbook {playbookPath} -i {inventory} --limit \"webservers\"",
           "description": "Exemple utilisant le paramètre 'hostPattern': Pattern pour limiter les hôtes ciblés. Remplacez <hostPattern> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-playbook <playbookPath> -i <inventory> --limit \"<hostPattern>\"",
+          "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Utilisez --limit pour tester un playbook sur un sous-ensemble d'hôtes avant un déploiement complet.",
@@ -27775,27 +27380,27 @@
         {
           "command": "ansible-config dump --only-changed",
           "description": "Affiche uniquement les paramètres modifiés",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-config list",
           "description": "Liste tous les paramètres de configuration disponibles",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-config view",
           "description": "Affiche le fichier de configuration actuel",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-config --help",
           "description": "Affiche l'aide complète de la commande ansible-config. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-config",
           "description": "Affiche le manuel complet de ansible-config. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Utilisez cette commande pour diagnostiquer les problèmes de configuration et vérifier les paramètres appliqués.",
@@ -27858,32 +27463,32 @@
         {
           "command": "ansible-doc copy",
           "description": "Documentation du module copy",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-doc -l | grep docker",
           "description": "Liste tous les modules contenant 'docker'",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-doc -t lookup file",
           "description": "Documentation du plugin lookup 'file'",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-doc --help",
           "description": "Affiche l'aide complète de la commande ansible-doc. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-doc",
           "description": "Affiche le manuel complet de ansible-doc. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
-          "command": "ansible-doc copy",
-          "description": "Exemple utilisant le paramètre 'moduleName': Nom du module Ansible à documenter. Remplacez <moduleName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "command": "ansible-doc <moduleName>",
+          "description": "Exemple Windows utilisant ansible-doc. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Utilisez -l pour lister tous les modules disponibles, -t pour spécifier le type de plugin (lookup, callback, etc.).",
@@ -27946,27 +27551,32 @@
         {
           "command": "ansible-vault edit group_vars/all/vault.yml",
           "description": "Édite le fichier vault du groupe 'all'",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault edit --vault-id prod@prompt secrets.yml",
           "description": "Édite avec un vault-id spécifique",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault --help",
           "description": "Affiche l'aide complète de la commande ansible-vault. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-vault",
           "description": "Affiche le manuel complet de ansible-vault. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault edit secrets.yml",
           "description": "Exemple utilisant le paramètre 'filePath': Chemin du fichier chiffré à éditer. Remplacez <filePath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-vault edit <filePath>",
+          "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Le fichier est automatiquement déchiffré pour l'édition et rechiffré à la sauvegarde.",
@@ -28028,27 +27638,32 @@
         {
           "command": "ansible-vault view vars/secrets.yml",
           "description": "Affiche le contenu déchiffré",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault view --vault-password-file ~/.vault_pass secrets.yml",
           "description": "Utilise un fichier de mot de passe",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault --help",
           "description": "Affiche l'aide complète de la commande ansible-vault. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-vault",
           "description": "Affiche le manuel complet de ansible-vault. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault view secrets.yml",
           "description": "Exemple utilisant le paramètre 'filePath': Chemin du fichier chiffré à afficher. Remplacez <filePath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-vault view <filePath>",
+          "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Commande en lecture seule, idéale pour consulter rapidement des secrets sans risque de modification.",
@@ -28110,27 +27725,27 @@
         {
           "command": "ansible-vault decrypt secrets.yml",
           "description": "Déchiffre le fichier de secrets",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault decrypt --output=secrets-plain.yml secrets.yml",
           "description": "Déchiffre vers un nouveau fichier",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault --help",
           "description": "Affiche l'aide complète de la commande ansible-vault. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-vault",
           "description": "Affiche le manuel complet de ansible-vault. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
-          "command": "ansible-vault decrypt secrets.yml",
-          "description": "Exemple utilisant le paramètre 'filePath': Chemin du fichier à déchiffrer. Remplacez <filePath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "command": "ansible-vault decrypt <filePath>",
+          "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "ATTENTION: Cette commande déchiffre définitivement le fichier. Utilisez 'view' ou 'edit' pour une consultation temporaire.",
@@ -28193,27 +27808,27 @@
         {
           "command": "ansible-vault rekey secrets.yml",
           "description": "Change le mot de passe du fichier",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault rekey --new-vault-id prod@prompt secrets.yml",
           "description": "Utilise un nouveau vault-id",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-vault --help",
           "description": "Affiche l'aide complète de la commande ansible-vault. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-vault",
           "description": "Affiche le manuel complet de ansible-vault. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
-          "command": "ansible-vault rekey secrets.yml",
-          "description": "Exemple utilisant le paramètre 'filePath': Chemin du fichier à rechiffrer avec un nouveau mot de passe. Remplacez <filePath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "command": "ansible-vault rekey <filePath>",
+          "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Utilisez cette commande pour faire une rotation des mots de passe Vault. L'ancien et le nouveau mot de passe seront demandés.",
@@ -28275,27 +27890,32 @@
         {
           "command": "ansible-galaxy search docker",
           "description": "Recherche les rôles relatifs à Docker",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy search nginx --author geerlingguy",
           "description": "Recherche les rôles nginx d'un auteur spécifique",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy --help",
           "description": "Affiche l'aide complète de la commande ansible-galaxy. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-galaxy",
           "description": "Affiche le manuel complet de ansible-galaxy. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy search nginx",
           "description": "Exemple utilisant le paramètre 'keyword': Mot-clé pour rechercher des rôles. Remplacez <keyword> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-galaxy search <keyword>",
+          "description": "Exemple Windows utilisant ansible-galaxy. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Galaxy héberge des milliers de rôles réutilisables créés par la communauté.",
@@ -28339,27 +27959,22 @@
         {
           "command": "ansible-galaxy list",
           "description": "Liste tous les rôles installés",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy list --roles-path ./roles",
           "description": "Liste les rôles d'un répertoire spécifique",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy --help",
           "description": "Affiche l'aide complète de la commande ansible-galaxy. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-galaxy",
           "description": "Affiche le manuel complet de ansible-galaxy. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "ansible-galaxy list",
-          "description": "Cas d'usage standard. Affiche la liste de tous les rôles Ansible installés localement Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Par défaut, les rôles sont installés dans ~/.ansible/roles ou /etc/ansible/roles.",
@@ -28422,27 +28037,32 @@
         {
           "command": "ansible-galaxy remove geerlingguy.docker",
           "description": "Supprime le rôle Docker",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy remove ansible.posix",
           "description": "Supprime la collection posix",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy --help",
           "description": "Affiche l'aide complète de la commande ansible-galaxy. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-galaxy",
           "description": "Affiche le manuel complet de ansible-galaxy. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-galaxy remove geerlingguy.apache",
           "description": "Exemple utilisant le paramètre 'roleName': Nom du rôle à supprimer. Remplacez <roleName> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-galaxy remove <roleName>",
+          "description": "Exemple Windows utilisant ansible-galaxy. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Cette commande supprime définitivement le rôle du système de fichiers local.",
@@ -28520,32 +28140,37 @@
         {
           "command": "ansible-pull -U https://github.com/company/config.git site.yml",
           "description": "Clone le dépôt et exécute site.yml",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-pull -U https://github.com/company/config.git -C production site.yml",
           "description": "Utilise la branche production",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-pull --help",
           "description": "Affiche l'aide complète de la commande ansible-pull. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man ansible-pull",
           "description": "Affiche le manuel complet de ansible-pull. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-pull -U https://github.com/user/ansible-repo.git {playbookPath}",
           "description": "Exemple utilisant le paramètre 'repoUrl': URL du dépôt Git contenant les playbooks. Remplacez <repoUrl> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ansible-pull -U {repoUrl} local.yml",
           "description": "Exemple utilisant le paramètre 'playbookPath': Nom du playbook à exécuter. Remplacez <playbookPath> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "ansible-pull -U <repoUrl> <playbookPath>",
+          "description": "Exemple Windows utilisant ansible-pull. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "Mode pull inversé : les serveurs récupèrent leur configuration au lieu d'être configurés à distance. Idéal pour les environnements à grande échelle.",
@@ -28632,12 +28257,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git clone https://github.com/user/repo.git {destination}",
@@ -28700,17 +28325,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "git status",
-          "description": "Cas d'usage standard. Affiche l'état des fichiers dans le répertoire de travail et l'index Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Utilisez -s pour un format court, -b pour voir la branche actuelle.",
@@ -28781,17 +28401,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
-        },
-        {
-          "command": "git add .",
-          "description": "Exemple utilisant le paramètre 'files': Fichiers à ajouter (. pour tous). Remplacez <files> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Utilisez . pour ajouter tous les fichiers, -A pour inclure suppressions et renames.",
@@ -28852,7 +28467,7 @@
         {
           "command": "git commit -m \"Fix: correction du bug #123\"",
           "description": "Crée un commit avec un message",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git commit --amend",
@@ -28862,12 +28477,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git commit -m \"<message>\"",
@@ -28959,12 +28574,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git push origin {branch}",
@@ -29062,12 +28677,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git pull origin {branch}",
@@ -29153,12 +28768,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git branch <branchName>",
@@ -29229,22 +28844,22 @@
         {
           "command": "git checkout -b new-feature",
           "description": "Crée et bascule sur une nouvelle branche",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "git checkout -- file.txt",
           "description": "Restaure un fichier depuis le dernier commit",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git checkout <target>",
@@ -29320,12 +28935,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git merge <branchName>",
@@ -29406,12 +29021,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git log --oneline --graph --decorate -n 20",
@@ -29477,32 +29092,32 @@
         {
           "command": "git diff",
           "description": "Affiche les modifications non staged",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git diff --staged",
           "description": "Affiche les modifications staged",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git diff main..feature",
           "description": "Compare deux branches",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git diff <target>",
           "description": "Exemple utilisant le paramètre 'target': Branche, commit ou fichier à comparer. Remplacez <target> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Utilisez --staged pour voir ce qui sera commité, --stat pour un résumé.",
@@ -29560,12 +29175,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "Utilisez 'stash push -m \"message\"' pour nommer un stash, 'stash apply' pour restaurer sans supprimer.",
@@ -29642,7 +29257,7 @@
         {
           "command": "git reset HEAD~1",
           "description": "Annule le dernier commit en gardant les modifications",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git reset --hard origin/main",
@@ -29652,12 +29267,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git reset --mixed {target}",
@@ -29667,7 +29282,12 @@
         {
           "command": "git reset {mode} HEAD~1",
           "description": "Exemple utilisant le paramètre 'target': Commit cible. Remplacez <target> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 1
+        },
+        {
+          "command": "git reset <mode> <target>",
+          "description": "Exemple Windows utilisant git. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "ATTENTION : --hard supprime les modifications. --soft garde tout staged, --mixed unstage.",
@@ -29733,22 +29353,22 @@
         {
           "command": "git rebase -i HEAD~5",
           "description": "Rebase interactif des 5 derniers commits",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
-          "command": "git rebase main",
-          "description": "Exemple utilisant le paramètre 'branch': Branche sur laquelle rebaser. Remplacez <branch> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "command": "git rebase <branch>",
+          "description": "Exemple Windows utilisant git. Remplacez les paramètres entre <> par vos valeurs.",
+          "platform": 0
         }
       ],
       "notes": "ATTENTION : Ne rebasez jamais des commits déjà poussés sur un dépôt public. Utilisez -i pour un rebase interactif.",
@@ -29825,12 +29445,12 @@
         {
           "command": "git --help",
           "description": "Affiche l'aide complète de la commande git. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man git",
           "description": "Affiche le manuel complet de git. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "git tag <tagName>",
@@ -31418,32 +31038,32 @@
         {
           "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 5",
           "description": "Top 5 processus Windows par CPU",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "ps aux --sort=-%cpu | head -n 11",
           "description": "Top 10 processus Linux par CPU",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "Get-Counter '\\Processor(_Total)\\% Processor Time' -Continuous -SampleInterval 1",
           "description": "Surveillance CPU globale en continu",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "top --help",
           "description": "Affiche l'aide complète de la commande top. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man top",
           "description": "Affiche le manuel complet de top. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 ProcessName, Id, CPU, @{Name='MemoryMB';Expression={[Math]::Round($_.WorkingSet/1MB,2)}}, Handles, StartTime | Format-Table -AutoSize",
           "description": "Exemple utilisant le paramètre 'topCount': Nombre de top processus à afficher. Remplacez <topCount> par la valeur appropriée selon votre environnement.",
-          "platform": 2
+          "platform": 0
         }
       ],
       "notes": "CPU est le temps total cumulé. Pour une vue en temps réel, utilisez Task Manager/htop ou Get-Counter. Sur Linux, htop est plus interactif que top.",
@@ -31490,27 +31110,27 @@
         {
           "command": "systeminfo | findstr /C:\"Total Physical Memory\" /C:\"Available Physical Memory\"",
           "description": "Mémoire système Windows (cmd.exe)",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "Get-Process | Measure-Object WorkingSet -Sum | Select-Object @{Name='TotalMemoryGB';Expression={[Math]::Round($_.Sum/1GB,2)}}",
           "description": "Mémoire totale utilisée par tous les processus",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "free -h",
           "description": "Affichage mémoire Linux (human-readable)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man free",
           "description": "Affiche le manuel complet de free. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "$os = Get-CimInstance Win32_OperatingSystem; $totalGB = [Math]::Round($os.TotalVisibleMemorySize/1MB, 2); $freeGB = [Math]::Round($os.FreePhysicalMemory/1MB, 2); $usedGB = $totalGB - $freeGB; $usedPct = [Math]::Round(($usedGB/$totalGB)*100, 2); Write-Host \"=== Memory Summary ===\"; Write-Host \"Total: $totalGB GB\"; Write-Host \"Used: $usedGB GB ($usedPct%)\"; Write-Host \"Free: $freeGB GB\"; Write-Host \"\n=== Top 10 Processes by Memory ===\"; Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10 ProcessName, Id, @{Name='MemoryMB';Expression={[Math]::Round($_.WorkingSet/1MB,2)}} | Format-Table -AutoSize",
           "description": "Cas d'usage standard. Analyse détaillée de l'utilisation de la mémoire système: RAM totale, disponible, utilisée, et répartition par processus. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
-          "platform": 2
+          "platform": 0
         }
       ],
       "notes": "WorkingSet = mémoire physique (RAM). PrivateMemorySize = mémoire virtuelle privée. Sur Linux, buff/cache est de la mémoire disponible.",
@@ -31623,27 +31243,27 @@
         {
           "command": "Get-NetTCPConnection | Group-Object State | Select-Object Name, Count",
           "description": "Nombre de connexions par état",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "netstat -ano | findstr ESTABLISHED",
           "description": "Connexions établies avec PID (Windows cmd)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "ss -tunap | grep ESTAB",
           "description": "Alternative moderne sur Linux (ss au lieu de netstat)",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "netstat --help",
           "description": "Affiche l'aide complète de la commande netstat. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
-          "platform": 2
+          "platform": 1
         },
         {
           "command": "man netstat",
           "description": "Affiche le manuel complet de netstat. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
-          "platform": 2
+          "platform": 1
         }
       ],
       "notes": "États TCP: Established, Listen, TimeWait, CloseWait. Pour UDP, utilisez Get-NetUDPEndpoint. ss est plus rapide que netstat sur Linux.",
@@ -31843,11 +31463,6 @@
         {
           "command": "Enable-BitLocker -MountPoint \"D:\" -RecoveryPasswordProtector -SkipHardwareTest",
           "description": "Active BitLocker en sautant le test matériel (attention: risque si matériel incompatible)",
-          "platform": 2
-        },
-        {
-          "command": "Enable-BitLocker -MountPoint \"C:\" -RecoveryPasswordProtector -UsedSpaceOnly",
-          "description": "Exemple utilisant le paramètre 'driveLetter': Lettre du volume à chiffrer (ex: C, D, E). Remplacez <driveLetter> par la valeur appropriée selon votre environnement.",
           "platform": 2
         }
       ],
@@ -33925,11 +33540,6 @@
           "command": "Get-MpPreference | Select-Object ScanAvgCPULoadFactor",
           "description": "Affiche la limite CPU actuelle",
           "platform": 2
-        },
-        {
-          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25",
-          "description": "Exemple utilisant le paramètre 'cpuPercent': Limite CPU en % (1-100). Remplacez <cpuPercent> par la valeur appropriée selon votre environnement.",
-          "platform": 2
         }
       ],
       "notes": "Par défaut: 50% CPU. Recommandations: PC gaming/streaming: 10-15%, PC bureautique: 25%, PC serveur/dédié: 50-100%. Plus la limite est basse: analyses plus longues mais PC plus fluide. Plus la limite est haute: analyses rapides mais ralentissements possibles.",
@@ -34861,12 +34471,12 @@
         {
           "command": "Get-NetRoute -AddressFamily IPv4 | Where-Object {$_.NextHop -ne '0.0.0.0'} | Select-Object DestinationPrefix,NextHop,RouteMetric,InterfaceAlias | Sort-Object RouteMetric | Format-Table -AutoSize",
           "description": "Affiche la table de routage IPv4 sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "ip route show",
           "description": "Affiche la table de routage sur Linux",
-          "platform": 2
+          "platform": 1
         }
       ]
     },
@@ -34904,12 +34514,12 @@
         {
           "command": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,ProcessName | Format-Table",
           "description": "Liste les ports en écoute sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "netstat -tulpn",
           "description": "Liste les ports TCP/UDP en écoute sur Linux",
-          "platform": 2
+          "platform": 1
         }
       ]
     },
@@ -34977,12 +34587,12 @@
         {
           "command": "Get-EventLog -LogName System -EntryType Error -Newest 20",
           "description": "Affiche les 20 dernières erreurs système sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "journalctl -p err -n 20",
           "description": "Affiche les 20 dernières erreurs sur Linux",
-          "platform": 2
+          "platform": 1
         }
       ]
     },
@@ -35020,12 +34630,12 @@
         {
           "command": "Get-Volume | Select-Object DriveLetter,Size_GB,Free_GB | Format-Table",
           "description": "Affiche l'espace disque sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "df -h",
           "description": "Affiche l'espace disque sur Linux",
-          "platform": 2
+          "platform": 1
         }
       ]
     },
@@ -35063,12 +34673,12 @@
         {
           "command": "Get-CimInstance Win32_OperatingSystem | Select-Object TotalVisibleMemorySize,FreePhysicalMemory",
           "description": "Affiche l'utilisation mémoire sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "free -h",
           "description": "Affiche l'utilisation mémoire sur Linux",
-          "platform": 2
+          "platform": 1
         }
       ]
     },
@@ -35106,12 +34716,12 @@
         {
           "command": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Format-Table",
           "description": "Liste les règles de pare-feu actives sur Windows",
-          "platform": 2
+          "platform": 0
         },
         {
           "command": "iptables -L -n -v --line-numbers",
           "description": "Liste les règles iptables sur Linux",
-          "platform": 2
+          "platform": 1
         }
       ]
     }

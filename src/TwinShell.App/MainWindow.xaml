@@ -575,76 +575,164 @@
                                        Margin="0,0,0,16"
                                        Foreground="{DynamicResource TextPrimaryBrush}"/>
 
-                            <!-- Examples Section with Platform Indicator for Cross-Platform Actions -->
+                            <!-- Examples Section with Platform Selector for Cross-Platform Actions -->
                             <StackPanel Margin="0,0,0,16">
-                                <!-- Examples Header with Platform Badge for cross-platform actions -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                    <TextBlock Text="Examples"
+                                <!-- Examples Header with Platform Switcher for cross-platform actions -->
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0"
+                                               Text="Examples"
                                                FontWeight="SemiBold"
                                                FontSize="14"
                                                VerticalAlignment="Center"/>
-                                    <!-- Platform indicator badge (only visible when platform-specific examples exist) -->
-                                    <Border Margin="8,0,0,0"
-                                            Background="{DynamicResource PrimaryBrush}"
-                                            CornerRadius="4"
-                                            Padding="8,2"
-                                            VerticalAlignment="Center">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
+
+                                    <!-- Platform Switcher (only visible for cross-platform actions) -->
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding DataContext.HasPlatformSpecificExamples, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                                    <DataTrigger Binding="{Binding DataContext.IsCommandCrossPlatform, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
                                                         <Setter Property="Visibility" Value="Visible"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Border.Style>
-                                        <TextBlock Foreground="White"
-                                                   FontSize="11"
-                                                   FontWeight="SemiBold">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="Windows"/>
+                                        </StackPanel.Style>
+
+                                        <!-- Windows Button -->
+                                        <Border CornerRadius="4,0,0,4"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource PrimaryBrush}"
+                                                Cursor="Hand"
+                                                Padding="12,4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="Transparent"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DataContext.SelectedPlatformForGenerator, RelativeSource={RelativeSource AncestorType=Window}}" Value="Linux">
-                                                            <Setter Property="Text" Value="Linux"/>
+                                                        <DataTrigger Binding="{Binding DataContext.SelectedPlatformForGenerator, RelativeSource={RelativeSource AncestorType=Window}}" Value="Windows">
+                                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </Border>
-                                </StackPanel>
+                                            </Border.Style>
+                                            <Border.InputBindings>
+                                                <MouseBinding MouseAction="LeftClick"
+                                                              Command="{Binding DataContext.SelectWindowsPlatformCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                            </Border.InputBindings>
+                                            <TextBlock Text="Windows"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding DataContext.SelectedPlatformForGenerator, RelativeSource={RelativeSource AncestorType=Window}}" Value="Windows">
+                                                                <Setter Property="Foreground" Value="White"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+
+                                        <!-- Linux Button -->
+                                        <Border CornerRadius="0,4,4,0"
+                                                BorderThickness="0,1,1,1"
+                                                BorderBrush="{DynamicResource PrimaryBrush}"
+                                                Cursor="Hand"
+                                                Padding="12,4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding DataContext.SelectedPlatformForGenerator, RelativeSource={RelativeSource AncestorType=Window}}" Value="Linux">
+                                                            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border.InputBindings>
+                                                <MouseBinding MouseAction="LeftClick"
+                                                              Command="{Binding DataContext.SelectLinuxPlatformCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                            </Border.InputBindings>
+                                            <TextBlock Text="Linux"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding DataContext.SelectedPlatformForGenerator, RelativeSource={RelativeSource AncestorType=Window}}" Value="Linux">
+                                                                <Setter Property="Foreground" Value="White"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
 
                                 <!-- Examples List - bound to CurrentExamples from MainViewModel -->
                                 <ItemsControl ItemsSource="{Binding DataContext.CurrentExamples, RelativeSource={RelativeSource AncestorType=Window}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="{DynamicResource CodeBackgroundBrush}"
-                                                    BorderBrush="{DynamicResource CodeBorderBrush}"
-                                                    BorderThickness="1"
-                                                    Padding="8"
-                                                    Margin="0,0,0,8"
-                                                    CornerRadius="4">
+                                            <Border Margin="0,0,0,8"
+                                                    CornerRadius="4"
+                                                    Cursor="Hand"
+                                                    ToolTip="Click to copy this command to clipboard">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="{DynamicResource CodeBackgroundBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource CodeBorderBrush}"/>
+                                                        <Setter Property="BorderThickness" Value="1"/>
+                                                        <Setter Property="Padding" Value="8"/>
+                                                        <Style.Triggers>
+                                                            <!-- Hover effect -->
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                                <Setter Property="Background" Value="{DynamicResource SurfaceElevatedBrush}"/>
+                                                            </Trigger>
+                                                            <!-- Selected state -->
+                                                            <DataTrigger Value="True">
+                                                                <DataTrigger.Binding>
+                                                                    <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                                        <Binding/>
+                                                                        <Binding Path="DataContext.SelectedExample" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                                    </MultiBinding>
+                                                                </DataTrigger.Binding>
+                                                                <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}"/>
+                                                                <Setter Property="BorderThickness" Value="2"/>
+                                                                <Setter Property="Background" Value="{DynamicResource SuccessBackgroundBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Border.InputBindings>
+                                                    <MouseBinding MouseAction="LeftClick"
+                                                                  Command="{Binding DataContext.ApplyExampleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                  CommandParameter="{Binding}"/>
+                                                </Border.InputBindings>
                                                 <StackPanel>
-                                                    <TextBox Text="{Binding Command, Mode=OneWay}"
-                                                             FontFamily="Consolas"
-                                                             FontSize="12"
-                                                             Foreground="{DynamicResource CodeTextBrush}"
-                                                             TextWrapping="Wrap"
-                                                             IsReadOnly="True"
-                                                             BorderThickness="0"
-                                                             Background="Transparent"
-                                                             IsTabStop="False"/>
-                                                    <TextBox Text="{Binding Description, Mode=OneWay}"
-                                                             FontSize="11"
-                                                             Foreground="{DynamicResource TextSecondaryBrush}"
-                                                             TextWrapping="Wrap"
-                                                             Margin="0,4,0,0"
-                                                             IsReadOnly="True"
-                                                             BorderThickness="0"
-                                                             Background="Transparent"
-                                                             IsTabStop="False"/>
+                                                    <TextBlock Text="{Binding Command, Mode=OneWay}"
+                                                               FontFamily="Consolas"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource CodeTextBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding Description, Mode=OneWay}"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                                               TextWrapping="Wrap"
+                                                               Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Border>
                                         </DataTemplate>
@@ -697,11 +785,61 @@
                                     Padding="12"
                                     Margin="0,8,0,0">
                                 <StackPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
-                                    <TextBlock Text="Command Generator"
-                                               FontWeight="SemiBold"
-                                               FontSize="14"
-                                               Foreground="{DynamicResource TextPrimaryBrush}"
-                                               Margin="0,0,0,8"/>
+                                    <!-- Header with mode indicator and reset button -->
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="Command Generator"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="14"
+                                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                            <!-- Example mode indicator -->
+                                            <Border Background="{DynamicResource PrimaryBrush}"
+                                                    CornerRadius="8"
+                                                    Padding="8,2"
+                                                    Margin="8,0,0,0"
+                                                    VerticalAlignment="Center">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsUsingExampleMode}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="Example Mode"
+                                                           FontSize="10"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="White"/>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <!-- Reset to Template button (only visible in example mode) -->
+                                        <Button Grid.Column="1"
+                                                Content="Reset to Template"
+                                                Command="{Binding ResetToTemplateCommand}"
+                                                FontSize="11"
+                                                Padding="8,4"
+                                                VerticalAlignment="Center"
+                                                ToolTip="Return to the default template-based generator">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsUsingExampleMode}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </Grid>
 
                                     <!-- Platform Selector (visible only for cross-platform commands) -->
                                     <Border Background="{DynamicResource BackgroundBrush}"

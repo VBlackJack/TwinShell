@@ -86,6 +86,297 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private Platform _selectedPlatformForGenerator = Platform.Windows;
 
+    /// <summary>
+    /// Command to select Windows platform for cross-platform actions
+    /// </summary>
+    [RelayCommand]
+    private void SelectWindowsPlatform()
+    {
+        SelectedPlatformForGenerator = Platform.Windows;
+    }
+
+    /// <summary>
+    /// Command to select Linux platform for cross-platform actions
+    /// </summary>
+    [RelayCommand]
+    private void SelectLinuxPlatform()
+    {
+        SelectedPlatformForGenerator = Platform.Linux;
+    }
+
+    /// <summary>
+    /// Currently selected example (for highlighting in UI)
+    /// </summary>
+    [ObservableProperty]
+    private CommandExample? _selectedExample;
+
+    /// <summary>
+    /// Flag indicating if we're currently using an example-based generator
+    /// </summary>
+    [ObservableProperty]
+    private bool _isUsingExampleMode;
+
+    /// <summary>
+    /// The command pattern extracted from the example (e.g., "Resolve-DnsName {0} -Type {1} -Server {2}")
+    /// </summary>
+    private string? _exampleCommandPattern;
+
+    /// <summary>
+    /// Apply an example to the command generator.
+    /// Parses the example and creates dynamic parameters based on its structure.
+    /// </summary>
+    [RelayCommand]
+    private void ApplyExample(CommandExample? example)
+    {
+        if (example == null || SelectedAction == null)
+            return;
+
+        // Don't apply placeholder examples (e.g., "<domainName> <recordType>")
+        if (example.Command.Contains("<") && example.Command.Contains(">"))
+        {
+            Services.SnackBarService.Instance.ShowWarning("Template example - fill parameters manually");
+            return;
+        }
+
+        SelectedExample = example;
+
+        // Switch platform if example has a specific platform
+        if (example.Platform != Platform.Both && IsCommandCrossPlatform)
+        {
+            SelectedPlatformForGenerator = example.Platform;
+        }
+
+        // Parse the example and create dynamic parameters
+        ParseExampleAndCreateParameters(example.Command);
+
+        // Show feedback
+        Services.SnackBarService.Instance.ShowSuccess("Example loaded - modify values as needed");
+    }
+
+    /// <summary>
+    /// Parse an example command and create dynamic parameters based on its structure.
+    /// Handles PowerShell-style commands (Verb-Noun value -Param value) and Linux commands.
+    /// </summary>
+    private void ParseExampleAndCreateParameters(string exampleCommand)
+    {
+        if (string.IsNullOrWhiteSpace(exampleCommand))
+            return;
+
+        IsUsingExampleMode = true;
+        CommandParameters.Clear();
+
+        // Detect if it's a PowerShell command or Linux command
+        bool isPowerShell = exampleCommand.Contains("-") &&
+                           (exampleCommand.StartsWith("Get-") || exampleCommand.StartsWith("Set-") ||
+                            exampleCommand.StartsWith("New-") || exampleCommand.StartsWith("Remove-") ||
+                            exampleCommand.StartsWith("Resolve-") || exampleCommand.StartsWith("Test-") ||
+                            exampleCommand.StartsWith("Start-") || exampleCommand.StartsWith("Stop-") ||
+                            exampleCommand.StartsWith("Clear-") || exampleCommand.StartsWith("Invoke-"));
+
+        var parameters = new List<(string Name, string Label, string Value, bool IsSwitch)>();
+        var patternParts = new List<string>();
+
+        if (isPowerShell)
+        {
+            // Parse PowerShell command: CommandName Target -Param1 Value1 -Param2 Value2 -Switch
+            var parts = SplitCommandPreservingQuotes(exampleCommand);
+
+            if (parts.Count > 0)
+            {
+                // First part is the command name
+                patternParts.Add(parts[0]);
+
+                int i = 1;
+                int paramIndex = 0;
+
+                // Check for positional argument (target) before any -Parameter
+                if (i < parts.Count && !parts[i].StartsWith("-"))
+                {
+                    parameters.Add(("target", "Target", parts[i], false));
+                    patternParts.Add($"{{{paramIndex}}}");
+                    paramIndex++;
+                    i++;
+                }
+
+                // Parse named parameters
+                while (i < parts.Count)
+                {
+                    if (parts[i].StartsWith("-"))
+                    {
+                        var paramName = parts[i].TrimStart('-');
+
+                        // Check if next part is a value or another parameter (switch)
+                        if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
+                        {
+                            // Parameter with value
+                            parameters.Add((paramName, paramName, parts[i + 1], false));
+                            patternParts.Add($"-{paramName} {{{paramIndex}}}");
+                            paramIndex++;
+                            i += 2;
+                        }
+                        else
+                        {
+                            // Switch parameter (no value)
+                            parameters.Add((paramName, paramName, "true", true));
+                            patternParts.Add($"-{paramName}");
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        // Unexpected positional argument
+                        parameters.Add(($"arg{paramIndex}", $"Argument {paramIndex + 1}", parts[i], false));
+                        patternParts.Add($"{{{paramIndex}}}");
+                        paramIndex++;
+                        i++;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Parse Linux command: command arg1 arg2 -flag value
+            var parts = SplitCommandPreservingQuotes(exampleCommand);
+
+            if (parts.Count > 0)
+            {
+                patternParts.Add(parts[0]); // Command name
+
+                int paramIndex = 0;
+                for (int i = 1; i < parts.Count; i++)
+                {
+                    var part = parts[i];
+
+                    if (part.StartsWith("-") && part.Length > 1)
+                    {
+                        // Check if it's a flag with value
+                        if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
+                        {
+                            var flagName = part.TrimStart('-');
+                            parameters.Add((flagName, flagName, parts[i + 1], false));
+                            patternParts.Add($"{part} {{{paramIndex}}}");
+                            paramIndex++;
+                            i++;
+                        }
+                        else
+                        {
+                            // Just a flag
+                            patternParts.Add(part);
+                        }
+                    }
+                    else
+                    {
+                        // Positional argument
+                        var label = paramIndex == 0 ? "Target" : $"Argument {paramIndex + 1}";
+                        parameters.Add(($"arg{paramIndex}", label, part, false));
+                        patternParts.Add($"{{{paramIndex}}}");
+                        paramIndex++;
+                    }
+                }
+            }
+        }
+
+        // Store the pattern for regeneration
+        _exampleCommandPattern = string.Join(" ", patternParts);
+
+        // Create parameter view models
+        foreach (var (name, label, value, isSwitch) in parameters)
+        {
+            if (isSwitch) continue; // Skip switches for now, they're in the pattern
+
+            var paramVm = new ParameterViewModel
+            {
+                Name = name,
+                Label = label,
+                Type = "string",
+                Required = false,
+                Description = $"Value for {label}",
+                Value = value
+            };
+
+            paramVm.ValueChanged += () => GenerateCommandFromExample();
+            CommandParameters.Add(paramVm);
+        }
+
+        // Generate the initial command
+        GenerateCommandFromExample();
+    }
+
+    /// <summary>
+    /// Split a command string preserving quoted strings
+    /// </summary>
+    private List<string> SplitCommandPreservingQuotes(string command)
+    {
+        var parts = new List<string>();
+        var current = new System.Text.StringBuilder();
+        bool inQuotes = false;
+        char quoteChar = '"';
+
+        foreach (var c in command)
+        {
+            if ((c == '"' || c == '\'') && !inQuotes)
+            {
+                inQuotes = true;
+                quoteChar = c;
+            }
+            else if (c == quoteChar && inQuotes)
+            {
+                inQuotes = false;
+            }
+            else if (c == ' ' && !inQuotes)
+            {
+                if (current.Length > 0)
+                {
+                    parts.Add(current.ToString());
+                    current.Clear();
+                }
+            }
+            else
+            {
+                current.Append(c);
+            }
+        }
+
+        if (current.Length > 0)
+        {
+            parts.Add(current.ToString());
+        }
+
+        return parts;
+    }
+
+    /// <summary>
+    /// Generate command from example pattern with current parameter values
+    /// </summary>
+    private void GenerateCommandFromExample()
+    {
+        if (string.IsNullOrEmpty(_exampleCommandPattern))
+            return;
+
+        try
+        {
+            var values = CommandParameters.Select(p => p.Value).ToArray();
+            GeneratedCommand = string.Format(_exampleCommandPattern, values);
+        }
+        catch
+        {
+            // If format fails, just show the pattern
+            GeneratedCommand = _exampleCommandPattern;
+        }
+    }
+
+    /// <summary>
+    /// Reset to template-based generator (exit example mode)
+    /// </summary>
+    [RelayCommand]
+    private void ResetToTemplate()
+    {
+        SelectedExample = null;
+        IsUsingExampleMode = false;
+        _exampleCommandPattern = null;
+        LoadCommandGenerator();
+    }
+
     [ObservableProperty]
     private int _searchResultCount;
 

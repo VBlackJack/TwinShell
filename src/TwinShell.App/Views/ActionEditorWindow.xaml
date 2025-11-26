@@ -335,6 +335,34 @@
             <TabItem Header="Exemples">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
                     <StackPanel>
+                        <!-- Platform Filter - AT THE TOP -->
+                        <Border Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="12"
+                                Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="Filtrer par plateforme"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="Tous"
+                                                 IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Null}}"
+                                                 Margin="0,0,16,0"/>
+                                    <RadioButton Content="Windows"
+                                                 IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Static enums:Platform.Windows}}"
+                                                 Margin="0,0,16,0"/>
+                                    <RadioButton Content="Linux"
+                                                 IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Static enums:Platform.Linux}}"
+                                                 Margin="0,0,16,0"/>
+                                    <RadioButton Content="Both (générique)"
+                                                 IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Static enums:Platform.Both}}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                             <TextBlock Text="Exemples de commandes" Style="{StaticResource LabelTextStyle}" Margin="0"/>
                             <Button Content="+ Ajouter un exemple"
@@ -347,7 +375,7 @@
                                    Style="{StaticResource HintTextStyle}"
                                    Margin="0,0,0,16"/>
 
-                        <ItemsControl ItemsSource="{Binding Examples}">
+                        <ItemsControl ItemsSource="{Binding FilteredExamples}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Style="{StaticResource ParameterBorderStyle}">
@@ -358,6 +386,18 @@
                                             </Grid.ColumnDefinitions>
 
                                             <StackPanel Grid.Column="0">
+                                                <!-- Platform selector for this example -->
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                    <TextBlock Text="Plateforme:" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <ComboBox SelectedValue="{Binding Platform}"
+                                                              SelectedValuePath="Tag"
+                                                              Width="120">
+                                                        <ComboBoxItem Content="Windows" Tag="{x:Static enums:Platform.Windows}"/>
+                                                        <ComboBoxItem Content="Linux" Tag="{x:Static enums:Platform.Linux}"/>
+                                                        <ComboBoxItem Content="Both" Tag="{x:Static enums:Platform.Both}"/>
+                                                    </ComboBox>
+                                                </StackPanel>
+
                                                 <TextBlock Text="Commande d'exemple" FontSize="11" Margin="0,0,0,2"/>
                                                 <TextBox Text="{Binding Command, UpdateSourceTrigger=PropertyChanged}"
                                                          FontFamily="Consolas"

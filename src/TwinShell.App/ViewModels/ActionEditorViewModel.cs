@@ -37,6 +37,38 @@ public partial class ActionEditorViewModel : ObservableObject
 
     [ObservableProperty] private ObservableCollection<ExampleEditorViewModel> _examples = new();
 
+    /// <summary>
+    /// Platform filter for examples display (null = show all)
+    /// </summary>
+    [ObservableProperty] private Platform? _selectedExamplePlatformFilter;
+
+    /// <summary>
+    /// Filtered examples based on selected platform filter.
+    /// Shows examples where Platform == Both OR Platform == SelectedExamplePlatformFilter
+    /// </summary>
+    public IEnumerable<ExampleEditorViewModel> FilteredExamples
+    {
+        get
+        {
+            if (SelectedExamplePlatformFilter == null)
+            {
+                return Examples;
+            }
+
+            return Examples.Where(e =>
+                e.Platform == Platform.Both ||
+                e.Platform == SelectedExamplePlatformFilter.Value);
+        }
+    }
+
+    /// <summary>
+    /// Called when SelectedExamplePlatformFilter changes - notifies FilteredExamples
+    /// </summary>
+    partial void OnSelectedExamplePlatformFilterChanged(Platform? value)
+    {
+        OnPropertyChanged(nameof(FilteredExamples));
+    }
+
     private bool _isEditMode;
     private ActionModel? _originalAction;
 
@@ -130,19 +162,50 @@ public partial class ActionEditorViewModel : ObservableObject
             }
         }
 
-        // Load examples
+        // Load examples from all sources (Examples, WindowsExamples, LinuxExamples)
+        Examples.Clear();
+
         if (action.Examples != null)
         {
-            Examples.Clear();
             foreach (var example in action.Examples)
             {
                 Examples.Add(new ExampleEditorViewModel
                 {
                     Command = example.Command,
-                    Description = example.Description ?? string.Empty
+                    Description = example.Description ?? string.Empty,
+                    Platform = example.Platform
                 });
             }
         }
+
+        if (action.WindowsExamples != null)
+        {
+            foreach (var example in action.WindowsExamples)
+            {
+                Examples.Add(new ExampleEditorViewModel
+                {
+                    Command = example.Command,
+                    Description = example.Description ?? string.Empty,
+                    Platform = example.Platform
+                });
+            }
+        }
+
+        if (action.LinuxExamples != null)
+        {
+            foreach (var example in action.LinuxExamples)
+            {
+                Examples.Add(new ExampleEditorViewModel
+                {
+                    Command = example.Command,
+                    Description = example.Description ?? string.Empty,
+                    Platform = example.Platform
+                });
+            }
+        }
+
+        // Notify FilteredExamples that the collection changed
+        OnPropertyChanged(nameof(FilteredExamples));
     }
 
     private async Task LoadCategoriesAsync()
@@ -179,7 +242,8 @@ public partial class ActionEditorViewModel : ObservableObject
                 Examples = Examples.Select(e => new CommandExample
                 {
                     Command = e.Command,
-                    Description = e.Description
+                    Description = e.Description,
+                    Platform = e.Platform
                 }).ToList(),
                 Links = new List<ExternalLink>()
             };
@@ -296,17 +360,25 @@ public partial class ActionEditorViewModel : ObservableObject
     [RelayCommand]
     private void AddExample()
     {
+        // Default platform based on the action's selected platform
+        var defaultPlatform = SelectedPlatform == Platform.Both
+            ? (SelectedExamplePlatformFilter ?? Platform.Both)
+            : SelectedPlatform;
+
         Examples.Add(new ExampleEditorViewModel
         {
             Command = string.Empty,
-            Description = "Description de l'exemple"
+            Description = "Description de l'exemple",
+            Platform = defaultPlatform
         });
+        OnPropertyChanged(nameof(FilteredExamples));
     }
 
     [RelayCommand]
     private void RemoveExample(ExampleEditorViewModel example)
     {
         Examples.Remove(example);
+        OnPropertyChanged(nameof(FilteredExamples));
     }
 
     /// <summary>
@@ -443,4 +515,5 @@ public partial class ExampleEditorViewModel : ObservableObject
 {
     [ObservableProperty] private string _command = string.Empty;
     [ObservableProperty] private string _description = string.Empty;
+    [ObservableProperty] private Platform _platform = Platform.Both;
 }
