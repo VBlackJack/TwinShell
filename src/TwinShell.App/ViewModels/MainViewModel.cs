@@ -124,6 +124,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     /// <summary>
     /// Apply an example to the command generator.
     /// Parses the example and creates dynamic parameters based on its structure.
+    /// For complex commands (pipes, scripts), copies directly to clipboard instead.
     /// </summary>
     [RelayCommand]
     private void ApplyExample(CommandExample? example)
@@ -153,9 +154,11 @@ public partial class MainViewModel : ObservableObject, IDisposable
         Services.SnackBarService.Instance.ShowSuccess("Example loaded - modify values as needed");
     }
 
+
     /// <summary>
     /// Parse an example command and create dynamic parameters based on its structure.
     /// Handles PowerShell-style commands (Verb-Noun value -Param value) and Linux commands.
+    /// For complex commands with pipes, parses the first command and preserves the rest.
     /// </summary>
     private void ParseExampleAndCreateParameters(string exampleCommand)
     {
@@ -165,119 +168,42 @@ public partial class MainViewModel : ObservableObject, IDisposable
         IsUsingExampleMode = true;
         CommandParameters.Clear();
 
+        // Check for pipes - parse first command, keep rest as suffix
+        string commandToParse = exampleCommand;
+        string pipeSuffix = string.Empty;
+
+        var pipeIndex = exampleCommand.IndexOf('|');
+        if (pipeIndex > 0)
+        {
+            commandToParse = exampleCommand.Substring(0, pipeIndex).Trim();
+            pipeSuffix = " " + exampleCommand.Substring(pipeIndex); // Keep the | and everything after
+        }
+
+        // Check for semicolons - parse first command, keep rest as suffix
+        var semicolonIndex = commandToParse.IndexOf(';');
+        if (semicolonIndex > 0)
+        {
+            pipeSuffix = commandToParse.Substring(semicolonIndex) + pipeSuffix;
+            commandToParse = commandToParse.Substring(0, semicolonIndex).Trim();
+        }
+
         // Detect if it's a PowerShell command or Linux command
-        bool isPowerShell = exampleCommand.Contains("-") &&
-                           (exampleCommand.StartsWith("Get-") || exampleCommand.StartsWith("Set-") ||
-                            exampleCommand.StartsWith("New-") || exampleCommand.StartsWith("Remove-") ||
-                            exampleCommand.StartsWith("Resolve-") || exampleCommand.StartsWith("Test-") ||
-                            exampleCommand.StartsWith("Start-") || exampleCommand.StartsWith("Stop-") ||
-                            exampleCommand.StartsWith("Clear-") || exampleCommand.StartsWith("Invoke-"));
+        bool isPowerShell = IsPowerShellCommand(commandToParse);
 
         var parameters = new List<(string Name, string Label, string Value, bool IsSwitch)>();
         var patternParts = new List<string>();
 
         if (isPowerShell)
         {
-            // Parse PowerShell command: CommandName Target -Param1 Value1 -Param2 Value2 -Switch
-            var parts = SplitCommandPreservingQuotes(exampleCommand);
-
-            if (parts.Count > 0)
-            {
-                // First part is the command name
-                patternParts.Add(parts[0]);
-
-                int i = 1;
-                int paramIndex = 0;
-
-                // Check for positional argument (target) before any -Parameter
-                if (i < parts.Count && !parts[i].StartsWith("-"))
-                {
-                    parameters.Add(("target", "Target", parts[i], false));
-                    patternParts.Add($"{{{paramIndex}}}");
-                    paramIndex++;
-                    i++;
-                }
-
-                // Parse named parameters
-                while (i < parts.Count)
-                {
-                    if (parts[i].StartsWith("-"))
-                    {
-                        var paramName = parts[i].TrimStart('-');
-
-                        // Check if next part is a value or another parameter (switch)
-                        if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
-                        {
-                            // Parameter with value
-                            parameters.Add((paramName, paramName, parts[i + 1], false));
-                            patternParts.Add($"-{paramName} {{{paramIndex}}}");
-                            paramIndex++;
-                            i += 2;
-                        }
-                        else
-                        {
-                            // Switch parameter (no value)
-                            parameters.Add((paramName, paramName, "true", true));
-                            patternParts.Add($"-{paramName}");
-                            i++;
-                        }
-                    }
-                    else
-                    {
-                        // Unexpected positional argument
-                        parameters.Add(($"arg{paramIndex}", $"Argument {paramIndex + 1}", parts[i], false));
-                        patternParts.Add($"{{{paramIndex}}}");
-                        paramIndex++;
-                        i++;
-                    }
-                }
-            }
+            ParsePowerShellCommand(commandToParse, parameters, patternParts);
         }
         else
         {
-            // Parse Linux command: command arg1 arg2 -flag value
-            var parts = SplitCommandPreservingQuotes(exampleCommand);
-
-            if (parts.Count > 0)
-            {
-                patternParts.Add(parts[0]); // Command name
-
-                int paramIndex = 0;
-                for (int i = 1; i < parts.Count; i++)
-                {
-                    var part = parts[i];
-
-                    if (part.StartsWith("-") && part.Length > 1)
-                    {
-                        // Check if it's a flag with value
-                        if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
-                        {
-                            var flagName = part.TrimStart('-');
-                            parameters.Add((flagName, flagName, parts[i + 1], false));
-                            patternParts.Add($"{part} {{{paramIndex}}}");
-                            paramIndex++;
-                            i++;
-                        }
-                        else
-                        {
-                            // Just a flag
-                            patternParts.Add(part);
-                        }
-                    }
-                    else
-                    {
-                        // Positional argument
-                        var label = paramIndex == 0 ? "Target" : $"Argument {paramIndex + 1}";
-                        parameters.Add(($"arg{paramIndex}", label, part, false));
-                        patternParts.Add($"{{{paramIndex}}}");
-                        paramIndex++;
-                    }
-                }
-            }
+            ParseLinuxCommand(commandToParse, parameters, patternParts);
         }
 
-        // Store the pattern for regeneration
-        _exampleCommandPattern = string.Join(" ", patternParts);
+        // Store the pattern for regeneration (with pipe suffix if any)
+        _exampleCommandPattern = string.Join(" ", patternParts) + pipeSuffix;
 
         // Create parameter view models
         foreach (var (name, label, value, isSwitch) in parameters)
@@ -303,7 +229,121 @@ public partial class MainViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>
-    /// Split a command string preserving quoted strings
+    /// Check if command looks like a PowerShell command
+    /// </summary>
+    private bool IsPowerShellCommand(string command)
+    {
+        var verbs = new[] { "Get-", "Set-", "New-", "Remove-", "Resolve-", "Test-", "Start-", "Stop-",
+                           "Clear-", "Invoke-", "Add-", "Enable-", "Disable-", "Copy-", "Move-",
+                           "Rename-", "Export-", "Import-", "Backup-", "Restore-", "Update-",
+                           "Install-", "Uninstall-", "Register-", "Unregister-", "Show-", "Hide-" };
+
+        return verbs.Any(v => command.StartsWith(v, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// Parse PowerShell command: CommandName Target -Param1 Value1 -Param2 Value2 -Switch
+    /// </summary>
+    private void ParsePowerShellCommand(string command, List<(string Name, string Label, string Value, bool IsSwitch)> parameters, List<string> patternParts)
+    {
+        var parts = SplitCommandPreservingQuotes(command);
+        if (parts.Count == 0) return;
+
+        // First part is the command name
+        patternParts.Add(parts[0]);
+
+        int i = 1;
+        int paramIndex = 0;
+
+        // Check for positional argument (target) before any -Parameter
+        if (i < parts.Count && !parts[i].StartsWith("-"))
+        {
+            parameters.Add(("target", "Target", parts[i], false));
+            patternParts.Add($"{{{paramIndex}}}");
+            paramIndex++;
+            i++;
+        }
+
+        // Parse named parameters
+        while (i < parts.Count)
+        {
+            if (parts[i].StartsWith("-"))
+            {
+                var paramName = parts[i].TrimStart('-');
+
+                // Check if next part is a value or another parameter (switch)
+                if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
+                {
+                    // Parameter with value
+                    parameters.Add((paramName, paramName, parts[i + 1], false));
+                    patternParts.Add($"-{paramName} {{{paramIndex}}}");
+                    paramIndex++;
+                    i += 2;
+                }
+                else
+                {
+                    // Switch parameter (no value)
+                    parameters.Add((paramName, paramName, "true", true));
+                    patternParts.Add($"-{paramName}");
+                    i++;
+                }
+            }
+            else
+            {
+                // Unexpected positional argument
+                parameters.Add(($"arg{paramIndex}", $"Argument {paramIndex + 1}", parts[i], false));
+                patternParts.Add($"{{{paramIndex}}}");
+                paramIndex++;
+                i++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Parse Linux command: command arg1 arg2 -flag value
+    /// </summary>
+    private void ParseLinuxCommand(string command, List<(string Name, string Label, string Value, bool IsSwitch)> parameters, List<string> patternParts)
+    {
+        var parts = SplitCommandPreservingQuotes(command);
+        if (parts.Count == 0) return;
+
+        patternParts.Add(parts[0]); // Command name
+
+        int paramIndex = 0;
+        for (int i = 1; i < parts.Count; i++)
+        {
+            var part = parts[i];
+
+            if (part.StartsWith("-") && part.Length > 1)
+            {
+                // Check if it's a flag with value
+                if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
+                {
+                    var flagName = part.TrimStart('-');
+                    parameters.Add((flagName, flagName, parts[i + 1], false));
+                    patternParts.Add($"{part} {{{paramIndex}}}");
+                    paramIndex++;
+                    i++;
+                }
+                else
+                {
+                    // Just a flag
+                    patternParts.Add(part);
+                }
+            }
+            else
+            {
+                // Positional argument
+                var label = paramIndex == 0 ? "Target" : $"Argument {paramIndex + 1}";
+                parameters.Add(($"arg{paramIndex}", label, part, false));
+                patternParts.Add($"{{{paramIndex}}}");
+                paramIndex++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Split a command string preserving quoted strings, script blocks, and subexpressions
     /// </summary>
     private List<string> SplitCommandPreservingQuotes(string command)
     {
@@ -311,19 +351,43 @@ public partial class MainViewModel : ObservableObject, IDisposable
         var current = new System.Text.StringBuilder();
         bool inQuotes = false;
         char quoteChar = '"';
+        int braceDepth = 0;  // Track nested braces {}
+        int parenDepth = 0;  // Track nested parentheses ()
 
         foreach (var c in command)
         {
-            if ((c == '"' || c == '\'') && !inQuotes)
+            if ((c == '"' || c == '\'') && !inQuotes && braceDepth == 0 && parenDepth == 0)
             {
                 inQuotes = true;
                 quoteChar = c;
+                current.Append(c);
             }
             else if (c == quoteChar && inQuotes)
             {
                 inQuotes = false;
+                current.Append(c);
             }
-            else if (c == ' ' && !inQuotes)
+            else if (c == '{' && !inQuotes)
+            {
+                braceDepth++;
+                current.Append(c);
+            }
+            else if (c == '}' && !inQuotes)
+            {
+                braceDepth = Math.Max(0, braceDepth - 1);
+                current.Append(c);
+            }
+            else if (c == '(' && !inQuotes)
+            {
+                parenDepth++;
+                current.Append(c);
+            }
+            else if (c == ')' && !inQuotes)
+            {
+                parenDepth = Math.Max(0, parenDepth - 1);
+                current.Append(c);
+            }
+            else if (c == ' ' && !inQuotes && braceDepth == 0 && parenDepth == 0)
             {
                 if (current.Length > 0)
                 {
