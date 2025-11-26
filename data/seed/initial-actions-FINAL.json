@@ -5627,56 +5627,6 @@
       "links": []
     },
     {
-      "id": "disk-check-space",
-      "title": "Vérifier l'espace disque",
-      "description": "Affiche l'utilisation de l'espace disque sur tous les volumes.",
-      "category": "🐧 System Administration",
-      "platform": 2,
-      "level": 0,
-      "tags": [
-        "disk",
-        "space",
-        "storage",
-        "diagnostic"
-      ],
-      "windowsCommandTemplateId": "disk-check-space-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "disk-check-space-windows-cmd",
-        "platform": 0,
-        "name": "Get-PSDrive",
-        "commandPattern": "Get-PSDrive -PSProvider FileSystem | Select-Object Name,Used,Free,@{Name='Total';Expression={$_.Used+$_.Free}}",
-        "parameters": []
-      },
-      "linuxCommandTemplateId": "disk-check-space-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "disk-check-space-linux-cmd",
-        "platform": 1,
-        "name": "df",
-        "commandPattern": "df -h",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "Get-PSDrive -PSProvider FileSystem",
-          "description": "Liste l'utilisation disque (Windows)"
-        },
-        {
-          "command": "df -h",
-          "description": "Affiche l'espace disque en format lisible (Linux)"
-        },
-        {
-          "command": "man df",
-          "description": "Affiche le manuel complet de df. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "Get-PSDrive -PSProvider FileSystem | Select-Object Name,Used,Free,@{Name='Total';Expression={$_.Used+$_.Free}}",
-          "description": "Cas d'usage standard. Affiche l'utilisation de l'espace disque sur tous les volumes. Consultez la documentation pour des paramètres avancés et des options de filtrage."
-        }
-      ],
-      "notes": "Sur Windows, utiliser aussi Get-Volume. Sur Linux, -h affiche en format human-readable (Go, Mo).",
-      "links": []
-    },
-    {
       "id": "process-list",
       "title": "Lister les processus en cours",
       "description": "Affiche la liste de tous les processus en cours d'exécution.",
@@ -10184,46 +10134,6 @@
       "links": []
     },
     {
-      "id": "WIN-PERF-303",
-      "title": "Vider le cache DNS",
-      "description": "Vide le cache DNS local de Windows pour résoudre les problèmes de résolution de noms.",
-      "category": "💻 Windows Optimization",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "performance",
-        "dns",
-        "cache",
-        "network",
-        "diagnostic",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "win-perf-303-cmd",
-      "windowsCommandTemplate": {
-        "id": "win-perf-303-cmd",
-        "platform": 0,
-        "name": "ipconfig",
-        "commandPattern": "ipconfig /flushdns; Write-Host \"Cache DNS vidé\" -ForegroundColor Green",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "ipconfig /flushdns",
-          "description": "Vide le cache DNS"
-        },
-        {
-          "command": "ipconfig /flushdns; Write-Host \"Cache DNS vidé\" -ForegroundColor Green",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help ipconfig -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
-        },
-        {
-          "command": "ipconfig /flushdns; Write-Host \"Cache DNS vidé\" -ForegroundColor Green",
-          "description": "Cas d'usage standard. Vide le cache DNS local de Windows pour résoudre les problèmes de résolution de noms. Consultez la documentation pour des paramètres avancés et des options de filtrage."
-        }
-      ],
-      "notes": "Vider le cache DNS: résout les problèmes de résolution de noms (sites inaccessibles, DNS obsolètes). Aucun impact négatif, le cache se reconstruit automatiquement. Utile après changement de DNS ou problèmes de connexion.",
-      "links": []
-    },
-    {
       "id": "WIN-PERF-304",
       "title": "Désactiver Storage Sense",
       "description": "Désactive Storage Sense, la fonctionnalité automatique de nettoyage de disque de Windows.",
@@ -12954,43 +12864,6 @@
         }
       ],
       "notes": "⚠️ Nécessite redémarrage du PC après exécution. Supprime tout l'historique de mises à jour. Commande à exécuter avec droits administrateur.",
-      "links": []
-    },
-    {
-      "id": "clean-wu-cache",
-      "title": "Nettoyer le cache Windows Update",
-      "description": "Supprime le dossier SoftwareDistribution pour forcer le re-téléchargement des mises à jour",
-      "category": "🔄 Windows Updates",
-      "platform": 0,
-      "level": 1,
-      "tags": [
-        "windows-update",
-        "cache",
-        "cleanup"
-      ],
-      "windowsCommandTemplateId": "clean-wu-cache-cmd",
-      "windowsCommandTemplate": {
-        "id": "clean-wu-cache-cmd",
-        "platform": 0,
-        "name": "net",
-        "commandPattern": "net stop wuauserv && rd /s /q C:\\Windows\\SoftwareDistribution\\Download && net start wuauserv",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "net stop wuauserv && rd /s /q C:\\Windows\\SoftwareDistribution\\Download && net start wuauserv",
-          "description": "Nettoie le cache de téléchargement Windows Update"
-        },
-        {
-          "command": "net stop wuauserv && rd /s /q C:\\Windows\\SoftwareDistribution\\Download && net start wuauserv",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help net -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
-        },
-        {
-          "command": "net stop wuauserv && rd /s /q C:\\Windows\\SoftwareDistribution\\Download && net start wuauserv",
-          "description": "Cas d'usage standard. Supprime le dossier SoftwareDistribution pour forcer le re-téléchargement des mises à jour Consultez la documentation pour des paramètres avancés et des options de filtrage."
-        }
-      ],
-      "notes": "Droits administrateur requis. Force le re-téléchargement des mises à jour en attente.",
       "links": []
     },
     {
