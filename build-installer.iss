@@ -28,7 +28,7 @@ DisableProgramGroupPage=yes
 ; Output
 OutputDir=publish\release
 OutputBaseFilename=TwinShell-v{#MyAppVersion}-Setup-win-x64
-; SetupIconFile=src\TwinShell.App\Assets\twinshell-icon.ico  ; TODO: Icon file corrupted (126 bytes), needs regeneration
+SetupIconFile=src\TwinShell.App\Assets\twinshell-icon.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 
 ; Compression
