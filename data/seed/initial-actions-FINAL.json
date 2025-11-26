@@ -13933,57 +13933,6 @@
       ]
     },
     {
-      "id": "network-show-routing-table",
-      "title": "Afficher la table de routage",
-      "description": "Affiche la table de routage IP complète avec les routes par défaut et statiques",
-      "category": "🌐 Network & DNS",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "network",
-        "routing",
-        "route",
-        "diagnostic"
-      ],
-      "windowsCommandTemplateId": "network-show-routing-table-cmd",
-      "windowsCommandTemplate": {
-        "id": "network-show-routing-table-cmd",
-        "platform": 0,
-        "name": "Get-NetRoute",
-        "commandPattern": "Get-NetRoute -AddressFamily IPv4 | Where-Object {$_.NextHop -ne '0.0.0.0'} | Select-Object DestinationPrefix,NextHop,RouteMetric,InterfaceAlias | Sort-Object RouteMetric | Format-Table -AutoSize",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "Get-NetRoute -AddressFamily IPv4 | Format-Table",
-          "description": "Affiche toutes les routes IPv4"
-        },
-        {
-          "command": "route print",
-          "description": "Alternative classique pour afficher la table de routage"
-        },
-        {
-          "command": "Get-NetRoute -AddressFamily IPv4 | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "Get-NetRoute -AddressFamily IPv4 | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "Get-NetRoute -AddressFamily IPv4 | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ],
-      "notes": "Affiche les routes actives avec les métriques. La route par défaut (0.0.0.0/0) est la passerelle principale. RouteMetric: plus bas = prioritaire.",
-      "links": [
-        {
-          "title": "Get-NetRoute Documentation",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-netroute"
-        }
-      ]
-    },
-    {
       "id": "network-list-adapters",
       "title": "Lister les adaptateurs réseau",
       "description": "Affiche tous les adaptateurs réseau avec leur état, vitesse et adresses IP",
@@ -18379,58 +18328,6 @@
         {
           "title": "ip command",
           "url": "https://man7.org/linux/man-pages/man8/ip.8.html"
-        }
-      ]
-    },
-    {
-      "id": "ip-route-show",
-      "title": "Afficher la table de routage",
-      "description": "Affiche la table de routage IP du système",
-      "category": "🌐 Network & DNS",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "ip",
-        "route",
-        "routing",
-        "gateway",
-        "network"
-      ],
-      "linuxCommandTemplateId": "ip-route-cmd",
-      "linuxCommandTemplate": {
-        "id": "ip-route-cmd",
-        "platform": 1,
-        "name": "ip",
-        "commandPattern": "ip route show",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "ip route show",
-          "description": "Affiche toutes les routes"
-        },
-        {
-          "command": "ip route get 8.8.8.8",
-          "description": "Affiche la route vers une IP spécifique"
-        },
-        {
-          "command": "ip -6 route",
-          "description": "Routes IPv6"
-        },
-        {
-          "command": "ip --help",
-          "description": "Affiche l'aide complète de la commande ip. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man ip",
-          "description": "Affiche le manuel complet de ip. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        }
-      ],
-      "notes": "Ne nécessite pas sudo pour la lecture. 'default via' indique la passerelle par défaut.",
-      "links": [
-        {
-          "title": "ip route",
-          "url": "https://man7.org/linux/man-pages/man8/ip-route.8.html"
         }
       ]
     },
@@ -32780,6 +32677,47 @@
         {
           "title": "Remote Defender Management",
           "url": "https://learn.microsoft.com/en-us/powershell/module/defender/"
+        }
+      ]
+    },
+    {
+      "id": "unified-network-routing-table",
+      "title": "Afficher la table de routage",
+      "description": "Affiche la table de routage IP complète avec les routes par défaut et statiques",
+      "category": "🌐 Network & DNS",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "network",
+        "routing",
+        "route",
+        "gateway",
+        "diagnostic",
+        "ip"
+      ],
+      "windowsCommandTemplateId": "unified-network-routing-table-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "unified-network-routing-table-win-cmd",
+        "platform": 0,
+        "commandPattern": "Get-NetRoute -AddressFamily IPv4 | Where-Object {$_.NextHop -ne '0.0.0.0'} | Select-Object DestinationPrefix,NextHop,RouteMetric,InterfaceAlias | Sort-Object RouteMetric | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "unified-network-routing-table-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "unified-network-routing-table-linux-cmd",
+        "platform": 1,
+        "commandPattern": "ip route show",
+        "parameters": []
+      },
+      "parameters": [],
+      "examples": [
+        {
+          "command": "Get-NetRoute -AddressFamily IPv4 | Where-Object {$_.NextHop -ne '0.0.0.0'} | Select-Object DestinationPrefix,NextHop,RouteMetric,InterfaceAlias | Sort-Object RouteMetric | Format-Table -AutoSize",
+          "description": "Affiche la table de routage IPv4 sur Windows"
+        },
+        {
+          "command": "ip route show",
+          "description": "Affiche la table de routage sur Linux"
         }
       ]
     }
