@@ -1,5 +1,6 @@
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using TwinShell.Core.Constants;
@@ -301,13 +302,29 @@ public class CommandGeneratorService : ICommandGeneratorService
     }
 
     /// <summary>
-    /// Quotes a value for safe shell execution
+    /// Quotes a value for safe shell execution based on the current OS.
+    /// Windows (PowerShell): Single quotes escaped by doubling ('')
+    /// Linux/macOS (Bash): Single quotes escaped by closing, escaping, reopening ('\''')
     /// </summary>
+    /// <remarks>
+    /// This method is thread-safe as it uses only static RuntimeInformation checks
+    /// and immutable string operations.
+    /// </remarks>
     private static string QuoteForShell(string value)
     {
-        // Use single quotes for Bash (safest approach)
-        // Escape single quotes by replacing ' with '\''
-        return "'" + value.Replace("'", "'\\''") + "'";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            // PowerShell escaping: Single quotes are escaped by doubling them
+            // Example: "It's cool" becomes "'It''s cool'"
+            return "'" + value.Replace("'", "''") + "'";
+        }
+        else
+        {
+            // Bash/Linux/macOS escaping: Single quotes are escaped by:
+            // closing the quote, adding escaped literal quote, reopening quote
+            // Example: "It's cool" becomes "'It'\''s cool'"
+            return "'" + value.Replace("'", "'\\''") + "'";
+        }
     }
 
     /// <summary>

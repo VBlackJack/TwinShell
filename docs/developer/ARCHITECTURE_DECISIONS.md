@@ -14,6 +14,7 @@ Ce document enregistre les décisions architecturales importantes prises dans le
 8. [Thread Safety : SemaphoreSlim](#8-thread-safety--semaphoreslim)
 9. [Validation Path Traversal](#9-validation-path-traversal)
 10. [Magic Numbers vs Constantes](#10-magic-numbers-vs-constantes)
+11. [Stratégie d'Intégration CLI Universelle](#11-stratégie-dintégration-cli-universelle)
 
 ---
 
@@ -378,6 +379,40 @@ public const int MaxCommandTimeoutSeconds = 300;
 
 ---
 
+## 11. Stratégie d'Intégration CLI Universelle
+
+### Décision
+
+Extension du support au-delà des cmdlets PowerShell natifs pour inclure les exécutables CLI standards de l'industrie (AWS CLI, Kubectl, OpenSSL, Terraform).
+Utilisation du flag `Platform: 2` (Both/Cross-Platform) pour ces outils.
+
+### Contexte
+
+L'administration système moderne (DevOps) repose majoritairement sur des outils en ligne de commande cross-platform, et non plus uniquement sur WMI/CIM/PowerShell. TwinShell doit évoluer pour rester pertinent.
+
+### Conséquences
+
+**Positives :**
+- **Écosystème infini** : Capacité d'intégrer n'importe quel outil (GCP, Azure, Git, Docker).
+- **Portabilité** : Les commandes JSON sont identiques sur Windows et Linux (WSL/Native).
+- **Standardisation** : Utilisation des arguments standards POSIX au lieu des paramètres nommés PowerShell complexes.
+
+**Négatives :**
+- **Dépendances externes** : L'utilisateur doit avoir les outils installés (ex: `aws` doit être dans le PATH).
+- **Validation plus difficile** : TwinShell ne peut pas facilement valider la syntaxe d'outils tiers comme il le fait pour PowerShell.
+
+**Implémentation :**
+- Le `CommandGeneratorService` traite ces commandes comme des chaînes d'arguments standards.
+- Le `Seed` (JSON) inclut désormais des templates unifiés pour Windows et Linux.
+
+**Outils intégrés (v1.2.0) :**
+- ☁️ **Cloud** : AWS CLI, gcloud (GCP), Azure CLI
+- 🚢 **Containers** : kubectl, Docker
+- 🔨 **IaC** : Terraform, Ansible
+- 🔐 **Security** : OpenSSL, Nmap
+
+---
+
 ## Principes Généraux
 
 ### SOLID Principles
@@ -406,5 +441,5 @@ public const int MaxCommandTimeoutSeconds = 300;
 
 ---
 
-**Dernière mise à jour :** 2025-01-17
-**Version du document :** 1.0
+**Dernière mise à jour :** 2025-11-26
+**Version du document :** 1.1
