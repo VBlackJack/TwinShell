@@ -115,7 +115,7 @@ public class ConfigurationService : IConfigurationService
 
             return (true, null);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return (false, "Export operation failed");
         }
@@ -275,12 +275,12 @@ public class ConfigurationService : IConfigurationService
 
             return (true, null, favoritesImported, historyImported);
         }
-        catch (JsonException ex)
+        catch (JsonException)
         {
             // SECURITY: Don't expose exception details to users
             return (false, "Invalid JSON format", 0, 0);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             return (false, "Import failed", 0, 0);
@@ -322,12 +322,12 @@ public class ConfigurationService : IConfigurationService
 
             return (true, null, config.Version);
         }
-        catch (JsonException ex)
+        catch (JsonException)
         {
             // SECURITY FIX: Don't expose exception details that could leak path information
             return (false, "JSON parsing error", null);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return (false, "Validation error", null);
         }

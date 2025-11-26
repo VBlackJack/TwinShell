@@ -130,8 +130,11 @@ public class SnackBarService
         _snackBar.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
         // Set timer to hide
-        _timer.Interval = TimeSpan.FromMilliseconds(durationMs);
-        _timer.Start();
+        if (_timer != null)
+        {
+            _timer.Interval = TimeSpan.FromMilliseconds(durationMs);
+            _timer.Start();
+        }
     }
 
     private void Timer_Tick(object? sender, EventArgs e)

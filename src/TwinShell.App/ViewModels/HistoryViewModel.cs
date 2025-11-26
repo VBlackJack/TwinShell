@@ -138,7 +138,7 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             await ApplyFiltersAsync();
             StatusMessage = $"Loaded {_allHistory.Count} history entries";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             StatusMessage = "Error loading history";
@@ -250,7 +250,7 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
                 await LoadHistoryAsync();
                 StatusMessage = "All history cleared successfully";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // SECURITY: Don't expose exception details to users
                 StatusMessage = "Error clearing history";
@@ -310,7 +310,7 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             await LoadHistoryAsync();
             StatusMessage = "History entry deleted";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             StatusMessage = "Error deleting entry";

@@ -951,6 +951,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         // Load parameters
         CommandParameters.Clear();
+        if (template == null) return;
+
         var defaults = _commandGeneratorService.GetDefaultParameterValues(template);
 
         foreach (var param in template.Parameters)
@@ -1153,7 +1155,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             StatusMessage = _localizationService.GetString(MessageKeys.FavoritesToggleFailed);
@@ -1181,7 +1183,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             await asyncMethod();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             StatusMessage = _localizationService.GetString(MessageKeys.CommonErrorProcessing);
@@ -1237,7 +1239,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 Services.SnackBarService.Instance.ShowSuccess("✓ Nouvelle commande ajoutée avec succès");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             _dialogService.ShowError(
@@ -1272,7 +1274,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 Services.SnackBarService.Instance.ShowSuccess("✓ Commande mise à jour avec succès");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             _dialogService.ShowError(
@@ -1304,7 +1306,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 StatusMessage = "✓ Commande supprimée";
                 Services.SnackBarService.Instance.ShowSuccess("✓ Commande supprimée");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // SECURITY: Don't expose exception details to users
                 _dialogService.ShowError(
@@ -1350,7 +1352,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             _dialogService.ShowError(
@@ -1432,7 +1434,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             _dialogService.ShowError(
@@ -1470,12 +1472,12 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 else
                 {
                     _dialogService.ShowError(
-                        _localizationService.GetFormattedString(MessageKeys.ConfigExportErrorMessage, result.ErrorMessage),
+                        _localizationService.GetFormattedString(MessageKeys.ConfigExportErrorMessage, result.ErrorMessage ?? "Unknown error"),
                         _localizationService.GetString(MessageKeys.ConfigExportError));
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             _dialogService.ShowError(
@@ -1504,14 +1506,14 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 if (!validation.IsValid)
                 {
                     _dialogService.ShowWarning(
-                        _localizationService.GetFormattedString(MessageKeys.ConfigValidationErrorMessage, validation.ErrorMessage),
+                        _localizationService.GetFormattedString(MessageKeys.ConfigValidationErrorMessage, validation.ErrorMessage ?? "Unknown error"),
                         _localizationService.GetString(MessageKeys.ConfigValidationError));
                     return;
                 }
 
                 // Confirm import
                 var confirmed = _dialogService.ShowQuestion(
-                    _localizationService.GetFormattedString(MessageKeys.ConfigImportConfirmationMessage, validation.Version),
+                    _localizationService.GetFormattedString(MessageKeys.ConfigImportConfirmationMessage, validation.Version ?? "Unknown"),
                     _localizationService.GetString(MessageKeys.ConfigImportConfirmation));
 
                 if (confirmed)
@@ -1533,13 +1535,13 @@ public partial class MainViewModel : ObservableObject, IDisposable
                     else
                     {
                         _dialogService.ShowError(
-                            _localizationService.GetFormattedString(MessageKeys.ConfigImportErrorMessage, result.ErrorMessage),
+                            _localizationService.GetFormattedString(MessageKeys.ConfigImportErrorMessage, result.ErrorMessage ?? "Unknown error"),
                             _localizationService.GetString(MessageKeys.ConfigImportError));
                     }
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             _dialogService.ShowError(

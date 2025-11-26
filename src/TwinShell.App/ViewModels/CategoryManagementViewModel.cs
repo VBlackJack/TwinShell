@@ -108,7 +108,7 @@ public partial class CategoryManagementViewModel : ObservableObject
 
             NewCategoryName = string.Empty;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             ErrorMessage = "An error occurred while processing the category";
@@ -184,7 +184,7 @@ public partial class CategoryManagementViewModel : ObservableObject
                 ErrorMessage = "Failed to rename category.";
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // SECURITY: Don't expose exception details to users
             ErrorMessage = "An error occurred while saving the category";
@@ -218,7 +218,7 @@ public partial class CategoryManagementViewModel : ObservableObject
                     MessageBox.Show("Category deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // SECURITY: Don't expose exception details to users
                 ErrorMessage = "An error occurred while deleting the category";

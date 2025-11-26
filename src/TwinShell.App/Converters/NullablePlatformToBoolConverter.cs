@@ -31,7 +31,7 @@ public class NullablePlatformToBoolConverter : IValueConverter
         return false;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         // Only convert back if the RadioButton is checked (value is true)
         if (value is bool isChecked && isChecked)

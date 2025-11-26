@@ -122,7 +122,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
                     result);
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             lock (_lock)
             {
