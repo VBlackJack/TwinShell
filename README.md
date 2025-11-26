@@ -24,7 +24,7 @@
 
 En tant qu'administrateur système, vous jonglez constamment entre PowerShell et Bash, vous cherchez dans vos notes dispersées, et vous perdez du temps à retrouver la syntaxe exacte de commandes que vous utilisez rarement mais qui sont critiques.
 
-**TwinShell centralise tout cela** : une bibliothèque de **500+ commandes PowerShell** prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
+**TwinShell centralise tout cela** : une bibliothèque de **500+ commandes PowerShell et Bash** prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
 
 ---
 
@@ -97,7 +97,7 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 
 3. **Premier lancement**
    - L'application crée automatiquement sa base de données SQLite
-   - 500+ commandes PowerShell sont chargées automatiquement au démarrage
+   - 500+ commandes PowerShell et Bash sont chargées automatiquement au démarrage
    - Vous êtes prêt à utiliser TwinShell !
 
 ### Installation depuis le Code Source
