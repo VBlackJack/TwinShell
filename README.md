@@ -38,7 +38,7 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 - **Suggestions intelligentes** : l'historique de recherche propose des suggestions d'autocomplétion
 
 ### 📂 Organisation Puissante
-- **Catégories prédéfinies** : Active Directory, DNS, Logs, Services, Réseau, etc.
+- **Catégories prédéfinies** : Active Directory & GPO, Network & DNS, Monitoring & Logs, Windows Optimization, etc.
 - **Catégories personnalisées** : Créez vos propres catégories avec icônes et couleurs
 - **Catégorie "📋 All Commands"** : Vue d'ensemble de toutes les commandes disponibles
 - **Filtres avancés** : Par plateforme (Windows/Linux), niveau de risque, catégorie
@@ -140,8 +140,8 @@ L'interface TwinShell est divisée en 3 panneaux :
 │              │                          │                   │
 │  • All Cmds  │  ✓ Get-Service           │  Title: Get-Svc   │
 │  • Favorites │    List Windows svcs     │  [param1] [____]  │
-│  • AD        │                          │  [param2] [____]  │
-│  • DNS       │  ✓ systemctl status      │                   │
+│  • AD & GPO  │                          │  [param2] [____]  │
+│  • Network   │  ✓ systemctl status      │                   │
 │  • Logs      │    Linux service info    │  Generated Cmd:   │
 │  • ...       │                          │  Get-Service...   │
 │              │  ✓ Get-EventLog          │                   │

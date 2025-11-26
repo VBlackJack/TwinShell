@@ -38,12 +38,12 @@ L'interface TwinShell est organisée en **3 panneaux principaux** :
 │  📋 All      │  ✓ Get-Service              │  Get-Service      │
 │  ⭐ Favs     │    List Windows services    │  ───────────────  │
 │              │    [Windows] [Run]          │  Service Name:    │
-│  🔵 AD       │                              │  [Spooler____]    │
-│  🟢 DNS      │  ✓ systemctl status         │                   │
-│  🟡 GPO      │    Linux service info       │  Generated:       │
-│  🔴 Logs     │    [Linux] [Info]           │  ┌──────────────┐ │
-│  🟣 Svcs     │                              │  │Get-Service...│ │
-│  🟠 Net      │  ✓ Get-EventLog             │  └──────────────┘ │
+│  🏢 AD&GPO   │                              │  [Spooler____]    │
+│  🌐 Network  │  ✓ systemctl status         │                   │
+│  📊 Logs     │    Linux service info       │  Generated:       │
+│  ⚙️ Services │    [Linux] [Info]           │  ┌──────────────┐ │
+│  💻 Windows  │                              │  │Get-Service...│ │
+│  🐧 Linux    │  ✓ Get-EventLog             │  └──────────────┘ │
 │  ...         │    Windows event logs       │                   │
 │              │    [Windows] [Dangerous]    │  [📋 Copier]      │
 └──────────────┴──────────────────────────────┴───────────────────┘
@@ -56,18 +56,21 @@ L'interface TwinShell est organisée en **3 panneaux principaux** :
 - **⭐ Favorites** : Accès rapide à vos commandes favorites (max 50)
 
 **Catégories Prédéfinies :**
-- 🔵 **Active Directory** : Gestion des utilisateurs, groupes, GPO
-- 🟢 **DNS** : Requêtes DNS, cache, diagnostics
-- 🟡 **GPO** : Group Policy Objects (Windows)
-- 🔴 **Logs** : EventLog (Windows) et journald (Linux)
-- 🟣 **Services** : systemd (Linux) et Windows Services
-- 🟠 **Network** : Diagnostics réseau (ping, traceroute, etc.)
-- 🟤 **System** : Informations système
-- ☁️ **Cloud & Azure** : Gestion Azure AD (Entra), AWS et Google Cloud
-- 🚢 **Kubernetes** : Orchestration de conteneurs, pods et services
-- 🔐 **Security** : Cryptographie (OpenSSL), audit réseau (Nmap) et gestion de certificats
-- 💽 **Databases** : Gestion des bases de données (SQL Server, PostgreSQL, MySQL)
-- 🔨 **IaC & Build** : Terraform, Ansible et outils de compilation
+- 🏢 **Active Directory & GPO** : Gestion des utilisateurs AD, groupes, GPO
+- 🌐 **Network & DNS** : Diagnostics réseau, DNS, ping, traceroute
+- 📊 **Monitoring & Logs** : EventLog, journald, surveillance système
+- ⚙️ **Services & Automation** : Services Windows/Linux, tâches planifiées
+- 💻 **Windows Optimization** : Optimisation et maintenance Windows
+- 🐧 **Linux Administration** : Administration système Linux
+- 📦 **Package Management** : Gestion des paquets (apt, yum, winget, choco)
+- 📁 **Files & Storage** : Gestion des fichiers et stockage
+- 🔒 **Security & Encryption** : Sécurité, chiffrement, BitLocker
+- 🔄 **Windows Updates** : Mises à jour Windows
+- 👥 **User Management** : Gestion des utilisateurs locaux
+- 🐳 **Containers & VMs** : Docker, conteneurs, machines virtuelles
+- 💽 **Database** : Bases de données (SQL Server, MySQL, PostgreSQL)
+- 🔧 **Development** : Outils de développement (Git, npm, etc.)
+- ⚡ **Performance** : Analyse et optimisation des performances
 
 **Catégories Personnalisées :**
 - Créez vos propres catégories avec icônes et couleurs personnalisées
@@ -1016,13 +1019,21 @@ Les **catégories système** sont protégées.
 Les catégories système ont un **badge jaune "System"** dans le gestionnaire de catégories.
 
 **Catégories système :**
-- Active Directory
-- DNS
-- GPO
-- Logs
-- Services
-- Network
-- System
+- Active Directory & GPO
+- Network & DNS
+- Monitoring & Logs
+- Services & Automation
+- Windows Optimization
+- Linux Administration
+- Package Management
+- Files & Storage
+- Security & Encryption
+- Windows Updates
+- User Management
+- Containers & VMs
+- Database
+- Development
+- Performance
 
 **Vous NE POUVEZ PAS :**
 - Renommer une catégorie système
