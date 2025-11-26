@@ -95,12 +95,24 @@ public class ActionRepository : IActionRepository
 
     public async Task UpdateAsync(Core.Models.Action action)
     {
-        // BUGFIX: Handle command templates when updating actions (import/export support)
+        // BUGFIX: Handle EF Core tracking - detach any existing tracked entities first
         // Add or update Windows command template if it exists
         if (action.WindowsCommandTemplate != null)
         {
             var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
-            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == windowsTemplateEntity.Id))
+            var existingWindows = await _context.CommandTemplates
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == windowsTemplateEntity.Id);
+
+            // Detach any tracked entity with the same ID
+            var trackedWindows = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
+                .FirstOrDefault(e => e.Entity.Id == windowsTemplateEntity.Id);
+            if (trackedWindows != null)
+            {
+                trackedWindows.State = EntityState.Detached;
+            }
+
+            if (existingWindows == null)
             {
                 _context.CommandTemplates.Add(windowsTemplateEntity);
             }
@@ -114,7 +126,19 @@ public class ActionRepository : IActionRepository
         if (action.LinuxCommandTemplate != null)
         {
             var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
-            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == linuxTemplateEntity.Id))
+            var existingLinux = await _context.CommandTemplates
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == linuxTemplateEntity.Id);
+
+            // Detach any tracked entity with the same ID
+            var trackedLinux = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
+                .FirstOrDefault(e => e.Entity.Id == linuxTemplateEntity.Id);
+            if (trackedLinux != null)
+            {
+                trackedLinux.State = EntityState.Detached;
+            }
+
+            if (existingLinux == null)
             {
                 _context.CommandTemplates.Add(linuxTemplateEntity);
             }
@@ -125,6 +149,15 @@ public class ActionRepository : IActionRepository
         }
 
         var entity = ActionMapper.ToEntity(action);
+
+        // Detach any tracked Action entity with the same ID
+        var trackedAction = _context.ChangeTracker.Entries<Entities.ActionEntity>()
+            .FirstOrDefault(e => e.Entity.Id == entity.Id);
+        if (trackedAction != null)
+        {
+            trackedAction.State = EntityState.Detached;
+        }
+
         _context.Actions.Update(entity);
         await _context.SaveChangesAsync();
     }

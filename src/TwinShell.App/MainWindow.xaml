@@ -321,6 +321,9 @@
                                           FontWeight="SemiBold"
                                           ToolTip="View full action details"
                                           Command="{Binding ViewDetailsCommand}"/>
+                                <MenuItem Header="Edit Action..."
+                                          Command="{Binding EditActionCommand}"
+                                          ToolTip="Edit this action"/>
                                 <MenuItem Header="Add to Favorites"
                                           Command="{Binding ToggleFavoriteCommand}"
                                           ToolTip="Add this action to your favorites"/>

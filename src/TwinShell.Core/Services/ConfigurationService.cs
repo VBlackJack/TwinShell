@@ -52,10 +52,10 @@ public class ConfigurationService : IConfigurationService
     {
         try
         {
-            // SECURITY: Validate file path to prevent path traversal
-            if (!IsPathSecure(filePath))
+            // SECURITY: Validate file path (allow user-chosen paths, but validate)
+            if (!IsExportPathValid(filePath))
             {
-                return (false, "Invalid file path: path must be within the allowed directory");
+                return (false, "Invalid file path");
             }
 
             // SECURITY: Validate file extension
@@ -128,10 +128,10 @@ public class ConfigurationService : IConfigurationService
     {
         try
         {
-            // SECURITY: Validate file path to prevent path traversal
-            if (!IsPathSecure(filePath))
+            // SECURITY: Validate file path
+            if (!IsImportPathValid(filePath))
             {
-                return (false, "Invalid file path: path must be within the allowed directory", 0, 0);
+                return (false, "Invalid file path", 0, 0);
             }
 
             // Validate file exists
@@ -334,7 +334,87 @@ public class ConfigurationService : IConfigurationService
     }
 
     /// <summary>
+    /// Validates an export file path (less restrictive than import)
+    /// Allows user to export to any valid local path
+    /// </summary>
+    private bool IsExportPathValid(string filePath)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return false;
+
+            // SECURITY: Check for path traversal in input
+            if (filePath.Contains(".."))
+                return false;
+
+            // SECURITY: Reject UNC paths (network paths) for exports
+            if (filePath.StartsWith(@"\\") || filePath.StartsWith("//"))
+                return false;
+
+            // Get the absolute path and verify it's valid
+            var fullPath = Path.GetFullPath(filePath);
+
+            // Verify the directory exists or can be created
+            var directory = Path.GetDirectoryName(fullPath);
+            if (string.IsNullOrEmpty(directory))
+                return false;
+
+            // Must have a valid filename
+            var fileName = Path.GetFileName(fullPath);
+            if (string.IsNullOrEmpty(fileName))
+                return false;
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Validates an import file path
+    /// Allows user to import from any valid local path (selected via file dialog)
+    /// </summary>
+    private bool IsImportPathValid(string filePath)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return false;
+
+            // SECURITY: Check for path traversal in input
+            if (filePath.Contains(".."))
+                return false;
+
+            // SECURITY: Reject UNC paths (network paths)
+            if (filePath.StartsWith(@"\\") || filePath.StartsWith("//"))
+                return false;
+
+            // Get the absolute path and verify it's valid
+            var fullPath = Path.GetFullPath(filePath);
+
+            // Must be a .json file
+            if (!fullPath.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            // Must have a valid filename
+            var fileName = Path.GetFileName(fullPath);
+            if (string.IsNullOrEmpty(fileName))
+                return false;
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Validates that a file path is within the allowed directory (prevents path traversal)
+    /// Used for internal operations where stricter security is needed
     /// </summary>
     private bool IsPathSecure(string filePath)
     {
