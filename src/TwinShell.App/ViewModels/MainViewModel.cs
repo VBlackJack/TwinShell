@@ -361,7 +361,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>
-    /// Updates the current examples based on selected action and platform
+    /// Updates the current examples based on selected action and platform.
+    /// Filters examples by Platform property: shows examples where Platform == Both OR Platform == SelectedPlatform
     /// </summary>
     private void UpdateCurrentExamples()
     {
@@ -373,48 +374,36 @@ public partial class MainViewModel : ObservableObject, IDisposable
             return;
         }
 
-        IEnumerable<CommandExample> examples;
+        // Collect all examples from all sources
+        var allExamples = new List<CommandExample>();
 
-        // For cross-platform actions, try platform-specific examples first, then fallback to generic
-        if (IsCommandCrossPlatform)
+        if (SelectedAction.Examples?.Any() == true)
         {
-            var platformExamples = SelectedPlatformForGenerator == Platform.Windows
-                ? SelectedAction.WindowsExamples
-                : SelectedAction.LinuxExamples;
-
-            // Use platform-specific examples if available, otherwise fallback to generic Examples
-            if (platformExamples?.Any() == true)
-            {
-                examples = platformExamples;
-                HasPlatformSpecificExamples = true;
-            }
-            else
-            {
-                examples = SelectedAction.Examples ?? new List<CommandExample>();
-                HasPlatformSpecificExamples = false;
-            }
-        }
-        else
-        {
-            // For single-platform actions, try platform-specific first, then generic
-            if (SelectedAction.Platform == Platform.Windows && SelectedAction.WindowsExamples?.Any() == true)
-            {
-                examples = SelectedAction.WindowsExamples;
-                HasPlatformSpecificExamples = true;
-            }
-            else if (SelectedAction.Platform == Platform.Linux && SelectedAction.LinuxExamples?.Any() == true)
-            {
-                examples = SelectedAction.LinuxExamples;
-                HasPlatformSpecificExamples = true;
-            }
-            else
-            {
-                examples = SelectedAction.Examples ?? new List<CommandExample>();
-                HasPlatformSpecificExamples = false;
-            }
+            allExamples.AddRange(SelectedAction.Examples);
         }
 
-        foreach (var example in examples)
+        if (SelectedAction.WindowsExamples?.Any() == true)
+        {
+            allExamples.AddRange(SelectedAction.WindowsExamples);
+        }
+
+        if (SelectedAction.LinuxExamples?.Any() == true)
+        {
+            allExamples.AddRange(SelectedAction.LinuxExamples);
+        }
+
+        // Filter examples based on selected platform
+        // Show examples where Platform == Both OR Platform == SelectedPlatform
+        var selectedPlatform = IsCommandCrossPlatform ? SelectedPlatformForGenerator : SelectedAction.Platform;
+
+        var filteredExamples = allExamples.Where(ex =>
+            ex.Platform == Platform.Both ||
+            ex.Platform == selectedPlatform).ToList();
+
+        // Check if we have platform-specific examples (not just generic Both)
+        HasPlatformSpecificExamples = filteredExamples.Any(ex => ex.Platform != Platform.Both);
+
+        foreach (var example in filteredExamples)
         {
             CurrentExamples.Add(example);
         }
