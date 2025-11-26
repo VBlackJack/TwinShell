@@ -20544,17 +20544,20 @@
       ]
     },
     {
-      "id": "useradd-create-user",
-      "title": "Créer un nouvel utilisateur",
-      "description": "Crée un nouveau compte utilisateur sur le système",
-      "category": "🐧 System Administration",
-      "platform": 1,
+      "id": "unified-create-local-user",
+      "title": "Créer un utilisateur local",
+      "description": "Crée un nouveau compte utilisateur local sur le système.",
+      "category": "👥 User Management",
+      "platform": 2,
       "level": 1,
       "tags": [
-        "useradd",
         "user",
         "account",
-        "create"
+        "create",
+        "useradd",
+        "new-localuser",
+        "windows",
+        "linux"
       ],
       "linuxCommandTemplateId": "useradd-cmd",
       "linuxCommandTemplate": {
@@ -20581,7 +20584,22 @@
           }
         ]
       },
-      "examples": [
+      "notes": "Windows: New-LocalUser crée un utilisateur local (pas AD). -NoPassword pour compte sans mot de passe.\nLinux: useradd nécessite sudo. -m crée le répertoire home. Utiliser passwd ensuite pour définir le mot de passe.",
+      "links": [
+        {
+          "title": "useradd documentation",
+          "url": "https://man7.org/linux/man-pages/man8/useradd.8.html"
+        },
+        {
+          "title": "New-LocalUser documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/new-localuser"
+        }
+      ],
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "linuxExamples": [
         {
           "command": "sudo useradd -m -s /bin/bash john",
           "description": "Crée l'utilisateur john avec répertoire home"
@@ -20611,13 +20629,51 @@
           "description": "Exemple utilisant le paramètre 'username': Nom du nouvel utilisateur. Remplacez <username> par la valeur appropriée selon votre environnement."
         }
       ],
-      "notes": "Nécessite sudo. -m crée le répertoire home. Utiliser passwd ensuite pour définir le mot de passe.",
-      "links": [
+      "windowsCommandTemplateId": "create-localuser-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "create-localuser-win-cmd",
+        "platform": 0,
+        "name": "New-LocalUser",
+        "commandPattern": "New-LocalUser -Name \"{username}\" -NoPassword",
+        "parameters": [
+          {
+            "name": "username",
+            "label": "Nom d'utilisateur",
+            "type": "string",
+            "defaultValue": "newuser",
+            "required": true,
+            "description": "Nom du nouvel utilisateur"
+          }
+        ]
+      },
+      "windowsExamples": [
         {
-          "title": "useradd documentation",
-          "url": "https://man7.org/linux/man-pages/man8/useradd.8.html"
+          "command": "New-LocalUser -Name \"john\" -NoPassword",
+          "description": "Crée l'utilisateur john sans mot de passe"
+        },
+        {
+          "command": "New-LocalUser -Name \"john\" -Password (Read-Host -AsSecureString)",
+          "description": "Crée john avec mot de passe interactif"
+        },
+        {
+          "command": "New-LocalUser -Name \"john\" -FullName \"John Doe\" -Description \"Developer\"",
+          "description": "Crée john avec nom complet et description"
+        },
+        {
+          "command": "Get-Help New-LocalUser -Full",
+          "description": "Affiche l'aide complète de New-LocalUser"
         }
-      ]
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'New-LocalUser', Linux utilise 'useradd'",
+          "Windows: -NoPassword par défaut, Linux: passwd séparé"
+        ],
+        "commonalities": [
+          "Les deux permettent de créer un utilisateur local",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
     },
     {
       "id": "usermod-modify-user",
@@ -20696,17 +20752,21 @@
       ]
     },
     {
-      "id": "userdel-delete-user",
-      "title": "Supprimer un utilisateur",
-      "description": "Supprime un compte utilisateur du système",
-      "category": "🐧 System Administration",
-      "platform": 1,
+      "id": "unified-delete-local-user",
+      "title": "Supprimer un utilisateur local",
+      "description": "Supprime un compte utilisateur local du système.",
+      "category": "👥 User Management",
+      "platform": 2,
       "level": 2,
       "tags": [
-        "userdel",
         "user",
+        "account",
         "delete",
-        "remove"
+        "remove",
+        "userdel",
+        "remove-localuser",
+        "windows",
+        "linux"
       ],
       "linuxCommandTemplateId": "userdel-cmd",
       "linuxCommandTemplate": {
@@ -20733,7 +20793,22 @@
           }
         ]
       },
-      "examples": [
+      "notes": "Windows: Remove-LocalUser supprime l'utilisateur local (pas AD). Le profil utilisateur n'est pas supprimé automatiquement.\nLinux: userdel nécessite sudo. DANGER: -r supprime définitivement le home. Vérifier les processus actifs d'abord.",
+      "links": [
+        {
+          "title": "userdel documentation",
+          "url": "https://man7.org/linux/man-pages/man8/userdel.8.html"
+        },
+        {
+          "title": "Remove-LocalUser documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/remove-localuser"
+        }
+      ],
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "linuxExamples": [
         {
           "command": "sudo userdel john",
           "description": "Supprime l'utilisateur john (garde le home)"
@@ -20759,13 +20834,172 @@
           "description": "Exemple utilisant le paramètre 'username': Utilisateur à supprimer. Remplacez <username> par la valeur appropriée selon votre environnement."
         }
       ],
-      "notes": "Nécessite sudo. DANGER: -r supprime définitivement le home. Vérifier les processus actifs d'abord.",
+      "windowsCommandTemplateId": "delete-localuser-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "delete-localuser-win-cmd",
+        "platform": 0,
+        "name": "Remove-LocalUser",
+        "commandPattern": "Remove-LocalUser -Name \"{username}\"",
+        "parameters": [
+          {
+            "name": "username",
+            "label": "Nom d'utilisateur",
+            "type": "string",
+            "defaultValue": "john",
+            "required": true,
+            "description": "Utilisateur à supprimer"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "Remove-LocalUser -Name \"john\"",
+          "description": "Supprime l'utilisateur john"
+        },
+        {
+          "command": "Remove-LocalUser -Name \"john\" -Confirm:$false",
+          "description": "Supprime sans confirmation"
+        },
+        {
+          "command": "Get-LocalUser | Where-Object {$_.Enabled -eq $false} | Remove-LocalUser",
+          "description": "Supprime tous les utilisateurs désactivés"
+        },
+        {
+          "command": "Get-Help Remove-LocalUser -Full",
+          "description": "Affiche l'aide complète de Remove-LocalUser"
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Remove-LocalUser', Linux utilise 'userdel'",
+          "Windows: profil conservé, Linux: -r pour supprimer le home"
+        ],
+        "commonalities": [
+          "Les deux permettent de supprimer un utilisateur local",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-file-hash",
+      "title": "Calculer le hash d'un fichier",
+      "description": "Calcule l'empreinte cryptographique (hash SHA256) d'un fichier pour vérification d'intégrité.",
+      "category": "🔐 Security",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 0,
+      "tags": [
+        "hash",
+        "sha256",
+        "checksum",
+        "integrity",
+        "security",
+        "verify",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: Get-FileHash supporte SHA256 (défaut), SHA1, SHA384, SHA512, MD5.\nLinux: sha256sum fait partie des coreutils. Alternatives: sha1sum, sha512sum, md5sum.",
       "links": [
         {
-          "title": "userdel documentation",
-          "url": "https://man7.org/linux/man-pages/man8/userdel.8.html"
+          "title": "Get-FileHash documentation",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash"
+        },
+        {
+          "title": "sha256sum documentation",
+          "url": "https://man7.org/linux/man-pages/man1/sha256sum.1.html"
         }
-      ]
+      ],
+      "windowsCommandTemplateId": "file-hash-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "file-hash-win-cmd",
+        "platform": 0,
+        "name": "Get-FileHash",
+        "commandPattern": "Get-FileHash -Path \"{filePath}\" -Algorithm SHA256",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Chemin du fichier",
+            "type": "string",
+            "defaultValue": "C:\\file.exe",
+            "required": true,
+            "description": "Chemin complet du fichier à hasher"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "Get-FileHash -Path \"C:\\Downloads\\setup.exe\" -Algorithm SHA256",
+          "description": "Calcule le SHA256 d'un fichier téléchargé"
+        },
+        {
+          "command": "Get-FileHash -Path \"C:\\file.exe\" -Algorithm MD5",
+          "description": "Calcule le MD5 (moins sécurisé)"
+        },
+        {
+          "command": "Get-ChildItem -Path \"C:\\Folder\" -File | Get-FileHash",
+          "description": "Hash de tous les fichiers d'un dossier"
+        },
+        {
+          "command": "(Get-FileHash -Path \"C:\\file.exe\").Hash -eq \"ABC123...\"",
+          "description": "Compare avec un hash connu"
+        },
+        {
+          "command": "Get-Help Get-FileHash -Full",
+          "description": "Affiche l'aide complète de Get-FileHash"
+        }
+      ],
+      "linuxCommandTemplateId": "file-hash-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "file-hash-linux-cmd",
+        "platform": 1,
+        "name": "sha256sum",
+        "commandPattern": "sha256sum \"{filePath}\"",
+        "parameters": [
+          {
+            "name": "filePath",
+            "label": "Chemin du fichier",
+            "type": "string",
+            "defaultValue": "/path/to/file",
+            "required": true,
+            "description": "Chemin complet du fichier à hasher"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "sha256sum /home/user/download.iso",
+          "description": "Calcule le SHA256 d'un fichier ISO"
+        },
+        {
+          "command": "sha256sum -c checksums.sha256",
+          "description": "Vérifie les hash depuis un fichier de checksums"
+        },
+        {
+          "command": "sha256sum * > checksums.sha256",
+          "description": "Génère les hash de tous les fichiers"
+        },
+        {
+          "command": "echo \"hash_attendu  fichier\" | sha256sum -c -",
+          "description": "Vérifie un hash spécifique"
+        },
+        {
+          "command": "man sha256sum",
+          "description": "Affiche le manuel complet de sha256sum"
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Get-FileHash', Linux utilise 'sha256sum'",
+          "Windows: format objet PowerShell, Linux: format texte"
+        ],
+        "commonalities": [
+          "Les deux calculent le hash SHA256 d'un fichier",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
     },
     {
       "id": "chmod-permissions",
