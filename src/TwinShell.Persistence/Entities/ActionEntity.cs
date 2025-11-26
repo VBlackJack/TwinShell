@@ -26,9 +26,19 @@ public class ActionEntity
     public CommandTemplateEntity? LinuxCommandTemplate { get; set; }
 
     /// <summary>
-    /// Examples stored as JSON
+    /// Examples stored as JSON (legacy - for single-platform actions)
     /// </summary>
     public string ExamplesJson { get; set; } = "[]";
+
+    /// <summary>
+    /// Windows-specific examples stored as JSON (for cross-platform actions)
+    /// </summary>
+    public string WindowsExamplesJson { get; set; } = "[]";
+
+    /// <summary>
+    /// Linux-specific examples stored as JSON (for cross-platform actions)
+    /// </summary>
+    public string LinuxExamplesJson { get; set; } = "[]";
 
     public string? Notes { get; set; }
 

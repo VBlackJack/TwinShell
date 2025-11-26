@@ -46,6 +46,14 @@ public class ActionConfiguration : IEntityTypeConfiguration<ActionEntity>
             .IsRequired()
             .HasColumnType("TEXT");
 
+        builder.Property(e => e.WindowsExamplesJson)
+            .IsRequired()
+            .HasColumnType("TEXT");
+
+        builder.Property(e => e.LinuxExamplesJson)
+            .IsRequired()
+            .HasColumnType("TEXT");
+
         builder.Property(e => e.LinksJson)
             .IsRequired()
             .HasColumnType("TEXT");

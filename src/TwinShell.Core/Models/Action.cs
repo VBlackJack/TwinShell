@@ -63,9 +63,19 @@ public class Action
     public CommandTemplate? LinuxCommandTemplate { get; set; }
 
     /// <summary>
-    /// Command examples
+    /// Command examples (legacy - used for single-platform actions)
     /// </summary>
     public List<CommandExample> Examples { get; set; } = new();
+
+    /// <summary>
+    /// Windows-specific command examples (for cross-platform actions)
+    /// </summary>
+    public List<CommandExample> WindowsExamples { get; set; } = new();
+
+    /// <summary>
+    /// Linux-specific command examples (for cross-platform actions)
+    /// </summary>
+    public List<CommandExample> LinuxExamples { get; set; } = new();
 
     /// <summary>
     /// Additional notes

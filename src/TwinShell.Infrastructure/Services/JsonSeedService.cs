@@ -116,6 +116,8 @@ public class JsonSeedService : ISeedService
 
         if ((action.Tags?.Count ?? 0) > MaxTagsCount ||
             (action.Examples?.Count ?? 0) > MaxExamplesCount ||
+            (action.WindowsExamples?.Count ?? 0) > MaxExamplesCount ||
+            (action.LinuxExamples?.Count ?? 0) > MaxExamplesCount ||
             (action.Links?.Count ?? 0) > MaxLinksCount)
         {
             return false;
