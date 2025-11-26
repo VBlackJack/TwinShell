@@ -1,12 +1,48 @@
-# TwinShell v1.0.0 - Release Notes
+# TwinShell v1.1.0 - Release Notes
 
-## What's New
+## What's New in v1.1.0
 
-TwinShell is a comprehensive PowerShell command library for Windows system administrators, featuring over 500 ready-to-use commands.
+### Cross-Platform Enhancements
+- **15 unified cross-platform actions** with automatic Windows/Linux command selection
+- **Docker and Ansible commands** now universally available on both platforms
+- **User management unification**: create/delete local users on Windows & Linux
+- **Network diagnostics**: unified port testing (Test-NetConnection / nc)
+- **File hash calculation**: unified SHA256 hash (Get-FileHash / sha256sum)
+
+### New Unified Actions
+| Action | Windows Command | Linux Command |
+|--------|-----------------|---------------|
+| unified-file-copy | Copy-Item | cp |
+| unified-file-move | Move-Item | mv |
+| unified-file-delete | Remove-Item | rm |
+| unified-file-create-directory | New-Item | mkdir |
+| unified-file-permissions | icacls | chmod |
+| unified-file-disk-usage | Get-PSDrive | df |
+| unified-find-files | Get-ChildItem | find |
+| unified-search-content | Select-String | grep |
+| unified-tree | tree | tree |
+| unified-service-status | Get-Service | systemctl |
+| unified-service-restart | Restart-Service | systemctl |
+| unified-network-test-port | Test-NetConnection | nc |
+| unified-create-local-user | New-LocalUser | useradd |
+| unified-delete-local-user | Remove-LocalUser | userdel |
+| unified-file-hash | Get-FileHash | sha256sum |
+
+### Improvements
+- **497 total commands** (up from 507 - optimized with unified actions)
+- **74 cross-platform commands** available on both Windows and Linux
+- **Better shell escaping** for cross-platform command safety
+- **Performance optimizations** in CommandGeneratorService
+
+---
+
+## Core Features
+
+TwinShell is a comprehensive PowerShell and Bash command library for system administrators, featuring over 490 ready-to-use commands.
 
 ### Key Features
 
-- **507 PowerShell commands** organized in categorized collections
+- **497 commands** organized in categorized collections
 - **Search and filtering** capabilities for quick command discovery
 - **Command history** with export functionality
 - **Favorites system** to bookmark frequently used commands
@@ -43,13 +79,13 @@ TwinShell is a comprehensive PowerShell command library for Windows system admin
 ## Installation
 
 ### Portable Version (Recommended for Quick Start)
-1. Download `TwinShell-v1.0.0-Portable-win-x64.zip`
+1. Download `TwinShell-v1.1.0-Portable-win-x64.zip`
 2. Extract to your desired location
 3. Run `TwinShell.App.exe`
 4. No installation required!
 
 ### Installer Version
-1. Download `TwinShell-v1.0.0-Setup-win-x64.exe` (if available)
+1. Download `TwinShell-v1.1.0-Setup-win-x64.exe` (if available)
 2. Run the installer
 3. Follow the installation wizard
 4. Launch from Start Menu or Desktop shortcut
@@ -108,6 +144,20 @@ Developed with:
 
 ---
 
-**Note**: This is the initial release (v1.0.0). Future updates will bring additional commands, features, and improvements.
+## Version History
+
+### v1.1.0 (2025-11-26)
+- 15 unified cross-platform actions
+- Docker/Ansible universalization
+- User management and file hash actions
+- Shell escaping improvements
+
+### v1.0.0 (2025-01-18)
+- Initial release with 507 commands
+- Category-based organization
+- Favorites and history system
+- Parameter templates
+
+---
 
 Thank you for using TwinShell!

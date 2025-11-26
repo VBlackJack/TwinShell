@@ -1,7 +1,7 @@
 # 📝 Résumé des Changements de Documentation
 
 **Date :** 2025-01-18
-**Version :** 1.0.0
+**Version :** 1.1.0
 **Auteur :** Audit et refonte complète de la documentation TwinShell
 
 ---

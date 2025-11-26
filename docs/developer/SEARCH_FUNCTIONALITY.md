@@ -812,7 +812,7 @@ var results3 = await searchService.SearchAsync(allActions, "réseau");
 
 ### C. Changelog
 
-#### Version 1.0.0 (2025-01-XX)
+#### Version 1.1.0 (2025-01-XX)
 
 **Nouvelles Fonctionnalités :**
 - ✨ Normalisation complète des accents/diacritiques
@@ -836,5 +836,5 @@ var results3 = await searchService.SearchAsync(allActions, "réseau");
 
 **Document créé le :** 2025-01-XX
 **Dernière mise à jour :** 2025-01-XX
-**Version :** 1.0.0
+**Version :** 1.1.0
 **Auteur :** Audit de la fonctionnalité de recherche TwinShell
