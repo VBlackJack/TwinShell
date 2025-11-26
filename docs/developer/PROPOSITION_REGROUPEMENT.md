@@ -342,5 +342,5 @@ Je peux créer un script Python qui :
 ---
 
 **Date** : 2025-11-25
-**Auteur** : Claude Code
+**Auteur** : TwinShell Team
 **Version** : 1.0 - Proposition Initiale

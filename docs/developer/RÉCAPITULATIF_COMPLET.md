@@ -298,5 +298,5 @@ TwinShell dispose désormais de :
 **🎉 Mission accomplie avec succès ! 🎉**
 
 **Date** : 2025-11-25
-**Auteur** : Claude Code
+**Auteur** : TwinShell Team
 **Version** : 1.0 - Production Ready

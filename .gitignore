@@ -419,3 +419,6 @@ Setup-*.exe
 *.swp
 *.*~
 .DS_Store
+
+# IDE/Tool specific
+.claude/

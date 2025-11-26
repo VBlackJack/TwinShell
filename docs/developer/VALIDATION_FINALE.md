@@ -288,7 +288,7 @@ Pour ajouter de nouvelles commandes à l'avenir :
 - 💾 Le backup original est disponible dans `initial-actions.BACKUP.json`
 
 ### Contact
-Script d'enrichissement créé par **Claude Code**
+Script d'enrichissement créé par **TwinShell Team**
 Date : **2025-11-25**
 Version : **1.0 - Production Ready**
 

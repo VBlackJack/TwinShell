@@ -416,5 +416,5 @@ TwinShell dispose désormais d'une **base de connaissances professionnelle compl
 ---
 
 **Date du rapport** : 2025-11-25
-**Généré par** : Claude Code (Enrichissement automatique + manuel)
+**Généré par** : TwinShell Team (Enrichissement automatique + manuel)
 **Version** : 1.0 - Enrichissement Complet
