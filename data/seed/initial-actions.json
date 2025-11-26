@@ -32179,6 +32179,1258 @@
           "url": "https://learn.microsoft.com/en-us/powershell/module/defender/"
         }
       ]
+    },
+    {
+      "id": "gcp-auth-login",
+      "title": "Authentification Google Cloud",
+      "description": "Ouvre un navigateur pour authentifier l'utilisateur auprès de Google Cloud CLI.",
+      "category": "☁️ Google Cloud Platform",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "gcp",
+        "gcloud",
+        "login",
+        "auth"
+      ],
+      "windowsCommandTemplateId": "gcp-auth-login-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "gcp-auth-login-win-cmd",
+        "platform": 0,
+        "name": "gcloud auth login",
+        "commandPattern": "gcloud auth login",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "gcp-auth-login-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "gcp-auth-login-linux-cmd",
+        "platform": 1,
+        "name": "gcloud auth login",
+        "commandPattern": "gcloud auth login",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "gcloud auth login",
+          "description": "Lance le processus d'authentification interactif. Ouvre automatiquement un navigateur web pour se connecter avec un compte Google. Les identifiants sont ensuite stockés localement pour les commandes suivantes."
+        },
+        {
+          "command": "gcloud auth login --no-launch-browser",
+          "description": "Authentification sans ouverture automatique du navigateur. Affiche une URL à copier manuellement dans un navigateur. Utile sur les serveurs sans interface graphique ou via SSH."
+        },
+        {
+          "command": "gcloud auth list",
+          "description": "Liste tous les comptes authentifiés sur la machine et indique le compte actif avec un astérisque (*). Permet de vérifier quel compte sera utilisé pour les commandes suivantes."
+        },
+        {
+          "command": "gcloud auth activate-service-account --key-file=/path/to/key.json",
+          "description": "Authentification via un compte de service avec un fichier de clé JSON. Méthode recommandée pour les scripts automatisés, les pipelines CI/CD et les applications serveur."
+        }
+      ],
+      "notes": "Le Google Cloud SDK doit être installé. L'authentification est persistante jusqu'à révocation.",
+      "links": [
+        {
+          "title": "Documentation gcloud auth",
+          "url": "https://cloud.google.com/sdk/gcloud/reference/auth"
+        }
+      ]
+    },
+    {
+      "id": "gcp-config-set-project",
+      "title": "Définir le projet GCP actif",
+      "description": "Change le projet actif pour les commandes suivantes.",
+      "category": "☁️ Google Cloud Platform",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "gcp",
+        "project",
+        "config",
+        "switch"
+      ],
+      "windowsCommandTemplateId": "gcp-config-set-project-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "gcp-config-set-project-win-cmd",
+        "platform": 0,
+        "name": "gcloud config set project",
+        "commandPattern": "gcloud config set project {projectId}",
+        "parameters": [
+          {
+            "name": "projectId",
+            "label": "ID du projet",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Identifiant unique du projet GCP (ex: my-project-123)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "gcp-config-set-project-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "gcp-config-set-project-linux-cmd",
+        "platform": 1,
+        "name": "gcloud config set project",
+        "commandPattern": "gcloud config set project {projectId}",
+        "parameters": [
+          {
+            "name": "projectId",
+            "label": "ID du projet",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Identifiant unique du projet GCP (ex: my-project-123)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "gcloud config set project my-production-app",
+          "description": "Définit 'my-production-app' comme projet actif. Toutes les commandes gcloud suivantes utiliseront ce projet par défaut sans avoir à le spécifier à chaque fois."
+        },
+        {
+          "command": "gcloud config get-value project",
+          "description": "Affiche l'ID du projet actuellement configuré. Utile pour vérifier le contexte avant d'exécuter des commandes sensibles sur l'environnement de production."
+        },
+        {
+          "command": "gcloud projects list",
+          "description": "Liste tous les projets GCP auxquels le compte authentifié a accès. Affiche l'ID, le nom et le numéro de chaque projet pour aider à identifier le bon projet."
+        },
+        {
+          "command": "gcloud config configurations create dev && gcloud config set project my-dev-project",
+          "description": "Crée une configuration nommée 'dev' et y associe un projet. Les configurations permettent de basculer rapidement entre différents contextes (dev, staging, prod) avec 'gcloud config configurations activate'."
+        }
+      ],
+      "notes": "L'ID du projet est différent du nom affiché. Utilisez 'gcloud projects list' pour le trouver.",
+      "links": [
+        {
+          "title": "Documentation gcloud config",
+          "url": "https://cloud.google.com/sdk/gcloud/reference/config/set"
+        }
+      ]
+    },
+    {
+      "id": "gcp-compute-instances-list",
+      "title": "Lister les instances Compute Engine",
+      "description": "Affiche la liste de toutes les machines virtuelles (VM) du projet actif.",
+      "category": "☁️ Google Cloud Platform",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "gcp",
+        "compute",
+        "vm",
+        "list",
+        "instances"
+      ],
+      "windowsCommandTemplateId": "gcp-compute-instances-list-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "gcp-compute-instances-list-win-cmd",
+        "platform": 0,
+        "name": "gcloud compute instances list",
+        "commandPattern": "gcloud compute instances list",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "gcp-compute-instances-list-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "gcp-compute-instances-list-linux-cmd",
+        "platform": 1,
+        "name": "gcloud compute instances list",
+        "commandPattern": "gcloud compute instances list",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "gcloud compute instances list",
+          "description": "Liste toutes les instances Compute Engine du projet actif. Affiche le nom, la zone, le type de machine, l'IP interne, l'IP externe et le statut (RUNNING, STOPPED, etc.)."
+        },
+        {
+          "command": "gcloud compute instances list --filter=\"status=RUNNING\"",
+          "description": "Affiche uniquement les instances en cours d'exécution. Le filtre accepte des expressions complexes avec AND, OR et des opérateurs de comparaison."
+        },
+        {
+          "command": "gcloud compute instances list --format=\"table(name,zone,machineType.basename(),status)\"",
+          "description": "Personnalise les colonnes affichées avec le paramètre --format. Permet de créer des tableaux sur mesure avec uniquement les informations pertinentes."
+        },
+        {
+          "command": "gcloud compute instances list --format=json",
+          "description": "Exporte la liste complète au format JSON pour un traitement programmatique. Contient toutes les métadonnées des instances, y compris les disques, réseaux et labels."
+        },
+        {
+          "command": "gcloud compute instances list --zones=europe-west1-b,europe-west1-c",
+          "description": "Filtre les instances par zones spécifiques. Utile pour auditer les ressources d'une région particulière ou vérifier la répartition géographique."
+        }
+      ],
+      "notes": "Nécessite l'API Compute Engine activée sur le projet. Les instances de tous les zones sont listées par défaut.",
+      "links": [
+        {
+          "title": "Documentation gcloud compute instances",
+          "url": "https://cloud.google.com/sdk/gcloud/reference/compute/instances/list"
+        }
+      ]
+    },
+    {
+      "id": "gcp-storage-ls",
+      "title": "Lister les buckets Cloud Storage",
+      "description": "Affiche la liste des buckets Google Cloud Storage accessibles.",
+      "category": "☁️ Google Cloud Platform",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "gcp",
+        "storage",
+        "bucket",
+        "list",
+        "gsutil"
+      ],
+      "windowsCommandTemplateId": "gcp-storage-ls-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "gcp-storage-ls-win-cmd",
+        "platform": 0,
+        "name": "gcloud storage ls",
+        "commandPattern": "gcloud storage ls",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "gcp-storage-ls-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "gcp-storage-ls-linux-cmd",
+        "platform": 1,
+        "name": "gcloud storage ls",
+        "commandPattern": "gcloud storage ls",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "gcloud storage ls",
+          "description": "Liste tous les buckets Cloud Storage du projet actif. Chaque bucket est affiché avec le préfixe gs:// (ex: gs://my-bucket)."
+        },
+        {
+          "command": "gcloud storage ls gs://my-bucket/",
+          "description": "Liste le contenu d'un bucket spécifique (premier niveau uniquement). Affiche les objets et les préfixes (dossiers virtuels) à la racine du bucket."
+        },
+        {
+          "command": "gcloud storage ls -r gs://my-bucket/",
+          "description": "Liste récursivement tout le contenu d'un bucket. Le flag -r parcourt tous les sous-dossiers. Attention : peut être très long sur les gros buckets."
+        },
+        {
+          "command": "gcloud storage ls -l gs://my-bucket/",
+          "description": "Affiche les détails des objets : taille, date de création et classe de stockage. Le format long (-l) fournit les métadonnées essentielles."
+        },
+        {
+          "command": "gsutil ls -la gs://my-bucket/",
+          "description": "Alternative avec gsutil (inclus dans le SDK) affichant également les versions archivées si le versioning est activé. Le flag -a inclut les objets non courants."
+        }
+      ],
+      "notes": "Remplace progressivement gsutil. Les deux commandes coexistent mais gcloud storage est recommandé.",
+      "links": [
+        {
+          "title": "Documentation gcloud storage",
+          "url": "https://cloud.google.com/sdk/gcloud/reference/storage/ls"
+        }
+      ]
+    },
+    {
+      "id": "gcp-container-clusters-get-credentials",
+      "title": "Configurer kubectl pour GKE",
+      "description": "Télécharge les identifiants et configure kubectl pour se connecter à un cluster Kubernetes GKE.",
+      "category": "☁️ Google Cloud Platform",
+      "platform": 2,
+      "level": 1,
+      "tags": [
+        "gcp",
+        "k8s",
+        "kubernetes",
+        "gke",
+        "cluster",
+        "kubeconfig"
+      ],
+      "windowsCommandTemplateId": "gcp-container-clusters-get-credentials-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "gcp-container-clusters-get-credentials-win-cmd",
+        "platform": 0,
+        "name": "gcloud container clusters get-credentials",
+        "commandPattern": "gcloud container clusters get-credentials {clusterName} --zone {zone} --project {projectId}",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "label": "Nom du cluster",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du cluster GKE"
+          },
+          {
+            "name": "zone",
+            "label": "Zone",
+            "type": "string",
+            "defaultValue": "europe-west1-b",
+            "required": true,
+            "description": "Zone GCP du cluster (ex: europe-west1-b)"
+          },
+          {
+            "name": "projectId",
+            "label": "ID du projet",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "ID du projet GCP (utilise le projet actif si omis)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "gcp-container-clusters-get-credentials-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "gcp-container-clusters-get-credentials-linux-cmd",
+        "platform": 1,
+        "name": "gcloud container clusters get-credentials",
+        "commandPattern": "gcloud container clusters get-credentials {clusterName} --zone {zone} --project {projectId}",
+        "parameters": [
+          {
+            "name": "clusterName",
+            "label": "Nom du cluster",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom du cluster GKE"
+          },
+          {
+            "name": "zone",
+            "label": "Zone",
+            "type": "string",
+            "defaultValue": "europe-west1-b",
+            "required": true,
+            "description": "Zone GCP du cluster (ex: europe-west1-b)"
+          },
+          {
+            "name": "projectId",
+            "label": "ID du projet",
+            "type": "string",
+            "defaultValue": "",
+            "required": false,
+            "description": "ID du projet GCP (utilise le projet actif si omis)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "gcloud container clusters get-credentials my-cluster --zone europe-west1-b",
+          "description": "Configure kubectl pour le cluster 'my-cluster' dans la zone europe-west1-b. Met à jour automatiquement le fichier ~/.kube/config avec le contexte du cluster."
+        },
+        {
+          "command": "gcloud container clusters get-credentials my-cluster --region europe-west1",
+          "description": "Pour les clusters régionaux (haute disponibilité), utilisez --region au lieu de --zone. Les clusters régionaux répartissent le control plane sur plusieurs zones."
+        },
+        {
+          "command": "gcloud container clusters list",
+          "description": "Liste tous les clusters GKE du projet avec leur zone/région, version Kubernetes, nombre de nœuds et statut. Utile pour identifier le cluster cible."
+        },
+        {
+          "command": "gcloud container clusters get-credentials my-cluster --zone europe-west1-b --project my-project-123",
+          "description": "Spécifie explicitement le projet. Obligatoire si le projet actif n'est pas celui contenant le cluster ou pour éviter toute ambiguïté."
+        },
+        {
+          "command": "kubectl config current-context",
+          "description": "Après get-credentials, vérifie le contexte kubectl actif. Le format est généralement gke_[PROJECT]_[ZONE]_[CLUSTER_NAME]."
+        }
+      ],
+      "notes": "Requiert kubectl installé. Le plugin gke-gcloud-auth-plugin est nécessaire depuis Kubernetes 1.26.",
+      "links": [
+        {
+          "title": "Documentation GKE get-credentials",
+          "url": "https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials"
+        }
+      ]
+    },
+    {
+      "id": "aws-configure",
+      "title": "Configurer le profil AWS",
+      "description": "Configure les clés d'accès, la région par défaut et le format de sortie.",
+      "category": "☁️ AWS & IaC",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "aws",
+        "config",
+        "login",
+        "profile"
+      ],
+      "windowsCommandTemplateId": "aws-configure-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "aws-configure-win-cmd",
+        "platform": 0,
+        "name": "aws configure",
+        "commandPattern": "aws configure",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "aws-configure-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "aws-configure-linux-cmd",
+        "platform": 1,
+        "name": "aws configure",
+        "commandPattern": "aws configure",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "aws configure",
+          "description": "Lance l'assistant interactif de configuration. Demande successivement : Access Key ID, Secret Access Key, région par défaut (ex: eu-west-1) et format de sortie (json, text, table). Les identifiants sont stockés dans ~/.aws/credentials."
+        },
+        {
+          "command": "aws configure --profile production",
+          "description": "Configure un profil nommé 'production' distinct du profil par défaut. Permet de gérer plusieurs comptes AWS. Utilisez ensuite --profile production ou AWS_PROFILE=production pour l'activer."
+        },
+        {
+          "command": "aws configure list",
+          "description": "Affiche la configuration active avec la source de chaque paramètre (fichier config, credentials, variables d'environnement). Indispensable pour déboguer les problèmes d'authentification."
+        },
+        {
+          "command": "aws configure get region",
+          "description": "Retourne la valeur d'un paramètre spécifique de la configuration. Utile dans les scripts pour vérifier dynamiquement la région ou d'autres paramètres configurés."
+        },
+        {
+          "command": "aws sts get-caller-identity",
+          "description": "Vérifie l'identité du compte AWS actuellement authentifié. Retourne l'ARN, l'Account ID et l'User ID. Première commande à exécuter pour valider que la configuration fonctionne."
+        }
+      ],
+      "notes": "AWS CLI doit être installé. Les credentials sont stockés en clair dans ~/.aws/credentials - sécurisez ce fichier.",
+      "links": [
+        {
+          "title": "Documentation AWS CLI Configure",
+          "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html"
+        }
+      ]
+    },
+    {
+      "id": "aws-s3-ls",
+      "title": "Lister les buckets S3",
+      "description": "Affiche la liste de tous les buckets S3 du compte.",
+      "category": "☁️ AWS & IaC",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "aws",
+        "s3",
+        "storage",
+        "list"
+      ],
+      "windowsCommandTemplateId": "aws-s3-ls-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "aws-s3-ls-win-cmd",
+        "platform": 0,
+        "name": "aws s3 ls",
+        "commandPattern": "aws s3 ls",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "aws-s3-ls-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "aws-s3-ls-linux-cmd",
+        "platform": 1,
+        "name": "aws s3 ls",
+        "commandPattern": "aws s3 ls",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "aws s3 ls",
+          "description": "Liste tous les buckets S3 du compte avec leur date de création. Affiche le format : DATE HEURE NOM_BUCKET. Ne nécessite aucune permission spéciale au niveau bucket, seulement s3:ListAllMyBuckets."
+        },
+        {
+          "command": "aws s3 ls s3://my-bucket/",
+          "description": "Liste le contenu d'un bucket spécifique (premier niveau). Affiche les objets et préfixes (dossiers virtuels) avec leur taille et date de modification. Le slash final est important."
+        },
+        {
+          "command": "aws s3 ls s3://my-bucket/ --recursive",
+          "description": "Liste récursivement tout le contenu d'un bucket. Parcourt tous les sous-dossiers et affiche le chemin complet de chaque objet. Attention : peut être très long sur les gros buckets."
+        },
+        {
+          "command": "aws s3 ls s3://my-bucket/ --recursive --human-readable --summarize",
+          "description": "Liste complète avec tailles lisibles (KB, MB, GB) et résumé final (nombre total d'objets et taille totale). Le flag --summarize ajoute les totaux à la fin de la sortie."
+        },
+        {
+          "command": "aws s3 ls s3://my-bucket/logs/ --recursive | grep 2024-01",
+          "description": "Combine avec grep pour filtrer les objets. Ici, liste uniquement les fichiers de logs de janvier 2024. Pattern courant pour analyser des logs archivés par date."
+        }
+      ],
+      "notes": "Requiert les permissions s3:ListBucket pour lister le contenu d'un bucket spécifique.",
+      "links": [
+        {
+          "title": "Documentation AWS S3 CLI",
+          "url": "https://docs.aws.amazon.com/cli/latest/reference/s3/ls.html"
+        }
+      ]
+    },
+    {
+      "id": "aws-ec2-describe-instances",
+      "title": "Lister les instances EC2",
+      "description": "Affiche un tableau des instances EC2 avec leur ID, type, état et IP publique.",
+      "category": "☁️ AWS & IaC",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "aws",
+        "ec2",
+        "vm",
+        "list",
+        "instances"
+      ],
+      "windowsCommandTemplateId": "aws-ec2-describe-instances-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "aws-ec2-describe-instances-win-cmd",
+        "platform": 0,
+        "name": "aws ec2 describe-instances",
+        "commandPattern": "aws ec2 describe-instances --query \"Reservations[*].Instances[*].{Instance:InstanceId,Type:InstanceType,State:State.Name,IP:PublicIpAddress}\" --output table",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "aws-ec2-describe-instances-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "aws-ec2-describe-instances-linux-cmd",
+        "platform": 1,
+        "name": "aws ec2 describe-instances",
+        "commandPattern": "aws ec2 describe-instances --query \"Reservations[*].Instances[*].{Instance:InstanceId,Type:InstanceType,State:State.Name,IP:PublicIpAddress}\" --output table",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "aws ec2 describe-instances --query \"Reservations[*].Instances[*].{Instance:InstanceId,Type:InstanceType,State:State.Name,IP:PublicIpAddress}\" --output table",
+          "description": "Affiche un tableau formaté des instances EC2. La query JMESPath extrait uniquement les champs utiles : ID, type de machine, état (running/stopped) et IP publique. Format table pour une lecture facile."
+        },
+        {
+          "command": "aws ec2 describe-instances --filters \"Name=instance-state-name,Values=running\" --output table",
+          "description": "Filtre pour n'afficher que les instances en cours d'exécution. Le filtre côté serveur est plus efficace que filtrer localement. États possibles : pending, running, stopping, stopped, terminated."
+        },
+        {
+          "command": "aws ec2 describe-instances --filters \"Name=tag:Environment,Values=production\" --query \"Reservations[*].Instances[*].[InstanceId,Tags[?Key=='Name'].Value|[0]]\" --output table",
+          "description": "Filtre les instances par tag Environment=production et affiche l'ID avec le tag Name. Pattern courant pour lister les ressources d'un environnement spécifique."
+        },
+        {
+          "command": "aws ec2 describe-instances --instance-ids i-0123456789abcdef0 --output json",
+          "description": "Récupère les détails complets d'une instance spécifique au format JSON. Retourne toutes les métadonnées : réseau, stockage, sécurité, tags, etc. Utile pour le debugging."
+        },
+        {
+          "command": "aws ec2 describe-instances --query \"Reservations[*].Instances[*].{ID:InstanceId,Name:Tags[?Key=='Name']|[0].Value,State:State.Name,LaunchTime:LaunchTime}\" --output table",
+          "description": "Vue avancée incluant le tag Name et la date de lancement. La syntaxe JMESPath Tags[?Key=='Name']|[0].Value extrait la valeur du tag Name de manière élégante."
+        }
+      ],
+      "notes": "La sortie brute est volumineuse - utilisez --query pour extraire les champs pertinents. Requiert ec2:DescribeInstances.",
+      "links": [
+        {
+          "title": "Documentation EC2 describe-instances",
+          "url": "https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html"
+        }
+      ]
+    },
+    {
+      "id": "terraform-init",
+      "title": "Initialiser un projet Terraform",
+      "description": "Initialise le répertoire de travail, télécharge les providers et configure le backend.",
+      "category": "☁️ AWS & IaC",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "terraform",
+        "iac",
+        "init",
+        "setup"
+      ],
+      "windowsCommandTemplateId": "terraform-init-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "terraform-init-win-cmd",
+        "platform": 0,
+        "name": "terraform init",
+        "commandPattern": "terraform init",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "terraform-init-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "terraform-init-linux-cmd",
+        "platform": 1,
+        "name": "terraform init",
+        "commandPattern": "terraform init",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "terraform init",
+          "description": "Initialise le répertoire Terraform. Télécharge les providers déclarés (AWS, Azure, GCP...), configure le backend pour le state, et prépare les modules. Obligatoire avant tout plan ou apply."
+        },
+        {
+          "command": "terraform init -upgrade",
+          "description": "Réinitialise et met à jour tous les providers vers la dernière version compatible avec les contraintes déclarées. À utiliser quand vous voulez bénéficier des derniers correctifs de providers."
+        },
+        {
+          "command": "terraform init -reconfigure",
+          "description": "Force la reconfiguration du backend en ignorant la configuration existante. Utile lors de la migration d'un backend local vers S3 ou lors de changements de configuration backend."
+        },
+        {
+          "command": "terraform init -backend-config=\"bucket=my-tf-state\" -backend-config=\"key=prod/terraform.tfstate\"",
+          "description": "Initialise avec une configuration backend partielle. Permet de paramétrer dynamiquement le backend (bucket S3, clé du state) sans les hardcoder dans le code Terraform."
+        },
+        {
+          "command": "terraform init -migrate-state",
+          "description": "Migre le state existant vers un nouveau backend. Terraform copie automatiquement le state local vers le nouveau backend distant (S3, Azure Blob, GCS...). Confirme avant la migration."
+        }
+      ],
+      "notes": "Doit être exécuté dans un répertoire contenant des fichiers .tf. Créé le dossier .terraform/ pour les plugins.",
+      "links": [
+        {
+          "title": "Documentation terraform init",
+          "url": "https://developer.hashicorp.com/terraform/cli/commands/init"
+        }
+      ]
+    },
+    {
+      "id": "terraform-plan",
+      "title": "Prévisualiser les changements (Plan)",
+      "description": "Génère un plan d'exécution pour prévisualiser les modifications d'infrastructure.",
+      "category": "☁️ AWS & IaC",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "terraform",
+        "iac",
+        "plan",
+        "dry-run"
+      ],
+      "windowsCommandTemplateId": "terraform-plan-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "terraform-plan-win-cmd",
+        "platform": 0,
+        "name": "terraform plan",
+        "commandPattern": "terraform plan -out=tfplan",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "terraform-plan-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "terraform-plan-linux-cmd",
+        "platform": 1,
+        "name": "terraform plan",
+        "commandPattern": "terraform plan -out=tfplan",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "terraform plan -out=tfplan",
+          "description": "Génère un plan d'exécution et le sauvegarde dans 'tfplan'. Le fichier binaire capture l'état exact des changements prévus. Best practice : toujours sauvegarder le plan avant apply pour garantir la reproductibilité."
+        },
+        {
+          "command": "terraform plan",
+          "description": "Affiche le plan sans le sauvegarder. Montre les ressources à créer (+), modifier (~) ou détruire (-). Utile pour une vérification rapide, mais ne garantit pas que l'apply exécutera exactement ce plan."
+        },
+        {
+          "command": "terraform plan -var=\"environment=production\" -var=\"instance_count=3\"",
+          "description": "Génère un plan avec des variables passées en ligne de commande. Surcharge les valeurs par défaut ou celles du fichier terraform.tfvars. Utile pour les pipelines CI/CD multi-environnements."
+        },
+        {
+          "command": "terraform plan -var-file=\"prod.tfvars\" -out=prod.tfplan",
+          "description": "Utilise un fichier de variables spécifique à l'environnement. Pattern courant : dev.tfvars, staging.tfvars, prod.tfvars avec des configurations différentes (taille instances, replicas...)."
+        },
+        {
+          "command": "terraform plan -destroy",
+          "description": "Prévisualise la destruction complète de l'infrastructure. Affiche toutes les ressources qui seront supprimées. Indispensable avant un terraform destroy pour éviter les surprises."
+        },
+        {
+          "command": "terraform plan -target=aws_instance.web_server",
+          "description": "Limite le plan à une ressource spécifique et ses dépendances. Utile pour tester des changements isolés, mais à éviter en production car peut créer des incohérences d'état."
+        }
+      ],
+      "notes": "Le fichier tfplan est binaire et contient des secrets potentiels - ne pas le commiter. Exécuter terraform init au préalable.",
+      "links": [
+        {
+          "title": "Documentation terraform plan",
+          "url": "https://developer.hashicorp.com/terraform/cli/commands/plan"
+        }
+      ]
+    },
+    {
+      "id": "terraform-apply",
+      "title": "Appliquer l'infrastructure",
+      "description": "Applique les changements définis dans le plan pour créer ou modifier l'infrastructure.",
+      "category": "☁️ AWS & IaC",
+      "platform": 2,
+      "level": 1,
+      "tags": [
+        "terraform",
+        "iac",
+        "apply",
+        "deploy"
+      ],
+      "windowsCommandTemplateId": "terraform-apply-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "terraform-apply-win-cmd",
+        "platform": 0,
+        "name": "terraform apply",
+        "commandPattern": "terraform apply \"tfplan\"",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "terraform-apply-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "terraform-apply-linux-cmd",
+        "platform": 1,
+        "name": "terraform apply",
+        "commandPattern": "terraform apply \"tfplan\"",
+        "parameters": []
+      },
+      "examples": [
+        {
+          "command": "terraform apply \"tfplan\"",
+          "description": "Applique exactement le plan sauvegardé précédemment. Aucune confirmation demandée car le plan a déjà été validé. Méthode recommandée en production pour garantir que ce qui est appliqué correspond à ce qui a été reviewé."
+        },
+        {
+          "command": "terraform apply",
+          "description": "Génère un nouveau plan et demande confirmation avant d'appliquer. Affiche le résumé des changements et attend 'yes' pour continuer. Mode interactif par défaut."
+        },
+        {
+          "command": "terraform apply -auto-approve",
+          "description": "Applique sans demander de confirmation. À utiliser uniquement dans les pipelines CI/CD automatisés après une étape de validation du plan. Dangereux en usage manuel."
+        },
+        {
+          "command": "terraform apply -var=\"environment=staging\" -auto-approve",
+          "description": "Applique avec des variables spécifiques sans confirmation. Pattern CI/CD typique où les variables sont injectées par le pipeline selon l'environnement cible."
+        },
+        {
+          "command": "terraform apply -target=aws_instance.web_server -auto-approve",
+          "description": "Applique uniquement une ressource spécifique. Utile pour les correctifs urgents, mais crée un risque de drift entre le code et l'infrastructure réelle. À utiliser avec précaution."
+        },
+        {
+          "command": "terraform apply -parallelism=5",
+          "description": "Limite le nombre d'opérations parallèles (défaut: 10). Utile si l'API du provider a des rate limits ou si vous voulez un déploiement plus contrôlé et observable."
+        }
+      ],
+      "notes": "⚠️ Modifie l'infrastructure réelle. Toujours exécuter plan d'abord. Le state est mis à jour après chaque ressource créée.",
+      "links": [
+        {
+          "title": "Documentation terraform apply",
+          "url": "https://developer.hashicorp.com/terraform/cli/commands/apply"
+        }
+      ]
+    },
+    {
+      "id": "openssl-generate-csr",
+      "title": "Générer une demande de certificat (CSR) + Clé privée",
+      "description": "Génère une clé privée RSA 2048 bits et une demande de signature de certificat (CSR).",
+      "category": "🔐 Security & Network Advanced",
+      "platform": 2,
+      "level": 1,
+      "tags": [
+        "openssl",
+        "crypto",
+        "csr",
+        "key",
+        "ssl"
+      ],
+      "windowsCommandTemplateId": "openssl-generate-csr-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "openssl-generate-csr-win-cmd",
+        "platform": 0,
+        "name": "openssl req -new",
+        "commandPattern": "openssl req -new -newkey rsa:2048 -nodes -keyout {domain}.key -out {domain}.csr",
+        "parameters": [
+          {
+            "name": "domain",
+            "label": "Nom de domaine",
+            "type": "string",
+            "defaultValue": "example.com",
+            "required": true,
+            "description": "Nom de domaine pour nommer les fichiers (ex: monsite.com)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "openssl-generate-csr-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "openssl-generate-csr-linux-cmd",
+        "platform": 1,
+        "name": "openssl req -new",
+        "commandPattern": "openssl req -new -newkey rsa:2048 -nodes -keyout {domain}.key -out {domain}.csr",
+        "parameters": [
+          {
+            "name": "domain",
+            "label": "Nom de domaine",
+            "type": "string",
+            "defaultValue": "example.com",
+            "required": true,
+            "description": "Nom de domaine pour nommer les fichiers (ex: monsite.com)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "openssl req -new -newkey rsa:2048 -nodes -keyout monsite.com.key -out monsite.com.csr",
+          "description": "Génère une clé privée RSA 2048 bits (monsite.com.key) et une CSR (monsite.com.csr). Le flag -nodes désactive le chiffrement de la clé privée. Un assistant interactif demande les informations du certificat (CN, O, C...)."
+        },
+        {
+          "command": "openssl req -new -newkey rsa:4096 -sha256 -nodes -keyout secure.key -out secure.csr",
+          "description": "Version haute sécurité avec clé RSA 4096 bits et signature SHA-256. Recommandé pour les environnements de production sensibles. Plus lent à générer mais plus résistant aux attaques."
+        },
+        {
+          "command": "openssl req -new -newkey rsa:2048 -nodes -keyout domain.key -out domain.csr -subj \"/C=FR/ST=IDF/L=Paris/O=MaSociete/CN=www.example.com\"",
+          "description": "Génération non-interactive avec le sujet spécifié en ligne de commande. Idéal pour l'automatisation et les scripts. CN (Common Name) doit correspondre exactement au nom de domaine."
+        },
+        {
+          "command": "openssl req -new -key existing.key -out new.csr",
+          "description": "Génère une nouvelle CSR en réutilisant une clé privée existante. Utile pour renouveler un certificat sans changer la clé privée (si elle n'a pas été compromise)."
+        },
+        {
+          "command": "openssl req -text -noout -in domain.csr",
+          "description": "Vérifie le contenu d'une CSR avant de l'envoyer à l'autorité de certification. Affiche le sujet, la clé publique et les attributs demandés. Toujours vérifier avant soumission."
+        }
+      ],
+      "notes": "⚠️ Sécurisez la clé privée (.key) - ne jamais la partager. La CSR peut être envoyée à une CA pour obtenir un certificat signé.",
+      "links": [
+        {
+          "title": "Documentation OpenSSL req",
+          "url": "https://www.openssl.org/docs/man1.1.1/man1/req.html"
+        }
+      ]
+    },
+    {
+      "id": "openssl-view-cert",
+      "title": "Lire les détails d'un certificat .crt/.pem",
+      "description": "Affiche les détails complets (Sujet, Émetteur, Dates, SAN) d'un fichier certificat.",
+      "category": "🔐 Security & Network Advanced",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "openssl",
+        "cert",
+        "view",
+        "x509",
+        "decode"
+      ],
+      "windowsCommandTemplateId": "openssl-view-cert-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "openssl-view-cert-win-cmd",
+        "platform": 0,
+        "name": "openssl x509 -text",
+        "commandPattern": "openssl x509 -in {certPath} -text -noout",
+        "parameters": [
+          {
+            "name": "certPath",
+            "label": "Chemin du certificat",
+            "type": "string",
+            "defaultValue": "certificate.crt",
+            "required": true,
+            "description": "Chemin vers le fichier certificat (.crt, .pem, .cer)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "openssl-view-cert-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "openssl-view-cert-linux-cmd",
+        "platform": 1,
+        "name": "openssl x509 -text",
+        "commandPattern": "openssl x509 -in {certPath} -text -noout",
+        "parameters": [
+          {
+            "name": "certPath",
+            "label": "Chemin du certificat",
+            "type": "string",
+            "defaultValue": "certificate.crt",
+            "required": true,
+            "description": "Chemin vers le fichier certificat (.crt, .pem, .cer)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "openssl x509 -in certificate.crt -text -noout",
+          "description": "Affiche toutes les informations du certificat : Version, Serial Number, Issuer, Subject, Validity (dates), Public Key, Extensions (SAN, Key Usage...). Le flag -noout supprime l'affichage du certificat encodé."
+        },
+        {
+          "command": "openssl x509 -in certificate.pem -dates -noout",
+          "description": "Affiche uniquement les dates de validité (notBefore et notAfter). Commande rapide pour vérifier si un certificat est expiré ou proche de l'expiration."
+        },
+        {
+          "command": "openssl x509 -in certificate.crt -subject -issuer -noout",
+          "description": "Affiche le sujet (propriétaire) et l'émetteur (CA) du certificat. Utile pour vérifier rapidement l'identité et la chaîne de confiance sans afficher tous les détails."
+        },
+        {
+          "command": "openssl x509 -in certificate.crt -fingerprint -sha256 -noout",
+          "description": "Calcule l'empreinte SHA-256 du certificat. L'empreinte est un identifiant unique utilisé pour vérifier l'authenticité du certificat lors du pinning ou des audits."
+        },
+        {
+          "command": "openssl x509 -in certificate.crt -ext subjectAltName -noout",
+          "description": "Affiche uniquement l'extension Subject Alternative Name (SAN). Les SAN listent tous les domaines et IPs couverts par le certificat (wildcard, multi-domaines)."
+        },
+        {
+          "command": "openssl x509 -in certificate.crt -checkend 2592000",
+          "description": "Vérifie si le certificat expire dans les 30 prochains jours (2592000 secondes). Retourne 0 si OK, 1 si expiration imminente. Idéal pour les scripts de monitoring."
+        }
+      ],
+      "notes": "Supporte les formats PEM (Base64) et DER (binaire). Pour DER, ajouter -inform DER.",
+      "links": [
+        {
+          "title": "Documentation OpenSSL x509",
+          "url": "https://www.openssl.org/docs/man1.1.1/man1/x509.html"
+        }
+      ]
+    },
+    {
+      "id": "openssl-convert-pfx",
+      "title": "Convertir PEM/CRT vers PFX (PKCS#12)",
+      "description": "Combine une clé privée et un certificat public pour créer une archive PFX (format Windows/IIS).",
+      "category": "🔐 Security & Network Advanced",
+      "platform": 2,
+      "level": 1,
+      "tags": [
+        "openssl",
+        "convert",
+        "pfx",
+        "pkcs12",
+        "iis"
+      ],
+      "windowsCommandTemplateId": "openssl-convert-pfx-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "openssl-convert-pfx-win-cmd",
+        "platform": 0,
+        "name": "openssl pkcs12 -export",
+        "commandPattern": "openssl pkcs12 -export -out {output}.pfx -inkey {privateKey}.key -in {certificate}.crt",
+        "parameters": [
+          {
+            "name": "output",
+            "label": "Fichier de sortie",
+            "type": "string",
+            "defaultValue": "certificate",
+            "required": true,
+            "description": "Nom du fichier PFX à créer (sans extension)"
+          },
+          {
+            "name": "privateKey",
+            "label": "Clé privée",
+            "type": "string",
+            "defaultValue": "private",
+            "required": true,
+            "description": "Chemin de la clé privée (sans extension .key)"
+          },
+          {
+            "name": "certificate",
+            "label": "Certificat",
+            "type": "string",
+            "defaultValue": "certificate",
+            "required": true,
+            "description": "Chemin du certificat public (sans extension .crt)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "openssl-convert-pfx-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "openssl-convert-pfx-linux-cmd",
+        "platform": 1,
+        "name": "openssl pkcs12 -export",
+        "commandPattern": "openssl pkcs12 -export -out {output}.pfx -inkey {privateKey}.key -in {certificate}.crt",
+        "parameters": [
+          {
+            "name": "output",
+            "label": "Fichier de sortie",
+            "type": "string",
+            "defaultValue": "certificate",
+            "required": true,
+            "description": "Nom du fichier PFX à créer (sans extension)"
+          },
+          {
+            "name": "privateKey",
+            "label": "Clé privée",
+            "type": "string",
+            "defaultValue": "private",
+            "required": true,
+            "description": "Chemin de la clé privée (sans extension .key)"
+          },
+          {
+            "name": "certificate",
+            "label": "Certificat",
+            "type": "string",
+            "defaultValue": "certificate",
+            "required": true,
+            "description": "Chemin du certificat public (sans extension .crt)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "openssl pkcs12 -export -out certificate.pfx -inkey private.key -in certificate.crt",
+          "description": "Crée un fichier PFX contenant la clé privée et le certificat. Un mot de passe d'export est demandé interactivement. Ce mot de passe protège le PFX et sera requis à l'import."
+        },
+        {
+          "command": "openssl pkcs12 -export -out certificate.pfx -inkey private.key -in certificate.crt -certfile ca-chain.crt",
+          "description": "Inclut la chaîne de certification intermédiaire dans le PFX. Le fichier ca-chain.crt contient les certificats CA intermédiaires. Nécessaire pour une chaîne de confiance complète."
+        },
+        {
+          "command": "openssl pkcs12 -export -out certificate.pfx -inkey private.key -in certificate.crt -passout pass:MonMotDePasse",
+          "description": "Définit le mot de passe d'export en ligne de commande (non-interactif). Utile pour l'automatisation, mais le mot de passe apparaît dans l'historique shell. Préférer -passout file:password.txt."
+        },
+        {
+          "command": "openssl pkcs12 -export -out certificate.pfx -inkey private.key -in certificate.crt -name \"Mon Certificat SSL\"",
+          "description": "Ajoute un nom convivial (friendly name) au certificat dans le PFX. Ce nom apparaît dans le gestionnaire de certificats Windows et facilite l'identification."
+        },
+        {
+          "command": "openssl pkcs12 -in certificate.pfx -out extracted.pem -nodes",
+          "description": "Opération inverse : extrait la clé privée et le certificat d'un PFX vers un fichier PEM. Le flag -nodes désactive le chiffrement de la clé extraite. Utile pour migrer vers Linux/Nginx."
+        }
+      ],
+      "notes": "Le format PFX/PKCS#12 est utilisé par Windows/IIS, Azure, et les keystores Java. Protégez le fichier PFX car il contient la clé privée.",
+      "links": [
+        {
+          "title": "Documentation OpenSSL pkcs12",
+          "url": "https://www.openssl.org/docs/man1.1.1/man1/pkcs12.html"
+        }
+      ]
+    },
+    {
+      "id": "openssl-check-remote-ssl",
+      "title": "Vérifier le certificat SSL d'un serveur distant",
+      "description": "Récupère la chaîne de certification d'un serveur distant pour diagnostic (expiration, CA).",
+      "category": "🔐 Security & Network Advanced",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "openssl",
+        "network",
+        "ssl",
+        "tls",
+        "check"
+      ],
+      "windowsCommandTemplateId": "openssl-check-remote-ssl-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "openssl-check-remote-ssl-win-cmd",
+        "platform": 0,
+        "name": "openssl s_client",
+        "commandPattern": "openssl s_client -connect {host}:{port} -showcerts",
+        "parameters": [
+          {
+            "name": "host",
+            "label": "Hôte",
+            "type": "string",
+            "defaultValue": "google.com",
+            "required": true,
+            "description": "Nom de domaine ou IP du serveur"
+          },
+          {
+            "name": "port",
+            "label": "Port",
+            "type": "string",
+            "defaultValue": "443",
+            "required": false,
+            "description": "Port SSL/TLS (443 par défaut)"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "openssl-check-remote-ssl-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "openssl-check-remote-ssl-linux-cmd",
+        "platform": 1,
+        "name": "openssl s_client",
+        "commandPattern": "openssl s_client -connect {host}:{port} -showcerts",
+        "parameters": [
+          {
+            "name": "host",
+            "label": "Hôte",
+            "type": "string",
+            "defaultValue": "google.com",
+            "required": true,
+            "description": "Nom de domaine ou IP du serveur"
+          },
+          {
+            "name": "port",
+            "label": "Port",
+            "type": "string",
+            "defaultValue": "443",
+            "required": false,
+            "description": "Port SSL/TLS (443 par défaut)"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "openssl s_client -connect google.com:443 -showcerts",
+          "description": "Établit une connexion SSL et affiche toute la chaîne de certificats. Montre le certificat du serveur et les certificats intermédiaires. Le flag -showcerts affiche les certificats au format PEM."
+        },
+        {
+          "command": "echo | openssl s_client -connect example.com:443 2>/dev/null | openssl x509 -dates -noout",
+          "description": "Récupère uniquement les dates de validité du certificat distant. Le echo | envoie un input vide pour fermer la connexion. Pattern courant pour les scripts de monitoring d'expiration."
+        },
+        {
+          "command": "openssl s_client -connect example.com:443 -servername example.com",
+          "description": "Utilise SNI (Server Name Indication) pour spécifier le domaine demandé. Indispensable pour les serveurs hébergeant plusieurs sites SSL sur la même IP (virtual hosts HTTPS)."
+        },
+        {
+          "command": "openssl s_client -connect mail.example.com:587 -starttls smtp",
+          "description": "Teste une connexion STARTTLS sur un serveur SMTP. Supporte aussi: pop3, imap, ftp, xmpp, ldap. Permet de diagnostiquer les certificats sur les protocoles qui upgradent vers TLS."
+        },
+        {
+          "command": "openssl s_client -connect example.com:443 -tls1_2",
+          "description": "Force l'utilisation de TLS 1.2 spécifiquement. Utile pour vérifier la compatibilité d'un serveur avec une version TLS particulière. Options: -tls1, -tls1_1, -tls1_2, -tls1_3."
+        },
+        {
+          "command": "echo | openssl s_client -connect example.com:443 2>/dev/null | openssl x509 -fingerprint -sha256 -noout",
+          "description": "Récupère l'empreinte SHA-256 du certificat distant. Utile pour le certificate pinning ou la vérification manuelle de l'authenticité d'un certificat."
+        }
+      ],
+      "notes": "La connexion reste ouverte en attente d'input - utilisez Ctrl+C ou echo | pour terminer automatiquement.",
+      "links": [
+        {
+          "title": "Documentation OpenSSL s_client",
+          "url": "https://www.openssl.org/docs/man1.1.1/man1/s_client.html"
+        }
+      ]
+    },
+    {
+      "id": "nmap-quick-scan",
+      "title": "Scan réseau rapide (Top ports)",
+      "description": "Scanne les 100 ports les plus courants sur la cible.",
+      "category": "🔐 Security & Network Advanced",
+      "platform": 2,
+      "level": 1,
+      "tags": [
+        "nmap",
+        "network",
+        "scan",
+        "discovery"
+      ],
+      "windowsCommandTemplateId": "nmap-quick-scan-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "nmap-quick-scan-win-cmd",
+        "platform": 0,
+        "name": "nmap -F",
+        "commandPattern": "nmap -F {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "192.168.1.1",
+            "required": true,
+            "description": "IP, hostname ou plage CIDR à scanner"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "nmap-quick-scan-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "nmap-quick-scan-linux-cmd",
+        "platform": 1,
+        "name": "nmap -F",
+        "commandPattern": "nmap -F {target}",
+        "parameters": [
+          {
+            "name": "target",
+            "label": "Cible",
+            "type": "string",
+            "defaultValue": "192.168.1.1",
+            "required": true,
+            "description": "IP, hostname ou plage CIDR à scanner"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "nmap -F 192.168.1.1",
+          "description": "Scan rapide des 100 ports TCP les plus courants sur une IP. Le flag -F (Fast) réduit considérablement le temps de scan. Identifie les services ouverts comme HTTP (80), HTTPS (443), SSH (22), RDP (3389)."
+        },
+        {
+          "command": "nmap -F 192.168.1.0/24",
+          "description": "Scanne tout un sous-réseau (254 hôtes). Détecte les machines actives et leurs services exposés. Utile pour cartographier rapidement un réseau local."
+        },
+        {
+          "command": "nmap -sV -F 192.168.1.1",
+          "description": "Scan rapide avec détection des versions de services. Le flag -sV interroge les ports ouverts pour identifier le logiciel et sa version (ex: Apache 2.4.41, OpenSSH 8.2)."
+        },
+        {
+          "command": "nmap -A -F 192.168.1.1",
+          "description": "Scan agressif : détection OS, versions, scripts NSE et traceroute. Plus lent mais fournit un maximum d'informations. Équivalent à -sV -sC -O --traceroute."
+        },
+        {
+          "command": "nmap -p 22,80,443,3389 192.168.1.1",
+          "description": "Scanne uniquement des ports spécifiques au lieu des top 100. Plus rapide et plus ciblé. Le flag -p accepte des listes (22,80) et des plages (1-1000)."
+        },
+        {
+          "command": "nmap -sn 192.168.1.0/24",
+          "description": "Découverte d'hôtes sans scan de ports (ping sweep). Le flag -sn désactive le scan de ports. Identifie rapidement quelles machines sont en ligne sur le réseau."
+        }
+      ],
+      "notes": "⚠️ Scanner uniquement les réseaux dont vous êtes propriétaire ou autorisé. Un scan non autorisé peut être illégal.",
+      "links": [
+        {
+          "title": "Documentation Nmap",
+          "url": "https://nmap.org/book/man.html"
+        }
+      ]
+    },
+    {
+      "id": "win-port-forwarding-add",
+      "title": "Configurer une redirection de port (Portproxy)",
+      "description": "Redirige le trafic entrant TCP d'un port local vers une autre adresse/port (Proxy TCP).",
+      "category": "🔐 Security & Network Advanced",
+      "platform": 0,
+      "level": 2,
+      "tags": [
+        "netsh",
+        "network",
+        "port-forwarding",
+        "proxy",
+        "windows"
+      ],
+      "windowsCommandTemplateId": "win-port-forwarding-add-cmd",
+      "windowsCommandTemplate": {
+        "id": "win-port-forwarding-add-cmd",
+        "platform": 0,
+        "name": "netsh portproxy add",
+        "commandPattern": "netsh interface portproxy add v4tov4 listenport={listenPort} listenaddress=0.0.0.0 connectport={connectPort} connectaddress={connectAddress}",
+        "parameters": [
+          {
+            "name": "listenPort",
+            "label": "Port d'écoute",
+            "type": "string",
+            "defaultValue": "8080",
+            "required": true,
+            "description": "Port local sur lequel écouter"
+          },
+          {
+            "name": "connectPort",
+            "label": "Port de destination",
+            "type": "string",
+            "defaultValue": "80",
+            "required": true,
+            "description": "Port vers lequel rediriger le trafic"
+          },
+          {
+            "name": "connectAddress",
+            "label": "Adresse de destination",
+            "type": "string",
+            "defaultValue": "192.168.1.100",
+            "required": true,
+            "description": "IP ou hostname de destination"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "command": "netsh interface portproxy add v4tov4 listenport=8080 listenaddress=0.0.0.0 connectport=80 connectaddress=192.168.1.100",
+          "description": "Redirige le trafic du port 8080 local vers le port 80 de 192.168.1.100. listenaddress=0.0.0.0 accepte les connexions de toutes les interfaces. Utile pour exposer un service interne."
+        },
+        {
+          "command": "netsh interface portproxy add v4tov4 listenport=3389 listenaddress=10.0.0.1 connectport=3389 connectaddress=192.168.1.50",
+          "description": "Crée un jump host RDP : les connexions sur l'interface 10.0.0.1:3389 sont redirigées vers un serveur interne. Permet d'accéder à des machines non exposées directement."
+        },
+        {
+          "command": "netsh interface portproxy show all",
+          "description": "Affiche toutes les règles de redirection de port configurées. Liste les ports d'écoute, adresses et destinations. Indispensable pour auditer et déboguer les redirections."
+        },
+        {
+          "command": "netsh interface portproxy delete v4tov4 listenport=8080 listenaddress=0.0.0.0",
+          "description": "Supprime une règle de redirection existante. Les paramètres listenport et listenaddress doivent correspondre exactement à la règle créée."
+        },
+        {
+          "command": "netsh interface portproxy reset",
+          "description": "Supprime TOUTES les règles de redirection de port. Remet la configuration portproxy à zéro. À utiliser avec précaution en production."
+        },
+        {
+          "command": "netsh advfirewall firewall add rule name=\"Port Forward 8080\" dir=in action=allow protocol=tcp localport=8080",
+          "description": "⚠️ Commande complémentaire obligatoire : ouvre le port dans le firewall Windows. Sans cette règle, le portproxy ne recevra aucune connexion externe."
+        }
+      ],
+      "notes": "⚠️ Nécessite les droits Administrateur. Le firewall Windows doit aussi autoriser le port d'écoute. Règle persistante après redémarrage.",
+      "links": [
+        {
+          "title": "Documentation Netsh Portproxy",
+          "url": "https://learn.microsoft.com/en-us/windows-server/networking/technologies/netsh/netsh-interface-portproxy"
+        }
+      ]
     }
   ]
 }

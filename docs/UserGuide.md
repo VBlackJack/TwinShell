@@ -63,6 +63,11 @@ L'interface TwinShell est organisée en **3 panneaux principaux** :
 - 🟣 **Services** : systemd (Linux) et Windows Services
 - 🟠 **Network** : Diagnostics réseau (ping, traceroute, etc.)
 - 🟤 **System** : Informations système
+- ☁️ **Cloud & Azure** : Gestion Azure AD (Entra), AWS et Google Cloud
+- 🚢 **Kubernetes** : Orchestration de conteneurs, pods et services
+- 🔐 **Security** : Cryptographie (OpenSSL), audit réseau (Nmap) et gestion de certificats
+- 💽 **Databases** : Gestion des bases de données (SQL Server, PostgreSQL, MySQL)
+- 🔨 **IaC & Build** : Terraform, Ansible et outils de compilation
 
 **Catégories Personnalisées :**
 - Créez vos propres catégories avec icônes et couleurs personnalisées
@@ -77,6 +82,8 @@ Affiche les commandes filtrées avec :
   - Plateforme : [Windows] | [Linux] | [Both]
   - Niveau : [Info] (bleu) | [Run] (orange) | [Dangerous] (rouge)
 - **Tags visuels** : Identifiez rapidement le type de commande
+
+> 🌍 **Nouveau** : Le badge **[Both]** indique que la commande fonctionne nativement sur Windows (PowerShell) et Linux (Bash). C'est le cas pour la plupart des outils Cloud et DevOps (AWS CLI, Terraform, OpenSSL, Docker, kubectl).
 
 ### Panneau 3 : Détails et Paramètres (Droite)
 
@@ -132,6 +139,12 @@ Résultats : "List AD Users", "Create AD User", "Get AD User Info"
 
 Recherche : "systemctl"
 Résultats : Toutes les commandes utilisant systemctl dans leurs templates
+
+Recherche : "aws ec2"
+Résultats : "Lister les instances EC2", "Démarrer une instance"
+
+Recherche : "k8s pods"
+Résultats : "kubectl-get-pods", "kubectl-describe-pod"
 ```
 
 ### Filtres Avancés
@@ -228,6 +241,10 @@ Get-Service -Name Spooler
 
 Exemple 3 : Filtrer les services en cours d'exécution
 Get-Service | Where-Object {$_.Status -eq 'Running'}
+
+Exemple 4 : Génération de certificat (OpenSSL)
+openssl req -new -newkey rsa:2048 -nodes -keyout domain.key -out domain.csr
+(Génère automatiquement une clé privée RSA 2048 bits et une demande de signature CSR)
 ```
 
 > 💡 **Astuce** : Vous pouvez **sélectionner le texte** dans les exemples pour le copier manuellement.
@@ -1099,5 +1116,5 @@ Exportez d'abord votre configuration pour sauvegarder vos favoris.
 
 **Bon travail avec TwinShell !** 🚀
 
-*Dernière mise à jour : 2025-01-18*
-*Version : 1.0.0*
+*Dernière mise à jour : 2025-11-26*
+*Version : 1.2.0*
