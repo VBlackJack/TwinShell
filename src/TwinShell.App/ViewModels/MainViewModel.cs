@@ -986,6 +986,39 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 _localizationService.GetString(MessageKeys.ConfigImportError));
         }
     }
+
+    /// <summary>
+    /// Switch to light theme
+    /// </summary>
+    [RelayCommand]
+    private async Task SetLightTheme()
+    {
+        var themeService = _serviceProvider.GetRequiredService<IThemeService>();
+        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+
+        themeService.ApplyTheme(Theme.Light);
+
+        var settings = await settingsService.LoadSettingsAsync();
+        settings.Theme = Theme.Light;
+        await settingsService.SaveSettingsAsync(settings);
+    }
+
+    /// <summary>
+    /// Switch to dark theme
+    /// </summary>
+    [RelayCommand]
+    private async Task SetDarkTheme()
+    {
+        var themeService = _serviceProvider.GetRequiredService<IThemeService>();
+        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+
+        themeService.ApplyTheme(Theme.Dark);
+
+        var settings = await settingsService.LoadSettingsAsync();
+        settings.Theme = Theme.Dark;
+        await settingsService.SaveSettingsAsync(settings);
+    }
+
 }
 
 public partial class ParameterViewModel : ObservableObject

@@ -54,23 +54,26 @@
         <!-- UX: Menu reorganized following Windows standards (File/Edit/View/Tools/Help) -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Nouvelle commande..." InputGestureText="Ctrl+N"
+                <MenuItem Header="_New Action..." InputGestureText="Ctrl+N"
                           Command="{Binding AddNewActionCommand}"
-                          ToolTip="Créer une nouvelle commande personnalisée"/>
+                          ToolTip="Create a new custom action"/>
                 <Separator/>
-                <MenuItem Header="_Export Configuration..." InputGestureText="Ctrl+E"
-                          Command="{Binding ExportConfigurationCommand}"
-                          ToolTip="Export your favorites and history to a JSON file"/>
-                <MenuItem Header="_Import Configuration..." InputGestureText="Ctrl+I"
-                          Command="{Binding ImportConfigurationCommand}"
-                          ToolTip="Import favorites and history from a JSON file"/>
-                <Separator/>
-                <MenuItem Header="Export _Actions Database..."
-                          Command="{Binding ExportActionsCommand}"
-                          ToolTip="Exporter toutes les commandes vers un fichier JSON"/>
-                <MenuItem Header="Import A_ctions Database..."
-                          Command="{Binding ImportActionsCommand}"
-                          ToolTip="Importer des commandes depuis un fichier JSON"/>
+                <MenuItem Header="_Export">
+                    <MenuItem Header="_User Data (Favorites, History)..." InputGestureText="Ctrl+E"
+                              Command="{Binding ExportConfigurationCommand}"
+                              ToolTip="Export your favorites and history to a JSON file"/>
+                    <MenuItem Header="_Actions Database..."
+                              Command="{Binding ExportActionsCommand}"
+                              ToolTip="Export all actions to a JSON file"/>
+                </MenuItem>
+                <MenuItem Header="_Import">
+                    <MenuItem Header="_User Data (Favorites, History)..." InputGestureText="Ctrl+I"
+                              Command="{Binding ImportConfigurationCommand}"
+                              ToolTip="Import favorites and history from a JSON file"/>
+                    <MenuItem Header="_Actions Database..."
+                              Command="{Binding ImportActionsCommand}"
+                              ToolTip="Import actions from a JSON file"/>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Header="E_xit" InputGestureText="Alt+F4" Click="Exit_Click"/>
             </MenuItem>
@@ -82,24 +85,35 @@
                           Command="{Binding ClearFiltersCommand}"
                           ToolTip="Reset all search filters to show all actions"/>
                 <Separator/>
-                <MenuItem Header="_Éditer la commande sélectionnée..."
+                <MenuItem Header="_Edit Selected Action..."
                           Command="{Binding EditActionCommand}"
-                          ToolTip="Modifier la commande sélectionnée"/>
-                <MenuItem Header="_Supprimer la commande sélectionnée"
+                          ToolTip="Edit the selected action"/>
+                <MenuItem Header="_Delete Selected Action"
                           Command="{Binding DeleteActionCommand}"
-                          ToolTip="Supprimer la commande sélectionnée (supprime définitivement de la base de données)"/>
+                          ToolTip="Delete the selected action (permanently removes from database)"/>
                 <Separator/>
                 <MenuItem Header="_Preferences..."
                           Click="Settings_Click"
                           ToolTip="Configure application settings, theme, and behavior"/>
             </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Theme">
+                    <MenuItem Header="_Light Theme"
+                              Command="{Binding SetLightThemeCommand}"
+                              ToolTip="Switch to light theme"/>
+                    <MenuItem Header="_Dark Theme"
+                              Command="{Binding SetDarkThemeCommand}"
+                              ToolTip="Switch to dark theme"/>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Refresh" InputGestureText="F5"
+                          Command="{Binding RefreshCommand}"
+                          ToolTip="Reload actions and data"/>
+            </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Manage Categories..."
                           Click="ManageCategories_Click"
                           ToolTip="Create and organize custom categories"/>
-                <MenuItem Header="_Refresh" InputGestureText="F5"
-                          Command="{Binding RefreshCommand}"
-                          ToolTip="Reload actions and data"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_Keyboard Shortcuts" InputGestureText="F1" Click="KeyboardShortcuts_Click"
