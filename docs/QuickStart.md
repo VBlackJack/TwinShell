@@ -28,7 +28,7 @@
 
 Au premier lancement, TwinShell :
 - Crée automatiquement sa base de données SQLite
-- Charge 30+ commandes PowerShell et Bash
+- Charge **500+ commandes** PowerShell et Bash
 - Est prêt à l'emploi !
 
 ---
@@ -76,7 +76,7 @@ Get-Service -Name Spooler
 
 ### Navigation Rapide
 
-- **Catégories** (panneau gauche) : Cliquez pour filtrer par type (AD, DNS, Logs, etc.)
+- **Catégories** (panneau gauche) : Cliquez pour filtrer par type (AD & GPO, Network & DNS, Logs, etc.)
 - **📋 All Commands** : Voir toutes les commandes disponibles
 - **⭐ Favorites** : Accès rapide à vos commandes préférées
 

@@ -352,6 +352,6 @@ Vous disposez maintenant d'un outil puissant et personnalisable pour gérer vos 
 
 ---
 
-*Guide Version: 1.0 - Sprint 3*
-*Dernière mise à jour: 2025-01-16*
-*Application: TwinShell v1.0*
+*Guide Version: 1.2 - Sprint 3*
+*Dernière mise à jour: 2025-11-26*
+*Application: TwinShell v1.2.0*

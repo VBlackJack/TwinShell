@@ -61,17 +61,22 @@ Il n'existe pas de version Mac ou Linux pour le moment.
 
 ### Q : Combien de commandes sont disponibles dans TwinShell ?
 
-**R :** TwinShell inclut **30+ commandes** PowerShell et Bash au lancement initial.
+**R :** TwinShell inclut **500+ commandes** PowerShell et Bash au lancement initial.
 
-**Catégories couvertes :**
-- Active Directory (utilisateurs, groupes, GPO)
-- DNS (requêtes, cache)
-- Logs (EventLog Windows, journald Linux)
-- Services (systemd, Windows Services)
-- Network (ping, traceroute, diagnostics)
-- System (informations système)
+**Catégories couvertes (15 au total) :**
+- 🏢 Active Directory & GPO (utilisateurs, groupes, GPO)
+- 🌐 Network & DNS (ping, traceroute, DNS)
+- 📊 Monitoring & Logs (EventLog, journald)
+- ⚙️ Services & Automation (services, tâches planifiées)
+- 💻 Windows Optimization (maintenance Windows)
+- 🐧 Linux Administration (administration Linux)
+- 📦 Package Management (apt, yum, winget, choco)
+- 📁 Files & Storage (fichiers, stockage)
+- 🔒 Security & Encryption (sécurité, BitLocker)
+- 🔄 Windows Updates (mises à jour)
+- Et plus encore...
 
-**Évolution :** De nouvelles commandes seront ajoutées dans les futures versions.
+**Évolution :** De nouvelles commandes sont régulièrement ajoutées.
 
 ---
 
@@ -84,7 +89,7 @@ Il n'existe pas de version Mac ou Linux pour le moment.
 2. Ajoutez votre commande au format JSON
 3. Relancez l'application (la base de données sera mise à jour)
 
-**À venir :** Une interface pour créer des commandes personnalisées est prévue dans une future version (v1.1+).
+**À venir :** Une interface pour créer des commandes personnalisées est prévue dans une future version.
 
 ---
 
@@ -353,11 +358,11 @@ Avant de supprimer, un message affiche le **nombre d'actions affectées**.
 
 ### Q : Puis-je assigner plusieurs catégories à une action ?
 
-**R :** **Pas encore** dans la version actuelle (v1.0).
+**R :** **Pas encore** dans la version actuelle (v1.2.0).
 
 Chaque action a **une seule catégorie**.
 
-**À venir :** Le support multi-catégories est prévu dans une future version (v1.1+).
+**À venir :** Le support multi-catégories est prévu dans une future version.
 
 ---
 
@@ -366,13 +371,21 @@ Chaque action a **une seule catégorie**.
 **R :** "Active Directory" est une **catégorie système**, protégée contre la suppression.
 
 **Catégories système non supprimables :**
-- Active Directory
-- DNS
-- GPO
-- Logs
-- Services
-- Network
-- System
+- Active Directory & GPO
+- Network & DNS
+- Monitoring & Logs
+- Services & Automation
+- Windows Optimization
+- Linux Administration
+- Package Management
+- Files & Storage
+- Security & Encryption
+- Windows Updates
+- User Management
+- Containers & VMs
+- Database
+- Development
+- Performance
 
 **Alternative :**
 - Vous pouvez **masquer** la catégorie (bouton "Hide")
@@ -780,5 +793,5 @@ Settings → **Language** → Français | English
 
 ---
 
-*Dernière mise à jour : 2025-01-18*
-*Version : 1.1.0*
+*Dernière mise à jour : 2025-11-26*
+*Version : 1.2.0*
