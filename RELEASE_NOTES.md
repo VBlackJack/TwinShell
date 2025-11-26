@@ -1,4 +1,18 @@
-# TwinShell v1.1.0 - Release Notes
+# TwinShell v1.2.0 - Release Notes
+
+## What's New in v1.2.0
+
+### Dynamic Command Generator Improvements
+- **Editable complex scripts**: Commands with `foreach`, `ForEach-Object`, `while`, ranges (`1..100`), multi-statement scripts, etc. are now displayed in an editable multiline TextBox instead of being parsed into individual parameters
+- **Improved script detection**: Better handling of PowerShell pipelines, script blocks, and complex command patterns
+- **Dynamic parameter fields**: The command generator now adapts to the selected example, showing appropriate fields
+
+### Technical Improvements
+- Enhanced `IsComplexScript()` detection for more script patterns
+- Observable properties in `ParameterViewModel` for proper WPF binding
+- Added `check_examples.py` script for analyzing example parsing issues
+
+---
 
 ## What's New in v1.1.0
 
@@ -79,13 +93,13 @@ TwinShell is a comprehensive PowerShell and Bash command library for system admi
 ## Installation
 
 ### Portable Version (Recommended for Quick Start)
-1. Download `TwinShell-v1.1.0-Portable-win-x64.zip`
+1. Download `TwinShell-v1.2.0-Portable-win-x64.zip`
 2. Extract to your desired location
 3. Run `TwinShell.App.exe`
 4. No installation required!
 
 ### Installer Version
-1. Download `TwinShell-v1.1.0-Setup-win-x64.exe` (if available)
+1. Download `TwinShell-v1.2.0-Setup-win-x64.exe` (if available)
 2. Run the installer
 3. Follow the installation wizard
 4. Launch from Start Menu or Desktop shortcut
@@ -145,6 +159,12 @@ Developed with:
 ---
 
 ## Version History
+
+### v1.2.0 (2025-11-26)
+- Editable multiline TextBox for complex scripts
+- Dynamic command generator adapts to selected examples
+- Improved script detection (ForEach-Object, ranges, pipelines)
+- check_examples.py analysis tool
 
 ### v1.1.0 (2025-11-26)
 - 15 unified cross-platform actions
