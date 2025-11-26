@@ -1072,146 +1072,6 @@
       }
     },
     {
-      "id": "unified-WIN-PRIVACY-302",
-      "title": "Tester un port TCP",
-      "description": "Désactive la télémétrie de Visual Studio Code et les rapports d'erreurs Microsoft.",
-      "category": "🌐 Réseau",
-      "platform": 2,
-      "supportedPlatforms": [
-        0,
-        1
-      ],
-      "level": 1,
-      "tags": [
-        "sync",
-        "télémétrie",
-        "vscode",
-        "backup",
-        "third-party",
-        "privacy",
-        "transfer",
-        "microsoft",
-        "rsync",
-        "windows",
-        "copy",
-        "confidentialité"
-      ],
-      "notes": "Windows: Modifie les paramètres VS Code pour désactiver toute télémétrie. Empêche l'envoi de données d'utilisation à Microsoft. Nécessite VS Code installé.\nLinux: Le / final sur source change le comportement. --delete supprime les fichiers manquants. Très efficace.",
-      "links": [
-        {
-          "title": "VS Code - Disable telemetry reporting",
-          "url": "https://code.visualstudio.com/docs/getstarted/telemetry"
-        },
-        {
-          "title": "rsync documentation",
-          "url": "https://man7.org/linux/man-pages/man1/rsync.1.html"
-        }
-      ],
-      "windowsCommandTemplateId": "win-privacy-302-cmd",
-      "windowsCommandTemplate": {
-        "id": "win-privacy-302-cmd",
-        "platform": 0,
-        "name": "Disable-VSCodeTelemetry",
-        "commandPattern": "$vscodeSettings = \"$env:APPDATA\\Code\\User\\settings.json\"; if (Test-Path $vscodeSettings) { $settings = Get-Content $vscodeSettings -Raw | ConvertFrom-Json; $settings | Add-Member -MemberType NoteProperty -Name 'telemetry.telemetryLevel' -Value 'off' -Force; $settings | Add-Member -MemberType NoteProperty -Name 'telemetry.enableTelemetry' -Value $false -Force; $settings | Add-Member -MemberType NoteProperty -Name 'telemetry.enableCrashReporter' -Value $false -Force; $settings | ConvertTo-Json -Depth 100 | Set-Content $vscodeSettings } else { Write-Host 'VS Code settings not found. Install VS Code first.' }",
-        "parameters": []
-      },
-      "windowsExamples": [
-        {
-          "command": "code --telemetry-level off",
-          "description": "Lance VS Code avec télémétrie désactivée"
-        },
-        {
-          "command": "$vscodeSettings = \"$env:APPDATA\\Code\\User\\settings.json\"; if (Test-Path $vscodeSettings) { $settings = Get-Content $vscodeSettings -Raw | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "$vscodeSettings = \"$env:APPDATA\\Code\\User\\settings.json\"; if (Test-Path $vscodeSettings) { $settings = Get-Content $vscodeSettings -Raw | Format-Table -AutoSize",
-          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées."
-        },
-        {
-          "command": "$vscodeSettings = \"$env:APPDATA\\Code\\User\\settings.json\"; if (Test-Path $vscodeSettings) { $settings = Get-Content $vscodeSettings -Raw | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "$vscodeSettings = \"$env:APPDATA\\Code\\User\\settings.json\"; if (Test-Path $vscodeSettings) { $settings = Get-Content $vscodeSettings -Raw | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ],
-      "linuxCommandTemplateId": "rsync-cmd",
-      "linuxCommandTemplate": {
-        "id": "rsync-cmd",
-        "platform": 1,
-        "name": "rsync",
-        "commandPattern": "rsync -{options} {source} {destination}",
-        "parameters": [
-          {
-            "name": "options",
-            "label": "Options",
-            "type": "string",
-            "defaultValue": "avz",
-            "required": true,
-            "description": "Options (a=archive, v=verbose, z=compress, --delete, etc.)"
-          },
-          {
-            "name": "source",
-            "label": "Source",
-            "type": "string",
-            "defaultValue": "/source/path/",
-            "required": true,
-            "description": "Répertoire source"
-          },
-          {
-            "name": "destination",
-            "label": "Destination",
-            "type": "string",
-            "defaultValue": "/dest/path/",
-            "required": true,
-            "description": "Répertoire destination (local ou distant)"
-          }
-        ]
-      },
-      "linuxExamples": [
-        {
-          "command": "rsync -avz /source/ /backup/",
-          "description": "Sauvegarde locale avec compression"
-        },
-        {
-          "command": "rsync -avz /data/ user@server:/backup/",
-          "description": "Sauvegarde distante via SSH"
-        },
-        {
-          "command": "rsync -avz --delete /source/ /backup/",
-          "description": "Synchronisation miroir (supprime fichiers en trop)"
-        },
-        {
-          "command": "rsync -{options} {source} {destination} -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "rsync -{options} {source} {destination} --dry-run",
-          "description": "Simulation sans exécution réelle (dry-run). --dry-run affiche ce qui serait fait sans appliquer les changements. INDISPENSABLE avant les opérations de masse ou les modifications critiques."
-        },
-        {
-          "command": "rsync --help",
-          "description": "Affiche l'aide complète de la commande rsync. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man rsync",
-          "description": "Affiche le manuel complet de rsync. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        }
-      ],
-      "crossPlatformNotes": {
-        "differences": [
-          "Windows utilise 0 paramètre(s), Linux en utilise 3",
-          "Syntaxe: Windows utilise 'Disable-VSCodeTelemetry', Linux utilise 'rsync'"
-        ],
-        "commonalities": [
-          "Les deux permettent de tester un port tcp",
-          "Fonctionnalité équivalente sur les deux plateformes"
-        ]
-      }
-    },
-    {
       "id": "unified-netstat-connections",
       "title": "Afficher les ports ouverts",
       "description": "Liste tous les ports TCP/UDP en écoute et les connexions établies avec les processus associés",
@@ -1604,133 +1464,6 @@
       }
     },
     {
-      "id": "unified-logs-tail-syslog",
-      "title": "Logs en temps réel",
-      "description": "Liste les erreurs récentes du journal d'événements Windows (System ou Application).",
-      "category": "📊 Logs",
-      "platform": 2,
-      "supportedPlatforms": [
-        0,
-        1
-      ],
-      "level": 0,
-      "tags": [
-        "errors",
-        "logs",
-        "tail",
-        "eventlog",
-        "diagnostic",
-        "linux",
-        "monitoring",
-        "syslog"
-      ],
-      "notes": "Windows: Nécessite des droits administrateur. Peut être lent sur de gros journaux.\nLinux: Sur certaines distributions, le fichier peut être /var/log/messages. Utiliser Ctrl+C pour arrêter.",
-      "links": [],
-      "windowsCommandTemplateId": "logs-eventlog-errors-cmd",
-      "windowsCommandTemplate": {
-        "id": "logs-eventlog-errors-cmd",
-        "platform": 0,
-        "name": "Get-EventLog",
-        "commandPattern": "Get-EventLog -LogName {logName} -EntryType Error -Newest {count}",
-        "parameters": [
-          {
-            "name": "logName",
-            "label": "Journal",
-            "type": "string",
-            "defaultValue": "System",
-            "required": false,
-            "description": "Nom du journal (System, Application, Security)"
-          },
-          {
-            "name": "count",
-            "label": "Nombre d'entrées",
-            "type": "int",
-            "defaultValue": "50",
-            "required": false,
-            "description": "Nombre d'erreurs à afficher"
-          }
-        ]
-      },
-      "windowsExamples": [
-        {
-          "command": "Get-EventLog -LogName System -Newest 50",
-          "description": "Affiche les 50 événements les plus récents du journal Système. -LogName spécifie le journal (System/Application/Security). -Newest limite le nombre de résultats. Les journaux System contiennent les événements hardware, drivers, services Windows, démarrage/arrêt. Première commande à utiliser pour diagnostiquer les problèmes système."
-        },
-        {
-          "command": "Get-EventLog -LogName Application -EntryType Error -Newest 100",
-          "description": "Affiche les 100 dernières erreurs du journal Application. -EntryType filtre par niveau (Error/Warning/Information/SuccessAudit/FailureAudit). Le journal Application contient les événements des logiciels tiers et applications Microsoft. Essentiel pour le troubleshooting applicatif."
-        },
-        {
-          "command": "Get-EventLog -LogName System -After (Get-Date).AddHours(-24) -EntryType Error,Warning",
-          "description": "Affiche toutes les erreurs ET warnings système des dernières 24 heures. -After filtre par date de début. Get-Date).AddHours(-24) calcule l'heure d'il y a 24h. -EntryType accepte plusieurs valeurs. Idéal pour les revues quotidiennes et l'identification proactive de problèmes."
-        },
-        {
-          "command": "Get-EventLog -LogName System -Source 'Service Control Manager' -Newest 50",
-          "description": "Affiche les événements provenant d'une source spécifique (ici le gestionnaire de services). -Source filtre par composant émetteur. 'Service Control Manager' enregistre tous les démarrages/arrêts/échecs de services. Parfait pour diagnostiquer les problèmes de services Windows."
-        },
-        {
-          "command": "Get-EventLog -LogName Application -InstanceId 1000,1001 | Select-Object TimeGenerated,Source,Message",
-          "description": "Filtre les événements par ID spécifiques. -InstanceId (ou -EventID) cible des événements précis. Select-Object affiche les colonnes pertinentes. Utilisez cette méthode quand vous connaissez les IDs d'événements problématiques (ex: 1000 = crash application)."
-        },
-        {
-          "command": "Get-EventLog -LogName Security -InstanceId 4625 -Newest 20",
-          "description": "Affiche les 20 dernières tentatives de connexion échouées (Event ID 4625). Le journal Security enregistre tous les événements de sécurité (connexions, élévation de privilèges, accès aux objets). L'ID 4625 indique un échec d'authentification. Crucial pour détecter les tentatives d'intrusion ou les problèmes de mot de passe."
-        },
-        {
-          "command": "Get-EventLog -LogName System -After (Get-Date).AddDays(-7) | Where-Object {$_.EventID -eq 6008} | Format-Table TimeGenerated,Message -AutoSize",
-          "description": "Identifie tous les arrêts inattendus (crashs, coupures électriques) de la semaine. L'Event ID 6008 signale 'The previous system shutdown was unexpected'. Format-Table affiche l'heure et le message. Essentiel pour diagnostiquer les instabilités système et planifier les maintenances."
-        },
-        {
-          "command": "Get-EventLog -LogName Application -EntryType Error | Group-Object Source | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
-          "description": "Analyse statistique : identifie les 10 sources d'erreurs les plus fréquentes dans Application. Group-Object regroupe par source. Sort-Object trie par nombre d'occurrences. Excellent pour identifier les applications problématiques et prioriser les corrections."
-        },
-        {
-          "command": "Get-EventLog -LogName System -After (Get-Date).AddDays(-1) -EntryType Error | Export-Csv C:\\Temp\\SystemErrors.csv -NoTypeInformation",
-          "description": "Exporte toutes les erreurs système des dernières 24h vers CSV. Utile pour archivage, analyse dans Excel, partage avec le support technique ou création de rapports. Les exports réguliers permettent de suivre l'évolution des problèmes dans le temps."
-        }
-      ],
-      "linuxCommandTemplateId": "logs-tail-syslog-cmd",
-      "linuxCommandTemplate": {
-        "id": "logs-tail-syslog-cmd",
-        "platform": 1,
-        "name": "tail",
-        "commandPattern": "tail -f /var/log/syslog",
-        "parameters": []
-      },
-      "linuxExamples": [
-        {
-          "command": "tail -f /var/log/syslog",
-          "description": "Suit le syslog en temps réel"
-        },
-        {
-          "command": "tail -n 100 /var/log/syslog",
-          "description": "Affiche les 100 dernières lignes du syslog"
-        },
-        {
-          "command": "tail --help",
-          "description": "Affiche l'aide complète de la commande tail. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man tail",
-          "description": "Affiche le manuel complet de tail. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "tail -f /var/log/syslog",
-          "description": "Cas d'usage standard. Affiche en continu les nouvelles entrées du journal système Linux. Consultez la documentation pour des paramètres avancés et des options de filtrage."
-        }
-      ],
-      "crossPlatformNotes": {
-        "differences": [
-          "Windows utilise 2 paramètre(s), Linux en utilise 0",
-          "Syntaxe: Windows utilise 'Get-EventLog', Linux utilise 'tail'"
-        ],
-        "commonalities": [
-          "Les deux permettent de logs en temps réel",
-          "Fonctionnalité équivalente sur les deux plateformes"
-        ]
-      }
-    },
-    {
       "id": "ad-list-users",
       "title": "Lister les fichiers",
       "description": "Affiche une liste complète de tous les comptes utilisateurs dans Active Directory avec leurs propriétés principales.",
@@ -1949,256 +1682,6 @@
         ],
         "commonalities": [
           "Les deux permettent de rechercher des fichiers",
-          "Fonctionnalité équivalente sur les deux plateformes"
-        ]
-      }
-    },
-    {
-      "id": "unified-gpo-copy",
-      "title": "Copier des fichiers",
-      "description": "Crée une copie d'une stratégie de groupe existante.",
-      "category": "📁 Fichiers",
-      "platform": 2,
-      "supportedPlatforms": [
-        0,
-        1
-      ],
-      "level": 1,
-      "tags": [
-        "fichier",
-        "copie",
-        "duplicate",
-        "linux",
-        "group-policy",
-        "gpo",
-        "cp",
-        "copy"
-      ],
-      "notes": "Windows: Copie tous les paramètres mais pas les liens GPO. Les liens doivent être recréés manuellement.\nLinux: -r pour récursif (dossiers), -v pour verbeux, -p pour préserver les permissions.",
-      "links": [
-        {
-          "title": "Documentation Copy-GPO",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/grouppolicy/copy-gpo"
-        }
-      ],
-      "windowsCommandTemplateId": "gpo-copy-cmd",
-      "windowsCommandTemplate": {
-        "id": "gpo-copy-cmd",
-        "platform": 0,
-        "name": "Copy-GPO",
-        "commandPattern": "Copy-GPO -SourceName \"{sourceGPO}\" -TargetName \"{targetGPO}\"",
-        "parameters": [
-          {
-            "name": "sourceGPO",
-            "label": "GPO source",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Nom de la GPO à copier"
-          },
-          {
-            "name": "targetGPO",
-            "label": "GPO destination",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Nom de la nouvelle GPO"
-          }
-        ]
-      },
-      "windowsExamples": [
-        {
-          "command": "Copy-GPO -SourceName \"Security-Policy-IT\" -TargetName \"Security-Policy-Finance\"",
-          "description": "Copie la GPO IT vers une nouvelle GPO Finance"
-        },
-        {
-          "command": "Copy-GPO -SourceName \"{sourceGPO}\" -TargetName \"{targetGPO}\"",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Copy-GPO -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
-        },
-        {
-          "command": "Copy-GPO -SourceName \"<sourceGPO>\" -TargetName \"{targetGPO}\"",
-          "description": "Exemple utilisant le paramètre 'sourceGPO': Nom de la GPO à copier. Remplacez <sourceGPO> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "Copy-GPO -SourceName \"{sourceGPO}\" -TargetName \"<targetGPO>\"",
-          "description": "Exemple utilisant le paramètre 'targetGPO': Nom de la nouvelle GPO. Remplacez <targetGPO> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "Copy-GPO -SourceName \"{sourceGPO}\" -TargetName \"{targetGPO}\"",
-          "description": "Cas d'usage standard. Crée une copie d'une stratégie de groupe existante. Consultez la documentation pour des paramètres avancés et des options de filtrage."
-        }
-      ],
-      "linuxCommandTemplateId": "file-copy-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "file-copy-linux-cmd",
-        "platform": 1,
-        "name": "cp",
-        "commandPattern": "cp -r \"{sourcePath}\" \"{destinationPath}\"",
-        "parameters": [
-          {
-            "name": "sourcePath",
-            "label": "Chemin source",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier à copier"
-          },
-          {
-            "name": "destinationPath",
-            "label": "Chemin destination",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin de destination"
-          }
-        ]
-      },
-      "linuxExamples": [
-        {
-          "command": "cp -r /home/user/documents /backup/documents",
-          "description": "Copie le dossier documents vers le backup"
-        },
-        {
-          "command": "cp -v file.txt /destination/",
-          "description": "Copie un fichier en mode verbeux"
-        },
-        {
-          "command": "cp -r \"{sourcePath}\" \"{destinationPath}\" -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "cp --help",
-          "description": "Affiche l'aide complète de la commande cp. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man cp",
-          "description": "Affiche le manuel complet de cp. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "cp -r \"<sourcePath>\" \"{destinationPath}\"",
-          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à copier. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "cp -r \"{sourcePath}\" \"<destinationPath>\"",
-          "description": "Exemple utilisant le paramètre 'destinationPath': Chemin de destination. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "crossPlatformNotes": {
-        "differences": [
-          "Syntaxe: Windows utilise 'Copy-GPO', Linux utilise 'cp'"
-        ],
-        "commonalities": [
-          "Les deux permettent de copier des fichiers",
-          "Fonctionnalité équivalente sur les deux plateformes"
-        ]
-      }
-    },
-    {
-      "id": "unified-apt-update",
-      "title": "Mettre à jour le système",
-      "description": "Configure la télémétrie Windows au niveau minimal (Security). Protection maximale des données. RGPD strict.",
-      "category": "🔄 Updates",
-      "platform": 2,
-      "supportedPlatforms": [
-        0,
-        1
-      ],
-      "level": 2,
-      "tags": [
-        "télémétrie",
-        "update",
-        "diagnostic",
-        "debian",
-        "ubuntu",
-        "packages",
-        "privacy",
-        "apt",
-        "microsoft",
-        "rgpd",
-        "windows",
-        "confidentialité"
-      ],
-      "notes": "Windows: IMPORTANT: Configure la télémétrie au minimum absolu (niveau Security - 0). Désactive 50+ clés de registre et tâches planifiées. Conforme RGPD strict. Niveau recommandé pour entreprises européennes.\nLinux: Nécessite sudo. À exécuter avant apt upgrade. N'installe aucun paquet, ne fait que rafraîchir les métadonnées.",
-      "links": [
-        {
-          "title": "Microsoft - Configure Windows diagnostic data",
-          "url": "https://learn.microsoft.com/en-us/windows/privacy/configure-windows-diagnostic-data-in-your-organization"
-        },
-        {
-          "title": "APT documentation",
-          "url": "https://manpages.ubuntu.com/manpages/jammy/man8/apt.8.html"
-        }
-      ],
-      "windowsCommandTemplateId": "win-privacy-205-cmd",
-      "windowsCommandTemplate": {
-        "id": "win-privacy-205-cmd",
-        "platform": 0,
-        "name": "Set-MinimalTelemetry",
-        "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'AllowTelemetry' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'MaxTelemetryAllowed' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'DoNotShowFeedbackNotifications' -Type DWord -Value 1; New-Item -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection' -Name 'AllowTelemetry' -Type DWord -Value 0; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Application Experience\\ProgramDataUpdater' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Autochk\\Proxy' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Customer Experience Improvement Program\\Consolidator' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\Customer Experience Improvement Program\\UsbCeip' -ErrorAction SilentlyContinue; Disable-ScheduledTask -TaskName 'Microsoft\\Windows\\DiskDiagnostic\\Microsoft-Windows-DiskDiagnosticDataCollector' -ErrorAction SilentlyContinue",
-        "parameters": []
-      },
-      "windowsExamples": [
-        {
-          "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Name 'AllowTelemetry' -Value 0",
-          "description": "Télémétrie minimale (Security only)"
-        },
-        {
-          "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Force -WhatIf",
-          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter."
-        },
-        {
-          "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Force -Confirm:$false",
-          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité."
-        },
-        {
-          "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Force -PassThru",
-          "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates."
-        },
-        {
-          "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection' -Force -Verbose",
-          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes."
-        }
-      ],
-      "linuxCommandTemplateId": "apt-update-cmd",
-      "linuxCommandTemplate": {
-        "id": "apt-update-cmd",
-        "platform": 1,
-        "name": "apt",
-        "commandPattern": "apt update",
-        "parameters": []
-      },
-      "linuxExamples": [
-        {
-          "command": "sudo apt update",
-          "description": "Met à jour la liste des paquets"
-        },
-        {
-          "command": "sudo apt update && apt list --upgradable",
-          "description": "Met à jour et liste les paquets pouvant être mis à niveau"
-        },
-        {
-          "command": "apt update -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "apt update --dry-run",
-          "description": "Simulation sans exécution réelle (dry-run). --dry-run affiche ce qui serait fait sans appliquer les changements. INDISPENSABLE avant les opérations de masse ou les modifications critiques."
-        },
-        {
-          "command": "apt --help",
-          "description": "Affiche l'aide complète de la commande apt. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man apt",
-          "description": "Affiche le manuel complet de apt. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        }
-      ],
-      "crossPlatformNotes": {
-        "differences": [
-          "Syntaxe: Windows utilise 'Set-MinimalTelemetry', Linux utilise 'apt'"
-        ],
-        "commonalities": [
-          "Les deux permettent de mettre à jour le système",
           "Fonctionnalité équivalente sur les deux plateformes"
         ]
       }
@@ -2454,6 +1937,536 @@
         ],
         "commonalities": [
           "Les deux permettent de lister les utilisateurs locaux",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-file-move",
+      "title": "Déplacer ou renommer des fichiers",
+      "description": "Déplace ou renomme des fichiers et dossiers.",
+      "category": "📁 Gestion de Fichiers",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 1,
+      "tags": [
+        "fichier",
+        "déplacer",
+        "renommer",
+        "move",
+        "mv",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: -Force écrase les fichiers existants sans demander confirmation.\nLinux: mv sert à la fois pour déplacer et renommer. Utiliser -i pour confirmation, -v pour verbeux.",
+      "links": [
+        {
+          "title": "Documentation Move-Item",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/move-item"
+        }
+      ],
+      "windowsCommandTemplateId": "file-move-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "file-move-windows-cmd",
+        "platform": 0,
+        "name": "Move-Item",
+        "commandPattern": "Move-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Force",
+        "parameters": [
+          {
+            "name": "sourcePath",
+            "label": "Chemin source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier à déplacer"
+          },
+          {
+            "name": "destinationPath",
+            "label": "Chemin destination",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nouveau chemin ou nom"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "Move-Item -Path \"C:\\Temp\\file.txt\" -Destination \"D:\\Archive\\file.txt\"",
+          "description": "Déplace un fichier vers un autre disque"
+        },
+        {
+          "command": "Move-Item -Path \"C:\\OldName\" -Destination \"C:\\NewName\"",
+          "description": "Renomme un dossier"
+        },
+        {
+          "command": "Move-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Force",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Move-Item -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
+        },
+        {
+          "command": "Move-Item -Path \"<sourcePath>\" -Destination \"{destinationPath}\" -Force",
+          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à déplacer. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
+        },
+        {
+          "command": "Move-Item -Path \"{sourcePath}\" -Destination \"<destinationPath>\" -Force",
+          "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "linuxCommandTemplateId": "file-move-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "file-move-linux-cmd",
+        "platform": 1,
+        "name": "mv",
+        "commandPattern": "mv \"{sourcePath}\" \"{destinationPath}\"",
+        "parameters": [
+          {
+            "name": "sourcePath",
+            "label": "Chemin source",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier à déplacer"
+          },
+          {
+            "name": "destinationPath",
+            "label": "Chemin destination",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nouveau chemin ou nom"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "mv /tmp/file.txt /archive/file.txt",
+          "description": "Déplace un fichier vers un autre dossier"
+        },
+        {
+          "command": "mv oldname.txt newname.txt",
+          "description": "Renomme un fichier"
+        },
+        {
+          "command": "mv \"{sourcePath}\" \"{destinationPath}\" -v",
+          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
+        },
+        {
+          "command": "mv --help",
+          "description": "Affiche l'aide complète de la commande mv. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
+        },
+        {
+          "command": "man mv",
+          "description": "Affiche le manuel complet de mv. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
+        },
+        {
+          "command": "mv \"<sourcePath>\" \"{destinationPath}\"",
+          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à déplacer. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
+        },
+        {
+          "command": "mv \"{sourcePath}\" \"<destinationPath>\"",
+          "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Move-Item', Linux utilise 'mv'"
+        ],
+        "commonalities": [
+          "Les deux permettent de déplacer ou renommer des fichiers",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-file-delete",
+      "title": "Supprimer des fichiers ou dossiers",
+      "description": "Supprime des fichiers ou des répertoires de manière permanente.",
+      "category": "📁 Gestion de Fichiers",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 2,
+      "tags": [
+        "fichier",
+        "supprimer",
+        "delete",
+        "remove",
+        "rm",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: ATTENTION: Suppression définitive, pas de corbeille. -Recurse supprime les sous-dossiers.\nLinux: ATTENTION: rm -rf est dangereux! -r pour récursif, -f pour forcer, -i pour demander confirmation.",
+      "links": [
+        {
+          "title": "Documentation Remove-Item",
+          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-item"
+        }
+      ],
+      "windowsCommandTemplateId": "file-delete-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "file-delete-windows-cmd",
+        "platform": 0,
+        "name": "Remove-Item",
+        "commandPattern": "Remove-Item -Path \"{path}\" -Recurse -Force",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier à supprimer"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "Remove-Item -Path \"C:\\Temp\\*\" -Recurse -Force",
+          "description": "Supprime tout le contenu de C:\\Temp"
+        },
+        {
+          "command": "Remove-Item -Path \"C:\\file.txt\"",
+          "description": "Supprime un fichier spécifique"
+        },
+        {
+          "command": "Remove-Item -Path \"{path}\" -Recurse -Force -WhatIf",
+          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter."
+        },
+        {
+          "command": "Remove-Item -Path \"{path}\" -Recurse -Force -Confirm:$false",
+          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité."
+        },
+        {
+          "command": "Remove-Item -Path \"{path}\" -Recurse -Force -Verbose",
+          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes."
+        },
+        {
+          "command": "Remove-Item -Path \"<path>\" -Recurse -Force",
+          "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "linuxCommandTemplateId": "file-delete-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "file-delete-linux-cmd",
+        "platform": 1,
+        "name": "rm",
+        "commandPattern": "rm -rf \"{path}\"",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier à supprimer"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "rm -rf /tmp/oldfiles",
+          "description": "Supprime un dossier et son contenu"
+        },
+        {
+          "command": "rm file.txt",
+          "description": "Supprime un fichier"
+        },
+        {
+          "command": "rm -i *.log",
+          "description": "Supprime tous les .log avec confirmation"
+        },
+        {
+          "command": "rm -rf \"{path}\" -v",
+          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
+        },
+        {
+          "command": "rm --help",
+          "description": "Affiche l'aide complète de la commande rm. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
+        },
+        {
+          "command": "man rm",
+          "description": "Affiche le manuel complet de rm. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
+        },
+        {
+          "command": "rm -rf \"<path>\"",
+          "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'Remove-Item', Linux utilise 'rm'"
+        ],
+        "commonalities": [
+          "Les deux permettent de supprimer des fichiers ou dossiers",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-file-create-directory",
+      "title": "Créer un répertoire",
+      "description": "Crée un nouveau répertoire (dossier).",
+      "category": "📁 Gestion de Fichiers",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 1,
+      "tags": [
+        "fichier",
+        "dossier",
+        "créer",
+        "mkdir",
+        "directory",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: -Force crée les dossiers parents si nécessaire.\nLinux: -p crée les dossiers parents si nécessaire. -m définit les permissions.",
+      "links": [],
+      "windowsCommandTemplateId": "file-create-directory-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "file-create-directory-windows-cmd",
+        "platform": 0,
+        "name": "New-Item",
+        "commandPattern": "New-Item -Path \"{path}\" -ItemType Directory -Force",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin du dossier",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du nouveau dossier à créer"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "New-Item -Path \"C:\\Projects\\MyApp\\src\" -ItemType Directory -Force",
+          "description": "Crée une arborescence de dossiers"
+        },
+        {
+          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -WhatIf",
+          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter."
+        },
+        {
+          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -Confirm:$false",
+          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité."
+        },
+        {
+          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -PassThru",
+          "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates."
+        },
+        {
+          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -Verbose",
+          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes."
+        },
+        {
+          "command": "New-Item -Path \"<path>\" -ItemType Directory -Force",
+          "description": "Exemple utilisant le paramètre 'path': Chemin du nouveau dossier à créer. Remplacez <path> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "linuxCommandTemplateId": "file-create-directory-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "file-create-directory-linux-cmd",
+        "platform": 1,
+        "name": "mkdir",
+        "commandPattern": "mkdir -p \"{path}\"",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin du dossier",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du nouveau dossier à créer"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "mkdir -p /home/user/projects/myapp/src",
+          "description": "Crée une arborescence de dossiers"
+        },
+        {
+          "command": "mkdir -m 755 newfolder",
+          "description": "Crée un dossier avec permissions spécifiques"
+        },
+        {
+          "command": "mkdir -p \"{path}\" -v",
+          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
+        },
+        {
+          "command": "mkdir --help",
+          "description": "Affiche l'aide complète de la commande mkdir. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
+        },
+        {
+          "command": "man mkdir",
+          "description": "Affiche le manuel complet de mkdir. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
+        },
+        {
+          "command": "mkdir -p \"<path>\"",
+          "description": "Exemple utilisant le paramètre 'path': Chemin du nouveau dossier à créer. Remplacez <path> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'New-Item', Linux utilise 'mkdir'"
+        ],
+        "commonalities": [
+          "Les deux permettent de créer un répertoire",
+          "Fonctionnalité équivalente sur les deux plateformes"
+        ]
+      }
+    },
+    {
+      "id": "unified-file-permissions",
+      "title": "Modifier les permissions de fichiers",
+      "description": "Modifie les permissions (droits d'accès) sur des fichiers ou dossiers.",
+      "category": "📁 Gestion de Fichiers",
+      "platform": 2,
+      "supportedPlatforms": [
+        0,
+        1
+      ],
+      "level": 2,
+      "tags": [
+        "fichier",
+        "permissions",
+        "droits",
+        "acl",
+        "chmod",
+        "windows",
+        "linux"
+      ],
+      "notes": "Windows: /T pour récursif. Permissions: F (Full), M (Modify), RX (ReadExecute), R (Read), W (Write).\nLinux: 755=rwxr-xr-x, 644=rw-r--r--, 777=rwxrwxrwx. -R pour récursif. u=user, g=group, o=others, a=all.",
+      "links": [],
+      "windowsCommandTemplateId": "file-permissions-windows-cmd",
+      "windowsCommandTemplate": {
+        "id": "file-permissions-windows-cmd",
+        "platform": 0,
+        "name": "icacls",
+        "commandPattern": "icacls \"{path}\" /grant {user}:{permissions}",
+        "parameters": [
+          {
+            "name": "path",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier"
+          },
+          {
+            "name": "user",
+            "label": "Utilisateur/Groupe",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Nom de l'utilisateur ou du groupe"
+          },
+          {
+            "name": "permissions",
+            "label": "Permissions",
+            "type": "string",
+            "defaultValue": "F",
+            "required": true,
+            "description": "F=Full, M=Modify, RX=ReadExecute, R=Read, W=Write"
+          }
+        ]
+      },
+      "windowsExamples": [
+        {
+          "command": "icacls \"C:\\Data\" /grant Users:M",
+          "description": "Donne les droits de modification aux Users"
+        },
+        {
+          "command": "icacls \"C:\\Data\" /grant Administrators:F /T",
+          "description": "Donne le contrôle total récursivement"
+        },
+        {
+          "command": "icacls \"{path}\" /grant {user}:{permissions}",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help icacls -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
+        },
+        {
+          "command": "icacls \"<path>\" /grant {user}:{permissions}",
+          "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier. Remplacez <path> par la valeur appropriée selon votre environnement."
+        },
+        {
+          "command": "icacls \"{path}\" /grant <user>:{permissions}",
+          "description": "Exemple utilisant le paramètre 'user': Nom de l'utilisateur ou du groupe. Remplacez <user> par la valeur appropriée selon votre environnement."
+        },
+        {
+          "command": "icacls \"{path}\" /grant {user}:F",
+          "description": "Exemple utilisant le paramètre 'permissions': F=Full, M=Modify, RX=ReadExecute, R=Read, W=Write. Remplacez <permissions> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "linuxCommandTemplateId": "file-permissions-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "file-permissions-linux-cmd",
+        "platform": 1,
+        "name": "chmod",
+        "commandPattern": "chmod {permissions} \"{path}\"",
+        "parameters": [
+          {
+            "name": "permissions",
+            "label": "Permissions",
+            "type": "string",
+            "defaultValue": "755",
+            "required": true,
+            "description": "Permissions en octal (ex: 755, 644) ou symbolique (ex: u+x)"
+          },
+          {
+            "name": "path",
+            "label": "Chemin",
+            "type": "string",
+            "defaultValue": "",
+            "required": true,
+            "description": "Chemin du fichier ou dossier"
+          }
+        ]
+      },
+      "linuxExamples": [
+        {
+          "command": "chmod 755 script.sh",
+          "description": "Rend un script exécutable (rwxr-xr-x)"
+        },
+        {
+          "command": "chmod -R 644 /var/www/html",
+          "description": "Définit les permissions récursivement"
+        },
+        {
+          "command": "chmod u+x file.sh",
+          "description": "Ajoute l'exécution pour le propriétaire"
+        },
+        {
+          "command": "chmod {permissions} \"{path}\" -v",
+          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
+        },
+        {
+          "command": "chmod --help",
+          "description": "Affiche l'aide complète de la commande chmod. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
+        },
+        {
+          "command": "man chmod",
+          "description": "Affiche le manuel complet de chmod. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
+        },
+        {
+          "command": "chmod 755 \"{path}\"",
+          "description": "Exemple utilisant le paramètre 'permissions': Permissions en octal (ex: 755, 644) ou symbolique (ex: u+x). Remplacez <permissions> par la valeur appropriée selon votre environnement."
+        }
+      ],
+      "crossPlatformNotes": {
+        "differences": [
+          "Syntaxe: Windows utilise 'icacls', Linux utilise 'chmod'"
+        ],
+        "commonalities": [
+          "Les deux permettent de modifier les permissions de fichiers",
           "Fonctionnalité équivalente sur les deux plateformes"
         ]
       }
@@ -6157,275 +6170,6 @@
           "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item"
         }
       ]
-    },
-    {
-      "id": "file-move-windows",
-      "title": "Déplacer ou renommer des fichiers (Windows)",
-      "description": "Déplace ou renomme des fichiers et dossiers.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 0,
-      "level": 1,
-      "tags": [
-        "fichier",
-        "déplacer",
-        "renommer",
-        "move",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "file-move-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "file-move-windows-cmd",
-        "platform": 0,
-        "name": "Move-Item",
-        "commandPattern": "Move-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Force",
-        "parameters": [
-          {
-            "name": "sourcePath",
-            "label": "Chemin source",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier à déplacer"
-          },
-          {
-            "name": "destinationPath",
-            "label": "Chemin destination",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Nouveau chemin ou nom"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "Move-Item -Path \"C:\\Temp\\file.txt\" -Destination \"D:\\Archive\\file.txt\"",
-          "description": "Déplace un fichier vers un autre disque"
-        },
-        {
-          "command": "Move-Item -Path \"C:\\OldName\" -Destination \"C:\\NewName\"",
-          "description": "Renomme un dossier"
-        },
-        {
-          "command": "Move-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Force",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Move-Item -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
-        },
-        {
-          "command": "Move-Item -Path \"<sourcePath>\" -Destination \"{destinationPath}\" -Force",
-          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à déplacer. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "Move-Item -Path \"{sourcePath}\" -Destination \"<destinationPath>\" -Force",
-          "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "-Force écrase les fichiers existants sans demander confirmation.",
-      "links": [
-        {
-          "title": "Documentation Move-Item",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/move-item"
-        }
-      ]
-    },
-    {
-      "id": "file-delete-windows",
-      "title": "Supprimer des fichiers ou dossiers (Windows)",
-      "description": "Supprime des fichiers ou des répertoires de manière permanente.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 0,
-      "level": 2,
-      "tags": [
-        "fichier",
-        "supprimer",
-        "delete",
-        "remove",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "file-delete-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "file-delete-windows-cmd",
-        "platform": 0,
-        "name": "Remove-Item",
-        "commandPattern": "Remove-Item -Path \"{path}\" -Recurse -Force",
-        "parameters": [
-          {
-            "name": "path",
-            "label": "Chemin",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier à supprimer"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "Remove-Item -Path \"C:\\Temp\\*\" -Recurse -Force",
-          "description": "Supprime tout le contenu de C:\\Temp"
-        },
-        {
-          "command": "Remove-Item -Path \"C:\\file.txt\"",
-          "description": "Supprime un fichier spécifique"
-        },
-        {
-          "command": "Remove-Item -Path \"{path}\" -Recurse -Force -WhatIf",
-          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter."
-        },
-        {
-          "command": "Remove-Item -Path \"{path}\" -Recurse -Force -Confirm:$false",
-          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité."
-        },
-        {
-          "command": "Remove-Item -Path \"{path}\" -Recurse -Force -Verbose",
-          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes."
-        },
-        {
-          "command": "Remove-Item -Path \"<path>\" -Recurse -Force",
-          "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "ATTENTION: Suppression définitive, pas de corbeille. -Recurse supprime les sous-dossiers.",
-      "links": [
-        {
-          "title": "Documentation Remove-Item",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-item"
-        }
-      ]
-    },
-    {
-      "id": "file-create-directory-windows",
-      "title": "Créer un répertoire (Windows)",
-      "description": "Crée un nouveau dossier, y compris les dossiers parents si nécessaire.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "dossier",
-        "créer",
-        "mkdir",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "file-create-directory-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "file-create-directory-windows-cmd",
-        "platform": 0,
-        "name": "New-Item",
-        "commandPattern": "New-Item -Path \"{path}\" -ItemType Directory -Force",
-        "parameters": [
-          {
-            "name": "path",
-            "label": "Chemin du dossier",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du nouveau dossier à créer"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "New-Item -Path \"C:\\Projects\\MyApp\\src\" -ItemType Directory -Force",
-          "description": "Crée une arborescence de dossiers"
-        },
-        {
-          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -WhatIf",
-          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter."
-        },
-        {
-          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -Confirm:$false",
-          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité."
-        },
-        {
-          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -PassThru",
-          "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates."
-        },
-        {
-          "command": "New-Item -Path \"{path}\" -ItemType Directory -Force -Verbose",
-          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes."
-        },
-        {
-          "command": "New-Item -Path \"<path>\" -ItemType Directory -Force",
-          "description": "Exemple utilisant le paramètre 'path': Chemin du nouveau dossier à créer. Remplacez <path> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "-Force crée les dossiers parents si nécessaire.",
-      "links": []
-    },
-    {
-      "id": "file-permissions-windows",
-      "title": "Modifier les permissions de fichiers (Windows)",
-      "description": "Modifie les permissions NTFS d'un fichier ou dossier.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 0,
-      "level": 1,
-      "tags": [
-        "permissions",
-        "sécurité",
-        "icacls",
-        "acl",
-        "windows"
-      ],
-      "windowsCommandTemplateId": "file-permissions-windows-cmd",
-      "windowsCommandTemplate": {
-        "id": "file-permissions-windows-cmd",
-        "platform": 0,
-        "name": "icacls",
-        "commandPattern": "icacls \"{path}\" /grant {user}:{permissions}",
-        "parameters": [
-          {
-            "name": "path",
-            "label": "Chemin",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier"
-          },
-          {
-            "name": "user",
-            "label": "Utilisateur/Groupe",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Nom de l'utilisateur ou du groupe"
-          },
-          {
-            "name": "permissions",
-            "label": "Permissions",
-            "type": "string",
-            "defaultValue": "F",
-            "required": true,
-            "description": "F=Full, M=Modify, RX=ReadExecute, R=Read, W=Write"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "icacls \"C:\\Data\" /grant Users:M",
-          "description": "Donne les droits de modification aux Users"
-        },
-        {
-          "command": "icacls \"C:\\Data\" /grant Administrators:F /T",
-          "description": "Donne le contrôle total récursivement"
-        },
-        {
-          "command": "icacls \"{path}\" /grant {user}:{permissions}",
-          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help icacls -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés."
-        },
-        {
-          "command": "icacls \"<path>\" /grant {user}:{permissions}",
-          "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier. Remplacez <path> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "icacls \"{path}\" /grant <user>:{permissions}",
-          "description": "Exemple utilisant le paramètre 'user': Nom de l'utilisateur ou du groupe. Remplacez <user> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "icacls \"{path}\" /grant {user}:F",
-          "description": "Exemple utilisant le paramètre 'permissions': F=Full, M=Modify, RX=ReadExecute, R=Read, W=Write. Remplacez <permissions> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "/T pour récursif. Permissions: F (Full), M (Modify), RX (ReadExecute), R (Read), W (Write).",
-      "links": []
     },
     {
       "id": "search-find-files-windows",
@@ -21020,271 +20764,6 @@
           "url": "https://learn.microsoft.com/en-us/powershell/module/defender/"
         }
       ]
-    },
-    {
-      "id": "file-move-linux",
-      "title": "Déplacer ou renommer des fichiers (Linux)",
-      "description": "Déplace ou renomme des fichiers et dossiers.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 1,
-      "level": 1,
-      "tags": [
-        "fichier",
-        "déplacer",
-        "renommer",
-        "mv",
-        "linux"
-      ],
-      "linuxCommandTemplateId": "file-move-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "file-move-linux-cmd",
-        "platform": 1,
-        "name": "mv",
-        "commandPattern": "mv \"{sourcePath}\" \"{destinationPath}\"",
-        "parameters": [
-          {
-            "name": "sourcePath",
-            "label": "Chemin source",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier à déplacer"
-          },
-          {
-            "name": "destinationPath",
-            "label": "Chemin destination",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Nouveau chemin ou nom"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "mv /tmp/file.txt /archive/file.txt",
-          "description": "Déplace un fichier vers un autre dossier"
-        },
-        {
-          "command": "mv oldname.txt newname.txt",
-          "description": "Renomme un fichier"
-        },
-        {
-          "command": "mv \"{sourcePath}\" \"{destinationPath}\" -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "mv --help",
-          "description": "Affiche l'aide complète de la commande mv. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man mv",
-          "description": "Affiche le manuel complet de mv. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "mv \"<sourcePath>\" \"{destinationPath}\"",
-          "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à déplacer. Remplacez <sourcePath> par la valeur appropriée selon votre environnement."
-        },
-        {
-          "command": "mv \"{sourcePath}\" \"<destinationPath>\"",
-          "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "mv sert à la fois pour déplacer et renommer. Utiliser -i pour confirmation, -v pour verbeux.",
-      "links": []
-    },
-    {
-      "id": "file-delete-linux",
-      "title": "Supprimer des fichiers ou dossiers (Linux)",
-      "description": "Supprime des fichiers ou des répertoires de manière permanente.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 1,
-      "level": 2,
-      "tags": [
-        "fichier",
-        "supprimer",
-        "rm",
-        "linux"
-      ],
-      "linuxCommandTemplateId": "file-delete-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "file-delete-linux-cmd",
-        "platform": 1,
-        "name": "rm",
-        "commandPattern": "rm -rf \"{path}\"",
-        "parameters": [
-          {
-            "name": "path",
-            "label": "Chemin",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier à supprimer"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "rm -rf /tmp/oldfiles",
-          "description": "Supprime un dossier et son contenu"
-        },
-        {
-          "command": "rm file.txt",
-          "description": "Supprime un fichier"
-        },
-        {
-          "command": "rm -i *.log",
-          "description": "Supprime tous les .log avec confirmation"
-        },
-        {
-          "command": "rm -rf \"{path}\" -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "rm --help",
-          "description": "Affiche l'aide complète de la commande rm. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man rm",
-          "description": "Affiche le manuel complet de rm. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "rm -rf \"<path>\"",
-          "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "ATTENTION: rm -rf est dangereux! -r pour récursif, -f pour forcer, -i pour demander confirmation.",
-      "links": []
-    },
-    {
-      "id": "file-create-directory-linux",
-      "title": "Créer un répertoire (Linux)",
-      "description": "Crée un nouveau dossier, y compris les dossiers parents si nécessaire.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "dossier",
-        "créer",
-        "mkdir",
-        "linux"
-      ],
-      "linuxCommandTemplateId": "file-create-directory-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "file-create-directory-linux-cmd",
-        "platform": 1,
-        "name": "mkdir",
-        "commandPattern": "mkdir -p \"{path}\"",
-        "parameters": [
-          {
-            "name": "path",
-            "label": "Chemin du dossier",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du nouveau dossier à créer"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "mkdir -p /home/user/projects/myapp/src",
-          "description": "Crée une arborescence de dossiers"
-        },
-        {
-          "command": "mkdir -m 755 newfolder",
-          "description": "Crée un dossier avec permissions spécifiques"
-        },
-        {
-          "command": "mkdir -p \"{path}\" -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "mkdir --help",
-          "description": "Affiche l'aide complète de la commande mkdir. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man mkdir",
-          "description": "Affiche le manuel complet de mkdir. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "mkdir -p \"<path>\"",
-          "description": "Exemple utilisant le paramètre 'path': Chemin du nouveau dossier à créer. Remplacez <path> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "-p crée les dossiers parents si nécessaire. -m définit les permissions.",
-      "links": []
-    },
-    {
-      "id": "file-permissions-linux",
-      "title": "Modifier les permissions de fichiers (Linux)",
-      "description": "Modifie les permissions Unix d'un fichier ou dossier.",
-      "category": "📁 Gestion de Fichiers",
-      "platform": 1,
-      "level": 1,
-      "tags": [
-        "permissions",
-        "chmod",
-        "sécurité",
-        "linux"
-      ],
-      "linuxCommandTemplateId": "file-permissions-linux-cmd",
-      "linuxCommandTemplate": {
-        "id": "file-permissions-linux-cmd",
-        "platform": 1,
-        "name": "chmod",
-        "commandPattern": "chmod {permissions} \"{path}\"",
-        "parameters": [
-          {
-            "name": "permissions",
-            "label": "Permissions",
-            "type": "string",
-            "defaultValue": "755",
-            "required": true,
-            "description": "Permissions en octal (ex: 755, 644) ou symbolique (ex: u+x)"
-          },
-          {
-            "name": "path",
-            "label": "Chemin",
-            "type": "string",
-            "defaultValue": "",
-            "required": true,
-            "description": "Chemin du fichier ou dossier"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "chmod 755 script.sh",
-          "description": "Rend un script exécutable (rwxr-xr-x)"
-        },
-        {
-          "command": "chmod -R 644 /var/www/html",
-          "description": "Définit les permissions récursivement"
-        },
-        {
-          "command": "chmod u+x file.sh",
-          "description": "Ajoute l'exécution pour le propriétaire"
-        },
-        {
-          "command": "chmod {permissions} \"{path}\" -v",
-          "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement."
-        },
-        {
-          "command": "chmod --help",
-          "description": "Affiche l'aide complète de la commande chmod. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man chmod",
-          "description": "Affiche le manuel complet de chmod. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "chmod 755 \"{path}\"",
-          "description": "Exemple utilisant le paramètre 'permissions': Permissions en octal (ex: 755, 644) ou symbolique (ex: u+x). Remplacez <permissions> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "755=rwxr-xr-x, 644=rw-r--r--, 777=rwxrwxrwx. -R pour récursif. u=user, g=group, o=others, a=all.",
-      "links": []
     },
     {
       "id": "file-ownership-linux",
