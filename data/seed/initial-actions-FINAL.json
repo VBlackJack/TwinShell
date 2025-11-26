@@ -5094,85 +5094,6 @@
       "links": []
     },
     {
-      "id": "logs-eventlog-errors",
-      "title": "Afficher les erreurs récentes du journal d'événements",
-      "description": "Liste les erreurs récentes du journal d'événements Windows (System ou Application).",
-      "category": "📊 Monitoring & Logs",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "logs",
-        "eventlog",
-        "errors",
-        "diagnostic"
-      ],
-      "windowsCommandTemplateId": "logs-eventlog-errors-cmd",
-      "windowsCommandTemplate": {
-        "id": "logs-eventlog-errors-cmd",
-        "platform": 0,
-        "name": "Get-EventLog",
-        "commandPattern": "Get-EventLog -LogName {logName} -EntryType Error -Newest {count}",
-        "parameters": [
-          {
-            "name": "logName",
-            "label": "Journal",
-            "type": "string",
-            "defaultValue": "System",
-            "required": false,
-            "description": "Nom du journal (System, Application, Security)"
-          },
-          {
-            "name": "count",
-            "label": "Nombre d'entrées",
-            "type": "int",
-            "defaultValue": "50",
-            "required": false,
-            "description": "Nombre d'erreurs à afficher"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "Get-EventLog -LogName System -Newest 50",
-          "description": "Affiche les 50 événements les plus récents du journal Système. -LogName spécifie le journal (System/Application/Security). -Newest limite le nombre de résultats. Les journaux System contiennent les événements hardware, drivers, services Windows, démarrage/arrêt. Première commande à utiliser pour diagnostiquer les problèmes système."
-        },
-        {
-          "command": "Get-EventLog -LogName Application -EntryType Error -Newest 100",
-          "description": "Affiche les 100 dernières erreurs du journal Application. -EntryType filtre par niveau (Error/Warning/Information/SuccessAudit/FailureAudit). Le journal Application contient les événements des logiciels tiers et applications Microsoft. Essentiel pour le troubleshooting applicatif."
-        },
-        {
-          "command": "Get-EventLog -LogName System -After (Get-Date).AddHours(-24) -EntryType Error,Warning",
-          "description": "Affiche toutes les erreurs ET warnings système des dernières 24 heures. -After filtre par date de début. Get-Date).AddHours(-24) calcule l'heure d'il y a 24h. -EntryType accepte plusieurs valeurs. Idéal pour les revues quotidiennes et l'identification proactive de problèmes."
-        },
-        {
-          "command": "Get-EventLog -LogName System -Source 'Service Control Manager' -Newest 50",
-          "description": "Affiche les événements provenant d'une source spécifique (ici le gestionnaire de services). -Source filtre par composant émetteur. 'Service Control Manager' enregistre tous les démarrages/arrêts/échecs de services. Parfait pour diagnostiquer les problèmes de services Windows."
-        },
-        {
-          "command": "Get-EventLog -LogName Application -InstanceId 1000,1001 | Select-Object TimeGenerated,Source,Message",
-          "description": "Filtre les événements par ID spécifiques. -InstanceId (ou -EventID) cible des événements précis. Select-Object affiche les colonnes pertinentes. Utilisez cette méthode quand vous connaissez les IDs d'événements problématiques (ex: 1000 = crash application)."
-        },
-        {
-          "command": "Get-EventLog -LogName Security -InstanceId 4625 -Newest 20",
-          "description": "Affiche les 20 dernières tentatives de connexion échouées (Event ID 4625). Le journal Security enregistre tous les événements de sécurité (connexions, élévation de privilèges, accès aux objets). L'ID 4625 indique un échec d'authentification. Crucial pour détecter les tentatives d'intrusion ou les problèmes de mot de passe."
-        },
-        {
-          "command": "Get-EventLog -LogName System -After (Get-Date).AddDays(-7) | Where-Object {$_.EventID -eq 6008} | Format-Table TimeGenerated,Message -AutoSize",
-          "description": "Identifie tous les arrêts inattendus (crashs, coupures électriques) de la semaine. L'Event ID 6008 signale 'The previous system shutdown was unexpected'. Format-Table affiche l'heure et le message. Essentiel pour diagnostiquer les instabilités système et planifier les maintenances."
-        },
-        {
-          "command": "Get-EventLog -LogName Application -EntryType Error | Group-Object Source | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
-          "description": "Analyse statistique : identifie les 10 sources d'erreurs les plus fréquentes dans Application. Group-Object regroupe par source. Sort-Object trie par nombre d'occurrences. Excellent pour identifier les applications problématiques et prioriser les corrections."
-        },
-        {
-          "command": "Get-EventLog -LogName System -After (Get-Date).AddDays(-1) -EntryType Error | Export-Csv C:\\Temp\\SystemErrors.csv -NoTypeInformation",
-          "description": "Exporte toutes les erreurs système des dernières 24h vers CSV. Utile pour archivage, analyse dans Excel, partage avec le support technique ou création de rapports. Les exports réguliers permettent de suivre l'évolution des problèmes dans le temps."
-        }
-      ],
-      "notes": "Nécessite des droits administrateur. Peut être lent sur de gros journaux.",
-      "links": []
-    },
-    {
       "id": "logs-clear-eventlog",
       "title": "Vider un journal d'événements",
       "description": "Efface tous les événements d'un journal Windows spécifique.",
@@ -5268,90 +5189,6 @@
         }
       ],
       "notes": "Sur certaines distributions, le fichier peut être /var/log/messages. Utiliser Ctrl+C pour arrêter.",
-      "links": []
-    },
-    {
-      "id": "logs-journalctl-errors",
-      "title": "Afficher les erreurs journald (Linux)",
-      "description": "Liste les erreurs récentes du journal systemd journald.",
-      "category": "📊 Monitoring & Logs",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "logs",
-        "journald",
-        "systemd",
-        "errors",
-        "linux"
-      ],
-      "linuxCommandTemplateId": "logs-journalctl-errors-cmd",
-      "linuxCommandTemplate": {
-        "id": "logs-journalctl-errors-cmd",
-        "platform": 1,
-        "name": "journalctl",
-        "commandPattern": "journalctl -p {priority} -n {count}",
-        "parameters": [
-          {
-            "name": "priority",
-            "label": "Priorité",
-            "type": "string",
-            "defaultValue": "err",
-            "required": false,
-            "description": "Niveau de priorité (emerg, alert, crit, err, warning, notice, info, debug)"
-          },
-          {
-            "name": "count",
-            "label": "Nombre d'entrées",
-            "type": "int",
-            "defaultValue": "50",
-            "required": false,
-            "description": "Nombre d'entrées à afficher"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "journalctl -n 50",
-          "description": "Affiche les 50 derniers messages du journal systemd. Le flag -n (lines) limite l'output. journalctl est le système de logs central de systemd qui agrège tous les journaux (kernel, services, applications). Première commande pour diagnostiquer n'importe quel problème sous Linux moderne."
-        },
-        {
-          "command": "journalctl -f",
-          "description": "Mode suivi en temps réel (follow). Le flag -f affiche les nouveaux messages au fur et à mesure. Équivalent de 'tail -f' mais pour tous les logs systemd. Essentiel pour observer en direct l'activité système, surveiller un déploiement ou debugger un service problématique. Arrêtez avec Ctrl+C."
-        },
-        {
-          "command": "journalctl -p err",
-          "description": "Affiche uniquement les messages d'erreur. Le flag -p (priority) filtre par niveau de sévérité. Niveaux : emerg, alert, crit, err, warning, notice, info, debug. Utilisez -p err pour se concentrer sur les vrais problèmes sans le bruit des infos/warnings."
-        },
-        {
-          "command": "journalctl -u nginx.service",
-          "description": "Affiche tous les logs d'un service spécifique (ici nginx). Le flag -u (unit) filtre par unité systemd. Équivalent de consulter /var/log/nginx/* mais via journalctl. Toutes les sorties stdout/stderr du service sont capturées. Parfait pour le troubleshooting service par service."
-        },
-        {
-          "command": "journalctl --since \"2024-01-15 10:00:00\" --until \"2024-01-15 11:00:00\"",
-          "description": "Affiche les logs d'une plage horaire précise. Les flags --since et --until acceptent des dates absolues. Format : 'YYYY-MM-DD HH:MM:SS'. Indispensable pour investiguer un incident survenu à un moment précis. Vous pouvez aussi utiliser des dates relatives : --since \"1 hour ago\"."
-        },
-        {
-          "command": "journalctl --since today -p err",
-          "description": "Affiche toutes les erreurs depuis minuit (aujourd'hui). --since today est un raccourci pour depuis 00:00. Combiné avec -p err pour ne voir que les erreurs. Excellente commande pour la revue quotidienne des problèmes : à exécuter chaque matin pour identifier les incidents de la nuit."
-        },
-        {
-          "command": "journalctl -u ssh.service --since \"10 minutes ago\"",
-          "description": "Affiche les logs SSH des 10 dernières minutes. --since accepte des durées relatives (minutes, hours, days ago). Utile pour diagnostiquer un problème de connexion SSH juste après qu'il se soit produit. Adaptez le service et la durée selon vos besoins."
-        },
-        {
-          "command": "journalctl -k -n 100",
-          "description": "Affiche les 100 derniers messages du kernel. Le flag -k (kernel) filtre uniquement les messages noyau (équivalent de dmesg). Essentiel pour diagnostiquer les problèmes hardware, drivers, panics kernel, erreurs disque/réseau de bas niveau."
-        },
-        {
-          "command": "journalctl -b -1",
-          "description": "Affiche tous les logs du boot PRÉCÉDENT. Le flag -b (boot) filtre par session de démarrage. -b sans argument = boot actuel. -b -1 = boot précédent. -b -2 = avant-avant-dernier. Crucial pour diagnostiquer pourquoi un système a crashé ou n'a pas démarré correctement : après reboot, consultez les logs du boot raté."
-        },
-        {
-          "command": "journalctl --disk-usage",
-          "description": "Affiche l'espace disque utilisé par les journaux systemd. Les journaux peuvent occuper plusieurs Go sur des systèmes actifs. Utilisez cette commande pour surveiller l'espace et décider si un nettoyage est nécessaire (voir journalctl --vacuum-size ou --vacuum-time)."
-        }
-      ],
-      "notes": "journalctl nécessite généralement sudo. Utiliser -f pour suivre en temps réel.",
       "links": []
     },
     {
@@ -14204,62 +14041,6 @@
       ]
     },
     {
-      "id": "network-show-open-ports",
-      "title": "Afficher les ports ouverts et les connexions actives",
-      "description": "Liste tous les ports TCP/UDP en écoute et les connexions établies avec les processus associés",
-      "category": "🌐 Network & DNS",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "network",
-        "ports",
-        "connections",
-        "listening",
-        "diagnostic"
-      ],
-      "windowsCommandTemplateId": "network-show-open-ports-cmd",
-      "windowsCommandTemplate": {
-        "id": "network-show-open-ports-cmd",
-        "platform": 0,
-        "name": "Get-NetTCPConnection",
-        "commandPattern": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,@{Name='ProcessName';Expression={(Get-Process -Id $_.OwningProcess).ProcessName}},OwningProcess | Sort-Object LocalPort | Format-Table -AutoSize",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "Get-NetTCPConnection -State Listen | Sort-Object LocalPort",
-          "description": "Affiche tous les ports en écoute"
-        },
-        {
-          "command": "Get-NetTCPConnection -State Established | Format-Table",
-          "description": "Affiche toutes les connexions établies"
-        },
-        {
-          "command": "netstat -anob",
-          "description": "Alternative classique avec le nom des exécutables"
-        },
-        {
-          "command": "Get-NetTCPConnection -State Listen | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "Get-NetTCPConnection -State Listen | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "Get-NetTCPConnection -State Listen | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ],
-      "notes": "State = Listen (en écoute), Established (connecté), TimeWait (fermeture en cours). Nécessite droits administrateur pour voir les processus.",
-      "links": [
-        {
-          "title": "Get-NetTCPConnection Documentation",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-nettcpconnection"
-        }
-      ]
-    },
-    {
       "id": "performance-monitor-cpu",
       "title": "Surveiller l'utilisation CPU en temps réel",
       "description": "Collecte et affiche l'utilisation du processeur en temps réel avec plusieurs échantillons",
@@ -14331,57 +14112,6 @@
       "links": [
         {
           "title": "Get-Counter Documentation",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter"
-        }
-      ]
-    },
-    {
-      "id": "performance-monitor-memory",
-      "title": "Surveiller l'utilisation de la RAM",
-      "description": "Affiche les statistiques d'utilisation de la mémoire RAM avec mémoire disponible et utilisée",
-      "category": "⚡ Performance",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "performance",
-        "memory",
-        "ram",
-        "monitoring"
-      ],
-      "windowsCommandTemplateId": "performance-monitor-memory-cmd",
-      "windowsCommandTemplate": {
-        "id": "performance-monitor-memory-cmd",
-        "platform": 0,
-        "name": "Get-Counter",
-        "commandPattern": "$mem = Get-Counter '\\Memory\\Available MBytes'; $total = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB; $available = $mem.CounterSamples.CookedValue; $used = $total - $available; [PSCustomObject]@{Total_MB=[math]::Round($total,2);Used_MB=[math]::Round($used,2);Available_MB=[math]::Round($available,2);Used_Percent=[math]::Round(($used/$total)*100,2)} | Format-List",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "Get-Counter '\\Memory\\Available MBytes'",
-          "description": "Affiche la mémoire disponible en MB"
-        },
-        {
-          "command": "Get-Counter '\\Memory\\% Committed Bytes In Use'",
-          "description": "Affiche le pourcentage de mémoire engagée utilisée"
-        },
-        {
-          "command": "$mem = Get-Counter '\\Memory\\Available MBytes'; $total = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB; $available = $mem.CounterSamples.CookedValue; $used = $total - $available; [PSCustomObject]@{Total_MB=[math]::Round($total,2);Used_MB=[math]::Round($used,2);Available_MB=[math]::Round($available,2);Used_Percent=[math]::Round(($used/$total)*100,2)} | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "$mem = Get-Counter '\\Memory\\Available MBytes'; $total = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB; $available = $mem.CounterSamples.CookedValue; $used = $total - $available; [PSCustomObject]@{Total_MB=[math]::Round($total,2);Used_MB=[math]::Round($used,2);Available_MB=[math]::Round($available,2);Used_Percent=[math]::Round(($used/$total)*100,2)} | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "$mem = Get-Counter '\\Memory\\Available MBytes'; $total = (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1MB; $available = $mem.CounterSamples.CookedValue; $used = $total - $available; [PSCustomObject]@{Total_MB=[math]::Round($total,2);Used_MB=[math]::Round($used,2);Available_MB=[math]::Round($available,2);Used_Percent=[math]::Round(($used/$total)*100,2)} | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ],
-      "notes": "Disponible <10% = situation critique. Committed Bytes In Use >90% = risque de pagination excessive.",
-      "links": [
-        {
-          "title": "Memory Performance Counters",
           "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.diagnostics/get-counter"
         }
       ]
@@ -14588,57 +14318,6 @@
         {
           "title": "Process Memory Metrics",
           "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process"
-        }
-      ]
-    },
-    {
-      "id": "performance-check-disk-space",
-      "title": "Vérifier l'espace disque disponible",
-      "description": "Affiche l'espace libre et utilisé pour tous les lecteurs avec alertes pour espace faible",
-      "category": "⚡ Performance",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "performance",
-        "disk",
-        "space",
-        "storage"
-      ],
-      "windowsCommandTemplateId": "performance-check-disk-space-cmd",
-      "windowsCommandTemplate": {
-        "id": "performance-check-disk-space-cmd",
-        "platform": 0,
-        "name": "Get-Volume",
-        "commandPattern": "Get-Volume | Where-Object {$_.DriveLetter} | Select-Object DriveLetter,FileSystemLabel,@{Name='Size_GB';Expression={[math]::Round($_.Size/1GB,2)}},@{Name='Free_GB';Expression={[math]::Round($_.SizeRemaining/1GB,2)}},@{Name='Free_%';Expression={[math]::Round(($_.SizeRemaining/$_.Size)*100,2)}},@{Name='Status';Expression={if(($_.SizeRemaining/$_.Size)*100 -lt 10){'CRITICAL'}elseif(($_.SizeRemaining/$_.Size)*100 -lt 20){'WARNING'}else{'OK'}}} | Format-Table -AutoSize",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "Get-Volume | Where-Object {$_.DriveLetter} | Format-Table DriveLetter,FileSystemLabel,Size,SizeRemaining",
-          "description": "Affiche l'espace disque de tous les lecteurs"
-        },
-        {
-          "command": "Get-PSDrive -PSProvider FileSystem | Select-Object Name,@{n='Free(GB)';e={[math]::Round($_.Free/1GB,2)}}",
-          "description": "Alternative avec Get-PSDrive"
-        },
-        {
-          "command": "Get-Volume | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "Get-Volume | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "Get-Volume | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ],
-      "notes": "Status CRITICAL = <10% libre, WARNING = <20% libre, OK = >20% libre. Surveillez particulièrement le disque système (C:).",
-      "links": [
-        {
-          "title": "Get-Volume Documentation",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/storage/get-volume"
         }
       ]
     },
@@ -17534,128 +17213,6 @@
       ]
     },
     {
-      "id": "free-memory",
-      "title": "Afficher l'utilisation de la mémoire",
-      "description": "Affiche la mémoire RAM et swap utilisée, libre et disponible",
-      "category": "📊 Monitoring & Logs",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "free",
-        "memory",
-        "ram",
-        "swap",
-        "monitoring"
-      ],
-      "linuxCommandTemplateId": "free-cmd",
-      "linuxCommandTemplate": {
-        "id": "free-cmd",
-        "platform": 1,
-        "name": "free",
-        "commandPattern": "free -{unit}",
-        "parameters": [
-          {
-            "name": "unit",
-            "label": "Unité",
-            "type": "string",
-            "defaultValue": "h",
-            "required": true,
-            "description": "Unité d'affichage (h=human, m=MB, g=GB, k=KB)"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "free -h",
-          "description": "Affiche en format human-readable (GB/MB)"
-        },
-        {
-          "command": "free -m -s 5",
-          "description": "Rafraîchit toutes les 5 secondes en MB"
-        },
-        {
-          "command": "free --help",
-          "description": "Affiche l'aide complète de la commande free. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man free",
-          "description": "Affiche le manuel complet de free. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "free -h",
-          "description": "Exemple utilisant le paramètre 'unit': Unité d'affichage (h=human, m=MB, g=GB, k=KB). Remplacez <unit> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "Ne nécessite pas sudo. 'available' indique la mémoire réellement disponible.",
-      "links": [
-        {
-          "title": "free command",
-          "url": "https://man7.org/linux/man-pages/man1/free.1.html"
-        }
-      ]
-    },
-    {
-      "id": "df-disk-usage",
-      "title": "Afficher l'espace disque des partitions",
-      "description": "Liste l'utilisation de l'espace disque de tous les systèmes de fichiers montés",
-      "category": "📊 Monitoring & Logs",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "df",
-        "disk",
-        "storage",
-        "filesystem",
-        "space"
-      ],
-      "linuxCommandTemplateId": "df-cmd",
-      "linuxCommandTemplate": {
-        "id": "df-cmd",
-        "platform": 1,
-        "name": "df",
-        "commandPattern": "df -h {path}",
-        "parameters": [
-          {
-            "name": "path",
-            "label": "Chemin",
-            "type": "string",
-            "defaultValue": "",
-            "required": false,
-            "description": "Chemin spécifique à vérifier (vide = tous)"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "df -h",
-          "description": "Affiche l'espace disque en format lisible"
-        },
-        {
-          "command": "df -h /home",
-          "description": "Affiche uniquement la partition contenant /home"
-        },
-        {
-          "command": "df -i",
-          "description": "Affiche l'utilisation des inodes"
-        },
-        {
-          "command": "man df",
-          "description": "Affiche le manuel complet de df. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "df -h <path>",
-          "description": "Exemple utilisant le paramètre 'path': Chemin spécifique à vérifier (vide = tous). Remplacez <path> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "Ne nécessite pas sudo. -T affiche le type de filesystem. -i pour les inodes.",
-      "links": [
-        {
-          "title": "df command",
-          "url": "https://man7.org/linux/man-pages/man1/df.1.html"
-        }
-      ]
-    },
-    {
       "id": "du-directory-size",
       "title": "Calculer la taille d'un répertoire",
       "description": "Calcule l'espace disque utilisé par un répertoire et ses sous-répertoires",
@@ -18047,71 +17604,6 @@
         {
           "title": "vmstat command",
           "url": "https://man7.org/linux/man-pages/man8/vmstat.8.html"
-        }
-      ]
-    },
-    {
-      "id": "netstat-connections",
-      "title": "Afficher les connexions réseau",
-      "description": "Liste toutes les connexions réseau actives et les ports en écoute",
-      "category": "📊 Monitoring & Logs",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "netstat",
-        "network",
-        "connections",
-        "ports",
-        "tcp"
-      ],
-      "linuxCommandTemplateId": "netstat-cmd",
-      "linuxCommandTemplate": {
-        "id": "netstat-cmd",
-        "platform": 1,
-        "name": "netstat",
-        "commandPattern": "netstat -{options}",
-        "parameters": [
-          {
-            "name": "options",
-            "label": "Options",
-            "type": "string",
-            "defaultValue": "tulpn",
-            "required": true,
-            "description": "Options (t=TCP, u=UDP, l=listening, p=program, n=numeric)"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "command": "netstat -tulpn",
-          "description": "Tous les ports TCP/UDP en écoute avec PID"
-        },
-        {
-          "command": "netstat -an | grep ESTABLISHED",
-          "description": "Connexions établies"
-        },
-        {
-          "command": "ss -tulpn",
-          "description": "Alternative moderne (ss remplace netstat)"
-        },
-        {
-          "command": "netstat --help",
-          "description": "Affiche l'aide complète de la commande netstat. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man netstat",
-          "description": "Affiche le manuel complet de netstat. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        },
-        {
-          "command": "netstat -tulpn",
-          "description": "Exemple utilisant le paramètre 'options': Options (t=TCP, u=UDP, l=listening, p=program, n=numeric). Remplacez <options> par la valeur appropriée selon votre environnement."
-        }
-      ],
-      "notes": "Nécessite sudo pour voir les PID. ss est recommandé sur les systèmes modernes.",
-      "links": [
-        {
-          "title": "netstat documentation",
-          "url": "https://man7.org/linux/man-pages/man8/netstat.8.html"
         }
       ]
     },
@@ -32718,6 +32210,200 @@
         {
           "command": "ip route show",
           "description": "Affiche la table de routage sur Linux"
+        }
+      ]
+    },
+    {
+      "id": "unified-network-connections",
+      "title": "Afficher les connexions réseau actives",
+      "description": "Affiche les ports ouverts et les connexions réseau actives",
+      "category": "🌐 Network & DNS",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "network",
+        "connections",
+        "ports",
+        "tcp",
+        "netstat",
+        "diagnostic"
+      ],
+      "windowsCommandTemplateId": "unified-network-connections-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "unified-network-connections-win-cmd",
+        "platform": 0,
+        "commandPattern": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,@{Name='ProcessName';Expression={(Get-Process -Id $_.OwningProcess).ProcessName}},OwningProcess | Sort-Object LocalPort | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "unified-network-connections-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "unified-network-connections-linux-cmd",
+        "platform": 1,
+        "commandPattern": "netstat -tulpn",
+        "parameters": []
+      },
+      "parameters": [],
+      "examples": [
+        {
+          "command": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,ProcessName | Format-Table",
+          "description": "Liste les ports en écoute sur Windows"
+        },
+        {
+          "command": "netstat -tulpn",
+          "description": "Liste les ports TCP/UDP en écoute sur Linux"
+        }
+      ]
+    },
+    {
+      "id": "unified-logs-errors",
+      "title": "Afficher les erreurs système récentes",
+      "description": "Affiche les erreurs récentes du journal système",
+      "category": "📊 Monitoring & Logs",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "logs",
+        "errors",
+        "eventlog",
+        "journalctl",
+        "diagnostic",
+        "system"
+      ],
+      "windowsCommandTemplateId": "unified-logs-errors-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "unified-logs-errors-win-cmd",
+        "platform": 0,
+        "commandPattern": "Get-EventLog -LogName {logName} -EntryType Error -Newest {count}",
+        "parameters": [
+          {
+            "name": "logName",
+            "label": "Nom du journal",
+            "type": "string",
+            "required": true,
+            "defaultValue": "System"
+          },
+          {
+            "name": "count",
+            "label": "Nombre d'entrées",
+            "type": "integer",
+            "required": true,
+            "defaultValue": "20"
+          }
+        ]
+      },
+      "linuxCommandTemplateId": "unified-logs-errors-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "unified-logs-errors-linux-cmd",
+        "platform": 1,
+        "commandPattern": "journalctl -p {priority} -n {count}",
+        "parameters": [
+          {
+            "name": "priority",
+            "label": "Priorité (0-7)",
+            "type": "string",
+            "required": true,
+            "defaultValue": "err"
+          },
+          {
+            "name": "count",
+            "label": "Nombre d'entrées",
+            "type": "integer",
+            "required": true,
+            "defaultValue": "20"
+          }
+        ]
+      },
+      "parameters": [],
+      "examples": [
+        {
+          "command": "Get-EventLog -LogName System -EntryType Error -Newest 20",
+          "description": "Affiche les 20 dernières erreurs système sur Windows"
+        },
+        {
+          "command": "journalctl -p err -n 20",
+          "description": "Affiche les 20 dernières erreurs sur Linux"
+        }
+      ]
+    },
+    {
+      "id": "unified-disk-space",
+      "title": "Afficher l'espace disque disponible",
+      "description": "Affiche l'espace disque utilisé et disponible sur les partitions",
+      "category": "💾 Disk & Storage",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "disk",
+        "space",
+        "storage",
+        "partition",
+        "free",
+        "usage"
+      ],
+      "windowsCommandTemplateId": "unified-disk-space-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "unified-disk-space-win-cmd",
+        "platform": 0,
+        "commandPattern": "Get-Volume | Where-Object {$_.DriveLetter} | Select-Object DriveLetter,FileSystemLabel,@{Name='Size_GB';Expression={[math]::Round($_.Size/1GB,2)}},@{Name='Free_GB';Expression={[math]::Round($_.SizeRemaining/1GB,2)}},@{Name='Free_%';Expression={[math]::Round(($_.SizeRemaining/$_.Size)*100,2)}} | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "unified-disk-space-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "unified-disk-space-linux-cmd",
+        "platform": 1,
+        "commandPattern": "df -h",
+        "parameters": []
+      },
+      "parameters": [],
+      "examples": [
+        {
+          "command": "Get-Volume | Select-Object DriveLetter,Size_GB,Free_GB | Format-Table",
+          "description": "Affiche l'espace disque sur Windows"
+        },
+        {
+          "command": "df -h",
+          "description": "Affiche l'espace disque sur Linux"
+        }
+      ]
+    },
+    {
+      "id": "unified-memory-usage",
+      "title": "Afficher l'utilisation de la mémoire",
+      "description": "Affiche l'utilisation de la mémoire RAM du système",
+      "category": "📊 Monitoring & Logs",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "memory",
+        "ram",
+        "usage",
+        "free",
+        "monitoring",
+        "performance"
+      ],
+      "windowsCommandTemplateId": "unified-memory-usage-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "unified-memory-usage-win-cmd",
+        "platform": 0,
+        "commandPattern": "$mem = Get-CimInstance Win32_OperatingSystem; [PSCustomObject]@{Total_GB=[math]::Round($mem.TotalVisibleMemorySize/1MB,2);Free_GB=[math]::Round($mem.FreePhysicalMemory/1MB,2);Used_GB=[math]::Round(($mem.TotalVisibleMemorySize-$mem.FreePhysicalMemory)/1MB,2);Used_Percent=[math]::Round((($mem.TotalVisibleMemorySize-$mem.FreePhysicalMemory)/$mem.TotalVisibleMemorySize)*100,2)} | Format-List",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "unified-memory-usage-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "unified-memory-usage-linux-cmd",
+        "platform": 1,
+        "commandPattern": "free -h",
+        "parameters": []
+      },
+      "parameters": [],
+      "examples": [
+        {
+          "command": "Get-CimInstance Win32_OperatingSystem | Select-Object TotalVisibleMemorySize,FreePhysicalMemory",
+          "description": "Affiche l'utilisation mémoire sur Windows"
+        },
+        {
+          "command": "free -h",
+          "description": "Affiche l'utilisation mémoire sur Linux"
         }
       ]
     }
