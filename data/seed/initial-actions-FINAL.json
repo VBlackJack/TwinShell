@@ -14563,57 +14563,6 @@
       ]
     },
     {
-      "id": "security-list-firewall-rules",
-      "title": "Lister toutes les règles de pare-feu actives",
-      "description": "Affiche toutes les règles de pare-feu Windows actives avec leurs propriétés",
-      "category": "🔐 Security",
-      "platform": 0,
-      "level": 0,
-      "tags": [
-        "security",
-        "firewall",
-        "rules",
-        "audit"
-      ],
-      "windowsCommandTemplateId": "security-list-firewall-rules-cmd",
-      "windowsCommandTemplate": {
-        "id": "security-list-firewall-rules-cmd",
-        "platform": 0,
-        "name": "Get-NetFirewallRule",
-        "commandPattern": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Select-Object DisplayName,Direction,Action,Enabled,Profile | Format-Table -AutoSize",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "Get-NetFirewallRule -Direction Inbound -Enabled True | Format-Table",
-          "description": "Liste les règles entrantes actives"
-        },
-        {
-          "command": "Get-NetFirewallRule | Where-Object {$_.DisplayName -like '*RDP*'}",
-          "description": "Recherche les règles contenant 'RDP'"
-        },
-        {
-          "command": "Get-NetFirewallRule | Select-Object * -First 1",
-          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer."
-        },
-        {
-          "command": "Get-NetFirewallRule | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
-          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe."
-        },
-        {
-          "command": "Get-NetFirewallRule | Measure-Object",
-          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats."
-        }
-      ],
-      "notes": "Direction: Inbound (entrant) ou Outbound (sortant). Action: Allow ou Block. Profile: Domain, Private, Public. Enabled=True signifie active.",
-      "links": [
-        {
-          "title": "Get-NetFirewallRule Documentation",
-          "url": "https://learn.microsoft.com/en-us/powershell/module/netsecurity/get-netfirewallrule"
-        }
-      ]
-    },
-    {
       "id": "security-enable-rdp-firewall",
       "title": "Activer la règle pare-feu pour RDP",
       "description": "Active la règle de pare-feu Windows permettant les connexions Bureau à distance (RDP)",
@@ -18347,58 +18296,6 @@
         {
           "title": "curl documentation",
           "url": "https://curl.se/docs/manpage.html"
-        }
-      ]
-    },
-    {
-      "id": "iptables-list-rules",
-      "title": "Lister les règles de firewall iptables",
-      "description": "Affiche toutes les règles iptables configurées",
-      "category": "🌐 Network & DNS",
-      "platform": 1,
-      "level": 0,
-      "tags": [
-        "iptables",
-        "firewall",
-        "security",
-        "rules",
-        "filter"
-      ],
-      "linuxCommandTemplateId": "iptables-list-cmd",
-      "linuxCommandTemplate": {
-        "id": "iptables-list-cmd",
-        "platform": 1,
-        "name": "iptables",
-        "commandPattern": "iptables -L -n -v --line-numbers",
-        "parameters": []
-      },
-      "examples": [
-        {
-          "command": "sudo iptables -L -n -v",
-          "description": "Liste toutes les règles avec détails"
-        },
-        {
-          "command": "sudo iptables -L INPUT -n",
-          "description": "Liste uniquement les règles INPUT"
-        },
-        {
-          "command": "sudo iptables-save",
-          "description": "Exporte toutes les règles"
-        },
-        {
-          "command": "iptables --help",
-          "description": "Affiche l'aide complète de la commande iptables. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil."
-        },
-        {
-          "command": "man iptables",
-          "description": "Affiche le manuel complet de iptables. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'."
-        }
-      ],
-      "notes": "Nécessite sudo. Sur systèmes modernes, préférer ufw ou firewalld (plus simples).",
-      "links": [
-        {
-          "title": "iptables guide",
-          "url": "https://www.netfilter.org/documentation/HOWTO/packet-filtering-HOWTO.html"
         }
       ]
     },
@@ -32404,6 +32301,47 @@
         {
           "command": "free -h",
           "description": "Affiche l'utilisation mémoire sur Linux"
+        }
+      ]
+    },
+    {
+      "id": "unified-firewall-rules",
+      "title": "Lister les règles de pare-feu actives",
+      "description": "Affiche toutes les règles de pare-feu actives sur le système",
+      "category": "🔐 Security & Firewall",
+      "platform": 2,
+      "level": 0,
+      "tags": [
+        "firewall",
+        "security",
+        "rules",
+        "network",
+        "iptables",
+        "netfirewall"
+      ],
+      "windowsCommandTemplateId": "unified-firewall-rules-win-cmd",
+      "windowsCommandTemplate": {
+        "id": "unified-firewall-rules-win-cmd",
+        "platform": 0,
+        "commandPattern": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Select-Object DisplayName,Direction,Action,Profile | Sort-Object Direction,DisplayName | Format-Table -AutoSize",
+        "parameters": []
+      },
+      "linuxCommandTemplateId": "unified-firewall-rules-linux-cmd",
+      "linuxCommandTemplate": {
+        "id": "unified-firewall-rules-linux-cmd",
+        "platform": 1,
+        "commandPattern": "iptables -L -n -v --line-numbers",
+        "parameters": []
+      },
+      "parameters": [],
+      "examples": [
+        {
+          "command": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Format-Table",
+          "description": "Liste les règles de pare-feu actives sur Windows"
+        },
+        {
+          "command": "iptables -L -n -v --line-numbers",
+          "description": "Liste les règles iptables sur Linux"
         }
       ]
     }
