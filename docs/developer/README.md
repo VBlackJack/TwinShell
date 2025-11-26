@@ -135,12 +135,8 @@ TwinShell/
 
 ### Optimisations (Janvier 2025)
 
-- **[PERFORMANCE_ANALYSIS_INDEX.md](PERFORMANCE_ANALYSIS_INDEX.md)** - Index des analyses de performance
-- **[PERFORMANCE_ANALYSIS_SUMMARY.md](PERFORMANCE_ANALYSIS_SUMMARY.md)** - Résumé des analyses
 - **[PERFORMANCE_QUICK_START.md](PERFORMANCE_QUICK_START.md)** - Guide de démarrage rapide
-- **[PERFORMANCE_PHASE4_COMPLETE.md](PERFORMANCE_PHASE4_COMPLETE.md)** - Phase 4 complète
-- **[performance_analysis.md](performance_analysis.md)** - Analyse de performance détaillée
-- **[performance_detailed_metrics.md](performance_detailed_metrics.md)** - Métriques détaillées
+- **[SPRINT-8-PERFORMANCE-GUIDE.md](SPRINT-8-PERFORMANCE-GUIDE.md)** - Guide de performance détaillé
 
 ### Optimisations Windows
 
