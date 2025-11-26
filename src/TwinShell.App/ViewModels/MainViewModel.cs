@@ -275,15 +275,19 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 ShowSearchMetrics = true;
 
                 // Save to search history (async, don't await to avoid blocking UI)
+                // BUGFIX: Capture search text to avoid closure issues with property changes
+                var searchTextCopy = SearchText;
+                var resultCount = results.Count;
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        await _searchHistoryService.AddSearchAsync(SearchText, results.Count);
+                        await _searchHistoryService.AddSearchAsync(searchTextCopy, resultCount);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // Silently ignore search history errors to not disrupt user experience
+                        // Log error but don't disrupt user experience
+                        System.Diagnostics.Debug.WriteLine($"Search history save failed: {ex.Message}");
                     }
                 });
 
