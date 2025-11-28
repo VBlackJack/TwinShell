@@ -1,0 +1,150 @@
+site_name: ShellBook
+site_description: Base de connaissances SysOps/DevOps - Docs-as-Code
+site_author: ShellBook Team
+site_url: https://shellbook.local
+
+repo_name: TwinShell/ShellBook
+repo_url: https://github.com/TwinShell/ShellBook
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search:
+      lang: fr
+  - tags
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - def_list
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/TwinShell/ShellBook
+  generator: false
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Accueil: index.md
+
+  - Formations:
+      - "Niveau 0 - Accès & PADSEC":
+          - "Architecture PADSEC (NTLite)": formations/ntlite/index.md
+          - "Topologie VPN IPsec (Backbone)": network/vpn-topology.md
+          - "Active Directory (Red Forest)": formations/windows/active-directory.md
+          - "Hardening AD":
+              - "Vue d'ensemble": formations/ad-hardening/index.md
+              - "Modèle de Tiering": formations/ad-hardening/01-tiering-model.md
+              - "Vecteurs d'attaque": formations/ad-hardening/02-attack-vectors.md
+              - "Audit et PSO": formations/ad-hardening/03-audit-and-pso.md
+
+      - "Niveau 1 - Sécurité & PKI":
+          - "Infrastructure PKI":
+              - "Vue d'ensemble": formations/pki-security/index.md
+              - "Concepts PKI": formations/pki-security/01-concepts.md
+              - "Lab OpenSSL": formations/pki-security/02-openssl-lab.md
+              - "Debugging TLS": formations/pki-security/03-debugging.md
+              - "Automatisation": formations/pki-security/04-automation.md
+          - "Gestion des Certificats": security/certificates.md
+
+      - "Niveau 2 - Plateformes":
+          - "Linux Performance":
+              - "Vue d'ensemble": formations/linux-perf/index.md
+              - "CPU & Load Average": formations/linux-perf/01-cpu-load.md
+              - "Mémoire & Swap": formations/linux-perf/02-memory-swap.md
+              - "Disques & I/O": formations/linux-perf/03-disk-io.md
+              - "Réseau & Latence": formations/linux-perf/04-network-latency.md
+          - "Services Edge (Proxy & WC3S)": formations/linux/edge-services.md
+          - "PowerShell Avancé":
+              - "Vue d'ensemble": formations/powershell-advanced/index.md
+              - "Fonctions Avancées": formations/powershell-advanced/01-advanced-functions.md
+              - "Gestion d'Erreurs": formations/powershell-advanced/02-error-handling.md
+              - "Design de Modules": formations/powershell-advanced/03-module-design.md
+
+      - "Niveau 3 - Cloud & DevOps":
+          - "GCP & GKE":
+              - "Vue d'ensemble": formations/gcp-gke/index.md
+              - "Architecture GKE": formations/gcp-gke/01-architecture.md
+              - "Sécurité & IAM": formations/gcp-gke/02-security-iam.md
+              - "Storage & Networking": formations/gcp-gke/03-storage-networking.md
+          - "Terraform Industrialisation":
+              - "Vue d'ensemble": formations/terraform-ops/index.md
+              - "State Management": formations/terraform-ops/01-state-management.md
+              - "Structure des Modules": formations/terraform-ops/02-modules-structure.md
+              - "Secrets & Variables": formations/terraform-ops/03-secrets-and-vars.md
+          - "GitOps & ArgoCD":
+              - "Vue d'ensemble": formations/gitops-argocd/index.md
+              - "Architecture ArgoCD": formations/gitops-argocd/01-architecture.md
+              - "App of Apps Pattern": formations/gitops-argocd/02-app-of-apps.md
+              - "Stratégies de Sync": formations/gitops-argocd/03-sync-strategies.md
+
+  - Documentation:
+      - "Guide utilisateur": UserGuide.md
+      - "Démarrage rapide": QuickStart.md
+      - "FAQ": FAQ.md
+
+  - Développeur:
+      - "README": developer/README.md
+      - "Architecture": developer/ARCHITECTURE_DECISIONS.md
+      - "Sécurité": developer/SECURITY.md
+      - "Dette technique": developer/TECHNICAL_DEBT.md
