@@ -1122,10 +1122,10 @@ Exportez d'abord votre configuration pour sauvegarder vos favoris.
 
 ### Documentation
 
-- 🚀 [Guide de Démarrage Rapide](QuickStart.md)
-- ❓ [FAQ - Questions Fréquentes](FAQ.md)
-- 🏠 [README Principal](../README.md)
-- 🔧 [Documentation Développeur](developer/)
+- [Guide de Demarrage Rapide](QuickStart.md)
+- [FAQ - Questions Frequentes](FAQ.md)
+- [GitHub TwinShell](https://github.com/VBlackJack/TwinShell)
+- [Documentation Developpeur](developer/README.md)
 
 ### Support
 
@@ -1135,7 +1135,7 @@ Exportez d'abord votre configuration pour sauvegarder vos favoris.
 ### Communauté
 
 - ⭐ [Star sur GitHub](https://github.com/VBlackJack/TwinShell)
-- 🤝 [Contribuer au Projet](developer/CONTRIBUTING.md)
+- [Contribuer au Projet](developer/CONTRIBUTING.md)
 
 ---
 

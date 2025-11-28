@@ -143,8 +143,29 @@ nav:
       - "Démarrage rapide": QuickStart.md
       - "FAQ": FAQ.md
 
-  - Développeur:
+  - Developpeur:
       - "README": developer/README.md
+      - "Contribuer": developer/CONTRIBUTING.md
       - "Architecture": developer/ARCHITECTURE_DECISIONS.md
-      - "Sécurité": developer/SECURITY.md
+      - "Securite": developer/SECURITY.md
       - "Dette technique": developer/TECHNICAL_DEBT.md
+      - "Guides Techniques":
+          - "Recherche": developer/SEARCH_FUNCTIONALITY.md
+          - "Performance": developer/PERFORMANCE_QUICK_START.md
+          - "Code Style": developer/CODE_STYLE_ANALYSIS.md
+          - "Refactorings": developer/RECOMMENDED_REFACTORINGS.md
+      - "Rapports":
+          - "Sprint 3": developer/SPRINT3_USER_GUIDE.md
+          - "Sprint 8 Performance": developer/SPRINT-8-PERFORMANCE-GUIDE.md
+          - "Sprint 9 Final": developer/SPRINT-9-FINAL-REPORT.md
+          - "Code Issues": developer/CODE_ISSUES_SUMMARY.md
+          - "Securite Fixes": developer/SECURITY_FIXES.md
+          - "Securite Exec Summary": developer/SECURITY_EXECUTIVE_SUMMARY.md
+          - "Vulnerabilites Map": developer/SECURITY_VULNERABILITIES_MAP.md
+      - "Migration":
+          - "Notes Migration": developer/MIGRATION_NOTES.md
+          - "S2 Migration Guide": developer/S2-MIGRATION-GUIDE.md
+          - "Cross-Platform": developer/CROSS-PLATFORM-STRATEGY.md
+      - "Windows":
+          - "Optimisation Windows": developer/OPTIMISATION-WINDOWS.md
+          - "Package Managers": developer/PACKAGE-MANAGERS.md

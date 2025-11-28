@@ -122,9 +122,9 @@ La recherche TwinShell est **très tolérante** :
 
 ### Documentation Complète
 
-- 📖 [Guide Utilisateur Complet](UserGuide.md)
-- ❓ [FAQ - Questions Fréquentes](FAQ.md)
-- 🏠 [Retour au README](../README.md)
+- [Guide Utilisateur Complet](UserGuide.md)
+- [FAQ - Questions Frequentes](FAQ.md)
+- [GitHub TwinShell](https://github.com/VBlackJack/TwinShell)
 
 ---
 
@@ -166,4 +166,4 @@ Vous avez maintenant les bases pour utiliser TwinShell efficacement.
 
 ---
 
-[⬅️ Retour au README](../README.md) | [📖 Guide Utilisateur Complet](UserGuide.md) | [❓ FAQ](FAQ.md)
+[GitHub TwinShell](https://github.com/VBlackJack/TwinShell) | [Guide Utilisateur Complet](UserGuide.md) | [FAQ](FAQ.md)

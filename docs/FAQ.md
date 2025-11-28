@@ -778,9 +778,9 @@ Settings → **Language** → Français | English
 
 ### Documentation
 
-- 🚀 [Guide de Démarrage Rapide](QuickStart.md)
-- 📘 [Guide Utilisateur Complet](UserGuide.md)
-- 🏠 [README Principal](../README.md)
+- [Guide de Demarrage Rapide](QuickStart.md)
+- [Guide Utilisateur Complet](UserGuide.md)
+- [GitHub TwinShell](https://github.com/VBlackJack/TwinShell)
 
 ### Support
 
