@@ -2,7 +2,7 @@
 ; Requires Inno Setup 6.0 or later: https://jrsoftware.org/isinfo.php
 
 #define MyAppName "TwinShell"
-#define MyAppVersion "1.3.1"
+#define MyAppVersion "1.4.0"
 #define MyAppPublisher "TwinShell"
 #define MyAppURL "https://github.com/VBlackJack/TwinShell"
 #define MyAppExeName "TwinShell.App.exe"
@@ -88,7 +88,7 @@ begin
   WelcomeLabel.Parent := WizardForm.WelcomePage;
   WelcomeLabel.Caption :=
     'This will install TwinShell v{#MyAppVersion} on your computer.' + #13#10 + #13#10 +
-    'TwinShell is a comprehensive PowerShell command library with 500+ commands ' +
+    'TwinShell is a comprehensive PowerShell command library with 479 commands ' +
     'for Windows system administration, including:' + #13#10 +
     '  • Active Directory management' + #13#10 +
     '  • BitLocker & encryption' + #13#10 +

@@ -1,4 +1,33 @@
-# TwinShell v1.2.0 - Release Notes
+# TwinShell v1.4.0 - Release Notes
+
+## What's New in v1.4.0
+
+### Commands Database Audit & Cleanup
+- **479 commands** (optimized from 488 - removed duplicates and merged similar actions)
+- **13 categories** (streamlined from 15 - removed redundant categories)
+- **100% quality score** - all commands have examples, templates, and descriptions
+- **Fixed platform consistency** - examples now correctly match their action's platform
+- **Renamed categories** for clarity:
+  - "Windows Optimization" → "Windows Debloat"
+  - Removed "Linux Administration" (redistributed to thematic categories)
+  - Removed "User Management" (merged into Security & Encryption)
+
+### Category Improvements
+- Commands are now organized by function, not by OS
+- Linux commands for permissions/ACL moved to "Security & Encryption"
+- Disk/partition commands moved to "Files & Storage"
+- Process management moved to "Performance"
+
+---
+
+## What's New in v1.3.0
+
+### Git Synchronization
+- Full GitOps support for team collaboration
+- HTTPS authentication with tokens
+- Auto-sync on startup option
+
+---
 
 ## What's New in v1.2.0
 
@@ -52,11 +81,11 @@
 
 ## Core Features
 
-TwinShell is a comprehensive PowerShell and Bash command library for system administrators, featuring over 490 ready-to-use commands.
+TwinShell is a comprehensive PowerShell and Bash command library for system administrators, featuring 479 ready-to-use commands.
 
 ### Key Features
 
-- **497 commands** organized in categorized collections
+- **479 commands** organized in 13 categorized collections
 - **Search and filtering** capabilities for quick command discovery
 - **Command history** with export functionality
 - **Favorites system** to bookmark frequently used commands
@@ -160,11 +189,21 @@ Developed with:
 
 ## Version History
 
+### v1.4.0 (2025-12-05)
+- Commands database audit and cleanup (479 commands, 13 categories)
+- 100% quality score - all commands validated
+- Merged duplicates and fixed platform inconsistencies
+- Reorganized categories by function
+
+### v1.3.0 (2025-12-01)
+- Git synchronization (GitOps)
+- Team collaboration features
+- Security audit fixes
+
 ### v1.2.0 (2025-11-26)
 - Editable multiline TextBox for complex scripts
 - Dynamic command generator adapts to selected examples
 - Improved script detection (ForEach-Object, ranges, pipelines)
-- check_examples.py analysis tool
 
 ### v1.1.0 (2025-11-26)
 - 15 unified cross-platform actions

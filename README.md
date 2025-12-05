@@ -2,7 +2,7 @@
 
 **Votre gestionnaire de commandes PowerShell et Bash pour l'administration système**
 
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![Version](https://img.shields.io/badge/version-1.4.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)
@@ -24,7 +24,7 @@
 
 En tant qu'administrateur système, vous jonglez constamment entre PowerShell et Bash, vous cherchez dans vos notes dispersées, et vous perdez du temps à retrouver la syntaxe exacte de commandes que vous utilisez rarement mais qui sont critiques.
 
-**TwinShell centralise tout cela** : une bibliothèque de **500+ commandes PowerShell et Bash** prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
+**TwinShell centralise tout cela** : une bibliothèque de **479 commandes PowerShell et Bash** prêtes à l'emploi, une recherche intelligente, des favoris, un historique, et une interface moderne avec thème sombre.
 
 ---
 
@@ -38,7 +38,7 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 - **Suggestions intelligentes** : l'historique de recherche propose des suggestions d'autocomplétion
 
 ### 📂 Organisation Puissante
-- **Catégories prédéfinies** : Active Directory & GPO, Network & DNS, Monitoring & Logs, Windows Optimization, etc.
+- **Catégories prédéfinies** : Active Directory & GPO, Network & DNS, Monitoring & Logs, Windows Debloat, Security & Encryption, etc.
 - **Catégories personnalisées** : Créez vos propres catégories avec icônes et couleurs
 - **Catégorie "📋 All Commands"** : Vue d'ensemble de toutes les commandes disponibles
 - **Filtres avancés** : Par plateforme (Windows/Linux), niveau de risque, catégorie
@@ -103,7 +103,7 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 
 3. **Premier lancement**
    - L'application crée automatiquement sa base de données SQLite
-   - 500+ commandes PowerShell et Bash sont chargées automatiquement au démarrage
+   - 479 commandes PowerShell et Bash sont chargées automatiquement au démarrage
    - Vous êtes prêt à utiliser TwinShell !
 
 ### Installation depuis le Code Source
