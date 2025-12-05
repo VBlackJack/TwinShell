@@ -530,6 +530,7 @@ public class SecurityTests
         public Task<IEnumerable<string>> GetAllCategoriesAsync() => Task.FromResult(Enumerable.Empty<string>());
         public Task<int> CountAsync() => Task.FromResult(0);
         public Task<bool> ExistsAsync(string id) => Task.FromResult(false);
+        public Task<int> UpdateCategoryForActionsAsync(string oldCategory, string? newCategory) => Task.FromResult(0);
     }
 
     #endregion

@@ -17,4 +17,12 @@ public interface IActionRepository
     Task DeleteAsync(string id);
     Task<bool> ExistsAsync(string id);
     Task<int> CountAsync();
+
+    /// <summary>
+    /// Batch update category for all actions in a category (prevents N+1 queries)
+    /// </summary>
+    /// <param name="oldCategory">Current category name</param>
+    /// <param name="newCategory">New category name (null or empty to clear)</param>
+    /// <returns>Number of actions updated</returns>
+    Task<int> UpdateCategoryForActionsAsync(string oldCategory, string? newCategory);
 }

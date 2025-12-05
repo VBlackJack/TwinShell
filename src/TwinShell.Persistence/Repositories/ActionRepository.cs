@@ -181,4 +181,25 @@ public class ActionRepository : IActionRepository
     {
         return await _context.Actions.CountAsync();
     }
+
+    /// <summary>
+    /// PERFORMANCE: Batch update category for all actions in a category using single SQL UPDATE
+    /// This prevents N+1 queries when renaming or deleting categories
+    /// </summary>
+    public async Task<int> UpdateCategoryForActionsAsync(string oldCategory, string? newCategory)
+    {
+        if (string.IsNullOrWhiteSpace(oldCategory))
+            return 0;
+
+        var targetCategory = newCategory ?? string.Empty;
+        var now = DateTime.UtcNow;
+
+        // Use EF Core's ExecuteUpdateAsync for a single SQL UPDATE statement
+        // This is much more efficient than loading all entities and updating them individually
+        return await _context.Actions
+            .Where(a => a.Category == oldCategory)
+            .ExecuteUpdateAsync(setters => setters
+                .SetProperty(a => a.Category, targetCategory)
+                .SetProperty(a => a.UpdatedAt, now));
+    }
 }

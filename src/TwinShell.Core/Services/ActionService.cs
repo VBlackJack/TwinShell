@@ -108,14 +108,8 @@ public class ActionService : IActionService
         if (oldName.Equals(newName, StringComparison.OrdinalIgnoreCase))
             return true; // Nothing to do
 
-        var actions = await _repository.GetByCategoryAsync(oldName);
-        foreach (var action in actions)
-        {
-            action.Category = newName;
-            action.UpdatedAt = DateTime.UtcNow;
-            await _repository.UpdateAsync(action);
-        }
-
+        // PERFORMANCE: Use batch update instead of N+1 individual updates
+        await _repository.UpdateCategoryForActionsAsync(oldName, newName);
         return true;
     }
 
@@ -124,14 +118,9 @@ public class ActionService : IActionService
         if (string.IsNullOrWhiteSpace(categoryName))
             return false;
 
-        var actions = await _repository.GetByCategoryAsync(categoryName);
-        foreach (var action in actions)
-        {
-            action.Category = string.Empty;
-            action.UpdatedAt = DateTime.UtcNow;
-            await _repository.UpdateAsync(action);
-        }
-
+        // PERFORMANCE: Use batch update instead of N+1 individual updates
+        // Pass null to clear the category (sets to empty string)
+        await _repository.UpdateCategoryForActionsAsync(categoryName, null);
         return true;
     }
 
