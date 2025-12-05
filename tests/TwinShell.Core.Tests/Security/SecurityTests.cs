@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -488,8 +489,9 @@ public class SecurityTests
         var mockFavoritesRepo = new Mock<IFavoritesRepository>();
         var historyRepo = new FakeCommandHistoryRepository();
         var actionRepo = new FakeActionRepository();
+        var mockLogger = new Mock<ILogger<ConfigurationService>>();
 
-        return new ConfigurationService(mockFavoritesRepo.Object, historyRepo, actionRepo);
+        return new ConfigurationService(mockFavoritesRepo.Object, historyRepo, actionRepo, mockLogger.Object);
     }
 
     // Fake repository for UserFavorite testing (simplified stub)

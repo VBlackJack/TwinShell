@@ -1,7 +1,9 @@
 using System.IO;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -15,6 +17,7 @@ public class ConfigurationService : IConfigurationService
     private readonly IFavoritesRepository _favoritesRepository;
     private readonly ICommandHistoryRepository _historyRepository;
     private readonly IActionRepository _actionRepository;
+    private readonly ILogger<ConfigurationService> _logger;
     private readonly string _baseExportDirectory;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -26,11 +29,13 @@ public class ConfigurationService : IConfigurationService
     public ConfigurationService(
         IFavoritesRepository favoritesRepository,
         ICommandHistoryRepository historyRepository,
-        IActionRepository actionRepository)
+        IActionRepository actionRepository,
+        ILogger<ConfigurationService> logger)
     {
         _favoritesRepository = favoritesRepository;
         _historyRepository = historyRepository;
         _actionRepository = actionRepository;
+        _logger = logger;
 
         // Configure base directory for exports (sandbox all file operations)
         _baseExportDirectory = Path.Combine(
@@ -53,7 +58,7 @@ public class ConfigurationService : IConfigurationService
         try
         {
             // SECURITY: Validate file path (allow user-chosen paths, but validate)
-            if (!IsExportPathValid(filePath))
+            if (!PathValidator.IsExportPathValid(filePath))
             {
                 return (false, "Invalid file path");
             }
@@ -115,8 +120,9 @@ public class ConfigurationService : IConfigurationService
 
             return (true, null);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Export operation failed for path: {FilePath}", filePath);
             return (false, "Export operation failed");
         }
     }
@@ -129,7 +135,7 @@ public class ConfigurationService : IConfigurationService
         try
         {
             // SECURITY: Validate file path
-            if (!IsImportPathValid(filePath))
+            if (!PathValidator.IsImportPathValid(filePath))
             {
                 return (false, "Invalid file path", 0, 0);
             }
@@ -275,14 +281,16 @@ public class ConfigurationService : IConfigurationService
 
             return (true, null, favoritesImported, historyImported);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "JSON parsing error during import from: {FilePath}", filePath);
             return (false, "Invalid JSON format", 0, 0);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Import failed from: {FilePath}", filePath);
             return (false, "Import failed", 0, 0);
         }
     }
@@ -322,161 +330,16 @@ public class ConfigurationService : IConfigurationService
 
             return (true, null, config.Version);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
             // SECURITY FIX: Don't expose exception details that could leak path information
+            _logger.LogWarning(ex, "JSON parsing error during validation of: {FilePath}", filePath);
             return (false, "JSON parsing error", null);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Validation failed for: {FilePath}", filePath);
             return (false, "Validation error", null);
-        }
-    }
-
-    /// <summary>
-    /// Validates an export file path (less restrictive than import)
-    /// Allows user to export to any valid local path
-    /// </summary>
-    private bool IsExportPathValid(string filePath)
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
-                return false;
-
-            // SECURITY: Check for path traversal in input
-            if (filePath.Contains(".."))
-                return false;
-
-            // SECURITY: Reject UNC paths (network paths) for exports
-            if (filePath.StartsWith(@"\\") || filePath.StartsWith("//"))
-                return false;
-
-            // Get the absolute path and verify it's valid
-            var fullPath = Path.GetFullPath(filePath);
-
-            // Verify the directory exists or can be created
-            var directory = Path.GetDirectoryName(fullPath);
-            if (string.IsNullOrEmpty(directory))
-                return false;
-
-            // Must have a valid filename
-            var fileName = Path.GetFileName(fullPath);
-            if (string.IsNullOrEmpty(fileName))
-                return false;
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Validates an import file path
-    /// Allows user to import from any valid local path (selected via file dialog)
-    /// </summary>
-    private bool IsImportPathValid(string filePath)
-    {
-        try
-        {
-            if (string.IsNullOrWhiteSpace(filePath))
-                return false;
-
-            // SECURITY: Check for path traversal in input
-            if (filePath.Contains(".."))
-                return false;
-
-            // SECURITY: Reject UNC paths (network paths)
-            if (filePath.StartsWith(@"\\") || filePath.StartsWith("//"))
-                return false;
-
-            // Get the absolute path and verify it's valid
-            var fullPath = Path.GetFullPath(filePath);
-
-            // Must be a .json file
-            if (!fullPath.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
-                return false;
-
-            // Must have a valid filename
-            var fileName = Path.GetFileName(fullPath);
-            if (string.IsNullOrEmpty(fileName))
-                return false;
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// Validates that a file path is within the allowed directory (prevents path traversal)
-    /// Used for internal operations where stricter security is needed
-    /// </summary>
-    private bool IsPathSecure(string filePath)
-    {
-        try
-        {
-            // SECURITY: Check for path traversal in input before normalization
-            if (filePath.Contains("..") || filePath.Contains("~"))
-            {
-                return false;
-            }
-
-            // SECURITY: Reject UNC paths (network paths)
-            if (filePath.StartsWith(@"\\") || filePath.StartsWith("//"))
-            {
-                return false;
-            }
-
-            // Get the absolute path
-            var fullPath = Path.GetFullPath(filePath);
-            var baseDirectory = Path.GetFullPath(_baseExportDirectory);
-
-            // SECURITY: Check for symbolic links
-            if (File.Exists(fullPath))
-            {
-                var fileInfo = new FileInfo(fullPath);
-                if (fileInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
-                {
-                    return false; // Reject symbolic links and junctions
-                }
-            }
-            else if (Directory.Exists(fullPath))
-            {
-                var dirInfo = new DirectoryInfo(fullPath);
-                if (dirInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
-                {
-                    return false; // Reject symbolic links and junctions
-                }
-            }
-
-            // SECURITY: Improved path traversal validation
-            // Check that the normalized path starts with the base directory
-            if (!fullPath.StartsWith(baseDirectory, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            // Ensure the path is within the base directory (not just starts with it)
-            // e.g., prevent /base/exports/../etc/passwd
-            if (fullPath.Length > baseDirectory.Length)
-            {
-                var nextChar = fullPath[baseDirectory.Length];
-                if (nextChar != Path.DirectorySeparatorChar && nextChar != Path.AltDirectorySeparatorChar)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-        catch
-        {
-            return false;
         }
     }
 

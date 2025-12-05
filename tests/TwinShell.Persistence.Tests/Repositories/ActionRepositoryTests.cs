@@ -1,5 +1,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Models;
 using TwinShell.Persistence;
@@ -19,7 +21,7 @@ public class ActionRepositoryTests : IDisposable
             .Options;
 
         _context = new TwinShellDbContext(options);
-        _repository = new ActionRepository(_context);
+        _repository = new ActionRepository(_context, NullLogger<ActionRepository>.Instance);
     }
 
     public void Dispose()

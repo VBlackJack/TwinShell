@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Mappers;
@@ -11,6 +12,7 @@ namespace TwinShell.Persistence.Repositories;
 public class ActionRepository : IActionRepository
 {
     private readonly TwinShellDbContext _context;
+    private readonly ILogger<ActionRepository> _logger;
 
     // PERFORMANCE: Cache for categories (rarely change, queried frequently)
     private static IReadOnlyList<string>? _categoriesCache;
@@ -18,9 +20,10 @@ public class ActionRepository : IActionRepository
     private static readonly SemaphoreSlim _cacheLock = new(1, 1);
     private const int CacheTtlMinutes = 5;
 
-    public ActionRepository(TwinShellDbContext context)
+    public ActionRepository(TwinShellDbContext context, ILogger<ActionRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<Core.Models.Action>> GetAllAsync()
@@ -107,117 +110,141 @@ public class ActionRepository : IActionRepository
 
     public async Task AddAsync(Core.Models.Action action)
     {
-        // BUGFIX: Removed explicit transaction - EF Core automatically wraps SaveChangesAsync() in a transaction
-        // Add command templates first if they exist
-        if (action.WindowsCommandTemplate != null)
+        try
         {
-            var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
-            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == windowsTemplateEntity.Id))
+            // BUGFIX: Removed explicit transaction - EF Core automatically wraps SaveChangesAsync() in a transaction
+            // Add command templates first if they exist
+            if (action.WindowsCommandTemplate != null)
             {
-                _context.CommandTemplates.Add(windowsTemplateEntity);
+                var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
+                if (!await _context.CommandTemplates.AnyAsync(t => t.Id == windowsTemplateEntity.Id))
+                {
+                    _context.CommandTemplates.Add(windowsTemplateEntity);
+                }
             }
-        }
 
-        if (action.LinuxCommandTemplate != null)
+            if (action.LinuxCommandTemplate != null)
+            {
+                var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
+                if (!await _context.CommandTemplates.AnyAsync(t => t.Id == linuxTemplateEntity.Id))
+                {
+                    _context.CommandTemplates.Add(linuxTemplateEntity);
+                }
+            }
+
+            var entity = ActionMapper.ToEntity(action);
+            _context.Actions.Add(entity);
+            // EF Core ensures all tracked changes are saved atomically in a single transaction
+            await _context.SaveChangesAsync();
+
+            // Invalidate cache since a new action may have a new category
+            InvalidateCategoriesCache();
+        }
+        catch (DbUpdateException ex)
         {
-            var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
-            if (!await _context.CommandTemplates.AnyAsync(t => t.Id == linuxTemplateEntity.Id))
-            {
-                _context.CommandTemplates.Add(linuxTemplateEntity);
-            }
+            _logger.LogError(ex, "Database error while adding action: {ActionId}", action.Id);
+            throw;
         }
-
-        var entity = ActionMapper.ToEntity(action);
-        _context.Actions.Add(entity);
-        // EF Core ensures all tracked changes are saved atomically in a single transaction
-        await _context.SaveChangesAsync();
-
-        // Invalidate cache since a new action may have a new category
-        InvalidateCategoriesCache();
     }
 
     public async Task UpdateAsync(Core.Models.Action action)
     {
-        // BUGFIX: Handle EF Core tracking - detach any existing tracked entities first
-        // Add or update Windows command template if it exists
-        if (action.WindowsCommandTemplate != null)
+        try
         {
-            var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
-            var existingWindows = await _context.CommandTemplates
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Id == windowsTemplateEntity.Id);
+            // BUGFIX: Handle EF Core tracking - detach any existing tracked entities first
+            // Add or update Windows command template if it exists
+            if (action.WindowsCommandTemplate != null)
+            {
+                var windowsTemplateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
+                var existingWindows = await _context.CommandTemplates
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(t => t.Id == windowsTemplateEntity.Id);
 
-            // Detach any tracked entity with the same ID
-            var trackedWindows = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
-                .FirstOrDefault(e => e.Entity.Id == windowsTemplateEntity.Id);
-            if (trackedWindows != null)
-            {
-                trackedWindows.State = EntityState.Detached;
+                // Detach any tracked entity with the same ID
+                var trackedWindows = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
+                    .FirstOrDefault(e => e.Entity.Id == windowsTemplateEntity.Id);
+                if (trackedWindows != null)
+                {
+                    trackedWindows.State = EntityState.Detached;
+                }
+
+                if (existingWindows == null)
+                {
+                    _context.CommandTemplates.Add(windowsTemplateEntity);
+                }
+                else
+                {
+                    _context.CommandTemplates.Update(windowsTemplateEntity);
+                }
             }
 
-            if (existingWindows == null)
+            // Add or update Linux command template if it exists
+            if (action.LinuxCommandTemplate != null)
             {
-                _context.CommandTemplates.Add(windowsTemplateEntity);
+                var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
+                var existingLinux = await _context.CommandTemplates
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(t => t.Id == linuxTemplateEntity.Id);
+
+                // Detach any tracked entity with the same ID
+                var trackedLinux = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
+                    .FirstOrDefault(e => e.Entity.Id == linuxTemplateEntity.Id);
+                if (trackedLinux != null)
+                {
+                    trackedLinux.State = EntityState.Detached;
+                }
+
+                if (existingLinux == null)
+                {
+                    _context.CommandTemplates.Add(linuxTemplateEntity);
+                }
+                else
+                {
+                    _context.CommandTemplates.Update(linuxTemplateEntity);
+                }
             }
-            else
+
+            var entity = ActionMapper.ToEntity(action);
+
+            // Detach any tracked Action entity with the same ID
+            var trackedAction = _context.ChangeTracker.Entries<Entities.ActionEntity>()
+                .FirstOrDefault(e => e.Entity.Id == entity.Id);
+            if (trackedAction != null)
             {
-                _context.CommandTemplates.Update(windowsTemplateEntity);
+                trackedAction.State = EntityState.Detached;
             }
+
+            _context.Actions.Update(entity);
+            await _context.SaveChangesAsync();
+
+            // Invalidate cache since category may have changed
+            InvalidateCategoriesCache();
         }
-
-        // Add or update Linux command template if it exists
-        if (action.LinuxCommandTemplate != null)
+        catch (DbUpdateException ex)
         {
-            var linuxTemplateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
-            var existingLinux = await _context.CommandTemplates
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Id == linuxTemplateEntity.Id);
-
-            // Detach any tracked entity with the same ID
-            var trackedLinux = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
-                .FirstOrDefault(e => e.Entity.Id == linuxTemplateEntity.Id);
-            if (trackedLinux != null)
-            {
-                trackedLinux.State = EntityState.Detached;
-            }
-
-            if (existingLinux == null)
-            {
-                _context.CommandTemplates.Add(linuxTemplateEntity);
-            }
-            else
-            {
-                _context.CommandTemplates.Update(linuxTemplateEntity);
-            }
+            _logger.LogError(ex, "Database error while updating action: {ActionId}", action.Id);
+            throw;
         }
-
-        var entity = ActionMapper.ToEntity(action);
-
-        // Detach any tracked Action entity with the same ID
-        var trackedAction = _context.ChangeTracker.Entries<Entities.ActionEntity>()
-            .FirstOrDefault(e => e.Entity.Id == entity.Id);
-        if (trackedAction != null)
-        {
-            trackedAction.State = EntityState.Detached;
-        }
-
-        _context.Actions.Update(entity);
-        await _context.SaveChangesAsync();
-
-        // Invalidate cache since category may have changed
-        InvalidateCategoriesCache();
     }
 
     public async Task DeleteAsync(string id)
     {
-        var entity = await _context.Actions.FindAsync(id);
-        if (entity != null)
+        try
         {
-            _context.Actions.Remove(entity);
-            await _context.SaveChangesAsync();
+            var entity = await _context.Actions.FindAsync(id);
+            if (entity != null)
+            {
+                _context.Actions.Remove(entity);
+                await _context.SaveChangesAsync();
 
-            // Invalidate cache since a category may now be empty
-            InvalidateCategoriesCache();
+                // Invalidate cache since a category may now be empty
+                InvalidateCategoriesCache();
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while deleting action: {ActionId}", id);
+            throw;
         }
     }
 
