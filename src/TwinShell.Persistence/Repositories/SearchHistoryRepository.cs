@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -12,44 +13,54 @@ namespace TwinShell.Persistence.Repositories;
 public class SearchHistoryRepository : ISearchHistoryRepository
 {
     private readonly TwinShellDbContext _context;
+    private readonly ILogger<SearchHistoryRepository> _logger;
 
-    public SearchHistoryRepository(TwinShellDbContext context)
+    public SearchHistoryRepository(TwinShellDbContext context, ILogger<SearchHistoryRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<SearchHistory> AddOrUpdateAsync(SearchHistory searchHistory)
     {
-        // Normalize the search term for consistent storage
-        searchHistory.NormalizedSearchTerm = TextNormalizer.NormalizeForSearch(searchHistory.SearchTerm);
-
-        // Try to find existing entry
-        var existing = await GetByNormalizedTermAsync(searchHistory.NormalizedSearchTerm, searchHistory.UserId);
-
-        if (existing != null)
+        try
         {
-            // Update existing entry
-            existing.SearchCount++;
-            existing.ResultCount = searchHistory.ResultCount;
-            existing.LastSearchedAt = DateTime.UtcNow;
-            existing.WasSuccessful = searchHistory.WasSuccessful;
+            // Normalize the search term for consistent storage
+            searchHistory.NormalizedSearchTerm = TextNormalizer.NormalizeForSearch(searchHistory.SearchTerm);
 
-            var entity = SearchHistoryMapper.ToEntity(existing);
-            _context.SearchHistories.Update(entity);
+            // Try to find existing entry
+            var existing = await GetByNormalizedTermAsync(searchHistory.NormalizedSearchTerm, searchHistory.UserId);
+
+            if (existing != null)
+            {
+                // Update existing entry
+                existing.SearchCount++;
+                existing.ResultCount = searchHistory.ResultCount;
+                existing.LastSearchedAt = DateTime.UtcNow;
+                existing.WasSuccessful = searchHistory.WasSuccessful;
+
+                var entity = SearchHistoryMapper.ToEntity(existing);
+                _context.SearchHistories.Update(entity);
+            }
+            else
+            {
+                // Add new entry
+                searchHistory.Id = Guid.NewGuid().ToString();
+                searchHistory.CreatedAt = DateTime.UtcNow;
+                searchHistory.LastSearchedAt = DateTime.UtcNow;
+
+                var entity = SearchHistoryMapper.ToEntity(searchHistory);
+                _context.SearchHistories.Add(entity);
+            }
+
+            await _context.SaveChangesAsync();
+            return existing ?? searchHistory;
         }
-        else
+        catch (DbUpdateException ex)
         {
-            // Add new entry
-            searchHistory.Id = Guid.NewGuid().ToString();
-            searchHistory.CreatedAt = DateTime.UtcNow;
-            searchHistory.LastSearchedAt = DateTime.UtcNow;
-
-            var entity = SearchHistoryMapper.ToEntity(searchHistory);
-            _context.SearchHistories.Add(entity);
+            _logger.LogError(ex, "Database error while adding/updating search history: {SearchTerm}", searchHistory.SearchTerm);
+            throw;
         }
-
-        await _context.SaveChangesAsync();
-        return existing ?? searchHistory;
     }
 
     public async Task<IEnumerable<SearchHistory>> GetRecentAsync(int limit = 10, string? userId = null)
@@ -141,11 +152,19 @@ public class SearchHistoryRepository : ISearchHistoryRepository
 
     public async Task DeleteAsync(string id)
     {
-        var entity = await _context.SearchHistories.FindAsync(id);
-        if (entity != null)
+        try
         {
-            _context.SearchHistories.Remove(entity);
-            await _context.SaveChangesAsync();
+            var entity = await _context.SearchHistories.FindAsync(id);
+            if (entity != null)
+            {
+                _context.SearchHistories.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while deleting search history: {HistoryId}", id);
+            throw;
         }
     }
 

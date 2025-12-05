@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Mappers;
@@ -11,17 +12,27 @@ namespace TwinShell.Persistence.Repositories;
 public class AuditLogRepository : IAuditLogRepository
 {
     private readonly TwinShellDbContext _context;
+    private readonly ILogger<AuditLogRepository> _logger;
 
-    public AuditLogRepository(TwinShellDbContext context)
+    public AuditLogRepository(TwinShellDbContext context, ILogger<AuditLogRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task AddAsync(AuditLog log)
     {
-        var entity = AuditLogMapper.ToEntity(log);
-        _context.AuditLogs.Add(entity);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var entity = AuditLogMapper.ToEntity(log);
+            _context.AuditLogs.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while adding audit log: {LogId}", log.Id);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<AuditLog>> GetRecentAsync(int count = 100)

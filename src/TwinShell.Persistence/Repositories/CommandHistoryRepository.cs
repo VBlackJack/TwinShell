@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -12,17 +13,27 @@ namespace TwinShell.Persistence.Repositories;
 public class CommandHistoryRepository : ICommandHistoryRepository
 {
     private readonly TwinShellDbContext _context;
+    private readonly ILogger<CommandHistoryRepository> _logger;
 
-    public CommandHistoryRepository(TwinShellDbContext context)
+    public CommandHistoryRepository(TwinShellDbContext context, ILogger<CommandHistoryRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task AddAsync(CommandHistory history)
     {
-        var entity = CommandHistoryMapper.ToEntity(history);
-        _context.CommandHistories.Add(entity);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var entity = CommandHistoryMapper.ToEntity(history);
+            _context.CommandHistories.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while adding history: {HistoryId}", history.Id);
+            throw;
+        }
     }
 
     /// <summary>
@@ -30,16 +41,32 @@ public class CommandHistoryRepository : ICommandHistoryRepository
     /// </summary>
     public async Task AddRangeAsync(IEnumerable<CommandHistory> histories)
     {
-        var entities = histories.Select(CommandHistoryMapper.ToEntity);
-        _context.CommandHistories.AddRange(entities);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var entities = histories.Select(CommandHistoryMapper.ToEntity);
+            _context.CommandHistories.AddRange(entities);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while adding history batch");
+            throw;
+        }
     }
 
     public async Task UpdateAsync(CommandHistory history)
     {
-        var entity = CommandHistoryMapper.ToEntity(history);
-        _context.CommandHistories.Update(entity);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var entity = CommandHistoryMapper.ToEntity(history);
+            _context.CommandHistories.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while updating history: {HistoryId}", history.Id);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<CommandHistory>> GetRecentAsync(int count = 50)
@@ -119,11 +146,19 @@ public class CommandHistoryRepository : ICommandHistoryRepository
 
     public async Task DeleteAsync(string id)
     {
-        var entity = await _context.CommandHistories.FindAsync(id);
-        if (entity != null)
+        try
         {
-            _context.CommandHistories.Remove(entity);
-            await _context.SaveChangesAsync();
+            var entity = await _context.CommandHistories.FindAsync(id);
+            if (entity != null)
+            {
+                _context.CommandHistories.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while deleting history: {HistoryId}", id);
+            throw;
         }
     }
 

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Mappers;
@@ -11,17 +12,31 @@ namespace TwinShell.Persistence.Repositories;
 public class FavoritesRepository : IFavoritesRepository
 {
     private readonly TwinShellDbContext _context;
+    private readonly ILogger<FavoritesRepository> _logger;
 
-    public FavoritesRepository(TwinShellDbContext context)
+    public FavoritesRepository(TwinShellDbContext context, ILogger<FavoritesRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
+    /// <summary>
+    /// Adds a new favorite to the database.
+    /// </summary>
+    /// <param name="favorite">The favorite to add</param>
     public async Task AddAsync(UserFavorite favorite)
     {
-        var entity = UserFavoriteMapper.ToEntity(favorite);
-        _context.UserFavorites.Add(entity);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var entity = UserFavoriteMapper.ToEntity(favorite);
+            _context.UserFavorites.Add(entity);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while adding favorite: {FavoriteId}", favorite.Id);
+            throw;
+        }
     }
 
     /// <summary>
@@ -29,11 +44,24 @@ public class FavoritesRepository : IFavoritesRepository
     /// </summary>
     public async Task AddRangeAsync(IEnumerable<UserFavorite> favorites)
     {
-        var entities = favorites.Select(UserFavoriteMapper.ToEntity);
-        _context.UserFavorites.AddRange(entities);
-        await _context.SaveChangesAsync();
+        try
+        {
+            var entities = favorites.Select(UserFavoriteMapper.ToEntity);
+            _context.UserFavorites.AddRange(entities);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while adding favorites batch");
+            throw;
+        }
     }
 
+    /// <summary>
+    /// Gets all favorites for a user, ordered by display order.
+    /// </summary>
+    /// <param name="userId">Optional user ID filter</param>
+    /// <returns>Collection of user favorites</returns>
     public async Task<IEnumerable<UserFavorite>> GetAllAsync(string? userId = null)
     {
         // PERFORMANCE: AsNoTracking for read-only queries
@@ -61,6 +89,12 @@ public class FavoritesRepository : IFavoritesRepository
         return entities.Select(UserFavoriteMapper.ToModel);
     }
 
+    /// <summary>
+    /// Gets a favorite by action ID.
+    /// </summary>
+    /// <param name="actionId">The action ID to find</param>
+    /// <param name="userId">Optional user ID filter</param>
+    /// <returns>The favorite if found, null otherwise</returns>
     public async Task<UserFavorite?> GetByActionIdAsync(string actionId, string? userId = null)
     {
         // PERFORMANCE: AsNoTracking for read-only queries
@@ -82,6 +116,12 @@ public class FavoritesRepository : IFavoritesRepository
         return entity != null ? UserFavoriteMapper.ToModel(entity) : null;
     }
 
+    /// <summary>
+    /// Checks if an action is marked as favorite.
+    /// </summary>
+    /// <param name="actionId">The action ID to check</param>
+    /// <param name="userId">Optional user ID filter</param>
+    /// <returns>True if the action is a favorite</returns>
     public async Task<bool> IsFavoriteAsync(string actionId, string? userId = null)
     {
         if (userId != null)
@@ -96,16 +136,33 @@ public class FavoritesRepository : IFavoritesRepository
         }
     }
 
+    /// <summary>
+    /// Removes a favorite by its ID.
+    /// </summary>
+    /// <param name="favoriteId">The favorite ID to remove</param>
     public async Task RemoveAsync(string favoriteId)
     {
-        var entity = await _context.UserFavorites.FindAsync(favoriteId);
-        if (entity != null)
+        try
         {
-            _context.UserFavorites.Remove(entity);
-            await _context.SaveChangesAsync();
+            var entity = await _context.UserFavorites.FindAsync(favoriteId);
+            if (entity != null)
+            {
+                _context.UserFavorites.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while removing favorite: {FavoriteId}", favoriteId);
+            throw;
         }
     }
 
+    /// <summary>
+    /// Removes a favorite by action ID.
+    /// </summary>
+    /// <param name="actionId">The action ID to unfavorite</param>
+    /// <param name="userId">Optional user ID filter</param>
     public async Task RemoveByActionIdAsync(string actionId, string? userId = null)
     {
         var query = _context.UserFavorites.AsQueryable();
@@ -127,6 +184,11 @@ public class FavoritesRepository : IFavoritesRepository
         }
     }
 
+    /// <summary>
+    /// Gets the count of favorites for a user.
+    /// </summary>
+    /// <param name="userId">Optional user ID filter</param>
+    /// <returns>Number of favorites</returns>
     public async Task<int> GetCountAsync(string? userId = null)
     {
         if (userId != null)
@@ -139,6 +201,11 @@ public class FavoritesRepository : IFavoritesRepository
         }
     }
 
+    /// <summary>
+    /// Updates the display order of a favorite.
+    /// </summary>
+    /// <param name="favoriteId">The favorite ID to update</param>
+    /// <param name="newOrder">The new display order</param>
     public async Task UpdateDisplayOrderAsync(string favoriteId, int newOrder)
     {
         var entity = await _context.UserFavorites.FindAsync(favoriteId);
@@ -149,6 +216,10 @@ public class FavoritesRepository : IFavoritesRepository
         }
     }
 
+    /// <summary>
+    /// Clears all favorites for a user.
+    /// </summary>
+    /// <param name="userId">Optional user ID filter</param>
     public async Task ClearAllAsync(string? userId = null)
     {
         var query = _context.UserFavorites.AsQueryable();
