@@ -28,11 +28,21 @@ public class SettingsService : ISettingsService
     };
 
     public SettingsService(ILogger<SettingsService>? logger = null)
+        : this(null, logger)
+    {
+    }
+
+    /// <summary>
+    /// Creates a SettingsService with a custom settings directory (for testing).
+    /// </summary>
+    /// <param name="customSettingsDirectory">Custom directory path, or null to use default</param>
+    /// <param name="logger">Optional logger</param>
+    public SettingsService(string? customSettingsDirectory, ILogger<SettingsService>? logger = null)
     {
         _logger = logger;
 
-        // Get AppData directory: %APPDATA%/TwinShell
-        _settingsDirectory = Path.Combine(
+        // Use custom directory or default to %APPDATA%/TwinShell
+        _settingsDirectory = customSettingsDirectory ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "TwinShell");
 

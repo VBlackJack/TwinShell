@@ -414,58 +414,69 @@ public class SecurityTests
     [Fact]
     public async Task SaveSettingsAsync_EncryptsData()
     {
-        // Arrange
-        var service = new SettingsService();
-        var settings = UserSettings.Default;
+        // Arrange - Use isolated temp directory to avoid test interference
+        var tempDir = Path.Combine(Path.GetTempPath(), $"TwinShell_Test_{Guid.NewGuid()}");
+        try
+        {
+            var service = new SettingsService(tempDir);
+            var settings = UserSettings.Default;
 
-        // Act
-        var result = await service.SaveSettingsAsync(settings);
+            // Act
+            var result = await service.SaveSettingsAsync(settings);
 
-        // Assert
-        Assert.True(result);
+            // Assert
+            Assert.True(result);
 
-        // Verify file exists
-        var settingsPath = service.GetSettingsFilePath();
-        Assert.True(File.Exists(settingsPath));
+            // Verify file exists
+            var settingsPath = service.GetSettingsFilePath();
+            Assert.True(File.Exists(settingsPath));
 
-        // Read raw file contents - should be encrypted (not plain JSON)
-        var rawBytes = await File.ReadAllBytesAsync(settingsPath);
-        var rawText = System.Text.Encoding.UTF8.GetString(rawBytes);
+            // Read raw file contents - should be encrypted (not plain JSON)
+            var rawBytes = await File.ReadAllBytesAsync(settingsPath);
+            var rawText = System.Text.Encoding.UTF8.GetString(rawBytes);
 
-        // Encrypted data should not contain readable JSON structure
-        Assert.DoesNotContain("\"AutoCleanupDays\"", rawText);
-        Assert.DoesNotContain("\"MaxHistoryItems\"", rawText);
-
-        // Cleanup
-        File.Delete(settingsPath);
+            // Encrypted data should not contain readable JSON structure
+            Assert.DoesNotContain("\"AutoCleanupDays\"", rawText);
+            Assert.DoesNotContain("\"MaxHistoryItems\"", rawText);
+        }
+        finally
+        {
+            // Cleanup
+            if (Directory.Exists(tempDir))
+                Directory.Delete(tempDir, true);
+        }
     }
 
     [Fact]
     public async Task LoadSettingsAsync_DecryptsData()
     {
-        // Arrange
-        var service = new SettingsService();
-        var settings = new UserSettings
+        // Arrange - Use isolated temp directory to avoid test interference
+        var tempDir = Path.Combine(Path.GetTempPath(), $"TwinShell_Test_{Guid.NewGuid()}");
+        try
         {
-            AutoCleanupDays = 100,
-            MaxHistoryItems = 5000
-            // RecentCommandsCount = 25 // OBSOLETE - property removed
-        };
+            var service = new SettingsService(tempDir);
+            var settings = new UserSettings
+            {
+                AutoCleanupDays = 100,
+                MaxHistoryItems = 5000
+            };
 
-        // Act - Save encrypted
-        await service.SaveSettingsAsync(settings);
+            // Act - Save encrypted
+            await service.SaveSettingsAsync(settings);
 
-        // Act - Load decrypted
-        var loadedSettings = await service.LoadSettingsAsync();
+            // Act - Load decrypted
+            var loadedSettings = await service.LoadSettingsAsync();
 
-        // Assert
-        Assert.Equal(settings.AutoCleanupDays, loadedSettings.AutoCleanupDays);
-        Assert.Equal(settings.MaxHistoryItems, loadedSettings.MaxHistoryItems);
-        // Assert.Equal(settings.RecentCommandsCount, loadedSettings.RecentCommandsCount); // OBSOLETE - RecentCommandsCount removed
-
-        // Cleanup
-        var settingsPath = service.GetSettingsFilePath();
-        File.Delete(settingsPath);
+            // Assert
+            Assert.Equal(settings.AutoCleanupDays, loadedSettings.AutoCleanupDays);
+            Assert.Equal(settings.MaxHistoryItems, loadedSettings.MaxHistoryItems);
+        }
+        finally
+        {
+            // Cleanup
+            if (Directory.Exists(tempDir))
+                Directory.Delete(tempDir, true);
+        }
     }
 
     #endregion

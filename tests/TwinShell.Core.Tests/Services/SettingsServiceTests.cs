@@ -8,32 +8,27 @@ namespace TwinShell.Core.Tests.Services;
 public class SettingsServiceTests : IDisposable
 {
     private readonly SettingsService _service;
-    private readonly string _testSettingsPath;
+    private readonly string _testDirectory;
 
     public SettingsServiceTests()
     {
-        _service = new SettingsService();
-        _testSettingsPath = _service.GetSettingsFilePath();
+        // Use isolated temp directory for each test instance
+        _testDirectory = Path.Combine(Path.GetTempPath(), $"TwinShell_Test_{Guid.NewGuid()}");
+        _service = new SettingsService(_testDirectory);
     }
 
     public void Dispose()
     {
-        // Clean up test settings file
-        if (File.Exists(_testSettingsPath))
+        // Clean up test directory
+        if (Directory.Exists(_testDirectory))
         {
-            File.Delete(_testSettingsPath);
+            Directory.Delete(_testDirectory, true);
         }
     }
 
     [Fact]
     public async Task LoadSettingsAsync_ReturnsDefaultSettings_WhenFileDoesNotExist()
     {
-        // Arrange
-        if (File.Exists(_testSettingsPath))
-        {
-            File.Delete(_testSettingsPath);
-        }
-
         // Act
         var settings = await _service.LoadSettingsAsync();
 
@@ -62,7 +57,7 @@ public class SettingsServiceTests : IDisposable
 
         // Assert
         result.Should().BeTrue();
-        File.Exists(_testSettingsPath).Should().BeTrue();
+        File.Exists(_service.GetSettingsFilePath()).Should().BeTrue();
 
         // Verify content
         var loadedSettings = await _service.LoadSettingsAsync();
@@ -199,7 +194,7 @@ public class SettingsServiceTests : IDisposable
 
         // Assert
         path.Should().NotBeNullOrEmpty();
-        path.Should().Contain("TwinShell");
+        path.Should().Contain("TwinShell_Test_");
         path.Should().EndWith("settings.json");
     }
 }

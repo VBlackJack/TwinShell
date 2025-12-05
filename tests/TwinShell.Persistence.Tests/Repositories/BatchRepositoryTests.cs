@@ -104,14 +104,14 @@ public class BatchRepositoryTests : IDisposable
         result.Should().BeNull();
     }
 
-    [Fact(Skip = "EF Core tracking issue with mapper pattern - requires repository refactoring")]
+    [Fact]
     public async Task UpdateAsync_UpdatesBatchSuccessfully()
     {
         // Arrange
         var batch = CreateTestBatch("batch-1", "Original Name");
         await _repository.AddAsync(batch);
 
-        // Get the batch from the repository to work with the tracked entity
+        // Get the batch from the repository
         var batchToUpdate = await _repository.GetByIdAsync("batch-1");
         batchToUpdate!.Name = "Updated Name";
         batchToUpdate.Description = "Updated Description";

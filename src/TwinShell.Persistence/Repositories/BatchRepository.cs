@@ -47,8 +47,24 @@ public class BatchRepository : IBatchRepository
 
     public async Task UpdateAsync(CommandBatch batch)
     {
-        var entity = CommandBatchMapper.ToEntity(batch);
-        _context.CommandBatches.Update(entity);
+        // Find the existing entity to update
+        var existingEntity = await _context.CommandBatches
+            .FirstOrDefaultAsync(b => b.Id == batch.Id);
+
+        if (existingEntity == null)
+        {
+            throw new InvalidOperationException($"CommandBatch with ID '{batch.Id}' not found");
+        }
+
+        // Update properties from the model
+        existingEntity.Name = batch.Name;
+        existingEntity.Description = batch.Description;
+        existingEntity.ExecutionMode = batch.ExecutionMode;
+        existingEntity.CommandsJson = System.Text.Json.JsonSerializer.Serialize(batch.Commands);
+        existingEntity.TagsJson = System.Text.Json.JsonSerializer.Serialize(batch.Tags);
+        existingEntity.LastExecutedAt = batch.LastExecutedAt;
+        existingEntity.UpdatedAt = DateTime.UtcNow;
+
         await _context.SaveChangesAsync();
     }
 
