@@ -89,4 +89,4 @@ Le workflow CI/CD build **uniquement** `src/TwinShell.App/TwinShell.App.csproj`,
 ---
 
 **Responsable** : Équipe DevOps
-**Prochaine révision** : À planifier (post v1.2.0)
+**Prochaine révision** : À planifier (post v1.4.0)

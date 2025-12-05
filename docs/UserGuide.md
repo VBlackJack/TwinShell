@@ -1141,5 +1141,5 @@ Exportez d'abord votre configuration pour sauvegarder vos favoris.
 
 **Bon travail avec TwinShell !** 🚀
 
-*Dernière mise à jour : 2025-11-26*
-*Version : 1.2.0*
+*Dernière mise à jour : 2025-12-05*
+*Version : 1.4.0*

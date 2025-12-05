@@ -125,10 +125,14 @@ public class SettingsService : ISettingsService
             // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread
             await File.WriteAllBytesAsync(_settingsFilePath, encrypted).ConfigureAwait(false);
 
-            // SECURITY: Set restrictive file permissions (Windows only)
+            // SECURITY: Set restrictive file permissions
             if (OperatingSystem.IsWindows())
             {
                 SetRestrictivePermissions(_settingsFilePath);
+            }
+            else
+            {
+                SetUnixFilePermissions(_settingsFilePath);
             }
 
             _currentSettings = settings;
@@ -235,19 +239,17 @@ public class SettingsService : ISettingsService
     }
 
     /// <summary>
-    /// Derives a user-specific encryption key
+    /// Derives a user-specific encryption key using stored or generated random salt
     /// </summary>
     private byte[] DeriveUserKey()
     {
         // SECURITY: Use username + machine name as entropy for key derivation
         var entropy = Environment.UserName + Environment.MachineName;
 
-        // SECURITY: Improved salt generation - combine multiple entropy sources
-        // Create a deterministic but non-hardcoded salt
-        var saltInput = $"TwinShell.Settings.v1.{Environment.MachineName}.{Environment.UserName}";
-        var salt = System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes(saltInput));
+        // SECURITY: Use random salt stored in a separate file
+        var salt = GetOrCreateRandomSalt();
 
-        // SECURITY: Increased PBKDF2 iterations from 10,000 to 100,000 for better security
+        // SECURITY: 100,000 iterations for PBKDF2 as recommended by OWASP
         using var pbkdf2 = new Rfc2898DeriveBytes(
             entropy,
             salt,
@@ -255,6 +257,60 @@ public class SettingsService : ISettingsService
             HashAlgorithmName.SHA256);
 
         return pbkdf2.GetBytes(32); // 256-bit key
+    }
+
+    /// <summary>
+    /// Gets or creates a random salt for key derivation.
+    /// Salt is stored in a separate file to ensure it persists across application restarts.
+    /// </summary>
+    private byte[] GetOrCreateRandomSalt()
+    {
+        var saltFilePath = Path.Combine(_settingsDirectory, ".salt");
+
+        try
+        {
+            // Check if salt file exists and is valid
+            if (File.Exists(saltFilePath))
+            {
+                var existingSalt = File.ReadAllBytes(saltFilePath);
+                if (existingSalt.Length == 32) // Expected salt size
+                {
+                    return existingSalt;
+                }
+            }
+
+            // Generate new random salt
+            var salt = RandomNumberGenerator.GetBytes(32);
+
+            // Ensure directory exists
+            if (!Directory.Exists(_settingsDirectory))
+            {
+                Directory.CreateDirectory(_settingsDirectory);
+            }
+
+            // Save salt
+            File.WriteAllBytes(saltFilePath, salt);
+
+            // Set restrictive permissions on salt file
+            if (OperatingSystem.IsWindows())
+            {
+                SetRestrictivePermissions(saltFilePath);
+            }
+            else
+            {
+                SetUnixFilePermissions(saltFilePath);
+            }
+
+            return salt;
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogWarning(ex, "Failed to read/create salt file, falling back to deterministic salt");
+
+            // Fallback to deterministic salt (less secure but maintains backward compatibility)
+            var saltInput = $"TwinShell.Settings.v1.{Environment.MachineName}.{Environment.UserName}";
+            return SHA256.HashData(Encoding.UTF8.GetBytes(saltInput));
+        }
     }
 
     /// <summary>
@@ -297,6 +353,26 @@ public class SettingsService : ISettingsService
         catch (Exception ex)
         {
             _logger?.LogWarning(ex, "Failed to set restrictive permissions on settings file");
+        }
+    }
+
+    /// <summary>
+    /// Sets restrictive file permissions on Linux/Mac (chmod 600 - owner read/write only)
+    /// </summary>
+    private void SetUnixFilePermissions(string filePath)
+    {
+        try
+        {
+            if (OperatingSystem.IsWindows())
+                return;
+
+            // Use File.SetUnixFileMode to set permissions to 600 (owner read/write only)
+            // This is only available on .NET 7+ and Unix systems
+            File.SetUnixFileMode(filePath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogWarning(ex, "Failed to set Unix file permissions on {FilePath}", filePath);
         }
     }
 }

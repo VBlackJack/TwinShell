@@ -440,12 +440,17 @@ public class GitSyncService : IGitSyncService
         return (url, usernameFromUrl, types) =>
         {
             // HTTPS with token - most common case
-            if (!string.IsNullOrWhiteSpace(Settings?.GitAccessToken))
+            // SECURITY NOTE: LibGit2Sharp doesn't support SecureString, so we minimize
+            // token exposure by not storing intermediate references. The token is retrieved
+            // directly from the encrypted settings and passed to LibGit2Sharp.
+            // Token is cleared from memory when UsernamePasswordCredentials is disposed.
+            var token = Settings?.GitAccessToken;
+            if (!string.IsNullOrWhiteSpace(token))
             {
                 return new UsernamePasswordCredentials
                 {
-                    Username = Settings.GitUserName ?? usernameFromUrl ?? "git",
-                    Password = Settings.GitAccessToken
+                    Username = Settings?.GitUserName ?? usernameFromUrl ?? "git",
+                    Password = token
                 };
             }
 

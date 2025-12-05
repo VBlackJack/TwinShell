@@ -358,7 +358,7 @@ Avant de supprimer, un message affiche le **nombre d'actions affectées**.
 
 ### Q : Puis-je assigner plusieurs catégories à une action ?
 
-**R :** **Pas encore** dans la version actuelle (v1.2.0).
+**R :** **Pas encore** dans la version actuelle (v1.4.0).
 
 Chaque action a **une seule catégorie**.
 
@@ -793,5 +793,5 @@ Settings → **Language** → Français | English
 
 ---
 
-*Dernière mise à jour : 2025-11-26*
-*Version : 1.2.0*
+*Dernière mise à jour : 2025-12-05*
+*Version : 1.4.0*
