@@ -50,6 +50,53 @@ public class UserSettings
     public string CultureCode { get; set; } = "fr";
 
     /// <summary>
+    /// Path to the local Git repository folder for GitOps synchronization.
+    /// Used for exporting/importing YAML files.
+    /// </summary>
+    public string? GitRepositoryPath { get; set; }
+
+    /// <summary>
+    /// URL of the remote Git repository for team synchronization.
+    /// Example: https://github.com/team/twinshell-data.git
+    /// </summary>
+    public string? GitRemoteUrl { get; set; }
+
+    /// <summary>
+    /// Git branch to use for synchronization (default: main).
+    /// </summary>
+    public string GitBranch { get; set; } = "main";
+
+    /// <summary>
+    /// Authentication method for Git: "https" (token) or "ssh".
+    /// </summary>
+    public string GitAuthMethod { get; set; } = "https";
+
+    /// <summary>
+    /// Personal access token for HTTPS authentication (stored encrypted).
+    /// </summary>
+    public string? GitAccessToken { get; set; }
+
+    /// <summary>
+    /// Enable automatic synchronization on startup.
+    /// </summary>
+    public bool GitSyncOnStartup { get; set; } = true;
+
+    /// <summary>
+    /// Enable automatic push after local changes (export).
+    /// </summary>
+    public bool GitAutoPush { get; set; } = true;
+
+    /// <summary>
+    /// Git user name for commits.
+    /// </summary>
+    public string? GitUserName { get; set; }
+
+    /// <summary>
+    /// Git user email for commits.
+    /// </summary>
+    public string? GitUserEmail { get; set; }
+
+    /// <summary>
     /// Creates a new instance with default values.
     /// </summary>
     public UserSettings()
@@ -69,7 +116,16 @@ public class UserSettings
             DefaultPlatformFilter = this.DefaultPlatformFilter,
             ConfirmDangerousActions = this.ConfirmDangerousActions,
             ExecutionTimeoutSeconds = this.ExecutionTimeoutSeconds,
-            CultureCode = this.CultureCode
+            CultureCode = this.CultureCode,
+            GitRepositoryPath = this.GitRepositoryPath,
+            GitRemoteUrl = this.GitRemoteUrl,
+            GitBranch = this.GitBranch,
+            GitAuthMethod = this.GitAuthMethod,
+            GitAccessToken = this.GitAccessToken,
+            GitSyncOnStartup = this.GitSyncOnStartup,
+            GitAutoPush = this.GitAutoPush,
+            GitUserName = this.GitUserName,
+            GitUserEmail = this.GitUserEmail
         };
     }
 

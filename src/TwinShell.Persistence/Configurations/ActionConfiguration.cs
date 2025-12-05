@@ -97,5 +97,13 @@ public class ActionConfiguration : IEntityTypeConfiguration<ActionEntity>
 
         builder.HasIndex(e => e.IsUserCreated)
             .HasDatabaseName("IX_Actions_IsUserCreated");
+
+        // PublicId for GitOps synchronization - must be unique
+        builder.Property(e => e.PublicId)
+            .IsRequired();
+
+        builder.HasIndex(e => e.PublicId)
+            .IsUnique()
+            .HasDatabaseName("IX_Actions_PublicId");
     }
 }

@@ -8,6 +8,12 @@ namespace TwinShell.Persistence.Entities;
 public class ActionEntity
 {
     public string Id { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Universal unique identifier for GitOps synchronization.
+    /// Used as the stable identifier across different environments.
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;

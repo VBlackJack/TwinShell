@@ -6,6 +6,12 @@ namespace TwinShell.Persistence.Entities;
 public class CustomCategoryEntity
 {
     public string Id { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Universal unique identifier for GitOps synchronization.
+    /// Used as the stable identifier across different environments.
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = string.Empty;
     public string IconKey { get; set; } = "folder";
     public string ColorHex { get; set; } = "#2196F3";

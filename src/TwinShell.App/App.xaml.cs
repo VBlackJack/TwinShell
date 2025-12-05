@@ -56,6 +56,9 @@ public partial class App : Application
             mainWindow.Topmost = true;
             mainWindow.Topmost = false; // Set to true then false to bring to front
             LogInfo("Main window shown!");
+
+            // Start automatic Git sync if enabled
+            _ = PerformStartupGitSyncAsync();
         }
         catch (Exception ex)
         {
@@ -168,6 +171,8 @@ public partial class App : Application
         services.AddSingleton<IDialogService, TwinShell.App.Services.DialogService>();
         services.AddScoped<ICommandExecutionService, CommandExecutionService>();
         services.AddScoped<IImportExportService, ImportExportService>();
+        services.AddScoped<ISyncService, JsonSyncService>();
+        services.AddSingleton<IGitSyncService, GitSyncService>();
 
         // Seed Service
         // ARCHITECTURE FIX: Use AppData for seed files to avoid Program Files read-only issues
@@ -288,6 +293,9 @@ public partial class App : Application
         // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread with .GetAwaiter().GetResult()
         await context.Database.EnsureCreatedAsync().ConfigureAwait(false);
 
+        // Apply GitOps schema migration (adds PublicId columns if needed)
+        await context.EnsureGitOpsSchemaMigrationAsync().ConfigureAwait(false);
+
         // Seed initial data
         var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
         await seedService.SeedAsync().ConfigureAwait(false);
@@ -298,6 +306,61 @@ public partial class App : Application
         await settingsService.LoadSettingsAsync().ConfigureAwait(false);
         var historyService = scope.ServiceProvider.GetRequiredService<ICommandHistoryService>();
         await historyService.CleanupOldEntriesAsync(settingsService.CurrentSettings.AutoCleanupDays).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Performs automatic Git synchronization at startup if enabled in settings.
+    /// This runs asynchronously after the main window is shown to not block the UI.
+    /// </summary>
+    private async Task PerformStartupGitSyncAsync()
+    {
+        if (_serviceProvider == null) return;
+
+        try
+        {
+            var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+            var settings = settingsService.CurrentSettings;
+
+            // Check if auto-sync is enabled and Git is configured
+            if (!settings.GitSyncOnStartup ||
+                string.IsNullOrWhiteSpace(settings.GitRemoteUrl) ||
+                string.IsNullOrWhiteSpace(settings.GitRepositoryPath))
+            {
+                LogInfo("Git auto-sync disabled or not configured, skipping startup sync");
+                return;
+            }
+
+            LogInfo("Starting automatic Git synchronization...");
+
+            var gitSyncService = _serviceProvider.GetRequiredService<IGitSyncService>();
+
+            // Perform full sync (pull + import, and optionally export + push)
+            var result = await gitSyncService.FullSyncAsync();
+
+            if (result.Success)
+            {
+                LogInfo($"Git sync completed: {result.ItemsImported} imported, {result.ItemsExported} exported");
+
+                // Show notification to user
+                var notificationService = _serviceProvider.GetRequiredService<INotificationService>();
+                notificationService.ShowSuccess(
+                    $"Sync complete: {result.ItemsImported} imported, {result.ItemsExported} exported",
+                    "Git Sync");
+            }
+            else
+            {
+                LogError($"Git sync failed: {result.Message} - {result.ErrorDetails}", null);
+
+                // Show error notification (non-blocking)
+                var notificationService = _serviceProvider.GetRequiredService<INotificationService>();
+                notificationService.ShowError($"Sync failed: {result.Message}", "Git Sync Error");
+            }
+        }
+        catch (Exception ex)
+        {
+            LogError("Error during startup Git sync", ex);
+            // Don't show error to user for startup sync failures - they can check settings
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)

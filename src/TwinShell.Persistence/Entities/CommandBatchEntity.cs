@@ -8,6 +8,12 @@ namespace TwinShell.Persistence.Entities;
 public class CommandBatchEntity
 {
     public string Id { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Universal unique identifier for GitOps synchronization.
+    /// Used as the stable identifier across different environments.
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public BatchExecutionMode ExecutionMode { get; set; }

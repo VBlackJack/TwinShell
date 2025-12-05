@@ -32,5 +32,13 @@ public class CommandTemplateConfiguration : IEntityTypeConfiguration<CommandTemp
         builder.Property(e => e.ParametersJson)
             .IsRequired()
             .HasColumnType("TEXT");
+
+        // PublicId for GitOps synchronization - must be unique
+        builder.Property(e => e.PublicId)
+            .IsRequired();
+
+        builder.HasIndex(e => e.PublicId)
+            .IsUnique()
+            .HasDatabaseName("IX_CommandTemplates_PublicId");
     }
 }

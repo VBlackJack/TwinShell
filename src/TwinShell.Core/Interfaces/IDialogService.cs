@@ -57,4 +57,12 @@ public interface IDialogService
     /// <param name="defaultExtension">Default file extension (e.g., ".json")</param>
     /// <returns>Selected file path, or null if cancelled</returns>
     string? ShowOpenFileDialog(string filter, string defaultExtension);
+
+    /// <summary>
+    /// Shows a folder browser dialog.
+    /// </summary>
+    /// <param name="description">Description shown in the dialog</param>
+    /// <param name="initialPath">Initial folder path to display</param>
+    /// <returns>Selected folder path, or null if cancelled</returns>
+    string? ShowFolderBrowserDialog(string description, string? initialPath = null);
 }

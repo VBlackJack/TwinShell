@@ -78,4 +78,21 @@ public class DialogService : IDialogService
 
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
+
+    public string? ShowFolderBrowserDialog(string description, string? initialPath = null)
+    {
+        // Use OpenFolderDialog (available in .NET 8+ WPF)
+        var dialog = new OpenFolderDialog
+        {
+            Title = description,
+            Multiselect = false
+        };
+
+        if (!string.IsNullOrEmpty(initialPath) && System.IO.Directory.Exists(initialPath))
+        {
+            dialog.InitialDirectory = initialPath;
+        }
+
+        return dialog.ShowDialog() == true ? dialog.FolderName : null;
+    }
 }

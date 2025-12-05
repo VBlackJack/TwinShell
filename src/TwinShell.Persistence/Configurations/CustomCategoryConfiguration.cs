@@ -41,5 +41,13 @@ public class CustomCategoryConfiguration : IEntityTypeConfiguration<CustomCatego
 
         builder.HasIndex(c => c.DisplayOrder);
         builder.HasIndex(c => c.Name);
+
+        // PublicId for GitOps synchronization - must be unique
+        builder.Property(c => c.PublicId)
+            .IsRequired();
+
+        builder.HasIndex(c => c.PublicId)
+            .IsUnique()
+            .HasDatabaseName("IX_CustomCategories_PublicId");
     }
 }

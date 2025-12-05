@@ -148,6 +148,346 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Git Repository Configuration Section -->
+                <TextBlock Text="Git Repository Configuration" Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="16"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <!-- Remote URL -->
+                        <TextBlock Text="Remote Repository URL" Style="{StaticResource SettingsLabelStyle}"/>
+                        <TextBlock Text="Git remote URL (HTTPS or SSH format)"
+                                   Style="{StaticResource DescriptionStyle}"/>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding GitRemoteUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBoxStyle}"
+                                     TabIndex="10"
+                                     AutomationProperties.Name="Git remote URL"/>
+                            <Button Grid.Column="1"
+                                    Content="Test"
+                                    Command="{Binding TestGitConnectionCommand}"
+                                    Padding="12,8"
+                                    MinWidth="70"
+                                    Margin="8,0,0,0"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    TabIndex="11"
+                                    ToolTip="Test connection to remote repository"
+                                    AutomationProperties.Name="Test connection">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+
+                        <!-- Local Path -->
+                        <TextBlock Text="Local Repository Path" Style="{StaticResource SettingsLabelStyle}"/>
+                        <TextBlock Text="Local folder where the repository will be cloned/synced"
+                                   Style="{StaticResource DescriptionStyle}"/>
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding GitRepositoryPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Style="{StaticResource ModernTextBoxStyle}"
+                                     IsReadOnly="True"
+                                     TabIndex="12"
+                                     AutomationProperties.Name="Git repository path"/>
+                            <Button Grid.Column="1"
+                                    Content="Browse..."
+                                    Command="{Binding BrowseGitRepositoryCommand}"
+                                    Padding="12,8"
+                                    MinWidth="80"
+                                    Margin="8,0,0,0"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    TabIndex="13"
+                                    AutomationProperties.Name="Browse for folder">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+
+                        <!-- Branch -->
+                        <TextBlock Text="Branch" Style="{StaticResource SettingsLabelStyle}"/>
+                        <ComboBox IsEditable="True"
+                                  Text="{Binding GitBranch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding CommonBranches}"
+                                  Width="200"
+                                  HorizontalAlignment="Left"
+                                  Margin="0,0,0,12"
+                                  TabIndex="14"
+                                  AutomationProperties.Name="Git branch"/>
+
+                        <!-- Authentication -->
+                        <TextBlock Text="Authentication Method" Style="{StaticResource SettingsLabelStyle}"/>
+                        <ComboBox SelectedItem="{Binding GitAuthMethod, Mode=TwoWay}"
+                                  ItemsSource="{Binding AuthMethods}"
+                                  Width="200"
+                                  HorizontalAlignment="Left"
+                                  Margin="0,0,0,12"
+                                  TabIndex="15"
+                                  AutomationProperties.Name="Authentication method"/>
+
+                        <!-- Access Token (for HTTPS) -->
+                        <TextBlock Text="Access Token (for HTTPS)" Style="{StaticResource SettingsLabelStyle}"/>
+                        <TextBlock Text="Personal access token or password for HTTPS authentication"
+                                   Style="{StaticResource DescriptionStyle}"/>
+                        <PasswordBox x:Name="GitAccessTokenBox"
+                                     Width="350"
+                                     HorizontalAlignment="Left"
+                                     Margin="0,0,0,12"
+                                     TabIndex="16"
+                                     PasswordChanged="GitAccessTokenBox_PasswordChanged"
+                                     AutomationProperties.Name="Git access token"/>
+
+                        <!-- User Info -->
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Git User Name" Style="{StaticResource SettingsLabelStyle}"/>
+                                <TextBox Text="{Binding GitUserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         TabIndex="17"
+                                         AutomationProperties.Name="Git user name"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Git User Email" Style="{StaticResource SettingsLabelStyle}"/>
+                                <TextBox Text="{Binding GitUserEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource ModernTextBoxStyle}"
+                                         TabIndex="18"
+                                         AutomationProperties.Name="Git user email"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Sync Options -->
+                        <CheckBox Content="Sync automatically on startup"
+                                  IsChecked="{Binding GitSyncOnStartup, Mode=TwoWay}"
+                                  Margin="0,8,0,0"
+                                  TabIndex="19"
+                                  AutomationProperties.Name="Sync on startup"/>
+                        <CheckBox Content="Auto-push changes after sync"
+                                  IsChecked="{Binding GitAutoPush, Mode=TwoWay}"
+                                  Margin="0,4,0,0"
+                                  TabIndex="20"
+                                  AutomationProperties.Name="Auto push changes"/>
+
+                        <!-- Repository Status -->
+                        <Border Background="{DynamicResource BackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="12"
+                                Margin="0,16,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Status: "
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding GitRepositoryStatus}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Initialize Button -->
+                        <Button Content="Initialize Repository"
+                                Command="{Binding InitializeGitRepositoryCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Padding="16,10"
+                                MinWidth="160"
+                                MinHeight="44"
+                                HorizontalAlignment="Left"
+                                Margin="0,16,0,0"
+                                TabIndex="21"
+                                ToolTip="Clone the remote repository to the local path"
+                                AutomationProperties.Name="Initialize repository"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Synchronization Actions Section -->
+                <TextBlock Text="Synchronization Actions" Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="16"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <!-- Git Sync Actions -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Button Content="Pull"
+                                    Command="{Binding GitPullCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Padding="16,10"
+                                    MinWidth="100"
+                                    MinHeight="44"
+                                    Margin="0,0,12,0"
+                                    TabIndex="22"
+                                    ToolTip="Pull changes from remote and import into database"
+                                    AutomationProperties.Name="Git Pull"/>
+
+                            <Button Content="Push"
+                                    Command="{Binding GitPushCommand}"
+                                    Padding="16,10"
+                                    MinWidth="100"
+                                    MinHeight="44"
+                                    Margin="0,0,12,0"
+                                    TabIndex="23"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    BorderBrush="{DynamicResource PrimaryBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    ToolTip="Export database to YAML and push to remote"
+                                    AutomationProperties.Name="Git Push">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Button Content="Full Sync"
+                                    Command="{Binding GitFullSyncCommand}"
+                                    Padding="16,10"
+                                    MinWidth="120"
+                                    MinHeight="44"
+                                    TabIndex="24"
+                                    Background="{DynamicResource SuccessBrush}"
+                                    Foreground="White"
+                                    BorderThickness="0"
+                                    Cursor="Hand"
+                                    ToolTip="Pull, import, export, and push (if enabled)"
+                                    AutomationProperties.Name="Full Sync">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Manual YAML Actions -->
+                        <TextBlock Text="Manual YAML Operations"
+                                   Style="{StaticResource SettingsLabelStyle}"
+                                   Margin="0,8,0,4"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Export to YAML"
+                                    Command="{Binding ExportToYamlCommand}"
+                                    Padding="16,10"
+                                    MinWidth="140"
+                                    MinHeight="44"
+                                    Margin="0,0,12,0"
+                                    TabIndex="25"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    ToolTip="Export all data to YAML files without Git operations"
+                                    AutomationProperties.Name="Export to YAML">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Button Content="Import from YAML"
+                                    Command="{Binding ImportFromYamlCommand}"
+                                    Padding="16,10"
+                                    MinWidth="140"
+                                    MinHeight="44"
+                                    TabIndex="26"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    ToolTip="Import data from YAML files without Git operations"
+                                    AutomationProperties.Name="Import from YAML">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Sync Status -->
+                        <TextBlock Text="{Binding SyncStatusMessage}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontStyle="Italic"
+                                   Margin="0,12,0,0"
+                                   Visibility="{Binding SyncStatusMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
+
                 <!-- Validation Error Display -->
                 <Border Background="{DynamicResource DangerBackgroundBrush}"
                         BorderBrush="{DynamicResource DangerBrush}"

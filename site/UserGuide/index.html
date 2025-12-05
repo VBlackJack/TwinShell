@@ -1,0 +1,6184 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Base de connaissances SysOps/DevOps - Docs-as-Code">
+      
+      
+        <meta name="author" content="ShellBook Team">
+      
+      
+        <link rel="canonical" href="https://shellbook.local/UserGuide/">
+      
+      
+        <link rel="prev" href="../formations/gitops-argocd/03-sync-strategies/">
+      
+      
+        <link rel="next" href="../QuickStart/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Guide utilisateur - ShellBook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guide-utilisateur-complet-twinshell" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="ShellBook" class="md-header__button md-logo" aria-label="ShellBook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ShellBook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Guide utilisateur
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan"  aria-label="Mode clair"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mode clair" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan"  aria-label="Mode sombre"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mode sombre" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TwinShell/ShellBook" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TwinShell/ShellBook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../formations/ntlite/" class="md-tabs__link">
+          
+  
+  
+  Formations
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../developer/" class="md-tabs__link">
+          
+  
+  
+  Developpeur
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ShellBook" class="md-nav__button md-logo" aria-label="ShellBook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ShellBook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TwinShell/ShellBook" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TwinShell/ShellBook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Formations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Niveau 0 - Accès & PADSEC
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Niveau 0 - Accès & PADSEC
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/ntlite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture PADSEC (NTLite)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network/vpn-topology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topologie VPN IPsec (Backbone)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/windows/active-directory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory (Red Forest)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_4" id="__nav_2_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardening AD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hardening AD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/ad-hardening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/ad-hardening/01-tiering-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèle de Tiering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/ad-hardening/02-attack-vectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vecteurs d'attaque
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/ad-hardening/03-audit-and-pso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit et PSO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Niveau 1 - Sécurité & PKI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Niveau 1 - Sécurité & PKI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2_1" id="__nav_2_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Infrastructure PKI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Infrastructure PKI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/pki-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/pki-security/01-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts PKI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/pki-security/02-openssl-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab OpenSSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/pki-security/03-debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Debugging TLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/pki-security/04-automation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Automatisation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/certificates/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gestion des Certificats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Niveau 2 - Plateformes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Niveau 2 - Plateformes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Performance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux Performance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/linux-perf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/linux-perf/01-cpu-load/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU & Load Average
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/linux-perf/02-memory-swap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mémoire & Swap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/linux-perf/03-disk-io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Disques & I/O
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/linux-perf/04-network-latency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Réseau & Latence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/linux/edge-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services Edge (Proxy & WC3S)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerShell Avancé
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PowerShell Avancé
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/powershell-advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/powershell-advanced/01-advanced-functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fonctions Avancées
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/powershell-advanced/02-error-handling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gestion d'Erreurs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/powershell-advanced/03-module-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design de Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Niveau 3 - Cloud & DevOps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Niveau 3 - Cloud & DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_1" id="__nav_2_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GCP & GKE
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GCP & GKE
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gcp-gke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gcp-gke/01-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture GKE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gcp-gke/02-security-iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sécurité & IAM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gcp-gke/03-storage-networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Storage & Networking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terraform Industrialisation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Terraform Industrialisation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/terraform-ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/terraform-ops/01-state-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    State Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/terraform-ops/02-modules-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structure des Modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/terraform-ops/03-secrets-and-vars/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitOps & ArgoCD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    GitOps & ArgoCD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gitops-argocd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gitops-argocd/01-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture ArgoCD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gitops-argocd/02-app-of-apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App of Apps Pattern
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formations/gitops-argocd/03-sync-strategies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stratégies de Sync
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide utilisateur
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide utilisateur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des Matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-principale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface Principale
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Principale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'Ensemble
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panneau-1-categories-gauche" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panneau 1 : Catégories (Gauche)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panneau-2-liste-des-commandes-centre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panneau 2 : Liste des Commandes (Centre)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panneau-3-details-et-parametres-droite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panneau 3 : Détails et Paramètres (Droite)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recherche-et-filtrage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche et Filtrage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recherche et Filtrage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recherche-textuelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche Textuelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtres-avances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtres Avancés
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metriques-de-recherche" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métriques de Recherche
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generer-et-copier-des-commandes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Générer et Copier des Commandes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Générer et Copier des Commandes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etape-par-etape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape par Étape
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemples-interactifs-v120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples Interactifs (v1.2.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alertes-de-securite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alertes de Sécurité
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#systeme-de-favoris" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Système de Favoris
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Système de Favoris">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ajouter-un-favori" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ajouter un Favori
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceder-aux-favoris" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux Favoris
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retirer-un-favori" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retirer un Favori
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limites-et-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limites et Messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historique-des-commandes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historique des Commandes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historique des Commandes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vue-densemble_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'Ensemble
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceder-a-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder à l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-de-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface de l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rechercher-dans-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rechercher dans l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtrer-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtrer l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copier-une-commande-passee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copier une Commande Passée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-entree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supprimer une Entrée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nettoyage-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nettoyage Automatique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-des-commandes-recentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget des Commandes Récentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categories-personnalisees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catégories Personnalisées
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Catégories Personnalisées">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ouvrir-le-gestionnaire-de-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ouvrir le Gestionnaire de Catégories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-de-gestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface de Gestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Créer une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#renommer-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Renommer une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supprimer une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorganiser-les-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réorganiser les Catégories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#masquerafficher-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Masquer/Afficher une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limites
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#themes-et-personnalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thèmes et Personnalisation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thèmes et Personnalisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acceder-aux-parametres-de-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux Paramètres de Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choisir-un-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choisir un Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#previsualiser-un-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prévisualiser un Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sauvegarder-le-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sauvegarder le Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conformite-wcag-aaa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformité WCAG AAA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parametres-avances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paramètres Avancés
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paramètres Avancés">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acceder-aux-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux Paramètres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-appearance-apparence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Appearance (Apparence)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-behavior-comportement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Behavior (Comportement)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinitialiser-les-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réinitialiser les Paramètres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-du-fichier-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement du Fichier de Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-et-import-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export et Import de Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export et Import de Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exporter-la-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporter la Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importer-une-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importer une Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cas-dusage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cas d'Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raccourcis-clavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raccourcis Clavier
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raccourcis Clavier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raccourcis-globaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raccourcis Globaux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation-au-clavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation au Clavier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aide-integree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aide Intégrée
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conseils-et-astuces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conseils et Astuces
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conseils et Astuces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimiser-votre-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimiser votre Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recherche-efficace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche Efficace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-des-commandes-recentes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget des Commandes Récentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-regulier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Régulier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolution-de-problemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résolution de Problèmes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Résolution de Problèmes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probleme-lapplication-ne-demarre-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : L'application ne démarre pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-le-theme-ne-change-pas-apres-sauvegarde" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Le thème ne change pas après sauvegarde
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-je-ne-trouve-pas-une-commande" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Je ne trouve pas une commande
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-les-raccourcis-clavier-ne-fonctionnent-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Les raccourcis clavier ne fonctionnent pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-categorie-non-modifiablesupprimable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Catégorie non modifiable/supprimable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-import-de-configuration-echoue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Import de configuration échoue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-base-de-donnees-volumineuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Base de données volumineuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ressources-supplementaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Ressources Supplémentaires
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Ressources Supplémentaires">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#communaute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Communauté
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../QuickStart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Démarrage rapide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developpeur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developpeur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    README
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contribuer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/ARCHITECTURE_DECISIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SECURITY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Securite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/TECHNICAL_DEBT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dette technique
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides Techniques
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides Techniques
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SEARCH_FUNCTIONALITY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recherche
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/PERFORMANCE_QUICK_START/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/CODE_STYLE_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Style
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/RECOMMENDED_REFACTORINGS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refactorings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rapports
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rapports
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SPRINT3_USER_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SPRINT-8-PERFORMANCE-GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 8 Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SPRINT-9-FINAL-REPORT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sprint 9 Final
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/CODE_ISSUES_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SECURITY_FIXES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Securite Fixes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SECURITY_EXECUTIVE_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Securite Exec Summary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/SECURITY_VULNERABILITIES_MAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulnerabilites Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Migration
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/MIGRATION_NOTES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes Migration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/S2-MIGRATION-GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 Migration Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/CROSS-PLATFORM-STRATEGY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cross-Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Windows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/OPTIMISATION-WINDOWS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Optimisation Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/PACKAGE-MANAGERS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package Managers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-des-matieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table des Matières
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-principale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface Principale
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Principale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'Ensemble
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panneau-1-categories-gauche" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panneau 1 : Catégories (Gauche)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panneau-2-liste-des-commandes-centre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panneau 2 : Liste des Commandes (Centre)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panneau-3-details-et-parametres-droite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Panneau 3 : Détails et Paramètres (Droite)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recherche-et-filtrage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche et Filtrage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recherche et Filtrage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recherche-textuelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche Textuelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtres-avances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtres Avancés
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metriques-de-recherche" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métriques de Recherche
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generer-et-copier-des-commandes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Générer et Copier des Commandes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Générer et Copier des Commandes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etape-par-etape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape par Étape
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemples-interactifs-v120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples Interactifs (v1.2.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alertes-de-securite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alertes de Sécurité
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#systeme-de-favoris" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Système de Favoris
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Système de Favoris">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ajouter-un-favori" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ajouter un Favori
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceder-aux-favoris" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux Favoris
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retirer-un-favori" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retirer un Favori
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limites-et-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limites et Messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persistance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historique-des-commandes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historique des Commandes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historique des Commandes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vue-densemble_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'Ensemble
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceder-a-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder à l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-de-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface de l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rechercher-dans-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rechercher dans l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtrer-lhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filtrer l'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copier-une-commande-passee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Copier une Commande Passée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-entree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supprimer une Entrée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nettoyage-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nettoyage Automatique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-des-commandes-recentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget des Commandes Récentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categories-personnalisees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Catégories Personnalisées
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Catégories Personnalisées">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ouvrir-le-gestionnaire-de-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ouvrir le Gestionnaire de Catégories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface-de-gestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface de Gestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Créer une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#renommer-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Renommer une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supprimer une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorganiser-les-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réorganiser les Catégories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#masquerafficher-une-categorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Masquer/Afficher une Catégorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limites
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#themes-et-personnalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thèmes et Personnalisation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Thèmes et Personnalisation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acceder-aux-parametres-de-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux Paramètres de Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choisir-un-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choisir un Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#previsualiser-un-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prévisualiser un Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sauvegarder-le-theme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sauvegarder le Thème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conformite-wcag-aaa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conformité WCAG AAA
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parametres-avances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paramètres Avancés
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paramètres Avancés">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acceder-aux-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accéder aux Paramètres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-appearance-apparence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Appearance (Apparence)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-behavior-comportement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Section Behavior (Comportement)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reinitialiser-les-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réinitialiser les Paramètres
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emplacement-du-fichier-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emplacement du Fichier de Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-et-import-de-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export et Import de Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export et Import de Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exporter-la-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporter la Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importer-une-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importer une Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cas-dusage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cas d'Usage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raccourcis-clavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raccourcis Clavier
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Raccourcis Clavier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raccourcis-globaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raccourcis Globaux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation-au-clavier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation au Clavier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aide-integree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aide Intégrée
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conseils-et-astuces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conseils et Astuces
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conseils et Astuces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimiser-votre-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optimiser votre Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recherche-efficace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche Efficace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#widget-des-commandes-recentes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Widget des Commandes Récentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-regulier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Régulier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolution-de-problemes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résolution de Problèmes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Résolution de Problèmes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#probleme-lapplication-ne-demarre-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : L'application ne démarre pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-le-theme-ne-change-pas-apres-sauvegarde" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Le thème ne change pas après sauvegarde
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-je-ne-trouve-pas-une-commande" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Je ne trouve pas une commande
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-les-raccourcis-clavier-ne-fonctionnent-pas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Les raccourcis clavier ne fonctionnent pas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-categorie-non-modifiablesupprimable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Catégorie non modifiable/supprimable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-import-de-configuration-echoue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Import de configuration échoue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme-base-de-donnees-volumineuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème : Base de données volumineuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ressources-supplementaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Ressources Supplémentaires
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Ressources Supplémentaires">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#communaute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Communauté
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guide-utilisateur-complet-twinshell">📘 Guide Utilisateur Complet - TwinShell<a class="headerlink" href="#guide-utilisateur-complet-twinshell" title="Permanent link">&para;</a></h1>
+<p><strong>Documentation complète pour maîtriser toutes les fonctionnalités de TwinShell</strong></p>
+<hr />
+<h2 id="table-des-matieres">Table des Matières<a class="headerlink" href="#table-des-matieres" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#interface-principale">Interface Principale</a></li>
+<li><a href="#recherche-et-filtrage">Recherche et Filtrage</a></li>
+<li><a href="#générer-et-copier-des-commandes">Générer et Copier des Commandes</a></li>
+<li><a href="#système-de-favoris">Système de Favoris</a></li>
+<li><a href="#historique-des-commandes">Historique des Commandes</a></li>
+<li><a href="#catégories-personnalisées">Catégories Personnalisées</a></li>
+<li><a href="#thèmes-et-personnalisation">Thèmes et Personnalisation</a></li>
+<li><a href="#paramètres-avancés">Paramètres Avancés</a></li>
+<li><a href="#export-et-import-de-configuration">Export et Import de Configuration</a></li>
+<li><a href="#raccourcis-clavier">Raccourcis Clavier</a></li>
+<li><a href="#conseils-et-astuces">Conseils et Astuces</a></li>
+<li><a href="#résolution-de-problèmes">Résolution de Problèmes</a></li>
+</ol>
+<hr />
+<h2 id="interface-principale">Interface Principale<a class="headerlink" href="#interface-principale" title="Permanent link">&para;</a></h2>
+<h3 id="vue-densemble">Vue d'Ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h3>
+<p>L'interface TwinShell est organisée en <strong>3 panneaux principaux</strong> :</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  TwinShell                                             [_][□][X]│
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├─────────────────────────────────────────────────────────────────┤
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  📁 File  ⚙️ Tools  ❓ Help        [Recherche___] 🔍  Filtres │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├──────────────┬──────────────────────────────┬───────────────────┤
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  Catégories  │   Liste des Commandes       │  Détails &amp; Params  │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│              │                              │                   │
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  📋 All      │  ✓ Get-Service              │  Get-Service      │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  ⭐ Favs     │    List Windows services    │  ───────────────  │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│              │    [Windows] [Run]           │  Service Name:    │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  🏢 AD&amp;GPO   │                             │  [Spooler____]    │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  🌐 Network  │  ✓ systemctl status         │                   │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  📊 Logs     │    Linux service info       │  Generated:       │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  ⚙️ Services │    [Linux] [Info]           │  ┌──────────────┐ │
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  💻 Windows  │                             │  │Get-Service...│ │
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│  🐧 Linux    │  ✓ Get-EventLog             │  └──────────────┘ │
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  ...         │    Windows event logs       │                    │
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│              │    [Windows] [Dangerous]    │  [📋 Copier]       │
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>└──────────────┴──────────────────────────────┴───────────────────┘
+</span></code></pre></div>
+<h3 id="panneau-1-categories-gauche">Panneau 1 : Catégories (Gauche)<a class="headerlink" href="#panneau-1-categories-gauche" title="Permanent link">&para;</a></h3>
+<p><strong>Catégories Spéciales :</strong>
+- <strong>📋 All Commands</strong> : Affiche toutes les commandes disponibles (sans filtre)
+- <strong>⭐ Favorites</strong> : Accès rapide à vos commandes favorites (max 50)</p>
+<p><strong>Catégories Prédéfinies :</strong>
+- 🏢 <strong>Active Directory &amp; GPO</strong> : Gestion des utilisateurs AD, groupes, GPO
+- 🌐 <strong>Network &amp; DNS</strong> : Diagnostics réseau, DNS, ping, traceroute
+- 📊 <strong>Monitoring &amp; Logs</strong> : EventLog, journald, surveillance système
+- ⚙️ <strong>Services &amp; Automation</strong> : Services Windows/Linux, tâches planifiées
+- 💻 <strong>Windows Optimization</strong> : Optimisation et maintenance Windows
+- 🐧 <strong>Linux Administration</strong> : Administration système Linux
+- 📦 <strong>Package Management</strong> : Gestion des paquets (apt, yum, winget, choco)
+- 📁 <strong>Files &amp; Storage</strong> : Gestion des fichiers et stockage
+- 🔒 <strong>Security &amp; Encryption</strong> : Sécurité, chiffrement, BitLocker
+- 🔄 <strong>Windows Updates</strong> : Mises à jour Windows
+- 👥 <strong>User Management</strong> : Gestion des utilisateurs locaux
+- 🐳 <strong>Containers &amp; VMs</strong> : Docker, conteneurs, machines virtuelles
+- 💽 <strong>Database</strong> : Bases de données (SQL Server, MySQL, PostgreSQL)
+- 🔧 <strong>Development</strong> : Outils de développement (Git, npm, etc.)
+- ⚡ <strong>Performance</strong> : Analyse et optimisation des performances</p>
+<p><strong>Catégories Personnalisées :</strong>
+- Créez vos propres catégories avec icônes et couleurs personnalisées
+- Gérez-les via <code>Ctrl+M</code> ou menu <strong>Tools → Manage Categories</strong></p>
+<h3 id="panneau-2-liste-des-commandes-centre">Panneau 2 : Liste des Commandes (Centre)<a class="headerlink" href="#panneau-2-liste-des-commandes-centre" title="Permanent link">&para;</a></h3>
+<p>Affiche les commandes filtrées avec :
+- <strong>Titre</strong> de la commande
+- <strong>Description</strong> courte
+- <strong>Badges</strong> :
+  - Plateforme : [Windows] | [Linux] | [Both]
+  - Niveau : [Info] (bleu) | [Run] (orange) | [Dangerous] (rouge)
+- <strong>Tags visuels</strong> : Identifiez rapidement le type de commande</p>
+<blockquote>
+<p>🌍 <strong>Nouveau</strong> : Le badge <strong>[Both]</strong> indique que la commande fonctionne nativement sur Windows (PowerShell) et Linux (Bash). C'est le cas pour la plupart des outils Cloud et DevOps (AWS CLI, Terraform, OpenSSL, Docker, kubectl).</p>
+</blockquote>
+<h3 id="panneau-3-details-et-parametres-droite">Panneau 3 : Détails et Paramètres (Droite)<a class="headerlink" href="#panneau-3-details-et-parametres-droite" title="Permanent link">&para;</a></h3>
+<p>Affiche pour la commande sélectionnée :
+- <strong>Titre et Description</strong> complète
+- <strong>Étoile de favori</strong> (☆/★)
+- <strong>Paramètres dynamiques</strong> à remplir
+- <strong>Commande générée</strong> en temps réel
+- <strong>Bouton Copier</strong> pour le presse-papiers
+- <strong>Exemples d'utilisation</strong> (avec sélection de texte)
+- <strong>Notes</strong> et <strong>Liens externes</strong> (si disponibles)</p>
+<hr />
+<h2 id="recherche-et-filtrage">Recherche et Filtrage<a class="headerlink" href="#recherche-et-filtrage" title="Permanent link">&para;</a></h2>
+<h3 id="recherche-textuelle">Recherche Textuelle<a class="headerlink" href="#recherche-textuelle" title="Permanent link">&para;</a></h3>
+<h4 id="fonctionnement">Fonctionnement<a class="headerlink" href="#fonctionnement" title="Permanent link">&para;</a></h4>
+<p>La barre de recherche (en haut) filtre les commandes en <strong>temps réel</strong> dans :
+- Titre
+- Description
+- Catégorie
+- Tags
+- Notes
+- Templates de commandes (PowerShell et Bash)</p>
+<h4 id="recherche-intelligente">Recherche Intelligente<a class="headerlink" href="#recherche-intelligente" title="Permanent link">&para;</a></h4>
+<p>TwinShell utilise une <strong>normalisation avancée</strong> pour une recherche tolérante :</p>
+<table>
+<thead>
+<tr>
+<th>Fonctionnalité</th>
+<th>Exemple</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Insensible à la casse</strong></td>
+<td><code>SERVICE</code></td>
+<td>Trouve "Get-Service"</td>
+</tr>
+<tr>
+<td><strong>Ignore les accents</strong></td>
+<td><code>reseau</code></td>
+<td>Trouve "Configuration Réseau"</td>
+</tr>
+<tr>
+<td><strong>Normalise la ponctuation</strong></td>
+<td><code>Get Service</code></td>
+<td>Trouve "Get-Service"</td>
+</tr>
+<tr>
+<td><strong>Fuzzy matching</strong></td>
+<td><code>serviec</code></td>
+<td>Trouve "service" (tolérance 30%)</td>
+</tr>
+<tr>
+<td><strong>Multi-mots (AND)</strong></td>
+<td><code>AD user</code></td>
+<td>Trouve actions contenant "AD" ET "user"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="suggestions-dautocompletion">Suggestions d'Autocomplétion<a class="headerlink" href="#suggestions-dautocompletion" title="Permanent link">&para;</a></h4>
+<p>Lors de la saisie, TwinShell propose des <strong>suggestions basées sur l'historique</strong> de vos recherches précédentes.</p>
+<h4 id="exemples-de-recherche">Exemples de Recherche<a class="headerlink" href="#exemples-de-recherche" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Recherche : &quot;dns&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Résultats : &quot;Clear DNS Cache&quot;, &quot;DNS Query&quot;, &quot;Get DNS Records&quot;
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Recherche : &quot;active directory user&quot;
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Résultats : &quot;List AD Users&quot;, &quot;Create AD User&quot;, &quot;Get AD User Info&quot;
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Recherche : &quot;systemctl&quot;
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Résultats : Toutes les commandes utilisant systemctl dans leurs templates
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>Recherche : &quot;aws ec2&quot;
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>Résultats : &quot;Lister les instances EC2&quot;, &quot;Démarrer une instance&quot;
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>Recherche : &quot;k8s pods&quot;
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>Résultats : &quot;kubectl-get-pods&quot;, &quot;kubectl-describe-pod&quot;
+</span></code></pre></div>
+<h3 id="filtres-avances">Filtres Avancés<a class="headerlink" href="#filtres-avances" title="Permanent link">&para;</a></h3>
+<h4 id="filtre-platform">Filtre Platform<a class="headerlink" href="#filtre-platform" title="Permanent link">&para;</a></h4>
+<p>Cochez les plateformes souhaitées :
+- ☑ <strong>Windows</strong> : Commandes PowerShell uniquement
+- ☑ <strong>Linux</strong> : Commandes Bash uniquement
+- ☑ <strong>Both</strong> : Commandes disponibles sur les deux plateformes</p>
+<h4 id="filtre-level">Filtre Level<a class="headerlink" href="#filtre-level" title="Permanent link">&para;</a></h4>
+<p>Filtrez par niveau de criticité :
+- ☑ <strong>Info</strong> (bleu) : Commandes de lecture, sans danger
+- ☑ <strong>Run</strong> (orange) : Commandes d'exécution, nécessitent attention
+- ☑ <strong>Dangerous</strong> (rouge) : Commandes de modification système, DANGER !</p>
+<blockquote>
+<p>⚠️ <strong>Note</strong> : Quand une recherche textuelle est active, le filtre de catégorie est automatiquement désactivé pour montrer tous les résultats pertinents.</p>
+</blockquote>
+<h3 id="metriques-de-recherche">Métriques de Recherche<a class="headerlink" href="#metriques-de-recherche" title="Permanent link">&para;</a></h3>
+<p>En bas de la liste, TwinShell affiche :
+- 📊 <strong>Nombre de résultats</strong> : Ex. "142 résultats trouvés"
+- ⏱️ <strong>Temps de recherche</strong> : Ex. "en 23ms"</p>
+<hr />
+<h2 id="generer-et-copier-des-commandes">Générer et Copier des Commandes<a class="headerlink" href="#generer-et-copier-des-commandes" title="Permanent link">&para;</a></h2>
+<h3 id="etape-par-etape">Étape par Étape<a class="headerlink" href="#etape-par-etape" title="Permanent link">&para;</a></h3>
+<h4 id="1-selectionner-une-commande">1. Sélectionner une Commande<a class="headerlink" href="#1-selectionner-une-commande" title="Permanent link">&para;</a></h4>
+<p>Cliquez sur une commande dans la liste centrale. Le panneau de droite affiche les détails.</p>
+<h4 id="2-remplir-les-parametres">2. Remplir les Paramètres<a class="headerlink" href="#2-remplir-les-parametres" title="Permanent link">&para;</a></h4>
+<p>Selon la commande, remplissez les champs demandés :</p>
+<p><strong>Exemple : Get-Service</strong>
+- <strong>ServiceName</strong> (requis) : <code>Spooler</code></p>
+<p><strong>Exemple : Get-ADUser</strong>
+- <strong>Identity</strong> (requis) : <code>jdoe</code>
+- <strong>Properties</strong> (optionnel) : <code>DisplayName,EmailAddress</code></p>
+<blockquote>
+<p>💡 Les champs <strong>obligatoires</strong> sont marqués d'un astérisque <code>*</code></p>
+</blockquote>
+<h4 id="3-commande-generee-automatiquement">3. Commande Générée Automatiquement<a class="headerlink" href="#3-commande-generee-automatiquement" title="Permanent link">&para;</a></h4>
+<p>La commande se génère <strong>en temps réel</strong> au fur et à mesure que vous remplissez les paramètres.</p>
+<p><strong>Avant :</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Get-Service -Name {ServiceName}
+</span></code></pre></div></p>
+<p><strong>Après (avec paramètre "Spooler") :</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Get-Service -Name Spooler
+</span></code></pre></div></p>
+<h4 id="4-copier-dans-le-presse-papiers">4. Copier dans le Presse-Papiers<a class="headerlink" href="#4-copier-dans-le-presse-papiers" title="Permanent link">&para;</a></h4>
+<p>Cliquez sur le bouton <strong>"📋 Copier dans le presse-papiers"</strong>.</p>
+<p>Une notification toast verte confirme : ✅ "Commande copiée !"</p>
+<h4 id="5-executer-dans-votre-terminal">5. Exécuter dans votre Terminal<a class="headerlink" href="#5-executer-dans-votre-terminal" title="Permanent link">&para;</a></h4>
+<p><strong>PowerShell :</strong>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c"># Collez (Ctrl+V) dans PowerShell</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">Get-Service</span> <span class="n">-Name</span> <span class="n">Spooler</span>
+</span></code></pre></div></p>
+<p><strong>Bash (WSL) :</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Collez (Ctrl+Shift+V) dans un terminal WSL</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>systemctl<span class="w"> </span>status<span class="w"> </span>nginx
+</span></code></pre></div></p>
+<h3 id="exemples-interactifs-v120">Exemples Interactifs (v1.2.0)<a class="headerlink" href="#exemples-interactifs-v120" title="Permanent link">&para;</a></h3>
+<p>Chaque commande inclut des <strong>exemples d'utilisation</strong> que vous pouvez <strong>appliquer directement</strong> au générateur :</p>
+<h4 id="mode-template-par-defaut">Mode Template (par défaut)<a class="headerlink" href="#mode-template-par-defaut" title="Permanent link">&para;</a></h4>
+<p>Utilisez les paramètres prédéfinis du template de commande.</p>
+<h4 id="mode-exemple">Mode Exemple<a class="headerlink" href="#mode-exemple" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Cliquez sur un exemple</strong> dans la liste des exemples</li>
+<li>Le générateur <strong>s'adapte automatiquement</strong> à l'exemple sélectionné</li>
+<li>Les champs de paramètres sont <strong>pré-remplis</strong> avec les valeurs de l'exemple</li>
+<li>Modifiez les valeurs selon vos besoins</li>
+<li>Un badge <strong>"Example Mode"</strong> s'affiche pour indiquer le mode actif</li>
+<li>Cliquez sur <strong>"Reset to Template"</strong> pour revenir au mode template</li>
+</ol>
+<h4 id="scripts-complexes-editables">Scripts Complexes Éditables<a class="headerlink" href="#scripts-complexes-editables" title="Permanent link">&para;</a></h4>
+<p>Pour les commandes complexes (contenant <code>foreach</code>, <code>ForEach-Object</code>, <code>while</code>, pipelines multiples, etc.), TwinShell affiche un <strong>éditeur multiligne</strong> :</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>┌─────────────────────────────────────────────────────────────────┐
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>│  Command:                                                        │
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>│  ┌─────────────────────────────────────────────────────────────┐ │
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│  │ 1..100 | ForEach-Object {                                   │ │
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>│  │   Test-NetConnection 192.168.1.$_ -Port 80                  │ │
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>│  │ } | Where-Object {$_.TcpTestSucceeded -eq $true}            │ │
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>│  └─────────────────────────────────────────────────────────────┘ │
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>└─────────────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<ul>
+<li>Modifiez directement la commande dans l'éditeur</li>
+<li>La police monospace (Consolas) facilite la lecture du code</li>
+<li>La commande générée reflète vos modifications en temps réel</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Astuce</strong> : Vous pouvez aussi <strong>sélectionner le texte</strong> dans les exemples pour le copier manuellement.</p>
+</blockquote>
+<h3 id="alertes-de-securite">Alertes de Sécurité<a class="headerlink" href="#alertes-de-securite" title="Permanent link">&para;</a></h3>
+<p>Les commandes de niveau <strong>Dangerous</strong> affichent un <strong>bandeau d'avertissement rouge</strong> :</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>⚠️ ATTENTION : Cette commande peut causer des modifications importantes du système
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>              Vérifiez tous les paramètres avant exécution.
+</span></code></pre></div>
+<p><strong>Exemples de commandes dangereuses :</strong>
+- <code>Clear-EventLog</code> : Efface les logs Windows
+- <code>Disable-ADAccount</code> : Désactive un compte Active Directory
+- <code>Stop-Process -Force</code> : Force l'arrêt d'un processus</p>
+<hr />
+<h2 id="systeme-de-favoris">Système de Favoris<a class="headerlink" href="#systeme-de-favoris" title="Permanent link">&para;</a></h2>
+<h3 id="ajouter-un-favori">Ajouter un Favori<a class="headerlink" href="#ajouter-un-favori" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Sélectionnez une commande dans la liste</li>
+<li>Cliquez sur l'<strong>étoile vide (☆)</strong> à côté du titre</li>
+<li>L'étoile devient <strong>pleine et dorée (★)</strong></li>
+<li>Un message confirme : ✅ "Ajouté aux favoris"</li>
+</ol>
+<h3 id="acceder-aux-favoris">Accéder aux Favoris<a class="headerlink" href="#acceder-aux-favoris" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cliquez sur la catégorie <strong>"⭐ Favorites"</strong> dans le panneau de gauche</li>
+<li>Toutes vos commandes favorites s'affichent</li>
+</ul>
+<h3 id="retirer-un-favori">Retirer un Favori<a class="headerlink" href="#retirer-un-favori" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cliquez sur l'<strong>étoile pleine (★)</strong> pour la vider</li>
+<li>La commande est retirée des favoris</li>
+</ul>
+<h3 id="limites-et-messages">Limites et Messages<a class="headerlink" href="#limites-et-messages" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Maximum</strong> : 50 favoris par utilisateur</li>
+<li>Si vous atteignez la limite, un message s'affiche :
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>⚠️ Limite de favoris atteinte (50/50)
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Retirez un favori existant pour en ajouter un nouveau.
+</span></code></pre></div></li>
+</ul>
+<h3 id="persistance">Persistance<a class="headerlink" href="#persistance" title="Permanent link">&para;</a></h3>
+<p>Les favoris sont sauvegardés dans la base de données SQLite et <strong>persistent entre les sessions</strong>.</p>
+<hr />
+<h2 id="historique-des-commandes">Historique des Commandes<a class="headerlink" href="#historique-des-commandes" title="Permanent link">&para;</a></h2>
+<h3 id="vue-densemble_1">Vue d'Ensemble<a class="headerlink" href="#vue-densemble_1" title="Permanent link">&para;</a></h3>
+<p>TwinShell enregistre automatiquement <strong>chaque commande générée</strong> avec :
+- <strong>Commande complète</strong> générée
+- <strong>Date et heure</strong> de génération
+- <strong>Catégorie</strong> et <strong>Titre</strong> de l'action
+- <strong>Plateforme</strong> (Windows/Linux)
+- <strong>Paramètres</strong> utilisés</p>
+<h3 id="acceder-a-lhistorique">Accéder à l'Historique<a class="headerlink" href="#acceder-a-lhistorique" title="Permanent link">&para;</a></h3>
+<p><strong>Menu</strong> : Cliquez sur l'onglet <strong>"📜 History"</strong></p>
+<h3 id="interface-de-lhistorique">Interface de l'Historique<a class="headerlink" href="#interface-de-lhistorique" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>┌────────────────────────────────────────────────────────────────┐
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>│  📜 Historique des Commandes                                   │
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>├────────────────────────────────────────────────────────────────┤
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│  [Recherche___] 🔍    Filtres: [Date] [Catégorie] [Platform]  │
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>├────────────────────────────────────────────────────────────────┤
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│                                                                │
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>│  ⏰ Il y a 5 min                                  [Windows]    │
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│  Get-Service -Name Spooler                                     │
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>│  Action: Get-Service | Catégorie: Services                     │
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>│  [📋 Copier]  [🗑️ Supprimer]                                   │
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>│  ──────────────────────────────────────────────────────────────│
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>│                                                                │
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>│  ⏰ Il y a 2h                                     [Linux]      │
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>│  systemctl status nginx                                        │
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>│  Action: System Service Check | Catégorie: Services           │
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>│  [📋 Copier]  [🗑️ Supprimer]                                   │
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>│  ──────────────────────────────────────────────────────────────│
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>│                                                                │
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>│  ⏰ Hier à 14:30                                  [Windows]    │
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>│  Get-ADUser -Identity jdoe -Properties DisplayName             │
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>│  Action: Get AD User | Catégorie: Active Directory            │
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>│  [📋 Copier]  [🗑️ Supprimer]                                   │
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>│  ──────────────────────────────────────────────────────────────│
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>│                                                                │
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>│  ... (affiche jusqu&#39;à 1000 entrées par défaut)                │
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>└────────────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<h3 id="rechercher-dans-lhistorique">Rechercher dans l'Historique<a class="headerlink" href="#rechercher-dans-lhistorique" title="Permanent link">&para;</a></h3>
+<p>Tapez dans la barre de recherche pour filtrer par :
+- Texte de la commande
+- Titre de l'action
+- Catégorie</p>
+<h3 id="filtrer-lhistorique">Filtrer l'Historique<a class="headerlink" href="#filtrer-lhistorique" title="Permanent link">&para;</a></h3>
+<p><strong>Par Date :</strong>
+- Sélectionnez une plage de dates (ex: "Derniers 7 jours", "Derniers 30 jours", "Personnalisé")</p>
+<p><strong>Par Catégorie :</strong>
+- Sélectionnez une catégorie spécifique (ex: "Active Directory", "DNS")</p>
+<p><strong>Par Plateforme :</strong>
+- Windows uniquement
+- Linux uniquement
+- Les deux</p>
+<h3 id="copier-une-commande-passee">Copier une Commande Passée<a class="headerlink" href="#copier-une-commande-passee" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cliquez sur le bouton <strong>"📋 Copier"</strong> à côté de la commande</li>
+<li>La commande est copiée dans le presse-papiers</li>
+</ul>
+<h3 id="supprimer-une-entree">Supprimer une Entrée<a class="headerlink" href="#supprimer-une-entree" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Cliquez sur le bouton <strong>"🗑️ Supprimer"</strong></li>
+<li>Confirmez la suppression</li>
+<li>L'entrée est supprimée de l'historique</li>
+</ul>
+<h3 id="nettoyage-automatique">Nettoyage Automatique<a class="headerlink" href="#nettoyage-automatique" title="Permanent link">&para;</a></h3>
+<p>Par défaut, l'historique conserve <strong>90 jours</strong> de commandes.</p>
+<p>Les commandes plus anciennes sont <strong>automatiquement supprimées</strong>.</p>
+<p><strong>Configurable dans les paramètres</strong> (de 1 à 3650 jours).</p>
+<h3 id="widget-des-commandes-recentes">Widget des Commandes Récentes<a class="headerlink" href="#widget-des-commandes-recentes" title="Permanent link">&para;</a></h3>
+<p>Sur la <strong>page d'accueil</strong>, un widget affiche vos <strong>5 dernières commandes</strong> :</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>📋 Commandes Récentes
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>⏰ 5 min ago    Get-Service -Name Spooler
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>⏰ 2h ago       systemctl status nginx
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>⏰ Hier 14:30   Get-ADUser -Identity jdoe
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>⏰ 3 jours      Clear-DnsClientCache
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>⏰ 1 semaine    Get-EventLog -LogName System -Newest 100
+</span></code></pre></div>
+<p><strong>Cliquez</strong> sur une entrée pour la copier instantanément !</p>
+<hr />
+<h2 id="categories-personnalisees">Catégories Personnalisées<a class="headerlink" href="#categories-personnalisees" title="Permanent link">&para;</a></h2>
+<h3 id="ouvrir-le-gestionnaire-de-categories">Ouvrir le Gestionnaire de Catégories<a class="headerlink" href="#ouvrir-le-gestionnaire-de-categories" title="Permanent link">&para;</a></h3>
+<p><strong>Méthode 1 :</strong> Menu <strong>Tools → Manage Categories</strong>
+<strong>Méthode 2 :</strong> Raccourci clavier <strong>Ctrl+M</strong></p>
+<h3 id="interface-de-gestion">Interface de Gestion<a class="headerlink" href="#interface-de-gestion" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>┌────────────────────────────────────────────────────────────────┐
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>│  Gérer les Catégories                                          │
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>├──────────────────────┬─────────────────────────────────────────┤
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>│  Catégories          │  Détails de la Catégorie                │
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>│  [+ Add New]         │                                         │
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>│                      │  🔵 Active Directory                     │
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>│  🔵 AD (5 actions)   │  Icon: user                             │
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>│  🟢 DNS (3 actions)  │  Color: #2196F3                         │
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>│  🔴 Logs (7 actions) │  Actions: 5                             │
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>│  🟠 Backup           │  Status: Visible                        │
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>│  🟣 Monitoring       │  Type: Custom                           │
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>│                      │                                         │
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>│  [↑ Move Up]         │  [Rename]  [Hide]  [Delete]            │
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>│  [↓ Move Down]       │                                         │
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>└──────────────────────┴─────────────────────────────────────────┘
+</span></code></pre></div>
+<h3 id="creer-une-categorie">Créer une Catégorie<a class="headerlink" href="#creer-une-categorie" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Cliquez sur <strong>"+ Add New Category"</strong></li>
+<li>Remplissez le formulaire :</li>
+<li><strong>Nom</strong> : Ex. "Backup Quotidien"</li>
+<li><strong>Icône</strong> : Choisissez parmi 24 icônes :<ul>
+<li>📁 folder, ⭐ star, 🔧 tools, 🗄️ database, 📊 chart, 🔒 lock, etc.</li>
+</ul>
+</li>
+<li><strong>Couleur</strong> : Sélectionnez une des 12 couleurs :<ul>
+<li>Bleu, Vert, Rouge, Orange, Violet, Rose, Jaune, Cyan, etc.</li>
+</ul>
+</li>
+<li><strong>Description</strong> (optionnel) : "Commandes pour les backups quotidiens automatisés"</li>
+<li>Cliquez sur <strong>"Save Category"</strong></li>
+</ol>
+<p>Une notification confirme : ✅ "Catégorie créée avec succès"</p>
+<h3 id="renommer-une-categorie">Renommer une Catégorie<a class="headerlink" href="#renommer-une-categorie" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Sélectionnez la catégorie dans la liste</li>
+<li>Cliquez sur <strong>"Rename Category"</strong></li>
+<li>Modifiez le nom</li>
+<li>Cliquez sur <strong>"Save"</strong></li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Note</strong> : Les catégories système (avec badge jaune "System") ne peuvent pas être renommées.</p>
+</blockquote>
+<h3 id="supprimer-une-categorie">Supprimer une Catégorie<a class="headerlink" href="#supprimer-une-categorie" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Sélectionnez la catégorie</li>
+<li>Cliquez sur <strong>"Delete Category"</strong></li>
+<li>Un message de confirmation affiche le <strong>nombre d'actions affectées</strong></li>
+<li>Confirmez la suppression</li>
+</ol>
+<p><strong>Comportement :</strong>
+- La catégorie est retirée de toutes les actions qui l'utilisent
+- Les actions ne sont PAS supprimées (juste la référence à la catégorie)</p>
+<blockquote>
+<p>⚠️ <strong>Protection</strong> : Les catégories système ne peuvent pas être supprimées.</p>
+</blockquote>
+<h3 id="reorganiser-les-categories">Réorganiser les Catégories<a class="headerlink" href="#reorganiser-les-categories" title="Permanent link">&para;</a></h3>
+<p><strong>Boutons "Move Up" et "Move Down" :</strong>
+- Changez l'ordre d'affichage dans le panneau de gauche
+- L'ordre est sauvegardé automatiquement</p>
+<h3 id="masquerafficher-une-categorie">Masquer/Afficher une Catégorie<a class="headerlink" href="#masquerafficher-une-categorie" title="Permanent link">&para;</a></h3>
+<p><strong>Bouton "Hide" :</strong>
+- Masque la catégorie de la navigation (panneau gauche)
+- La catégorie existe toujours dans la base de données</p>
+<p><strong>Bouton "Show" :</strong>
+- Réaffiche la catégorie masquée</p>
+<h3 id="limites">Limites<a class="headerlink" href="#limites" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Maximum</strong> : 50 catégories personnalisées</li>
+<li>Message si limite atteinte : "Limite de catégories atteinte (50/50)"</li>
+</ul>
+<hr />
+<h2 id="themes-et-personnalisation">Thèmes et Personnalisation<a class="headerlink" href="#themes-et-personnalisation" title="Permanent link">&para;</a></h2>
+<h3 id="acceder-aux-parametres-de-theme">Accéder aux Paramètres de Thème<a class="headerlink" href="#acceder-aux-parametres-de-theme" title="Permanent link">&para;</a></h3>
+<p><strong>Méthode 1 :</strong> Menu <strong>File → Settings</strong>
+<strong>Méthode 2 :</strong> Raccourci clavier <strong>Ctrl+,</strong></p>
+<h3 id="choisir-un-theme">Choisir un Thème<a class="headerlink" href="#choisir-un-theme" title="Permanent link">&para;</a></h3>
+<p>Section <strong>Appearance</strong> :</p>
+<ol>
+<li><strong>Light</strong> : Thème clair (par défaut)</li>
+<li>Fond blanc/gris clair</li>
+<li>Texte noir</li>
+<li>
+<p>Idéal pour les environnements lumineux</p>
+</li>
+<li>
+<p><strong>Dark</strong> : Thème sombre professionnel</p>
+</li>
+<li>Fond gris foncé/noir</li>
+<li>Texte blanc</li>
+<li>
+<p>Réduit la fatigue oculaire</p>
+</li>
+<li>
+<p><strong>System</strong> : Suit automatiquement le thème Windows</p>
+</li>
+<li>Lit le registre Windows : <code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize</code></li>
+<li>Change automatiquement si Windows passe de clair à sombre (et vice versa)</li>
+</ol>
+<h3 id="previsualiser-un-theme">Prévisualiser un Thème<a class="headerlink" href="#previsualiser-un-theme" title="Permanent link">&para;</a></h3>
+<p>Cliquez sur <strong>"Preview Theme"</strong> pour voir le résultat <strong>sans sauvegarder</strong>.</p>
+<p><strong>Caractéristiques :</strong>
+- <strong>Transition fluide</strong> : Changement sans clignotement
+- <strong>Application immédiate</strong> : Tous les écrans sont mis à jour
+- <strong>Réversible</strong> : Cliquez "Cancel" pour revenir au thème précédent</p>
+<h3 id="sauvegarder-le-theme">Sauvegarder le Thème<a class="headerlink" href="#sauvegarder-le-theme" title="Permanent link">&para;</a></h3>
+<p>Cliquez sur <strong>"Save"</strong> pour enregistrer votre choix.</p>
+<p>Le thème est sauvegardé dans <code>%APPDATA%\TwinShell\settings.json</code> et <strong>persiste entre les sessions</strong>.</p>
+<h3 id="conformite-wcag-aaa">Conformité WCAG AAA<a class="headerlink" href="#conformite-wcag-aaa" title="Permanent link">&para;</a></h3>
+<p>Les thèmes TwinShell respectent les normes <strong>WCAG AAA</strong> d'accessibilité :</p>
+<table>
+<thead>
+<tr>
+<th>Élément</th>
+<th>Contraste</th>
+<th>Norme WCAG AAA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Texte principal</strong></td>
+<td>11.6:1</td>
+<td>✅ Dépasse 7:1 requis</td>
+</tr>
+<tr>
+<td><strong>Texte secondaire</strong></td>
+<td>9.2:1</td>
+<td>✅ Dépasse 7:1 requis</td>
+</tr>
+<tr>
+<td><strong>Éléments UI</strong></td>
+<td>7.2:1</td>
+<td>✅ Dépasse 3:1 requis</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Avantages :</strong>
+- Lisibilité optimale
+- Confort visuel
+- Accessibilité pour les personnes malvoyantes</p>
+<hr />
+<h2 id="parametres-avances">Paramètres Avancés<a class="headerlink" href="#parametres-avances" title="Permanent link">&para;</a></h2>
+<h3 id="acceder-aux-parametres">Accéder aux Paramètres<a class="headerlink" href="#acceder-aux-parametres" title="Permanent link">&para;</a></h3>
+<p><strong>Ctrl+,</strong> ou Menu <strong>File → Settings</strong></p>
+<h3 id="section-appearance-apparence">Section Appearance (Apparence)<a class="headerlink" href="#section-appearance-apparence" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Theme</strong> : Light | Dark | System</li>
+<li><strong>Preview Theme</strong> : Prévisualiser avant de sauvegarder</li>
+</ul>
+<h3 id="section-behavior-comportement">Section Behavior (Comportement)<a class="headerlink" href="#section-behavior-comportement" title="Permanent link">&para;</a></h3>
+<h4 id="historique">Historique<a class="headerlink" href="#historique" title="Permanent link">&para;</a></h4>
+<p><strong>Command History Retention</strong> (Rétention de l'historique)
+- <strong>Plage</strong> : 1 à 3650 jours
+- <strong>Par défaut</strong> : 90 jours
+- <strong>Comportement</strong> : Les commandes plus anciennes sont automatiquement supprimées</p>
+<p><strong>Maximum History Items</strong> (Nombre max d'items affichés)
+- <strong>Plage</strong> : 10 à 100 000
+- <strong>Par défaut</strong> : 1000
+- <strong>Comportement</strong> : Limite le nombre d'entrées affichées dans la vue historique</p>
+<h4 id="widget-commandes-recentes">Widget Commandes Récentes<a class="headerlink" href="#widget-commandes-recentes" title="Permanent link">&para;</a></h4>
+<p><strong>Recent Commands Count</strong> (Nombre de commandes récentes)
+- <strong>Plage</strong> : 1 à 50
+- <strong>Par défaut</strong> : 5
+- <strong>Comportement</strong> : Nombre de commandes affichées dans le widget de la page d'accueil</p>
+<p><strong>Show Recent Commands Widget</strong> (Afficher le widget)
+- ☑ Coché : Widget visible au démarrage
+- ☐ Décoché : Widget masqué</p>
+<h4 id="securite">Sécurité<a class="headerlink" href="#securite" title="Permanent link">&para;</a></h4>
+<p><strong>Confirm before executing dangerous commands</strong> (Confirmer avant les commandes dangereuses)
+- ☑ <strong>Recommandé</strong> : Affiche une confirmation avant de copier des commandes de niveau "Dangerous"
+- ☐ Désactivé : Copie directement sans confirmation</p>
+<h3 id="reinitialiser-les-parametres">Réinitialiser les Paramètres<a class="headerlink" href="#reinitialiser-les-parametres" title="Permanent link">&para;</a></h3>
+<p>Bouton <strong>"Reset to Defaults"</strong> :
+- Restaure tous les paramètres aux valeurs par défaut
+- Demande confirmation avant de réinitialiser
+- Nécessite un redémarrage de l'application</p>
+<h3 id="emplacement-du-fichier-de-configuration">Emplacement du Fichier de Configuration<a class="headerlink" href="#emplacement-du-fichier-de-configuration" title="Permanent link">&para;</a></h3>
+<p>Les paramètres sont sauvegardés dans :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>%APPDATA%\TwinShell\settings.json
+</span></code></pre></div></p>
+<p><strong>Exemple de contenu :</strong>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">&quot;Theme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dark&quot;</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">&quot;AutoCleanupDays&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">&quot;MaxHistoryItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">&quot;RecentCommandsCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="nt">&quot;ShowRecentCommandsWidget&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">&quot;ConfirmDangerousActions&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span><span class="nt">&quot;DefaultPlatformFilter&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<hr />
+<h2 id="export-et-import-de-configuration">Export et Import de Configuration<a class="headerlink" href="#export-et-import-de-configuration" title="Permanent link">&para;</a></h2>
+<h3 id="exporter-la-configuration">Exporter la Configuration<a class="headerlink" href="#exporter-la-configuration" title="Permanent link">&para;</a></h3>
+<h4 id="ouvrir-lexport">Ouvrir l'Export<a class="headerlink" href="#ouvrir-lexport" title="Permanent link">&para;</a></h4>
+<p><strong>Méthode 1 :</strong> Menu <strong>File → Export Configuration</strong>
+<strong>Méthode 2 :</strong> Raccourci clavier <strong>Ctrl+E</strong></p>
+<h4 id="processus-dexport">Processus d'Export<a class="headerlink" href="#processus-dexport" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Une boîte de dialogue "Enregistrer sous" s'ouvre</li>
+<li>Choisissez l'emplacement et le nom du fichier</li>
+<li>Format : <strong>JSON</strong> (ex: <code>twinshell-config-2025-01-18.json</code>)</li>
+<li>Cliquez sur <strong>"Enregistrer"</strong></li>
+<li>Notification : ✅ "Configuration exportée avec succès"</li>
+</ol>
+<h4 id="contenu-exporte">Contenu Exporté<a class="headerlink" href="#contenu-exporte" title="Permanent link">&para;</a></h4>
+<p>Le fichier JSON contient :
+- <strong>Favoris</strong> : Liste des actions favorites avec leurs IDs
+- <strong>Historique</strong> : Toutes les commandes générées avec horodatage
+- <strong>Paramètres</strong> : Vos préférences (thème, rétention, etc.)</p>
+<p><strong>Exemple de structure :</strong>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">&quot;favorites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">      </span><span class="nt">&quot;actionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get-service-windows&quot;</span><span class="p">,</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">      </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-15T10:30:00Z&quot;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="err">...</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="nt">&quot;history&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">      </span><span class="nt">&quot;actionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get-service-windows&quot;</span><span class="p">,</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">      </span><span class="nt">&quot;generatedCommand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Get-Service -Name Spooler&quot;</span><span class="p">,</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">      </span><span class="nt">&quot;parameters&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ServiceName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Spooler&quot;</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">      </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Windows&quot;</span><span class="p">,</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">      </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-01-18T08:45:00Z&quot;</span><span class="p">,</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">      </span><span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Services&quot;</span><span class="p">,</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">      </span><span class="nt">&quot;actionTitle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Get-Service&quot;</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">    </span><span class="err">...</span>
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">  </span><span class="p">],</span>
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">  </span><span class="nt">&quot;settings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">    </span><span class="nt">&quot;theme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dark&quot;</span><span class="p">,</span>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="w">    </span><span class="nt">&quot;autoCleanupDays&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span>
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="w">    </span><span class="err">...</span>
+</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<h3 id="importer-une-configuration">Importer une Configuration<a class="headerlink" href="#importer-une-configuration" title="Permanent link">&para;</a></h3>
+<h4 id="ouvrir-limport">Ouvrir l'Import<a class="headerlink" href="#ouvrir-limport" title="Permanent link">&para;</a></h4>
+<p><strong>Méthode 1 :</strong> Menu <strong>File → Import Configuration</strong>
+<strong>Méthode 2 :</strong> Raccourci clavier <strong>Ctrl+I</strong></p>
+<h4 id="processus-dimport">Processus d'Import<a class="headerlink" href="#processus-dimport" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Une boîte de dialogue "Ouvrir" s'affiche</li>
+<li>Sélectionnez le fichier JSON à importer</li>
+<li>Cliquez sur <strong>"Ouvrir"</strong></li>
+<li>TwinShell valide l'intégrité du fichier</li>
+<li><strong>Mode fusion</strong> : Les données existantes sont préservées</li>
+<li>Notification : ✅ "Configuration importée avec succès"</li>
+</ol>
+<h4 id="comportement-de-fusion">Comportement de Fusion<a class="headerlink" href="#comportement-de-fusion" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Favoris</strong> : Les favoris importés sont ajoutés (pas de doublon)</li>
+<li><strong>Historique</strong> : Les commandes importées sont fusionnées avec l'existant</li>
+<li><strong>Paramètres</strong> : Les paramètres importés <strong>remplacent</strong> les existants</li>
+</ul>
+<h4 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h4>
+<p>TwinShell vérifie :
+- Format JSON valide
+- Structure correcte (clés <code>favorites</code>, <code>history</code>, <code>settings</code>)
+- Intégrité des données (dates valides, IDs cohérents)</p>
+<p>Si le fichier est invalide, un message d'erreur s'affiche :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>❌ Erreur : Fichier de configuration invalide
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Le fichier JSON est corrompu ou incompatible.
+</span></code></pre></div></p>
+<h3 id="cas-dusage">Cas d'Usage<a class="headerlink" href="#cas-dusage" title="Permanent link">&para;</a></h3>
+<h4 id="sauvegarde-reguliere">Sauvegarde Régulière<a class="headerlink" href="#sauvegarde-reguliere" title="Permanent link">&para;</a></h4>
+<p>Exportez votre configuration chaque semaine pour sauvegarder :
+- Vos favoris
+- Votre historique
+- Vos préférences</p>
+<h4 id="partage-avec-un-collegue">Partage avec un Collègue<a class="headerlink" href="#partage-avec-un-collegue" title="Permanent link">&para;</a></h4>
+<p>Exportez vos favoris et partagez le fichier JSON :
+- Votre collègue importe le fichier
+- Il récupère vos commandes favorites
+- Idéal pour standardiser les commandes dans une équipe</p>
+<h4 id="migration-vers-un-nouveau-pc">Migration vers un Nouveau PC<a class="headerlink" href="#migration-vers-un-nouveau-pc" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Exportez votre configuration sur l'ancien PC</li>
+<li>Installez TwinShell sur le nouveau PC</li>
+<li>Importez le fichier JSON</li>
+<li>Vous retrouvez toutes vos données !</li>
+</ol>
+<hr />
+<h2 id="raccourcis-clavier">Raccourcis Clavier<a class="headerlink" href="#raccourcis-clavier" title="Permanent link">&para;</a></h2>
+<h3 id="raccourcis-globaux">Raccourcis Globaux<a class="headerlink" href="#raccourcis-globaux" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Raccourci</th>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ctrl+,</strong></td>
+<td>Paramètres</td>
+<td>Ouvre la fenêtre des paramètres</td>
+</tr>
+<tr>
+<td><strong>Ctrl+M</strong></td>
+<td>Gérer les Catégories</td>
+<td>Ouvre le gestionnaire de catégories</td>
+</tr>
+<tr>
+<td><strong>Ctrl+E</strong></td>
+<td>Exporter</td>
+<td>Exporte la configuration au format JSON</td>
+</tr>
+<tr>
+<td><strong>Ctrl+I</strong></td>
+<td>Importer</td>
+<td>Importe une configuration depuis un fichier JSON</td>
+</tr>
+<tr>
+<td><strong>F1</strong></td>
+<td>Aide</td>
+<td>Affiche l'aide et les raccourcis clavier</td>
+</tr>
+<tr>
+<td><strong>F5</strong></td>
+<td>Actualiser</td>
+<td>Recharge la liste des actions depuis la base de données</td>
+</tr>
+<tr>
+<td><strong>Esc</strong></td>
+<td>Annuler/Fermer</td>
+<td>Ferme la fenêtre ou annule l'action en cours</td>
+</tr>
+<tr>
+<td><strong>Alt+F4</strong></td>
+<td>Quitter</td>
+<td>Ferme l'application</td>
+</tr>
+</tbody>
+</table>
+<h3 id="navigation-au-clavier">Navigation au Clavier<a class="headerlink" href="#navigation-au-clavier" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Raccourci</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tab</strong></td>
+<td>Passe au contrôle suivant</td>
+</tr>
+<tr>
+<td><strong>Shift+Tab</strong></td>
+<td>Passe au contrôle précédent</td>
+</tr>
+<tr>
+<td><strong>Espace</strong></td>
+<td>Coche/décoche une case</td>
+</tr>
+<tr>
+<td><strong>Entrée</strong></td>
+<td>Active le bouton/élément sélectionné</td>
+</tr>
+<tr>
+<td><strong>Flèches ↑↓</strong></td>
+<td>Navigue dans les listes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="aide-integree">Aide Intégrée<a class="headerlink" href="#aide-integree" title="Permanent link">&para;</a></h3>
+<p>Appuyez sur <strong>F1</strong> pour afficher une fenêtre d'aide avec tous les raccourcis disponibles.</p>
+<hr />
+<h2 id="conseils-et-astuces">Conseils et Astuces<a class="headerlink" href="#conseils-et-astuces" title="Permanent link">&para;</a></h2>
+<h3 id="optimiser-votre-workflow">Optimiser votre Workflow<a class="headerlink" href="#optimiser-votre-workflow" title="Permanent link">&para;</a></h3>
+<h4 id="1-creez-des-categories-thematiques">1. Créez des Catégories Thématiques<a class="headerlink" href="#1-creez-des-categories-thematiques" title="Permanent link">&para;</a></h4>
+<p>Organisez vos commandes par thème :
+- <strong>"Tâches Quotidiennes"</strong> : Commandes que vous utilisez tous les jours
+- <strong>"Maintenance"</strong> : Commandes de maintenance hebdomadaire
+- <strong>"Urgences"</strong> : Commandes critiques pour résoudre des problèmes rapidement
+- <strong>"Formation"</strong> : Commandes pour former de nouveaux membres de l'équipe</p>
+<p>Assignez des <strong>couleurs distinctes</strong> pour une reconnaissance rapide.</p>
+<h4 id="2-utilisez-les-raccourcis-clavier">2. Utilisez les Raccourcis Clavier<a class="headerlink" href="#2-utilisez-les-raccourcis-clavier" title="Permanent link">&para;</a></h4>
+<p>Gagnez du temps en mémorisant ces raccourcis :
+- <code>Ctrl+M</code> pour gérer les catégories
+- <code>F5</code> pour actualiser
+- <code>Ctrl+E</code> pour exporter régulièrement</p>
+<h4 id="3-configurez-le-mode-sombre">3. Configurez le Mode Sombre<a class="headerlink" href="#3-configurez-le-mode-sombre" title="Permanent link">&para;</a></h4>
+<p>Réduisez la fatigue oculaire lors de sessions longues :
+- Utilisez le <strong>mode System</strong> pour un changement automatique jour/nuit
+- Activez le <strong>mode Dark</strong> pour les sessions en soirée</p>
+<h4 id="4-ajustez-les-preferences-dhistorique">4. Ajustez les Préférences d'Historique<a class="headerlink" href="#4-ajustez-les-preferences-dhistorique" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Réduisez la rétention</strong> (30 jours) si l'espace disque est limité</li>
+<li><strong>Augmentez la rétention</strong> (365 jours) pour conserver un historique étendu</li>
+</ul>
+<h4 id="5-activez-les-confirmations-pour-actions-dangereuses">5. Activez les Confirmations pour Actions Dangereuses<a class="headerlink" href="#5-activez-les-confirmations-pour-actions-dangereuses" title="Permanent link">&para;</a></h4>
+<p>Évitez les erreurs accidentelles :
+- Paramètres → <strong>"Confirm before executing dangerous commands"</strong> ☑
+- Recommandé pour les environnements de production</p>
+<h3 id="recherche-efficace">Recherche Efficace<a class="headerlink" href="#recherche-efficace" title="Permanent link">&para;</a></h3>
+<h4 id="utilisez-des-mots-cles-courts">Utilisez des Mots-Clés Courts<a class="headerlink" href="#utilisez-des-mots-cles-courts" title="Permanent link">&para;</a></h4>
+<p>Au lieu de :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>&quot;comment lister tous les services windows en cours d&#39;exécution&quot;
+</span></code></pre></div></p>
+<p>Tapez simplement :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>&quot;service windows&quot;
+</span></code></pre></div></p>
+<h4 id="profitez-du-fuzzy-matching">Profitez du Fuzzy Matching<a class="headerlink" href="#profitez-du-fuzzy-matching" title="Permanent link">&para;</a></h4>
+<p>Même avec des fautes de frappe, vous trouverez :
+- <code>serviec</code> → trouve "service"
+- <code>netwrok</code> → trouve "network"
+- <code>usr</code> → trouve "user"</p>
+<h4 id="recherchez-par-tags">Recherchez par Tags<a class="headerlink" href="#recherchez-par-tags" title="Permanent link">&para;</a></h4>
+<p>Les tags sont très utiles pour trouver des types de commandes :
+- <code>diagnostic</code> → Commandes de diagnostic
+- <code>security</code> → Commandes de sécurité
+- <code>performance</code> → Commandes d'optimisation</p>
+<h3 id="widget-des-commandes-recentes_1">Widget des Commandes Récentes<a class="headerlink" href="#widget-des-commandes-recentes_1" title="Permanent link">&para;</a></h3>
+<p>Le widget sur la page d'accueil est très pratique :
+- <strong>Cliquez</strong> sur une commande pour la recopier instantanément
+- Plus besoin d'aller dans l'historique pour retrouver une commande récente</p>
+<h3 id="export-regulier">Export Régulier<a class="headerlink" href="#export-regulier" title="Permanent link">&para;</a></h3>
+<p>Exportez votre configuration <strong>une fois par mois</strong> :
+- Protection contre la perte de données
+- Sauvegarde de vos favoris et historique
+- Migration facile vers un nouveau PC</p>
+<hr />
+<h2 id="resolution-de-problemes">Résolution de Problèmes<a class="headerlink" href="#resolution-de-problemes" title="Permanent link">&para;</a></h2>
+<h3 id="probleme-lapplication-ne-demarre-pas">Problème : L'application ne démarre pas<a class="headerlink" href="#probleme-lapplication-ne-demarre-pas" title="Permanent link">&para;</a></h3>
+<p><strong>Causes possibles :</strong>
+1. .NET 8 Runtime manquant
+2. Permissions insuffisantes
+3. Base de données corrompue</p>
+<p><strong>Solutions :</strong></p>
+<h4 id="1-verifier-net-8-runtime">1. Vérifier .NET 8 Runtime<a class="headerlink" href="#1-verifier-net-8-runtime" title="Permanent link">&para;</a></h4>
+<p>Ouvrez PowerShell et tapez :
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">dotnet</span> <span class="p">-</span><span class="n">-version</span>
+</span></code></pre></div></p>
+<p>Si la commande échoue ou affiche une version &lt; 8.0 :
+1. Téléchargez <a href="https://dotnet.microsoft.com/download/dotnet/8.0">.NET 8 Runtime</a>
+2. Installez-le
+3. Redémarrez votre PC</p>
+<h4 id="2-verifier-les-permissions">2. Vérifier les Permissions<a class="headerlink" href="#2-verifier-les-permissions" title="Permanent link">&para;</a></h4>
+<p>Vérifiez que vous avez accès en écriture à :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>%LOCALAPPDATA%\TwinShell
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>%APPDATA%\TwinShell
+</span></code></pre></div></p>
+<p>Si nécessaire, exécutez TwinShell <strong>en tant qu'administrateur</strong> (clic droit → "Exécuter en tant qu'administrateur").</p>
+<h4 id="3-reinitialiser-la-base-de-donnees">3. Réinitialiser la Base de Données<a class="headerlink" href="#3-reinitialiser-la-base-de-donnees" title="Permanent link">&para;</a></h4>
+<p>Si la base de données est corrompue :
+1. Fermez TwinShell
+2. Supprimez le fichier : <code>%LOCALAPPDATA%\TwinShell\twinshell.db</code>
+3. Relancez TwinShell (une nouvelle base sera créée)</p>
+<blockquote>
+<p>⚠️ <strong>Attention</strong> : Vous perdrez vos favoris et historique. Exportez d'abord si possible.</p>
+</blockquote>
+<hr />
+<h3 id="probleme-le-theme-ne-change-pas-apres-sauvegarde">Problème : Le thème ne change pas après sauvegarde<a class="headerlink" href="#probleme-le-theme-ne-change-pas-apres-sauvegarde" title="Permanent link">&para;</a></h3>
+<p><strong>Causes possibles :</strong>
+1. Paramètres non sauvegardés
+2. Fichier settings.json en lecture seule</p>
+<p><strong>Solutions :</strong></p>
+<h4 id="1-verifier-la-sauvegarde">1. Vérifier la Sauvegarde<a class="headerlink" href="#1-verifier-la-sauvegarde" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Assurez-vous de cliquer sur <strong>"Save"</strong> (et non "Cancel")</li>
+<li>Vérifiez qu'une notification ✅ "Paramètres sauvegardés" s'affiche</li>
+</ul>
+<h4 id="2-verifier-le-fichier-settingsjson">2. Vérifier le Fichier settings.json<a class="headerlink" href="#2-verifier-le-fichier-settingsjson" title="Permanent link">&para;</a></h4>
+<p>Ouvrez l'Explorateur Windows et allez dans :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>%APPDATA%\TwinShell\settings.json
+</span></code></pre></div></p>
+<p>Vérifiez le contenu :
+<div class="language-json highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">&quot;Theme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dark&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Doit être &quot;Light&quot;, &quot;Dark&quot; ou &quot;System&quot;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="err">...</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p>Si le fichier est en <strong>lecture seule</strong> :
+1. Clic droit → Propriétés
+2. Décochez "Lecture seule"
+3. Cliquez sur "Appliquer"</p>
+<h4 id="3-redemarrer-lapplication">3. Redémarrer l'Application<a class="headerlink" href="#3-redemarrer-lapplication" title="Permanent link">&para;</a></h4>
+<p>Si le thème ne se charge pas :
+1. Fermez complètement TwinShell (vérifiez le Gestionnaire des tâches)
+2. Relancez l'application</p>
+<hr />
+<h3 id="probleme-je-ne-trouve-pas-une-commande">Problème : Je ne trouve pas une commande<a class="headerlink" href="#probleme-je-ne-trouve-pas-une-commande" title="Permanent link">&para;</a></h3>
+<p><strong>Causes possibles :</strong>
+1. Filtres actifs
+2. Recherche trop spécifique
+3. Catégorie non sélectionnée</p>
+<p><strong>Solutions :</strong></p>
+<h4 id="1-desactiver-les-filtres">1. Désactiver les Filtres<a class="headerlink" href="#1-desactiver-les-filtres" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Décochez tous les filtres <strong>Platform</strong> et <strong>Level</strong></li>
+<li>Cliquez sur <strong>"📋 All Commands"</strong> pour voir toutes les commandes</li>
+</ul>
+<h4 id="2-simplifier-la-recherche">2. Simplifier la Recherche<a class="headerlink" href="#2-simplifier-la-recherche" title="Permanent link">&para;</a></h4>
+<p>Au lieu de :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>&quot;comment obtenir les informations d&#39;un utilisateur active directory&quot;
+</span></code></pre></div></p>
+<p>Tapez :
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>&quot;AD user&quot;
+</span></code></pre></div></p>
+<h4 id="3-verifier-lexistence">3. Vérifier l'Existence<a class="headerlink" href="#3-verifier-lexistence" title="Permanent link">&para;</a></h4>
+<p>Toutes les commandes ne sont pas forcément dans la base de données.</p>
+<p>Consultez la liste complète dans : <code>data/seed/initial-actions.json</code></p>
+<p>Si une commande manque, vous pouvez :
+- Créer une issue sur GitHub pour demander son ajout
+- Modifier manuellement le fichier JSON (nécessite des connaissances techniques)</p>
+<hr />
+<h3 id="probleme-les-raccourcis-clavier-ne-fonctionnent-pas">Problème : Les raccourcis clavier ne fonctionnent pas<a class="headerlink" href="#probleme-les-raccourcis-clavier-ne-fonctionnent-pas" title="Permanent link">&para;</a></h3>
+<p><strong>Causes possibles :</strong>
+1. La fenêtre TwinShell n'a pas le focus
+2. Conflit avec une autre application</p>
+<p><strong>Solutions :</strong></p>
+<h4 id="1-verifier-le-focus">1. Vérifier le Focus<a class="headerlink" href="#1-verifier-le-focus" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Cliquez sur la fenêtre TwinShell pour lui donner le focus</li>
+<li>Les raccourcis ne fonctionnent que si TwinShell est au premier plan</li>
+</ul>
+<h4 id="2-verifier-les-conflits">2. Vérifier les Conflits<a class="headerlink" href="#2-verifier-les-conflits" title="Permanent link">&para;</a></h4>
+<p>Certaines applications interceptent les raccourcis globaux :
+- <strong>Ctrl+,</strong> : Peut être utilisé par des IDE (Visual Studio Code, etc.)
+- <strong>F5</strong> : Peut être utilisé par des navigateurs</p>
+<p><strong>Solution :</strong>
+- Fermez temporairement l'application conflictuelle
+- Ou utilisez les menus au lieu des raccourcis</p>
+<h4 id="3-consulter-la-liste-des-raccourcis">3. Consulter la Liste des Raccourcis<a class="headerlink" href="#3-consulter-la-liste-des-raccourcis" title="Permanent link">&para;</a></h4>
+<p>Appuyez sur <strong>F1</strong> pour voir tous les raccourcis actifs.</p>
+<hr />
+<h3 id="probleme-categorie-non-modifiablesupprimable">Problème : Catégorie non modifiable/supprimable<a class="headerlink" href="#probleme-categorie-non-modifiablesupprimable" title="Permanent link">&para;</a></h3>
+<p><strong>Cause :</strong>
+Les <strong>catégories système</strong> sont protégées.</p>
+<p><strong>Identification :</strong>
+Les catégories système ont un <strong>badge jaune "System"</strong> dans le gestionnaire de catégories.</p>
+<p><strong>Catégories système :</strong>
+- Active Directory &amp; GPO
+- Network &amp; DNS
+- Monitoring &amp; Logs
+- Services &amp; Automation
+- Windows Optimization
+- Linux Administration
+- Package Management
+- Files &amp; Storage
+- Security &amp; Encryption
+- Windows Updates
+- User Management
+- Containers &amp; VMs
+- Database
+- Development
+- Performance</p>
+<p><strong>Vous NE POUVEZ PAS :</strong>
+- Renommer une catégorie système
+- Supprimer une catégorie système</p>
+<p><strong>Vous POUVEZ :</strong>
+- Masquer une catégorie système (bouton "Hide")
+- Créer une nouvelle catégorie personnalisée similaire</p>
+<hr />
+<h3 id="probleme-import-de-configuration-echoue">Problème : Import de configuration échoue<a class="headerlink" href="#probleme-import-de-configuration-echoue" title="Permanent link">&para;</a></h3>
+<p><strong>Causes possibles :</strong>
+1. Fichier JSON invalide
+2. Fichier corrompu
+3. Format incompatible</p>
+<p><strong>Solutions :</strong></p>
+<h4 id="1-verifier-le-format-json">1. Vérifier le Format JSON<a class="headerlink" href="#1-verifier-le-format-json" title="Permanent link">&para;</a></h4>
+<p>Ouvrez le fichier JSON dans un éditeur de texte (Notepad++, VS Code) :</p>
+<p><strong>Bon format :</strong>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">&quot;favorites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nt">&quot;history&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nt">&quot;settings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p><strong>Mauvais format :</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>{
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>  favorites: [... // Guillemets manquants
+</span></code></pre></div></p>
+<h4 id="2-valider-le-json">2. Valider le JSON<a class="headerlink" href="#2-valider-le-json" title="Permanent link">&para;</a></h4>
+<p>Utilisez un validateur JSON en ligne :
+- <a href="https://jsonlint.com/">jsonlint.com</a>
+- Collez le contenu du fichier
+- Corrigez les erreurs signalées</p>
+<h4 id="3-reexporter-une-nouvelle-configuration">3. Réexporter une Nouvelle Configuration<a class="headerlink" href="#3-reexporter-une-nouvelle-configuration" title="Permanent link">&para;</a></h4>
+<p>Si le fichier est corrompu :
+1. Exportez une nouvelle configuration depuis TwinShell
+2. Comparez les deux fichiers pour identifier les différences
+3. Fusionnez manuellement les données si nécessaire</p>
+<hr />
+<h3 id="probleme-base-de-donnees-volumineuse">Problème : Base de données volumineuse<a class="headerlink" href="#probleme-base-de-donnees-volumineuse" title="Permanent link">&para;</a></h3>
+<p><strong>Cause :</strong>
+L'historique contient des milliers de commandes.</p>
+<p><strong>Solution :</strong></p>
+<h4 id="1-reduire-la-retention">1. Réduire la Rétention<a class="headerlink" href="#1-reduire-la-retention" title="Permanent link">&para;</a></h4>
+<p>Paramètres → <strong>Command History Retention</strong> → Réduisez à 30 ou 60 jours</p>
+<h4 id="2-nettoyer-manuellement">2. Nettoyer Manuellement<a class="headerlink" href="#2-nettoyer-manuellement" title="Permanent link">&para;</a></h4>
+<p>Vue Historique → Sélectionnez des entrées → Supprimez-les</p>
+<h4 id="3-reinitialiser-lhistorique">3. Réinitialiser l'Historique<a class="headerlink" href="#3-reinitialiser-lhistorique" title="Permanent link">&para;</a></h4>
+<p>⚠️ <strong>ATTENTION</strong> : Cela supprime tout l'historique.</p>
+<ol>
+<li>Fermez TwinShell</li>
+<li>Supprimez : <code>%LOCALAPPDATA%\TwinShell\twinshell.db</code></li>
+<li>Relancez TwinShell</li>
+</ol>
+<h4 id="4-exporter-avant-nettoyage">4. Exporter Avant Nettoyage<a class="headerlink" href="#4-exporter-avant-nettoyage" title="Permanent link">&para;</a></h4>
+<p>Exportez d'abord votre configuration pour sauvegarder vos favoris.</p>
+<hr />
+<h2 id="ressources-supplementaires">📚 Ressources Supplémentaires<a class="headerlink" href="#ressources-supplementaires" title="Permanent link">&para;</a></h2>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../QuickStart/">Guide de Demarrage Rapide</a></li>
+<li><a href="../FAQ/">FAQ - Questions Frequentes</a></li>
+<li><a href="https://github.com/VBlackJack/TwinShell">GitHub TwinShell</a></li>
+<li><a href="../developer/">Documentation Developpeur</a></li>
+</ul>
+<h3 id="support">Support<a class="headerlink" href="#support" title="Permanent link">&para;</a></h3>
+<ul>
+<li>💬 <a href="https://github.com/VBlackJack/TwinShell/discussions">GitHub Discussions</a></li>
+<li>🐛 <a href="https://github.com/VBlackJack/TwinShell/issues">Signaler un Bug</a></li>
+</ul>
+<h3 id="communaute">Communauté<a class="headerlink" href="#communaute" title="Permanent link">&para;</a></h3>
+<ul>
+<li>⭐ <a href="https://github.com/VBlackJack/TwinShell">Star sur GitHub</a></li>
+<li><a href="../developer/CONTRIBUTING/">Contribuer au Projet</a></li>
+</ul>
+<hr />
+<p><strong>Bon travail avec TwinShell !</strong> 🚀</p>
+<p><em>Dernière mise à jour : 2025-11-26</em>
+<em>Version : 1.2.0</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pied de page" >
+        
+          
+          <a href="../formations/gitops-argocd/03-sync-strategies/" class="md-footer__link md-footer__link--prev" aria-label="Précédent: Stratégies de Sync">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Précédent
+              </span>
+              <div class="md-ellipsis">
+                Stratégies de Sync
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../QuickStart/" class="md-footer__link md-footer__link--next" aria-label="Suivant: Démarrage rapide">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Suivant
+              </span>
+              <div class="md-ellipsis">
+                Démarrage rapide
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/TwinShell/ShellBook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

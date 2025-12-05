@@ -2,7 +2,7 @@
 
 **Votre gestionnaire de commandes PowerShell et Bash pour l'administration système**
 
-![Version](https://img.shields.io/badge/version-1.2.0-blue)
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)
@@ -48,6 +48,12 @@ En tant qu'administrateur système, vous jonglez constamment entre PowerShell et
 - **Historique complet** : Toutes vos commandes générées sont sauvegardées avec horodatage
 - **Recherche dans l'historique** : Retrouvez une commande que vous avez utilisée il y a 3 semaines
 - **Export/Import** : Sauvegardez et partagez vos favoris et historique au format JSON
+
+### 🔄 Synchronisation Git (GitOps)
+- **Collaboration d'équipe** : Partagez vos commandes via un repository Git
+- **Synchronisation automatique** : Pull/Push automatique au démarrage
+- **Format JSON** : Export lisible et facile à merger
+- **Support HTTPS** : Authentification par token GitHub/GitLab
 
 ### 🛠️ Générateur de Commandes
 - **Paramètres dynamiques** : Remplissez simplement les champs, la commande se génère automatiquement
@@ -276,6 +282,30 @@ L'interface TwinShell est divisée en 3 panneaux :
 3. Mode **fusion** : Les données existantes sont préservées
 4. Validation automatique de l'intégrité du fichier
 
+#### 9. Configurer la Synchronisation Git
+
+**Configuration initiale :**
+1. Menu **File → Settings**
+2. Section **Git Repository Configuration**
+3. Remplissez :
+   - **Remote Repository URL** : URL HTTPS de votre repo Git (ex: `https://github.com/user/repo.git`)
+   - **Local Repository Path** : Dossier local pour la synchronisation
+   - **Branch** : Branche à utiliser (défaut: `main`)
+   - **Access Token** : Token d'accès GitHub/GitLab avec permissions `repo` ou `Contents: Read and write`
+   - **Git User Name** : Votre nom d'utilisateur Git
+   - **Git User Email** : Votre email Git
+4. Cliquez **Test** pour vérifier la connexion
+5. Cliquez **Initialize Repository** pour cloner le repo
+
+**Synchronisation :**
+- **Pull** : Récupère les changements du repo distant et importe dans la base locale
+- **Push** : Exporte les données locales en JSON et pousse vers le repo distant
+- **Full Sync** : Pull + Import + Export + Push en une seule opération
+
+**Options automatiques :**
+- **Sync automatically on startup** : Synchronise au démarrage de l'application
+- **Auto-push changes after sync** : Pousse automatiquement après chaque sync
+
 ---
 
 ## ⌨️ Raccourcis Clavier
@@ -340,6 +370,23 @@ R : Par défaut 90 jours, modifiable dans les paramètres (de 1 à 3650 jours).
 
 **Q : Puis-je partager mes favoris avec un collègue ?**
 R : Oui, utilisez la fonction Export/Import pour partager votre configuration au format JSON.
+
+### Synchronisation Git
+
+**Q : Comment partager mes commandes avec mon équipe ?**
+R : Configurez un repository Git partagé dans Settings → Git Repository Configuration. Chaque membre de l'équipe configure le même repo et utilise "Full Sync" pour synchroniser.
+
+**Q : Le push échoue avec une erreur 403**
+R : Vérifiez que votre token a les bonnes permissions :
+- GitHub Classic Token : cochez `repo`
+- GitHub Fine-grained Token : `Contents: Read and write`
+- GitLab : `write_repository`
+
+**Q : Puis-je utiliser SSH au lieu de HTTPS ?**
+R : Actuellement, seule l'authentification HTTPS avec token est supportée.
+
+**Q : Comment résoudre les conflits de merge ?**
+R : TwinShell utilise les `PublicId` (GUID) pour identifier les éléments. Si le même élément est modifié des deux côtés, la version distante est prioritaire lors du pull.
 
 ### Dépannage
 

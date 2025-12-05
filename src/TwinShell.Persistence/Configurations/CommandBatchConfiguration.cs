@@ -50,5 +50,13 @@ public class CommandBatchConfiguration : IEntityTypeConfiguration<CommandBatchEn
         builder.HasIndex(e => e.Name);
         builder.HasIndex(e => e.CreatedAt);
         builder.HasIndex(e => e.LastExecutedAt);
+
+        // PublicId for GitOps synchronization - must be unique
+        builder.Property(e => e.PublicId)
+            .IsRequired();
+
+        builder.HasIndex(e => e.PublicId)
+            .IsUnique()
+            .HasDatabaseName("IX_CommandBatches_PublicId");
     }
 }
