@@ -174,4 +174,8 @@ Please check the startup-error.log file for more details.</value></data>
 
 The application will continue to run but some features may be affected.</value></data>
   <data name="DialogTitleStartupError" xml:space="preserve"><value>Startup Error</value></data>
+  <data name="MessageInitializationError" xml:space="preserve"><value>Failed to initialize the application.
+
+Please check the startup-error.log file for details.</value></data>
+  <data name="DialogTitleInitializationError" xml:space="preserve"><value>Initialization Error</value></data>
 </root>

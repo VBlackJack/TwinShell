@@ -425,4 +425,12 @@ L'application va continuer à fonctionner mais certaines fonctionnalités peuven
   <data name="DialogTitleStartupError" xml:space="preserve">
     <value>Erreur de démarrage</value>
   </data>
+  <data name="MessageInitializationError" xml:space="preserve">
+    <value>Échec de l'initialisation de l'application.
+
+Consultez le fichier startup-error.log pour plus de détails.</value>
+  </data>
+  <data name="DialogTitleInitializationError" xml:space="preserve">
+    <value>Erreur d'initialisation</value>
+  </data>
 </root>

@@ -10,12 +10,14 @@ using TwinShell.Persistence;
 using TwinShell.Persistence.Repositories;
 using TwinShell.App.ViewModels;
 using TwinShell.App.Views;
+using TwinShell.App.Services;
 
 namespace TwinShell.App;
 
 public partial class App : Application
 {
     private ServiceProvider? _serviceProvider;
+    private readonly StartupLogger _logger = StartupLogger.Instance;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -27,45 +29,48 @@ public partial class App : Application
 
         try
         {
-            LogInfo("Starting application...");
+            _logger.LogInfo("Starting application...");
 
             var services = new ServiceCollection();
-            LogInfo("Configuring services...");
+            _logger.LogInfo("Configuring services...");
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
-            LogInfo("Services configured");
+            _logger.LogInfo("Services configured");
 
             // Initialize theme and localization BEFORE creating the window
-            LogInfo("Initializing theme and localization...");
+            _logger.LogInfo("Initializing theme and localization...");
             InitializeThemeAndLocalization();
-            LogInfo("Theme and localization initialized");
+            _logger.LogInfo("Theme and localization initialized");
 
-            LogInfo("Initializing database...");
+            _logger.LogInfo("Initializing database...");
             InitializeDatabaseAsync().GetAwaiter().GetResult();
-            LogInfo("Database initialized");
+            _logger.LogInfo("Database initialized");
 
             // Create and show main window
-            LogInfo("Creating main window...");
+            _logger.LogInfo("Creating main window...");
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            LogInfo("Main window created");
+            _logger.LogInfo("Main window created");
 
-            LogInfo("Showing main window...");
+            _logger.LogInfo("Showing main window...");
             mainWindow.WindowState = WindowState.Normal;
             mainWindow.Show();
             mainWindow.Activate();
             mainWindow.Topmost = true;
             mainWindow.Topmost = false; // Set to true then false to bring to front
-            LogInfo("Main window shown!");
+            _logger.LogInfo("Main window shown!");
 
             // Start automatic Git sync if enabled
             _ = PerformStartupGitSyncAsync();
         }
         catch (Exception ex)
         {
-            LogError("Startup error", ex);
-            // SECURITY: Don't expose detailed error messages to users
-            MessageBox.Show("Une erreur s'est produite au démarrage de l'application.\n\nVeuillez consulter le fichier startup-error.log pour plus de détails.",
-                "Erreur de démarrage", MessageBoxButton.OK, MessageBoxImage.Error);
+            _logger.LogErrorSync("Startup error", ex);
+            // LOCALIZATION: Use resource strings for error messages
+            var localization = _serviceProvider?.GetService<ILocalizationService>();
+            var message = localization?.GetString("MessageStartupError")
+                ?? "An error occurred during application startup.\n\nPlease check the startup-error.log file for details.";
+            var title = localization?.GetString("DialogTitleStartupError") ?? "Startup Error";
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(1);
         }
     }
@@ -74,45 +79,20 @@ public partial class App : Application
     {
         if (e.ExceptionObject is Exception ex)
         {
-            LogError("Unhandled exception", ex);
+            _logger.LogErrorSync("Unhandled exception", ex);
         }
     }
 
     private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
-        LogError("Dispatcher exception", e.Exception);
-        // SECURITY: Don't expose detailed error messages to users
-        MessageBox.Show("Une erreur inattendue s'est produite.\n\nL'application va continuer à fonctionner mais certaines fonctionnalités peuvent être affectées.",
-            "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        _logger.LogError("Dispatcher exception", e.Exception);
+        // LOCALIZATION: Use resource strings for error messages
+        var localization = _serviceProvider?.GetService<ILocalizationService>();
+        var message = localization?.GetString("MessageUnexpectedError")
+            ?? "An unexpected error occurred.\n\nThe application will continue to run but some features may be affected.";
+        var title = localization?.GetString("DialogTitleError") ?? "Error";
+        MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
         e.Handled = true;
-    }
-
-    private void LogError(string message, Exception? ex)
-    {
-        try
-        {
-            var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log");
-            // SECURITY: Sanitize exception logging to avoid exposing sensitive paths or data
-            var logMessage = ex != null
-                ? $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n" +
-                  $"Type: {ex.GetType().Name}\n" +
-                  $"Message: {ex.Message}\n" +
-                  $"Source: {ex.Source}\n\n"
-                : $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n\n";
-            File.AppendAllText(logPath, logMessage);
-        }
-        catch { /* Ignore logging errors */ }
-    }
-
-    private void LogInfo(string message)
-    {
-        try
-        {
-            var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log");
-            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}\n";
-            File.AppendAllText(logPath, logMessage);
-        }
-        catch { /* Ignore logging errors */ }
     }
 
     private void ConfigureServices(IServiceCollection services)
@@ -201,11 +181,11 @@ public partial class App : Application
                 try
                 {
                     File.Copy(installSeedPath, appDataSeedPath, overwrite: false);
-                    LogInfo($"Seed file copied to AppData: {appDataSeedPath}");
+                    _logger.LogInfo($"Seed file copied to AppData: {appDataSeedPath}");
                 }
                 catch (Exception ex)
                 {
-                    LogError("Failed to copy seed file to AppData, will use installation path as fallback", ex);
+                    _logger.LogError("Failed to copy seed file to AppData, will use installation path as fallback", ex);
                 }
             }
         }
@@ -260,20 +240,20 @@ public partial class App : Application
         var settings = settingsService.LoadSettingsAsync().GetAwaiter().GetResult();
 
         // Apply the saved theme SYNCHRONOUSLY before window creation
-        LogInfo($"Applying theme: {settings.Theme}");
+        _logger.LogInfo($"Applying theme: {settings.Theme}");
         themeService.ApplyTheme(settings.Theme);
-        LogInfo($"Theme applied successfully: {settings.Theme}");
+        _logger.LogInfo($"Theme applied successfully: {settings.Theme}");
 
         // Apply the saved language
         try
         {
-            LogInfo($"Applying language: {settings.CultureCode}");
+            _logger.LogInfo($"Applying language: {settings.CultureCode}");
             localizationService.ChangeLanguage(settings.CultureCode);
-            LogInfo($"Language applied successfully: {settings.CultureCode}");
+            _logger.LogInfo($"Language applied successfully: {settings.CultureCode}");
         }
         catch (Exception ex)
         {
-            LogError("Failed to apply language, falling back to French", ex);
+            _logger.LogError("Failed to apply language, falling back to French", ex);
             // Fallback to French if culture is invalid
             localizationService.ChangeLanguage("fr");
         }
@@ -328,11 +308,11 @@ public partial class App : Application
                 string.IsNullOrWhiteSpace(settings.GitRemoteUrl) ||
                 string.IsNullOrWhiteSpace(settings.GitRepositoryPath))
             {
-                LogInfo("Git auto-sync disabled or not configured, skipping startup sync");
+                _logger.LogInfo("Git auto-sync disabled or not configured, skipping startup sync");
                 return;
             }
 
-            LogInfo("Starting automatic Git synchronization...");
+            _logger.LogInfo("Starting automatic Git synchronization...");
 
             var gitSyncService = _serviceProvider.GetRequiredService<IGitSyncService>();
 
@@ -341,7 +321,7 @@ public partial class App : Application
 
             if (result.Success)
             {
-                LogInfo($"Git sync completed: {result.ItemsImported} imported, {result.ItemsExported} exported");
+                _logger.LogInfo($"Git sync completed: {result.ItemsImported} imported, {result.ItemsExported} exported");
 
                 // Show notification to user
                 var notificationService = _serviceProvider.GetRequiredService<INotificationService>();
@@ -351,7 +331,7 @@ public partial class App : Application
             }
             else
             {
-                LogError($"Git sync failed: {result.Message} - {result.ErrorDetails}", null);
+                _logger.LogError($"Git sync failed: {result.Message} - {result.ErrorDetails}");
 
                 // Show error notification (non-blocking)
                 var notificationService = _serviceProvider.GetRequiredService<INotificationService>();
@@ -360,13 +340,15 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            LogError("Error during startup Git sync", ex);
+            _logger.LogError("Error during startup Git sync", ex);
             // Don't show error to user for startup sync failures - they can check settings
         }
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _logger.LogInfo("Application exiting...");
+        _logger.Dispose(); // Flush all pending logs
         _serviceProvider?.Dispose();
         base.OnExit(e);
     }

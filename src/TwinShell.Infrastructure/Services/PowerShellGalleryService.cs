@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -13,6 +14,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 {
     private readonly ICommandExecutionService _commandExecutionService;
     private readonly IActionService _actionService;
+    private readonly ILogger<PowerShellGalleryService>? _logger;
 
     // BUGFIX: Declare Regex and dangerous characters as static readonly for better performance
     private static readonly Regex ValidNameRegex = new Regex(@"^[a-zA-Z0-9._-]+$", RegexOptions.Compiled);
@@ -23,10 +25,12 @@ public class PowerShellGalleryService : IPowerShellGalleryService
 
     public PowerShellGalleryService(
         ICommandExecutionService commandExecutionService,
-        IActionService actionService)
+        IActionService actionService,
+        ILogger<PowerShellGalleryService>? logger = null)
     {
         _commandExecutionService = commandExecutionService ?? throw new ArgumentNullException(nameof(commandExecutionService));
         _actionService = actionService ?? throw new ArgumentNullException(nameof(actionService));
+        _logger = logger;
     }
 
     public async Task<IEnumerable<PowerShellModule>> SearchModulesAsync(string query, int maxResults = 50)
@@ -89,14 +93,14 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             var jsonModule = JsonSerializer.Deserialize<PowerShellGalleryModuleDto>(result.Stdout);
             return jsonModule == null ? null : MapToModule(jsonModule);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
-            // Failed to parse JSON
+            _logger?.LogDebug(ex, "Failed to parse JSON response for module {ModuleName}", moduleName);
             return null;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Unexpected error during mapping
+            _logger?.LogWarning(ex, "Unexpected error getting module details for {ModuleName}", moduleName);
             return null;
         }
     }
@@ -195,14 +199,14 @@ public class PowerShellGalleryService : IPowerShellGalleryService
                 Examples = helpDto.Examples?.ToList() ?? new List<string>()
             };
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
-            // Failed to parse JSON
+            _logger?.LogDebug(ex, "Failed to parse JSON help response for command {CommandName}", commandName);
             return null;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Unexpected error during mapping
+            _logger?.LogWarning(ex, "Unexpected error getting help for command {CommandName}", commandName);
             return null;
         }
     }

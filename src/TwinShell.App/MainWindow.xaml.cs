@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TwinShell.App.Services;
 using TwinShell.App.ViewModels;
 using TwinShell.App.Views;
+using TwinShell.Core.Interfaces;
 
 namespace TwinShell.App;
 
@@ -10,17 +11,16 @@ public partial class MainWindow : Window
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly MainViewModel _mainViewModel;
+    private readonly StartupLogger _logger = StartupLogger.Instance;
 
     public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, OutputPanel outputPanel, IServiceProvider serviceProvider)
     {
         try
         {
-            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log"),
-                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor started\n");
+            _logger.LogInfo("MainWindow constructor started");
 
             InitializeComponent();
-            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log"),
-                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] InitializeComponent completed\n");
+            _logger.LogInfo("InitializeComponent completed");
 
             DataContext = viewModel;
             _mainViewModel = viewModel;
@@ -29,11 +29,11 @@ public partial class MainWindow : Window
             // Set the history panel (will be accessed by name in XAML)
             HistoryTabContent.Content = historyPanel;
 
-        // Wire up the ExecutionViewModel to MainViewModel
-        if (outputPanel.DataContext is ExecutionViewModel executionViewModel)
-        {
-            _mainViewModel.ExecutionViewModel = executionViewModel;
-        }
+            // Wire up the ExecutionViewModel to MainViewModel
+            if (outputPanel.DataContext is ExecutionViewModel executionViewModel)
+            {
+                _mainViewModel.ExecutionViewModel = executionViewModel;
+            }
 
             // Initialize SnackBar Service for visual feedback
             SnackBarService.Instance.Initialize(RootGrid);
@@ -41,16 +41,11 @@ public partial class MainWindow : Window
             // BUGFIX: Extract async initialization to proper async method to prevent unhandled exceptions
             Loaded += MainWindow_Loaded;
 
-            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup.log"),
-                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor completed\n");
+            _logger.LogInfo("MainWindow constructor completed");
         }
         catch (Exception ex)
         {
-            // SECURITY: Sanitize exception logging
-            System.IO.File.AppendAllText(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log"),
-                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] MainWindow constructor error\n" +
-                $"Type: {ex.GetType().Name}\n" +
-                $"Message: {ex.Message}\n\n");
+            _logger.LogErrorSync("MainWindow constructor error", ex);
             throw;
         }
     }
@@ -64,8 +59,8 @@ public partial class MainWindow : Window
         try
         {
             // BUGFIX: Initialize theme after window is loaded to prevent UI thread deadlock
-            var themeService = _serviceProvider.GetRequiredService<TwinShell.Core.Interfaces.IThemeService>();
-            var settingsService = _serviceProvider.GetRequiredService<TwinShell.Core.Interfaces.ISettingsService>();
+            var themeService = _serviceProvider.GetRequiredService<IThemeService>();
+            var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
 
             var settings = await settingsService.LoadSettingsAsync();
             themeService.ApplyTheme(settings.Theme);
@@ -74,16 +69,15 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            // SECURITY: Don't expose detailed error messages
-            System.IO.File.AppendAllText(
-                System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log"),
-                $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Initialization error: {ex.GetType().Name} - {ex.Message}\n");
+            _logger.LogError("Initialization error", ex);
 
-            MessageBox.Show(
-                "Échec de l'initialisation de l'application.\n\nConsultez le fichier startup-error.log pour plus de détails.",
-                "Erreur d'initialisation",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
+            // LOCALIZATION: Use resource strings for error messages
+            var localization = _serviceProvider.GetService<ILocalizationService>();
+            var message = localization?.GetString("MessageInitializationError")
+                ?? "Failed to initialize the application.\n\nPlease check the startup-error.log file for details.";
+            var title = localization?.GetString("DialogTitleInitializationError") ?? "Initialization Error";
+
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

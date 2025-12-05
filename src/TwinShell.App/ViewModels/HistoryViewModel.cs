@@ -327,6 +327,7 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 
         _historyLock?.Dispose();
         _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }
 

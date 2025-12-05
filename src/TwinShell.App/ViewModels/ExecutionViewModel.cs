@@ -401,6 +401,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         }
 
         _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }
 
