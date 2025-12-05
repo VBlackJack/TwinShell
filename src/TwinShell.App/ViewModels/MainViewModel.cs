@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TwinShell.App.Collections;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
@@ -26,6 +27,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly ILocalizationService _localizationService;
     private readonly IImportExportService _importExportService;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<MainViewModel> _logger;
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
     private bool _disposed = false;
 
@@ -621,7 +623,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
         IDialogService dialogService,
         ILocalizationService localizationService,
         IImportExportService importExportService,
-        IServiceProvider serviceProvider)
+        IServiceProvider serviceProvider,
+        ILogger<MainViewModel> logger)
     {
         _actionService = actionService;
         _searchService = searchService;
@@ -635,6 +638,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         _localizationService = localizationService;
         _importExportService = importExportService;
         _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
     public async Task InitializeAsync()
@@ -1155,9 +1159,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error toggling favorite for action: {ActionId}", SelectedAction?.Id);
             StatusMessage = _localizationService.GetString(MessageKeys.FavoritesToggleFailed);
             _dialogService.ShowError(
                 _localizationService.GetString(MessageKeys.FavoritesUpdateError),
@@ -1183,9 +1188,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             await asyncMethod();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error in SafeExecuteAsync");
             StatusMessage = _localizationService.GetString(MessageKeys.CommonErrorProcessing);
         }
     }
@@ -1235,16 +1241,18 @@ public partial class MainViewModel : ObservableObject, IDisposable
             {
                 // Reload actions
                 await LoadActionsAsync();
-                StatusMessage = "✓ Nouvelle commande ajoutée avec succès";
-                Services.SnackBarService.Instance.ShowSuccess("✓ Nouvelle commande ajoutée avec succès");
+                var successMessage = $"✓ {_localizationService.GetString("MessageActionCreated")}";
+                StatusMessage = successMessage;
+                Services.SnackBarService.Instance.ShowSuccess(successMessage);
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error creating new action");
             _dialogService.ShowError(
-                "Une erreur s'est produite lors de la création de la commande.",
-                "Erreur");
+                _localizationService.GetString("MessageActionCreateError"),
+                _localizationService.GetString("DialogTitleError"));
         }
     }
 
@@ -1270,16 +1278,18 @@ public partial class MainViewModel : ObservableObject, IDisposable
             {
                 // Reload actions
                 await LoadActionsAsync();
-                StatusMessage = "✓ Commande mise à jour avec succès";
-                Services.SnackBarService.Instance.ShowSuccess("✓ Commande mise à jour avec succès");
+                var successMessage = $"✓ {_localizationService.GetString("MessageActionUpdated")}";
+                StatusMessage = successMessage;
+                Services.SnackBarService.Instance.ShowSuccess(successMessage);
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error updating action: {ActionId}", SelectedAction?.Id);
             _dialogService.ShowError(
-                "Une erreur s'est produite lors de la modification de la commande.",
-                "Erreur");
+                _localizationService.GetString("MessageActionUpdateError"),
+                _localizationService.GetString("DialogTitleError"));
         }
     }
 
@@ -1292,10 +1302,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
         if (SelectedAction == null) return;
 
         var warningMessage = SelectedAction.IsUserCreated
-            ? $"Voulez-vous vraiment supprimer la commande '{SelectedAction.Title}' ?\n\nCette action est irréversible."
-            : $"Voulez-vous vraiment supprimer la commande système '{SelectedAction.Title}' ?\n\nCette action est irréversible.\n\nNote: Pour restaurer une commande système supprimée, vous devrez supprimer la base de données.";
+            ? _localizationService.GetFormattedString("MessageConfirmDeleteAction", SelectedAction.Title)
+            : _localizationService.GetFormattedString("MessageConfirmDeleteSystemAction", SelectedAction.Title);
 
-        var confirmed = _dialogService.ShowQuestion(warningMessage, "Confirmer la suppression");
+        var confirmed = _dialogService.ShowQuestion(warningMessage, _localizationService.GetString("DialogTitleConfirmDelete"));
 
         if (confirmed)
         {
@@ -1303,15 +1313,17 @@ public partial class MainViewModel : ObservableObject, IDisposable
             {
                 await _actionService.DeleteActionAsync(SelectedAction.Id);
                 await LoadActionsAsync();
-                StatusMessage = "✓ Commande supprimée";
-                Services.SnackBarService.Instance.ShowSuccess("✓ Commande supprimée");
+                var successMessage = $"✓ {_localizationService.GetString("MessageActionDeleted")}";
+                StatusMessage = successMessage;
+                Services.SnackBarService.Instance.ShowSuccess(successMessage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // SECURITY: Don't expose exception details to users
+                // Log exception for debugging, but don't expose details to users
+                _logger.LogError(ex, "Error deleting action: {ActionId}", SelectedAction?.Id);
                 _dialogService.ShowError(
-                    "Une erreur s'est produite lors de la suppression de la commande.",
-                    "Erreur");
+                    _localizationService.GetString("MessageActionDeleteError"),
+                    _localizationService.GetString("DialogTitleError"));
             }
         }
     }
@@ -1352,12 +1364,13 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error exporting actions");
             _dialogService.ShowError(
-                "Une erreur s'est produite lors de l'export.",
-                "Erreur");
+                _localizationService.GetString("MessageExportError"),
+                _localizationService.GetString("DialogTitleError"));
         }
     }
 
@@ -1434,12 +1447,13 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error importing actions");
             _dialogService.ShowError(
-                "Une erreur s'est produite lors de l'import.",
-                "Erreur");
+                _localizationService.GetString("MessageImportError"),
+                _localizationService.GetString("DialogTitleError"));
         }
     }
 
@@ -1477,9 +1491,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error exporting configuration");
             _dialogService.ShowError(
                 _localizationService.GetString(MessageKeys.ConfigExportErrorGeneric),
                 _localizationService.GetString(MessageKeys.ConfigExportError));
@@ -1541,9 +1556,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // SECURITY: Don't expose exception details to users
+            // Log exception for debugging, but don't expose details to users
+            _logger.LogError(ex, "Error importing configuration");
             _dialogService.ShowError(
                 _localizationService.GetString(MessageKeys.ConfigImportErrorGeneric),
                 _localizationService.GetString(MessageKeys.ConfigImportError));

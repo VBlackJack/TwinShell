@@ -87,16 +87,18 @@ public partial class App : Application
         e.Handled = true;
     }
 
-    private void LogError(string message, Exception ex)
+    private void LogError(string message, Exception? ex)
     {
         try
         {
             var logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup-error.log");
             // SECURITY: Sanitize exception logging to avoid exposing sensitive paths or data
-            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n" +
-                           $"Type: {ex.GetType().Name}\n" +
-                           $"Message: {ex.Message}\n" +
-                           $"Source: {ex.Source}\n\n";
+            var logMessage = ex != null
+                ? $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n" +
+                  $"Type: {ex.GetType().Name}\n" +
+                  $"Message: {ex.Message}\n" +
+                  $"Source: {ex.Source}\n\n"
+                : $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR: {message}\n\n";
             File.AppendAllText(logPath, logMessage);
         }
         catch { /* Ignore logging errors */ }

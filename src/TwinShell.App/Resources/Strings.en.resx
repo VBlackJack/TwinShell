@@ -110,4 +110,36 @@
   <data name="FilterLast7Days" xml:space="preserve"><value>Last 7 days</value></data>
   <data name="FilterLast30Days" xml:space="preserve"><value>Last 30 days</value></data>
   <data name="FilterAllTime" xml:space="preserve"><value>All time</value></data>
+
+  <!-- Action Editor Messages -->
+  <data name="MessageActionCreated" xml:space="preserve"><value>New command added successfully</value></data>
+  <data name="MessageActionUpdated" xml:space="preserve"><value>Command updated successfully</value></data>
+  <data name="MessageActionDeleted" xml:space="preserve"><value>Command deleted</value></data>
+  <data name="MessageActionCreateError" xml:space="preserve"><value>An error occurred while creating the command.</value></data>
+  <data name="MessageActionUpdateError" xml:space="preserve"><value>An error occurred while updating the command.</value></data>
+  <data name="MessageActionDeleteError" xml:space="preserve"><value>An error occurred while deleting the command.</value></data>
+  <data name="MessageConfirmDeleteAction" xml:space="preserve"><value>Are you sure you want to delete the command '{0}'?
+
+This action cannot be undone.</value></data>
+  <data name="MessageConfirmDeleteSystemAction" xml:space="preserve"><value>Are you sure you want to delete the system command '{0}'?
+
+This action cannot be undone.
+
+Note: To restore a deleted system command, you will need to delete the database.</value></data>
+  <data name="DialogTitleConfirmDelete" xml:space="preserve"><value>Confirm Delete</value></data>
+
+  <!-- Export/Import Messages -->
+  <data name="MessageExportSuccess" xml:space="preserve"><value>Export completed successfully!</value></data>
+  <data name="MessageExportError" xml:space="preserve"><value>Error during export</value></data>
+  <data name="MessageImportSuccess" xml:space="preserve"><value>Import completed successfully!</value></data>
+  <data name="MessageImportError" xml:space="preserve"><value>Error during import</value></data>
+
+  <!-- Startup Error Messages -->
+  <data name="MessageStartupError" xml:space="preserve"><value>An error occurred while starting the application.
+
+Please check the startup-error.log file for more details.</value></data>
+  <data name="MessageUnexpectedError" xml:space="preserve"><value>An unexpected error occurred.
+
+The application will continue to run but some features may be affected.</value></data>
+  <data name="DialogTitleStartupError" xml:space="preserve"><value>Startup Error</value></data>
 </root>
