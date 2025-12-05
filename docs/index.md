@@ -1,101 +1,52 @@
-# ShellBook
+# TwinShell Documentation
 
-Bienvenue dans **ShellBook**, la base de connaissances Docs-as-Code pour les équipes SysOps/DevOps.
-
-## Parcours de Formation
-
-Les formations sont organisées par niveau de complexité et zone d'accès infrastructure :
-
-| Niveau | Focus | Public cible |
-|--------|-------|--------------|
-| **Niveau 0** | Accès PADSEC, VPN, Active Directory | Nouveaux arrivants, tous profils |
-| **Niveau 1** | Sécurité, PKI, Certificats | Ops confirmés, Security Engineers |
-| **Niveau 2** | Linux, Windows, Scripting avancé | SysAdmins, Platform Engineers |
-| **Niveau 3** | Cloud (GCP/GKE), IaC, GitOps | DevOps, SRE, Cloud Architects |
+Bienvenue dans la documentation de **TwinShell**, une bibliothèque complète de commandes PowerShell et Bash pour les administrateurs système.
 
 ## Démarrage Rapide
 
-<div class="grid cards" markdown>
+- [Guide de Démarrage Rapide](QuickStart.md) - Commencez en 5 minutes
+- [Guide Utilisateur Complet](UserGuide.md) - Documentation exhaustive
+- [FAQ](FAQ.md) - Questions fréquentes
 
--   :material-shield-lock:{ .lg .middle } **Niveau 0 - Fondations**
+## Fonctionnalités Principales
 
-    ---
+| Fonctionnalité | Description |
+|----------------|-------------|
+| **479 commandes** | PowerShell et Bash organisées en 13 catégories |
+| **Cross-platform** | Support Windows et Linux |
+| **Recherche intelligente** | Fuzzy matching, accents, multi-mots |
+| **Favoris & Historique** | Accès rapide à vos commandes |
+| **Synchronisation Git** | GitOps pour le travail en équipe |
+| **Thèmes** | Mode clair et sombre |
 
-    Commencez par comprendre l'architecture PADSEC et les accès VPN.
+## Catégories de Commandes
 
-    [:octicons-arrow-right-24: Architecture PADSEC](formations/ntlite/index.md)
+- **Active Directory & GPO** - Gestion des utilisateurs, groupes, GPO
+- **Security & Encryption** - BitLocker, LAPS, Defender, certificats
+- **Network & DNS** - Configuration réseau, DNS, diagnostics
+- **Files & Storage** - Système de fichiers, disques, permissions
+- **Performance** - Monitoring, optimisation, services
+- **Logs & Events** - Journaux Windows/Linux, analyse
+- **Registry** - Opérations sur le registre Windows
+- **Docker & Containers** - Gestion des conteneurs
+- **Ansible & Automation** - Automatisation et déploiement
+- **Windows Debloat** - Nettoyage et confidentialité Windows
+- **WSL** - Windows Subsystem for Linux
+- **Cross-Platform** - Commandes unifiées Windows/Linux
 
--   :material-certificate:{ .lg .middle } **Niveau 1 - Sécurité**
+## Documentation Développeur
 
-    ---
+- [Architecture](developer/README.md) - Vue d'ensemble technique
+- [Décisions d'Architecture](developer/ARCHITECTURE_DECISIONS.md) - ADR
+- [Sécurité](developer/SECURITY.md) - Mesures de sécurité
+- [Dette Technique](developer/TECHNICAL_DEBT.md) - Points d'amélioration
 
-    Maîtrisez la PKI et la gestion des certificats.
+## Liens Utiles
 
-    [:octicons-arrow-right-24: Infrastructure PKI](formations/pki-security/index.md)
+- [GitHub TwinShell](https://github.com/VBlackJack/TwinShell)
+- [Releases](https://github.com/VBlackJack/TwinShell/releases)
+- [Issues](https://github.com/VBlackJack/TwinShell/issues)
 
--   :material-linux:{ .lg .middle } **Niveau 2 - Plateformes**
+---
 
-    ---
-
-    Approfondissez Linux, Windows et le scripting.
-
-    [:octicons-arrow-right-24: Linux Performance](formations/linux-perf/index.md)
-
--   :material-cloud:{ .lg .middle } **Niveau 3 - Cloud & DevOps**
-
-    ---
-
-    Déployez sur GKE avec Terraform et ArgoCD.
-
-    [:octicons-arrow-right-24: GCP & GKE](formations/gcp-gke/index.md)
-
-</div>
-
-## Architecture Documentaire
-
-```
-docs/
-├── formations/           # Modules de formation par technologie
-│   ├── ad-hardening/     # Hardening Active Directory
-│   ├── gcp-gke/          # Google Kubernetes Engine
-│   ├── gitops-argocd/    # GitOps avec ArgoCD
-│   ├── linux/            # Services Linux (Edge, etc.)
-│   ├── linux-perf/       # Performance Linux
-│   ├── pki-security/     # Infrastructure PKI
-│   ├── powershell-advanced/  # PowerShell avancé
-│   ├── terraform-ops/    # Terraform industrialisé
-│   └── windows/          # Active Directory, WSUS, etc.
-├── network/              # Documentation réseau (VPN, etc.)
-├── security/             # Guides sécurité transverses
-└── developer/            # Documentation technique interne
-```
-
-## Conventions
-
-!!! info "Anonymisation"
-    Tous les exemples utilisent des noms de domaine et adresses IP fictifs :
-
-    - Domaine : `*.shellbook.local`
-    - Plages IP : `192.168.x.x`, `10.x.x.x`
-    - Serveurs : `srv-*`, `fw-*`, `dc-*`
-
-!!! warning "Classification"
-    Cette documentation est destinée à un usage interne uniquement.
-    Ne partagez pas les informations d'architecture en dehors de l'organisation.
-
-## Contribution
-
-ShellBook suit le paradigme **Docs-as-Code** :
-
-1. Fork le repository
-2. Créez une branche feature
-3. Rédigez en Markdown avec les extensions MkDocs Material
-4. Soumettez une Pull Request
-
-```bash
-# Preview local
-mkdocs serve
-
-# Build statique
-mkdocs build
-```
+*Version 1.4.0 - Décembre 2025*
