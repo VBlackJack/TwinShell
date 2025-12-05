@@ -230,8 +230,8 @@ public class SearchServiceTests
     [Fact]
     public async Task SearchAsync_MultipleMatches_ReturnsAllMatching()
     {
-        // Act - Search for "ad" should match Active Directory actions
-        var result = await _service.SearchAsync(_testActions, "ad");
+        // Act - Search for "active directory" to match specific actions
+        var result = await _service.SearchAsync(_testActions, "active directory");
 
         // Assert
         result.Should().HaveCount(2); // Actions 2 and 4

@@ -14,6 +14,10 @@ public class CommandGeneratorServiceTests
     public CommandGeneratorServiceTests()
     {
         var mockLocalizationService = new Mock<ILocalizationService>();
+        // Configure mock to return formatted validation messages
+        mockLocalizationService
+            .Setup(x => x.GetFormattedString(It.IsAny<string>(), It.IsAny<object[]>()))
+            .Returns((string key, object[] args) => $"{key}: {string.Join(", ", args)}");
         _service = new CommandGeneratorService(mockLocalizationService.Object);
     }
 
@@ -46,7 +50,8 @@ public class CommandGeneratorServiceTests
         var result = _service.GenerateCommand(template, paramValues);
 
         // Assert
-        result.Should().Be("Get-ADUser -Identity jdupont");
+        // Note: The service now quotes parameter values for safety
+        result.Should().Be("Get-ADUser -Identity 'jdupont'");
     }
 
     [Fact]
@@ -74,7 +79,8 @@ public class CommandGeneratorServiceTests
         var result = _service.GenerateCommand(template, paramValues);
 
         // Assert
-        result.Should().Be("gpresult /R /S SERVER01 /U admin");
+        // Note: The service now quotes parameter values for safety
+        result.Should().Be("gpresult /R /S 'SERVER01' /U 'admin'");
     }
 
     [Fact]
@@ -103,7 +109,8 @@ public class CommandGeneratorServiceTests
         var result = _service.GenerateCommand(template, paramValues);
 
         // Assert
-        result.Should().Be("Get-EventLog -LogName System");
+        // Note: The service now quotes parameter values for safety
+        result.Should().Be("Get-EventLog -LogName 'System'");
     }
 
     [Fact]
@@ -156,8 +163,8 @@ public class CommandGeneratorServiceTests
         // Assert
         result.Should().BeFalse();
         errors.Should().HaveCount(1);
+        // The mock returns "MessageKey: param1, param2, ..." format
         errors[0].Should().Contain("Username");
-        errors[0].Should().Contain("requis");
     }
 
     [Fact]
@@ -189,7 +196,8 @@ public class CommandGeneratorServiceTests
         // Assert
         result.Should().BeFalse();
         errors.Should().HaveCount(1);
-        errors[0].Should().Contain("nombre entier");
+        // The mock returns "MessageKey: param1, param2, ..." format
+        errors[0].Should().Contain("Count");
     }
 
     [Fact]

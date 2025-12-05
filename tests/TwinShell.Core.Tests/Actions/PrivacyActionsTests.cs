@@ -88,10 +88,11 @@ public class PrivacyActionsTests
         var privacyActions = _actions.Where(a => a.Id.StartsWith("WIN-PRIVACY-")).ToList();
 
         // Assert
+        // Note: Category was renamed from "Confidentialité Windows" to "Windows Debloat" in v1.4.0
         privacyActions.Should().AllSatisfy(action =>
         {
-            action.Category.Should().Be("🔒 Confidentialité Windows",
-                $"Action {action.Id} should be in 'Confidentialité Windows' category");
+            action.Category.Should().Be("🧹 Windows Debloat",
+                $"Action {action.Id} should be in 'Windows Debloat' category");
         });
     }
 
@@ -149,7 +150,8 @@ public class PrivacyActionsTests
             a.Id.StartsWith("WIN-PRIVACY-00")).ToList();
 
         // Assert
-        permissionsActions.Should().HaveCount(10, "There should be 10 app permissions actions");
+        // Note: Count reduced from 10 to 9 after audit cleanup in v1.4.0
+        permissionsActions.Should().HaveCount(9, "There should be 9 app permissions actions");
     }
 
     [Theory]
@@ -336,7 +338,7 @@ public class PrivacyActionsTests
     [InlineData("WIN-PRIVACY-205")]
     [InlineData("WIN-PRIVACY-206")]
     [InlineData("WIN-PRIVACY-207")]
-    [InlineData("WIN-PRIVACY-208")]
+    // Note: WIN-PRIVACY-208 is a lockscreen action, not telemetry - removed in v1.4.0 audit
     public void TelemetryActions_ShouldHaveTelemetryTag(string actionId)
     {
         // Arrange

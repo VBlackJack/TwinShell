@@ -85,10 +85,11 @@ public class DebloatingActionsTests
         var debloatingActions = _actions.Where(a => a.Id.StartsWith("WIN-DEBLOAT-")).ToList();
 
         // Assert
+        // Note: Category renamed from "Debloating Windows" to "Windows Debloat" in v1.4.0
         debloatingActions.Should().AllSatisfy(action =>
         {
-            action.Category.Should().Be("🧹 Debloating Windows",
-                $"Action {action.Id} should be in 'Debloating Windows' category");
+            action.Category.Should().Be("🧹 Windows Debloat",
+                $"Action {action.Id} should be in 'Windows Debloat' category");
         });
     }
 

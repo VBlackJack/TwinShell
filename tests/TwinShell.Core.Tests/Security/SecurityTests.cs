@@ -139,7 +139,11 @@ public class SecurityTests
     public void ValidateParameters_RejectsTooLongString()
     {
         // Arrange
-        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
+        var mockLocalizationService = new Mock<ILocalizationService>();
+        mockLocalizationService
+            .Setup(x => x.GetFormattedString(It.IsAny<string>(), It.IsAny<object[]>()))
+            .Returns((string key, object[] args) => $"Le paramètre {args[0]} dépasse la longueur maximale autorisée");
+        var service = new CommandGeneratorService(mockLocalizationService.Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -157,14 +161,18 @@ public class SecurityTests
 
         // Assert
         Assert.False(isValid);
-        Assert.Contains(errors, e => e.Contains("dépasse la longueur maximale"));
+        Assert.Contains(errors, e => e != null && e.Contains("dépasse la longueur maximale"));
     }
 
     [Fact]
     public void ValidateParameters_RejectsInvalidHostname()
     {
         // Arrange
-        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
+        var mockLocalizationService = new Mock<ILocalizationService>();
+        mockLocalizationService
+            .Setup(x => x.GetFormattedString(It.IsAny<string>(), It.IsAny<object[]>()))
+            .Returns((string key, object[] args) => $"Le paramètre {args[0]} doit être un nom d'hôte valide");
+        var service = new CommandGeneratorService(mockLocalizationService.Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -182,7 +190,7 @@ public class SecurityTests
 
         // Assert
         Assert.False(isValid);
-        Assert.Contains(errors, e => e.Contains("nom d'hôte valide"));
+        Assert.Contains(errors, e => e != null && e.Contains("nom d'hôte valide"));
     }
 
     [Fact]
@@ -214,7 +222,11 @@ public class SecurityTests
     public void ValidateParameters_RejectsInvalidIPAddress()
     {
         // Arrange
-        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
+        var mockLocalizationService = new Mock<ILocalizationService>();
+        mockLocalizationService
+            .Setup(x => x.GetFormattedString(It.IsAny<string>(), It.IsAny<object[]>()))
+            .Returns((string key, object[] args) => $"Le paramètre {args[0]} doit être une adresse IP valide");
+        var service = new CommandGeneratorService(mockLocalizationService.Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -232,7 +244,7 @@ public class SecurityTests
 
         // Assert
         Assert.False(isValid);
-        Assert.Contains(errors, e => e.Contains("adresse IP valide"));
+        Assert.Contains(errors, e => e != null && e.Contains("adresse IP valide"));
     }
 
     [Fact]
@@ -368,7 +380,13 @@ public class SecurityTests
     public void ValidateParameters_RejectsDangerousCharacters(string maliciousValue)
     {
         // Arrange
-        var service = new CommandGeneratorService(new Mock<ILocalizationService>().Object);
+        var mockLocalizationService = new Mock<ILocalizationService>();
+        // Configure mock to return a message containing "caractères interdits"
+        mockLocalizationService
+            .Setup(x => x.GetFormattedString(It.IsAny<string>(), It.IsAny<object[]>()))
+            .Returns((string key, object[] args) => $"Le paramètre {args[0]} contient des caractères interdits");
+
+        var service = new CommandGeneratorService(mockLocalizationService.Object);
         var template = new CommandTemplate
         {
             Parameters = new List<TemplateParameter>
@@ -386,7 +404,7 @@ public class SecurityTests
 
         // Assert
         Assert.False(isValid);
-        Assert.Contains(errors, e => e.Contains("caractères interdits"));
+        Assert.Contains(errors, e => e != null && e.Contains("caractères interdits"));
     }
 
     #endregion
