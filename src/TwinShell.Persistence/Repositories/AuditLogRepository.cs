@@ -55,15 +55,10 @@ public class AuditLogRepository : IAuditLogRepository
 
     public async Task DeleteOlderThanAsync(DateTime date)
     {
-        var entities = await _context.AuditLogs
+        // PERFORMANCE: Use ExecuteDeleteAsync for direct SQL DELETE
+        // This avoids loading all entities into memory (prevents OOM with large datasets)
+        await _context.AuditLogs
             .Where(a => a.Timestamp < date)
-            .ToListAsync();
-
-        // PERFORMANCE: Use Count for List instead of Any()
-        if (entities.Count > 0)
-        {
-            _context.AuditLogs.RemoveRange(entities);
-            await _context.SaveChangesAsync();
-        }
+            .ExecuteDeleteAsync();
     }
 }

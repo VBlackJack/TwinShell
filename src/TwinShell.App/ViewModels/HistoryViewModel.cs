@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using TwinShell.App.Collections;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
@@ -14,6 +15,7 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 {
     private readonly ICommandHistoryService _historyService;
     private readonly IClipboardService _clipboardService;
+    private readonly ILogger<HistoryViewModel> _logger;
     private readonly SemaphoreSlim _historyLock = new SemaphoreSlim(1, 1);
     private bool _disposed;
 
@@ -66,10 +68,12 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 
     public HistoryViewModel(
         ICommandHistoryService historyService,
-        IClipboardService clipboardService)
+        IClipboardService clipboardService,
+        ILogger<HistoryViewModel> logger)
     {
         _historyService = historyService;
         _clipboardService = clipboardService;
+        _logger = logger;
     }
 
     public async Task InitializeAsync()
@@ -138,9 +142,10 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             await ApplyFiltersAsync();
             StatusMessage = $"Loaded {_allHistory.Count} history entries";
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Error loading history");
             StatusMessage = "Error loading history";
         }
     }
@@ -250,9 +255,10 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
                 await LoadHistoryAsync();
                 StatusMessage = "All history cleared successfully";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // SECURITY: Don't expose exception details to users
+                _logger.LogError(ex, "Error clearing history");
                 StatusMessage = "Error clearing history";
             }
         }
@@ -310,9 +316,10 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             await LoadHistoryAsync();
             StatusMessage = "History entry deleted";
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Error deleting history entry: {Id}", id);
             StatusMessage = "Error deleting entry";
         }
     }

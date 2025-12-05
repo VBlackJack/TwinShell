@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Windows;
 using TwinShell.Core.Interfaces;
@@ -12,6 +13,7 @@ namespace TwinShell.App.ViewModels;
 public partial class CategoryManagementViewModel : ObservableObject
 {
     private readonly IActionService _actionService;
+    private readonly ILogger<CategoryManagementViewModel> _logger;
 
     [ObservableProperty]
     private ObservableCollection<CategoryViewModel> _categories = new();
@@ -31,9 +33,12 @@ public partial class CategoryManagementViewModel : ObservableObject
     [ObservableProperty]
     private string? _errorMessage;
 
-    public CategoryManagementViewModel(IActionService actionService)
+    public CategoryManagementViewModel(
+        IActionService actionService,
+        ILogger<CategoryManagementViewModel> logger)
     {
         _actionService = actionService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -108,9 +113,10 @@ public partial class CategoryManagementViewModel : ObservableObject
 
             NewCategoryName = string.Empty;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Error in SaveNewAsync for category: {CategoryName}", NewCategoryName);
             ErrorMessage = "An error occurred while processing the category";
         }
     }
@@ -184,9 +190,10 @@ public partial class CategoryManagementViewModel : ObservableObject
                 ErrorMessage = "Failed to rename category.";
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
+            _logger.LogError(ex, "Error in SaveEditAsync for category: {CategoryName}", SelectedCategory?.Name);
             ErrorMessage = "An error occurred while saving the category";
         }
     }
@@ -218,9 +225,10 @@ public partial class CategoryManagementViewModel : ObservableObject
                     MessageBox.Show("Category deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // SECURITY: Don't expose exception details to users
+                _logger.LogError(ex, "Error in DeleteAsync for category: {CategoryName}", SelectedCategory?.Name);
                 ErrorMessage = "An error occurred while deleting the category";
             }
         }

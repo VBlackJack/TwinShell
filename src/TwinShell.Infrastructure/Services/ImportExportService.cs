@@ -129,11 +129,13 @@ public class ImportExportService : IImportExportService
                 };
             }
 
-            // Read and parse JSON
+            // Read and parse JSON with security limits
             var json = await File.ReadAllTextAsync(filePath);
             var importData = JsonSerializer.Deserialize<ImportData>(json, new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                // SECURITY: Limit JSON depth to prevent DoS via deeply nested objects
+                MaxDepth = 32
             });
 
             if (importData?.Actions == null || importData.Actions.Count == 0)
@@ -262,11 +264,13 @@ public class ImportExportService : IImportExportService
                 };
             }
 
-            // Parse JSON
+            // Parse JSON with security limits
             var json = await File.ReadAllTextAsync(filePath);
             var importData = JsonSerializer.Deserialize<ImportData>(json, new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                // SECURITY: Limit JSON depth to prevent DoS via deeply nested objects
+                MaxDepth = 32
             });
 
             if (importData?.Actions == null)

@@ -12,6 +12,12 @@ public class ActionRepository : IActionRepository
 {
     private readonly TwinShellDbContext _context;
 
+    // PERFORMANCE: Cache for categories (rarely change, queried frequently)
+    private static IReadOnlyList<string>? _categoriesCache;
+    private static DateTime _cacheExpiration = DateTime.MinValue;
+    private static readonly SemaphoreSlim _cacheLock = new(1, 1);
+    private const int CacheTtlMinutes = 5;
+
     public ActionRepository(TwinShellDbContext context)
     {
         _context = context;
@@ -56,13 +62,47 @@ public class ActionRepository : IActionRepository
 
     public async Task<IEnumerable<string>> GetAllCategoriesAsync()
     {
-        // PERFORMANCE: AsNoTracking for read-only queries
-        return await _context.Actions
-            .AsNoTracking()
-            .Select(a => a.Category)
-            .Distinct()
-            .OrderBy(c => c)
-            .ToListAsync();
+        // PERFORMANCE: Return cached categories if still valid
+        if (_categoriesCache != null && DateTime.UtcNow < _cacheExpiration)
+        {
+            return _categoriesCache;
+        }
+
+        await _cacheLock.WaitAsync();
+        try
+        {
+            // Double-check after acquiring lock
+            if (_categoriesCache != null && DateTime.UtcNow < _cacheExpiration)
+            {
+                return _categoriesCache;
+            }
+
+            // Fetch from database and cache
+            var categories = await _context.Actions
+                .AsNoTracking()
+                .Select(a => a.Category)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToListAsync();
+
+            _categoriesCache = categories;
+            _cacheExpiration = DateTime.UtcNow.AddMinutes(CacheTtlMinutes);
+
+            return categories;
+        }
+        finally
+        {
+            _cacheLock.Release();
+        }
+    }
+
+    /// <summary>
+    /// Invalidates the categories cache (call after add/update/delete operations that change categories)
+    /// </summary>
+    public static void InvalidateCategoriesCache()
+    {
+        _cacheExpiration = DateTime.MinValue;
+        _categoriesCache = null;
     }
 
     public async Task AddAsync(Core.Models.Action action)
@@ -91,6 +131,9 @@ public class ActionRepository : IActionRepository
         _context.Actions.Add(entity);
         // EF Core ensures all tracked changes are saved atomically in a single transaction
         await _context.SaveChangesAsync();
+
+        // Invalidate cache since a new action may have a new category
+        InvalidateCategoriesCache();
     }
 
     public async Task UpdateAsync(Core.Models.Action action)
@@ -160,6 +203,9 @@ public class ActionRepository : IActionRepository
 
         _context.Actions.Update(entity);
         await _context.SaveChangesAsync();
+
+        // Invalidate cache since category may have changed
+        InvalidateCategoriesCache();
     }
 
     public async Task DeleteAsync(string id)
@@ -169,6 +215,9 @@ public class ActionRepository : IActionRepository
         {
             _context.Actions.Remove(entity);
             await _context.SaveChangesAsync();
+
+            // Invalidate cache since a category may now be empty
+            InvalidateCategoriesCache();
         }
     }
 
@@ -196,10 +245,18 @@ public class ActionRepository : IActionRepository
 
         // Use EF Core's ExecuteUpdateAsync for a single SQL UPDATE statement
         // This is much more efficient than loading all entities and updating them individually
-        return await _context.Actions
+        var result = await _context.Actions
             .Where(a => a.Category == oldCategory)
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(a => a.Category, targetCategory)
                 .SetProperty(a => a.UpdatedAt, now));
+
+        // Invalidate cache since categories changed
+        if (result > 0)
+        {
+            InvalidateCategoriesCache();
+        }
+
+        return result;
     }
 }
