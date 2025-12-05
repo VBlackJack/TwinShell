@@ -164,6 +164,11 @@ public class SearchHistoryRepository : ISearchHistoryRepository
 
     public async Task DeleteOlderThanAsync(int daysToKeep)
     {
+        if (daysToKeep <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(daysToKeep), "Value must be positive");
+        }
+
         var cutoffDate = DateTime.UtcNow.AddDays(-daysToKeep);
 
         var entitiesToDelete = await _context.SearchHistories

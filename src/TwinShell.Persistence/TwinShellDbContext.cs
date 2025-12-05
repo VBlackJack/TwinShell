@@ -9,6 +9,15 @@ namespace TwinShell.Persistence;
 /// </summary>
 public class TwinShellDbContext : DbContext
 {
+    // SECURITY: Whitelist of valid table names to prevent SQL injection
+    private static readonly HashSet<string> AllowedTableNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Actions",
+        "CommandBatches",
+        "CustomCategories",
+        "CommandTemplates"
+    };
+
     public TwinShellDbContext(DbContextOptions<TwinShellDbContext> options)
         : base(options)
     {
@@ -45,6 +54,12 @@ public class TwinShellDbContext : DbContext
 
     private async Task AddPublicIdColumnIfNotExistsAsync(string tableName)
     {
+        // SECURITY: Validate table name against whitelist to prevent SQL injection
+        if (!AllowedTableNames.Contains(tableName))
+        {
+            throw new ArgumentException($"Invalid table name: {tableName}", nameof(tableName));
+        }
+
         // Check if column exists using a direct query
         using var checkCommand = Database.GetDbConnection().CreateCommand();
         checkCommand.CommandText = $"SELECT COUNT(*) FROM pragma_table_info('{tableName}') WHERE name = 'PublicId'";
