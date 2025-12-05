@@ -350,6 +350,66 @@ Note: Pour restaurer une commande système supprimée, vous devrez supprimer la 
   <data name="MessageImportError" xml:space="preserve">
     <value>Erreur lors de l'import</value>
   </data>
+  <data name="MessageActionsExportedTo" xml:space="preserve">
+    <value>{0} commandes exportées vers :
+{1}</value>
+  </data>
+  <data name="DialogTitleExportSuccess" xml:space="preserve">
+    <value>Export réussi</value>
+  </data>
+  <data name="MessageExportErrorDetails" xml:space="preserve">
+    <value>Erreur lors de l'export :
+{0}</value>
+  </data>
+  <data name="DialogTitleExportFailed" xml:space="preserve">
+    <value>Échec de l'export</value>
+  </data>
+  <data name="MessageInvalidFile" xml:space="preserve">
+    <value>Fichier invalide :
+{0}</value>
+  </data>
+  <data name="DialogTitleValidationFailed" xml:space="preserve">
+    <value>Validation échouée</value>
+  </data>
+  <data name="MessageImportModeChoice" xml:space="preserve">
+    <value>Fichier valide contenant {0} commandes.
+
+Mode d'import :
+• OUI = Fusionner (ajouter nouvelles, mettre à jour existantes)
+• NON = Remplacer (supprimer toutes vos commandes puis importer)
+
+Voulez-vous FUSIONNER avec vos commandes existantes ?</value>
+  </data>
+  <data name="DialogTitleChooseImportMode" xml:space="preserve">
+    <value>Choisir le mode d'import</value>
+  </data>
+  <data name="MessageConfirmReplace" xml:space="preserve">
+    <value>⚠ ATTENTION ⚠
+
+Le mode REMPLACEMENT va supprimer TOUTES vos commandes personnelles existantes.
+Les commandes système seront conservées.
+
+Êtes-vous ABSOLUMENT SÛR de vouloir continuer ?</value>
+  </data>
+  <data name="DialogTitleConfirmReplace" xml:space="preserve">
+    <value>Confirmer le remplacement</value>
+  </data>
+  <data name="MessageImportCompleted" xml:space="preserve">
+    <value>Import terminé :
+• {0} commandes importées
+• {1} commandes mises à jour
+• {2} commandes ignorées</value>
+  </data>
+  <data name="DialogTitleImportSuccess" xml:space="preserve">
+    <value>Import réussi</value>
+  </data>
+  <data name="MessageImportErrorDetails" xml:space="preserve">
+    <value>Erreur lors de l'import :
+{0}</value>
+  </data>
+  <data name="DialogTitleImportFailed" xml:space="preserve">
+    <value>Échec de l'import</value>
+  </data>
 
   <!-- Startup Error Messages -->
   <data name="MessageStartupError" xml:space="preserve">

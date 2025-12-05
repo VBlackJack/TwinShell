@@ -133,6 +133,38 @@ Note: To restore a deleted system command, you will need to delete the database.
   <data name="MessageExportError" xml:space="preserve"><value>Error during export</value></data>
   <data name="MessageImportSuccess" xml:space="preserve"><value>Import completed successfully!</value></data>
   <data name="MessageImportError" xml:space="preserve"><value>Error during import</value></data>
+  <data name="MessageActionsExportedTo" xml:space="preserve"><value>{0} commands exported to:
+{1}</value></data>
+  <data name="DialogTitleExportSuccess" xml:space="preserve"><value>Export Successful</value></data>
+  <data name="MessageExportErrorDetails" xml:space="preserve"><value>Error during export:
+{0}</value></data>
+  <data name="DialogTitleExportFailed" xml:space="preserve"><value>Export Failed</value></data>
+  <data name="MessageInvalidFile" xml:space="preserve"><value>Invalid file:
+{0}</value></data>
+  <data name="DialogTitleValidationFailed" xml:space="preserve"><value>Validation Failed</value></data>
+  <data name="MessageImportModeChoice" xml:space="preserve"><value>Valid file containing {0} commands.
+
+Import mode:
+• YES = Merge (add new, update existing)
+• NO = Replace (delete all your commands then import)
+
+Do you want to MERGE with your existing commands?</value></data>
+  <data name="DialogTitleChooseImportMode" xml:space="preserve"><value>Choose Import Mode</value></data>
+  <data name="MessageConfirmReplace" xml:space="preserve"><value>⚠ WARNING ⚠
+
+REPLACE mode will delete ALL your existing custom commands.
+System commands will be preserved.
+
+Are you ABSOLUTELY SURE you want to continue?</value></data>
+  <data name="DialogTitleConfirmReplace" xml:space="preserve"><value>Confirm Replace</value></data>
+  <data name="MessageImportCompleted" xml:space="preserve"><value>Import completed:
+• {0} commands imported
+• {1} commands updated
+• {2} commands skipped</value></data>
+  <data name="DialogTitleImportSuccess" xml:space="preserve"><value>Import Successful</value></data>
+  <data name="MessageImportErrorDetails" xml:space="preserve"><value>Error during import:
+{0}</value></data>
+  <data name="DialogTitleImportFailed" xml:space="preserve"><value>Import Failed</value></data>
 
   <!-- Startup Error Messages -->
   <data name="MessageStartupError" xml:space="preserve"><value>An error occurred while starting the application.

@@ -1353,14 +1353,14 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 if (result.Success)
                 {
                     _dialogService.ShowSuccess(
-                        $"{result.ActionCount} commandes exportées vers:\n{fileName}",
-                        "Export réussi");
+                        _localizationService.GetFormattedString("MessageActionsExportedTo", result.ActionCount, fileName),
+                        _localizationService.GetString("DialogTitleExportSuccess"));
                 }
                 else
                 {
                     _dialogService.ShowError(
-                        $"Erreur lors de l'export:\n{result.ErrorMessage}",
-                        "Échec de l'export");
+                        _localizationService.GetFormattedString("MessageExportErrorDetails", result.ErrorMessage ?? "Unknown"),
+                        _localizationService.GetString("DialogTitleExportFailed"));
                 }
             }
         }
@@ -1394,19 +1394,15 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 if (!validation.IsValid)
                 {
                     _dialogService.ShowWarning(
-                        $"Fichier invalide:\n{validation.ErrorMessage}",
-                        "Validation échouée");
+                        _localizationService.GetFormattedString("MessageInvalidFile", validation.ErrorMessage ?? "Unknown"),
+                        _localizationService.GetString("DialogTitleValidationFailed"));
                     return;
                 }
 
                 // Ask user for import mode
                 var mergeMode = _dialogService.ShowQuestion(
-                    $"Fichier valide contenant {validation.ActionCount} commandes.\n\n" +
-                    "Mode d'import:\n" +
-                    "• OUI = Fusionner (ajouter nouvelles, mettre à jour existantes)\n" +
-                    "• NON = Remplacer (supprimer toutes vos commandes puis importer)\n\n" +
-                    "Voulez-vous FUSIONNER avec vos commandes existantes ?",
-                    "Choisir le mode d'import");
+                    _localizationService.GetFormattedString("MessageImportModeChoice", validation.ActionCount),
+                    _localizationService.GetString("DialogTitleChooseImportMode"));
 
                 var mode = mergeMode ? ImportMode.Merge : ImportMode.Replace;
 
@@ -1414,11 +1410,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 if (mode == ImportMode.Replace)
                 {
                     var confirmReplace = _dialogService.ShowQuestion(
-                        "⚠ ATTENTION ⚠\n\n" +
-                        "Le mode REMPLACEMENT va supprimer TOUTES vos commandes personnelles existantes.\n" +
-                        "Les commandes système seront conservées.\n\n" +
-                        "Êtes-vous ABSOLUMENT SÛR de vouloir continuer ?",
-                        "Confirmer le remplacement");
+                        _localizationService.GetString("MessageConfirmReplace"),
+                        _localizationService.GetString("DialogTitleConfirmReplace"));
 
                     if (!confirmReplace)
                     {
@@ -1433,17 +1426,14 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 {
                     await LoadActionsAsync();
                     _dialogService.ShowSuccess(
-                        $"Import terminé:\n" +
-                        $"• {result.Imported} commandes importées\n" +
-                        $"• {result.Updated} commandes mises à jour\n" +
-                        $"• {result.Skipped} commandes ignorées",
-                        "Import réussi");
+                        _localizationService.GetFormattedString("MessageImportCompleted", result.Imported, result.Updated, result.Skipped),
+                        _localizationService.GetString("DialogTitleImportSuccess"));
                 }
                 else
                 {
                     _dialogService.ShowError(
-                        $"Erreur lors de l'import:\n{result.ErrorMessage}",
-                        "Échec de l'import");
+                        _localizationService.GetFormattedString("MessageImportErrorDetails", result.ErrorMessage ?? "Unknown"),
+                        _localizationService.GetString("DialogTitleImportFailed"));
                 }
             }
         }

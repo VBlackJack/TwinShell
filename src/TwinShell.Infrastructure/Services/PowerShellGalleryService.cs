@@ -55,41 +55,8 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             return Enumerable.Empty<PowerShellModule>();
         }
 
-        var modules = new List<PowerShellModule>();
-
-        // Try to parse as array first
-        try
-        {
-            var jsonModules = JsonSerializer.Deserialize<List<PowerShellGalleryModuleDto>>(result.Stdout);
-            if (jsonModules != null)
-            {
-                modules.AddRange(jsonModules.Select(MapToModule));
-            }
-            return modules;
-        }
-        catch (JsonException)
-        {
-            // If array parsing fails, try parsing as single object
-            try
-            {
-                var jsonModule = JsonSerializer.Deserialize<PowerShellGalleryModuleDto>(result.Stdout);
-                if (jsonModule != null)
-                {
-                    modules.Add(MapToModule(jsonModule));
-                }
-                return modules;
-            }
-            catch (JsonException)
-            {
-                // Failed to parse JSON - return empty
-                return Enumerable.Empty<PowerShellModule>();
-            }
-        }
-        catch (Exception)
-        {
-            // Unexpected error during mapping
-            return Enumerable.Empty<PowerShellModule>();
-        }
+        var dtos = SafeDeserializeJsonList<PowerShellGalleryModuleDto>(result.Stdout);
+        return dtos.Select(MapToModule).ToList();
     }
 
     public async Task<PowerShellModule?> GetModuleDetailsAsync(string moduleName)
@@ -160,51 +127,13 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             return Enumerable.Empty<PowerShellCommand>();
         }
 
-        var commands = new List<PowerShellCommand>();
-
-        // Try to parse as array first
-        try
+        var dtos = SafeDeserializeJsonList<PowerShellCommandDto>(result.Stdout);
+        return dtos.Select(c => new PowerShellCommand
         {
-            var jsonCommands = JsonSerializer.Deserialize<List<PowerShellCommandDto>>(result.Stdout);
-            if (jsonCommands != null)
-            {
-                commands.AddRange(jsonCommands.Select(c => new PowerShellCommand
-                {
-                    Name = c.Name ?? string.Empty,
-                    ModuleName = c.ModuleName ?? string.Empty,
-                    CommandType = c.CommandType ?? string.Empty
-                }));
-            }
-            return commands;
-        }
-        catch (JsonException)
-        {
-            // If array parsing fails, try parsing as single object
-            try
-            {
-                var jsonCommand = JsonSerializer.Deserialize<PowerShellCommandDto>(result.Stdout);
-                if (jsonCommand != null)
-                {
-                    commands.Add(new PowerShellCommand
-                    {
-                        Name = jsonCommand.Name ?? string.Empty,
-                        ModuleName = jsonCommand.ModuleName ?? string.Empty,
-                        CommandType = jsonCommand.CommandType ?? string.Empty
-                    });
-                }
-                return commands;
-            }
-            catch (JsonException)
-            {
-                // Failed to parse JSON - return empty
-                return Enumerable.Empty<PowerShellCommand>();
-            }
-        }
-        catch (Exception)
-        {
-            // Unexpected error during mapping
-            return Enumerable.Empty<PowerShellCommand>();
-        }
+            Name = c.Name ?? string.Empty,
+            ModuleName = c.ModuleName ?? string.Empty,
+            CommandType = c.CommandType ?? string.Empty
+        }).ToList();
     }
 
     public async Task<PowerShellCommand?> GetCommandHelpAsync(string commandName)
@@ -405,6 +334,36 @@ public class PowerShellGalleryService : IPowerShellGalleryService
         // Escape single quotes by doubling them
         // This is safe when the string is used within single quotes
         return input.Replace("'", "''");
+    }
+
+    /// <summary>
+    /// Safely deserializes JSON that may be an array or single object.
+    /// PowerShell's ConvertTo-Json returns an array when multiple results, but a single object for one result.
+    /// </summary>
+    private static List<T> SafeDeserializeJsonList<T>(string json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+            return new List<T>();
+
+        try
+        {
+            // Try to parse as array first
+            var list = JsonSerializer.Deserialize<List<T>>(json);
+            return list ?? new List<T>();
+        }
+        catch (JsonException)
+        {
+            // If array parsing fails, try parsing as single object
+            try
+            {
+                var single = JsonSerializer.Deserialize<T>(json);
+                return single != null ? new List<T> { single } : new List<T>();
+            }
+            catch (JsonException)
+            {
+                return new List<T>();
+            }
+        }
     }
 
     /// <summary>
