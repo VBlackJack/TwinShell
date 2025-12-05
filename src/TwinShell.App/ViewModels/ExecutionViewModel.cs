@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -73,7 +74,9 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         {
             // Get timeout from settings
             var settings = await _settingsService.LoadSettingsAsync();
-            var timeout = Math.Min(Math.Max(settings.ExecutionTimeoutSeconds, 1), 300); // Between 1 and 300 seconds
+            var timeout = Math.Clamp(settings.ExecutionTimeoutSeconds,
+                TimeoutConstants.MinCommandTimeoutSeconds,
+                TimeoutConstants.MaxCommandTimeoutSeconds);
 
             AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Executing command: {parameter.Command}", false);
             AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Platform: {parameter.Platform}", false);

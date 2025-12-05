@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -52,7 +53,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             command,
             Platform.Windows,
             CancellationToken.None,
-            timeoutSeconds: 60);
+            timeoutSeconds: TimeoutConstants.PowerShellGallerySearchTimeoutSeconds);
 
         if (!result.Success || string.IsNullOrWhiteSpace(result.Stdout))
         {
@@ -81,7 +82,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             command,
             Platform.Windows,
             CancellationToken.None,
-            timeoutSeconds: 30);
+            timeoutSeconds: TimeoutConstants.CommandTimeoutSeconds);
 
         if (!result.Success || string.IsNullOrWhiteSpace(result.Stdout))
         {
@@ -124,7 +125,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             command,
             Platform.Windows,
             CancellationToken.None,
-            timeoutSeconds: 30);
+            timeoutSeconds: TimeoutConstants.CommandTimeoutSeconds);
 
         if (!result.Success || string.IsNullOrWhiteSpace(result.Stdout))
         {
@@ -170,7 +171,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             command,
             Platform.Windows,
             CancellationToken.None,
-            timeoutSeconds: 30);
+            timeoutSeconds: TimeoutConstants.CommandTimeoutSeconds);
 
         if (!result.Success || string.IsNullOrWhiteSpace(result.Stdout))
         {
@@ -232,7 +233,7 @@ public class PowerShellGalleryService : IPowerShellGalleryService
             command,
             Platform.Windows,
             CancellationToken.None,
-            timeoutSeconds: 300); // 5 minutes for installation
+            timeoutSeconds: TimeoutConstants.PowerShellGalleryInstallTimeoutSeconds);
 
         return result.Success;
     }
