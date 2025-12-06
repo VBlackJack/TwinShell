@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-106",
+  "id": "win-pkg-106",
   "title": "Rechercher un package Chocolatey",
   "description": "Recherche des packages disponibles dans le dépôt Chocolatey.",
   "category": "📦 Package Management",

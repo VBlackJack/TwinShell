@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-205",
+  "id": "win-privacy-205",
   "title": "Configuration minimale de télémétrie",
   "description": "Configure la télémétrie Windows au niveau minimal (Security). Protection maximale des données. RGPD strict.",
   "category": "🧹 Windows Debloat",

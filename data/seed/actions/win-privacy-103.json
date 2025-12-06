@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-103",
+  "id": "win-privacy-103",
   "title": "Désactiver sync des thèmes",
   "description": "Désactive la synchronisation des thèmes, fonds d'écran et personnalisation Windows.",
   "category": "🧹 Windows Debloat",

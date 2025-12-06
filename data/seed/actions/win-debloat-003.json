@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-003",
+  "id": "win-debloat-003",
   "title": "Lister les applications tierces installées",
   "description": "Affiche une liste complète de toutes les applications tierces installées via AppX.",
   "category": "🧹 Windows Debloat",

@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-304",
+  "id": "win-debloat-304",
   "title": "Désactiver Hyper-V",
   "description": "Désactive la fonctionnalité Hyper-V de Windows (virtualisation).",
   "category": "🧹 Windows Debloat",

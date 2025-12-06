@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-104",
+  "id": "win-perf-104",
   "title": "Désactiver le mode veille hybride",
   "description": "Désactive le mode veille hybride pour accélérer la mise en veille et le réveil du PC.",
   "category": "🧹 Windows Debloat",

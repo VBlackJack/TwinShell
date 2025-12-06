@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-009",
+  "id": "win-privacy-009",
   "title": "Désactiver toutes les permissions applications",
   "description": "Désactive TOUTES les permissions d'accès des applications en une seule action. Configuration maximale de confidentialité.",
   "category": "🧹 Windows Debloat",

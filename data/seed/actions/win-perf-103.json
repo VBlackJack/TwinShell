@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-103",
+  "id": "win-perf-103",
   "title": "Désactiver l'hibernation",
   "description": "Désactive l'hibernation Windows et supprime le fichier hiberfil.sys pour libérer de l'espace disque (souvent plusieurs Go).",
   "category": "🧹 Windows Debloat",

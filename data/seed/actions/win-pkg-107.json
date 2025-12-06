@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-107",
+  "id": "win-pkg-107",
   "title": "Ajouter une source Chocolatey",
   "description": "Ajoute une nouvelle source de packages Chocolatey personnalisée.",
   "category": "📦 Package Management",

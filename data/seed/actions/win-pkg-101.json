@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-101",
+  "id": "win-pkg-101",
   "title": "Installer un package Chocolatey",
   "description": "Installe un package Windows à l'aide du gestionnaire Chocolatey.",
   "category": "📦 Package Management",

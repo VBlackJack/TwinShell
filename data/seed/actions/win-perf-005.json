@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-005",
+  "id": "win-perf-005",
   "title": "Configurer DNS personnalisé",
   "description": "Configure des serveurs DNS personnalisés avec adresses primaire et secondaire au choix.",
   "category": "🧹 Windows Debloat",

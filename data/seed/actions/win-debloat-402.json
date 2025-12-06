@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-402",
+  "id": "win-debloat-402",
   "title": "Désactiver le shopping assistant Edge",
   "description": "Désactive l'assistant shopping et les coupons dans Microsoft Edge.",
   "category": "🧹 Windows Debloat",

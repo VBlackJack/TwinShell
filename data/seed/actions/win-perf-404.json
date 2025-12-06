@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-404",
+  "id": "win-perf-404",
   "title": "Optimiser performances jeux",
   "description": "Active le Game Mode et optimise les paramètres Windows pour le gaming (priorité CPU/GPU aux jeux).",
   "category": "🧹 Windows Debloat",

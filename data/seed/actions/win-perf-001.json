@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-001",
+  "id": "win-perf-001",
   "title": "Configurer DNS Google (8.8.8.8)",
   "description": "Configure les serveurs DNS Google (8.8.8.8 et 8.8.4.4) pour améliorer la vitesse de résolution DNS et la fiabilité.",
   "category": "🧹 Windows Debloat",

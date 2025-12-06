@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-102",
+  "id": "win-privacy-102",
   "title": "Désactiver sync des paramètres",
   "description": "Désactive uniquement la synchronisation des paramètres Windows (préférences, accessibilité, etc.).",
   "category": "🧹 Windows Debloat",

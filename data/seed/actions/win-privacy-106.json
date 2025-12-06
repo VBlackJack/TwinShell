@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-106",
+  "id": "win-privacy-106",
   "title": "Restaurer la synchronisation cloud",
   "description": "Réactive toute la synchronisation Windows avec le cloud Microsoft (annule WIN-PRIVACY-101).",
   "category": "🧹 Windows Debloat",

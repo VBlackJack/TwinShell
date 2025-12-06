@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-207",
+  "id": "win-privacy-207",
   "title": "Désactiver les services biométriques",
   "description": "Désactive la collecte de données biométriques (empreintes digitales, reconnaissance faciale Windows Hello).",
   "category": "🧹 Windows Debloat",

@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-103",
+  "id": "win-pkg-103",
   "title": "Mettre à jour un package Chocolatey",
   "description": "Met à jour un package spécifique vers sa dernière version disponible via Chocolatey.",
   "category": "📦 Package Management",

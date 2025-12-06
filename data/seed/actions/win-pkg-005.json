@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-005",
+  "id": "win-pkg-005",
   "title": "Désinstaller une application Winget",
   "description": "Désinstalle une application précédemment installée via Winget.",
   "category": "📦 Package Management",

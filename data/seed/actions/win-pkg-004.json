@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-004",
+  "id": "win-pkg-004",
   "title": "Mettre à jour toutes les applications Winget",
   "description": "Met à jour toutes les applications installées vers leurs dernières versions disponibles.",
   "category": "📦 Package Management",

@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-302",
+  "id": "win-perf-302",
   "title": "Désactiver Prefetch",
   "description": "Désactive le Prefetch Windows via le registre pour réduire les accès disque.",
   "category": "🧹 Windows Debloat",

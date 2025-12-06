@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-203",
+  "id": "win-privacy-203",
   "title": "Désactiver les notifications publicitaires",
   "description": "Bloque les notifications publicitaires Windows et les suggestions d'applications dans le menu Démarrer.",
   "category": "🧹 Windows Debloat",

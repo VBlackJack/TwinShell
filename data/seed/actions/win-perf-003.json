@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-003",
+  "id": "win-perf-003",
   "title": "Configurer DNS OpenDNS",
   "description": "Configure les serveurs DNS OpenDNS (208.67.222.222 et 208.67.220.220) avec filtrage de contenu et protection contre le phishing.",
   "category": "🧹 Windows Debloat",

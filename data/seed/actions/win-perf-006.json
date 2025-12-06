@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-006",
+  "id": "win-perf-006",
   "title": "Restaurer DNS automatique",
   "description": "Restaure la configuration DNS automatique (DHCP) sur l'interface réseau.",
   "category": "🧹 Windows Debloat",

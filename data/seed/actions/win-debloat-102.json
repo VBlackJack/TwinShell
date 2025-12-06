@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-102",
+  "id": "win-debloat-102",
   "title": "Supprimer uniquement les apps de jeux",
   "description": "Supprime toutes les applications de jeux Microsoft (Solitaire, Candy Crush, Xbox Game Bar).",
   "category": "🧹 Windows Debloat",

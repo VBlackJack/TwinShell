@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-105",
+  "id": "win-debloat-105",
   "title": "Supprimer une liste personnalisée d'apps",
   "description": "Supprime une liste personnalisée d'applications spécifiée par l'utilisateur.",
   "category": "🧹 Windows Debloat",

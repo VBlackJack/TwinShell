@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-201",
+  "id": "win-perf-201",
   "title": "Désactiver les services non essentiels",
   "description": "Désactive plus de 200 services Windows non essentiels pour maximiser les performances (ATTENTION: réservé aux utilisateurs avancés).",
   "category": "🧹 Windows Debloat",

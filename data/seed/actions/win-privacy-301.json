@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-301",
+  "id": "win-privacy-301",
   "title": "Désactiver télémétrie Adobe",
   "description": "Désactive la télémétrie et le reporting d'Adobe Creative Cloud (Photoshop, Illustrator, etc.).",
   "category": "🧹 Windows Debloat",

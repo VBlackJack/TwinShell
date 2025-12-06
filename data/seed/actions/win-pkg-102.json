@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-102",
+  "id": "win-pkg-102",
   "title": "Lister les packages Chocolatey installés",
   "description": "Affiche la liste de tous les packages installés via Chocolatey.",
   "category": "📦 Package Management",

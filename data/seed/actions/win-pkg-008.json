@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-008",
+  "id": "win-pkg-008",
   "title": "Ajouter une source Winget",
   "description": "Ajoute une nouvelle source de packages Winget personnalisée.",
   "category": "📦 Package Management",

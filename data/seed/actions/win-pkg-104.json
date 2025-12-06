@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-104",
+  "id": "win-pkg-104",
   "title": "Mettre à jour tous les packages Chocolatey",
   "description": "Met à jour tous les packages installés vers leurs dernières versions disponibles.",
   "category": "📦 Package Management",

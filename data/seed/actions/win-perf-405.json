@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-405",
+  "id": "win-perf-405",
   "title": "Limiter Windows Defender CPU à 25%",
   "description": "Limite l'utilisation CPU de Windows Defender lors des analyses pour éviter les ralentissements.",
   "category": "🧹 Windows Debloat",

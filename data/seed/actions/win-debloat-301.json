@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-301",
+  "id": "win-debloat-301",
   "title": "Désactiver Consumer Features",
   "description": "Désactive l'installation automatique d'applications suggérées et de bloatware Microsoft.",
   "category": "🧹 Windows Debloat",

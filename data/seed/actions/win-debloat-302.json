@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-302",
+  "id": "win-debloat-302",
   "title": "Désactiver Recall",
   "description": "Désactive la fonctionnalité Recall AI de Windows 11 (enregistrement de l'activité).",
   "category": "🧹 Windows Debloat",

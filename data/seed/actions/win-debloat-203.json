@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-203",
+  "id": "win-debloat-203",
   "title": "Désinstaller Microsoft Edge",
   "description": "⚠️ DANGEROUS: Désinstalle Microsoft Edge. Peut affecter certaines fonctionnalités Windows 11.",
   "category": "🧹 Windows Debloat",

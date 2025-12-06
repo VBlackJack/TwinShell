@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-007",
+  "id": "win-pkg-007",
   "title": "Afficher les détails d'un package Winget",
   "description": "Affiche les informations détaillées d'un package spécifique (version, éditeur, description, etc.).",
   "category": "📦 Package Management",

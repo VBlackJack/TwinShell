@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-104",
+  "id": "win-debloat-104",
   "title": "Supprimer les apps météo/actualités",
   "description": "Supprime les applications d'information Microsoft (Météo, Actualités, Sports).",
   "category": "🧹 Windows Debloat",

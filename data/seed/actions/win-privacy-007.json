@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-007",
+  "id": "win-privacy-007",
   "title": "Désactiver l'accès aux emails",
   "description": "Empêche les applications d'accéder aux emails Windows. Protection des communications.",
   "category": "🧹 Windows Debloat",

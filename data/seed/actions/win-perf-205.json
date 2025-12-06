@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-205",
+  "id": "win-perf-205",
   "title": "Désactiver Windows Search Indexing",
   "description": "Désactive le service d'indexation Windows Search pour libérer CPU et disque (la recherche de fichiers sera plus lente).",
   "category": "🧹 Windows Debloat",

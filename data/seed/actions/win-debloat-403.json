@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-403",
+  "id": "win-debloat-403",
   "title": "Désactiver la télémétrie Edge",
   "description": "Désactive la collecte de données de diagnostic et d'utilisation dans Microsoft Edge.",
   "category": "🧹 Windows Debloat",

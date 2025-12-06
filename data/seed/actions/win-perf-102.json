@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-102",
+  "id": "win-perf-102",
   "title": "Activer le plan Hautes performances",
   "description": "Active le plan d'alimentation Hautes performances (équilibre entre performance et consommation).",
   "category": "🧹 Windows Debloat",

@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-003",
+  "id": "win-pkg-003",
   "title": "Mettre à jour une application Winget",
   "description": "Met à jour une application spécifique vers sa dernière version disponible via Winget.",
   "category": "📦 Package Management",

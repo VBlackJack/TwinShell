@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PKG-105",
+  "id": "win-pkg-105",
   "title": "Désinstaller un package Chocolatey",
   "description": "Désinstalle un package précédemment installé via Chocolatey.",
   "category": "📦 Package Management",

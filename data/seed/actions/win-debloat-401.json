@@ -1,5 +1,5 @@
 {
-  "id": "WIN-DEBLOAT-401",
+  "id": "win-debloat-401",
   "title": "Désactiver les recommandations Edge",
   "description": "Désactive les recommandations et suggestions dans Microsoft Edge.",
   "category": "🧹 Windows Debloat",

@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PERF-101",
+  "id": "win-perf-101",
   "title": "Activer le plan Ultimate Performance",
   "description": "Active le plan d'alimentation Ultimate Performance de Windows pour maximiser les performances (déconseillé sur portable).",
   "category": "🧹 Windows Debloat",

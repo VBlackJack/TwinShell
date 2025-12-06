@@ -1,5 +1,5 @@
 {
-  "id": "WIN-PRIVACY-204",
+  "id": "win-privacy-204",
   "title": "Désactiver le suivi de localisation",
   "description": "Désactive complètement le service de localisation Windows et le suivi de position.",
   "category": "🧹 Windows Debloat",
