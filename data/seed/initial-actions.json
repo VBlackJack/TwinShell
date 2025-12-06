@@ -755,7 +755,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-ADUser -Identity jdupont -Department \"IT\" -Title \"Administrateur Système\" -OfficePhone \"+33123456789\" -EmailAddress \"j.dupont@contoso.com\"",
+          "description": "Met à jour les informations de jdupont",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADUser -Identity jdupont -Department \"IT\" -Title \"Administrateur Système\" -OfficePhone \"+33 1 23 45 67 89\" -EmailAddress \"jdupont@contoso.com\" -WhatIf",
+          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADUser -Identity jdupont -Department \"IT\" -Title \"Administrateur Système\" -OfficePhone \"+33 1 23 45 67 89\" -EmailAddress \"jdupont@contoso.com\" -Confirm:$false",
+          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADUser -Identity jdupont -Department \"IT\" -Title \"Administrateur Système\" -OfficePhone \"+33 1 23 45 67 89\" -EmailAddress \"jdupont@contoso.com\" -PassThru",
+          "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADUser -Identity jdupont -Department \"IT\" -Title \"Administrateur Système\" -OfficePhone \"+33 1 23 45 67 89\" -EmailAddress \"jdupont@contoso.com\" -Verbose",
+          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+          "platform": 0
+        }
+      ],
       "notes": "Nécessite des droits d'administration AD. Seules les propriétés spécifiées seront modifiées.",
       "links": [
         {
@@ -1116,7 +1152,43 @@
         "commandPattern": "Get-ADGroup -Filter * -Properties Description,GroupCategory,GroupScope | Select-Object Name,Description,GroupCategory,GroupScope | Format-Table -AutoSize",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-ADGroup -Filter *",
+          "description": "Liste tous les groupes Active Directory du domaine. Retourne le nom, le GroupCategory (Distribution/Security), le GroupScope (DomainLocal/Global/Universal) et le DistinguishedName. Peut être lent sur de gros domaines avec des milliers de groupes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter {GroupCategory -eq 'Security' -and GroupScope -eq 'Global'}",
+          "description": "Liste uniquement les groupes de sécurité globaux. GroupCategory peut être 'Security' ou 'Distribution'. GroupScope peut être 'DomainLocal', 'Global' ou 'Universal'. Les groupes de sécurité globaux sont les plus courants pour les permissions sur ressources.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter {Name -like '*Admin*'} -Properties Description,Members",
+          "description": "Recherche tous les groupes contenant 'Admin' dans le nom. Utile pour identifier les groupes à privilèges élevés. La propriété Description aide à comprendre l'usage du groupe. Members liste les membres (mais utilisez plutôt Get-ADGroupMember pour une liste détaillée).",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Identity 'Domain Admins' -Properties Members,MemberOf,Description",
+          "description": "Affiche les détails d'un groupe spécifique. Members liste les membres directs. MemberOf liste les groupes dont ce groupe est membre (imbrication). Description documente le rôle du groupe. Essentiel pour l'audit des groupes sensibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter * -Properties ManagedBy | Where-Object {$_.ManagedBy -ne $null} | Select-Object Name,ManagedBy",
+          "description": "Liste tous les groupes qui ont un gestionnaire défini. La propriété ManagedBy contient le DN de l'utilisateur responsable du groupe. Utile pour identifier les groupes gérés et contacter les responsables lors de revues d'accès.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter {GroupCategory -eq 'Distribution'} | Measure-Object",
+          "description": "Compte le nombre de groupes de distribution (listes de diffusion Exchange). Measure-Object retourne le count total. Utile pour les statistiques, la documentation et les audits Exchange.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter * -Properties Created | Sort-Object Created -Descending | Select-Object Name,Created -First 20",
+          "description": "Affiche les 20 groupes les plus récemment créés. Sort-Object -Descending trie du plus récent au plus ancien. Utile pour surveiller les créations de groupes, détecter les créations suspectes et suivre les changements organisationnels.",
+          "platform": 0
+        }
+      ],
       "notes": "Peut être lent sur de gros domaines. Pour filtrer par type, utiliser -Filter {GroupCategory -eq 'Security'}.",
       "links": [
         {
@@ -1334,7 +1406,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-ADGroup -Filter *",
+          "description": "Liste tous les groupes Active Directory du domaine. Retourne le nom, le GroupCategory (Distribution/Security), le GroupScope (DomainLocal/Global/Universal) et le DistinguishedName. Peut être lent sur de gros domaines avec des milliers de groupes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter {GroupCategory -eq 'Security' -and GroupScope -eq 'Global'}",
+          "description": "Liste uniquement les groupes de sécurité globaux. GroupCategory peut être 'Security' ou 'Distribution'. GroupScope peut être 'DomainLocal', 'Global' ou 'Universal'. Les groupes de sécurité globaux sont les plus courants pour les permissions sur ressources.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter {Name -like '*Admin*'} -Properties Description,Members",
+          "description": "Recherche tous les groupes contenant 'Admin' dans le nom. Utile pour identifier les groupes à privilèges élevés. La propriété Description aide à comprendre l'usage du groupe. Members liste les membres (mais utilisez plutôt Get-ADGroupMember pour une liste détaillée).",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Identity 'Domain Admins' -Properties Members,MemberOf,Description",
+          "description": "Affiche les détails d'un groupe spécifique. Members liste les membres directs. MemberOf liste les groupes dont ce groupe est membre (imbrication). Description documente le rôle du groupe. Essentiel pour l'audit des groupes sensibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter * -Properties ManagedBy | Where-Object {$_.ManagedBy -ne $null} | Select-Object Name,ManagedBy",
+          "description": "Liste tous les groupes qui ont un gestionnaire défini. La propriété ManagedBy contient le DN de l'utilisateur responsable du groupe. Utile pour identifier les groupes gérés et contacter les responsables lors de revues d'accès.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter {GroupCategory -eq 'Distribution'} | Measure-Object",
+          "description": "Compte le nombre de groupes de distribution (listes de diffusion Exchange). Measure-Object retourne le count total. Utile pour les statistiques, la documentation et les audits Exchange.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADGroup -Filter * -Properties Created | Sort-Object Created -Descending | Select-Object Name,Created -First 20",
+          "description": "Affiche les 20 groupes les plus récemment créés. Sort-Object -Descending trie du plus récent au plus ancien. Utile pour surveiller les créations de groupes, détecter les créations suspectes et suivre les changements organisationnels.",
+          "platform": 0
+        }
+      ],
       "notes": "Utilise une recherche avec wildcard. Pour rechercher dans la description aussi, modifier le filtre.",
       "links": []
     },
@@ -1358,7 +1466,43 @@
         "commandPattern": "Get-ADComputer -Filter * -Properties OperatingSystem,LastLogonDate,Enabled | Select-Object Name,OperatingSystem,LastLogonDate,Enabled | Format-Table -AutoSize",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-ADComputer -Filter *",
+          "description": "Liste tous les ordinateurs du domaine Active Directory avec leurs propriétés par défaut. Retourne Name, DNSHostName, DistinguishedName, Enabled, etc. Attention : peut être très long sur de gros domaines avec des milliers de machines.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter {OperatingSystem -like '*Server*'} -Properties OperatingSystem,OperatingSystemVersion",
+          "description": "Liste uniquement les serveurs Windows. Le filtre sur OperatingSystem identifie les OS serveurs (Windows Server 2012/2016/2019/2022). Utile pour l'inventaire des serveurs, les rapports de compliance et la planification des mises à jour.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter {Enabled -eq $true} -Properties LastLogonDate | Where-Object {$_.LastLogonDate -lt (Get-Date).AddDays(-90)} | Select-Object Name,LastLogonDate,Enabled",
+          "description": "Identifie les ordinateurs actifs mais non connectés depuis 90 jours. Détecte les machines zombies, les postes perdus ou volés. LastLogonDate doit être spécifié dans -Properties. Essentiel pour le nettoyage AD et les audits de sécurité.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} -Properties OperatingSystem,IPv4Address",
+          "description": "Recherche tous les ordinateurs portables (selon une convention de nommage). Retourne l'OS et l'adresse IP. Utile pour l'inventaire des laptops, la gestion du parc mobile et les déploiements ciblés.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties * | Select-Object -First 1 | Format-List *",
+          "description": "Affiche TOUTES les propriétés disponibles pour un ordinateur (mode découverte). -Properties * charge toutes les propriétés (coûteux). Format-List * affiche chaque propriété sur une ligne. Utilisez uniquement pour découvrir les noms de propriétés disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties OperatingSystem,OperatingSystemVersion,Created | Select-Object Name,OperatingSystem,OperatingSystemVersion,Created | Export-Csv C:\\Temp\\ComputerInventory.csv -NoTypeInformation",
+          "description": "Exporte un inventaire complet des ordinateurs avec OS et date de création. Le CSV peut être importé dans Excel pour analyse, reporting ou documentation. Utile pour les audits, la gestion du parc et les statistiques.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Identity WKS-IT-01 -Properties *",
+          "description": "Affiche toutes les informations d'un ordinateur spécifique. -Identity accepte le nom, DN, GUID ou SID. Retourne toutes les propriétés. Utile pour le troubleshooting et la vérification de configuration d'une machine.",
+          "platform": 0
+        }
+      ],
       "notes": "Peut être lent sur de gros domaines. Pour filtrer par OS, utiliser -Filter {OperatingSystem -like '*Windows*'}.",
       "links": [
         {
@@ -1461,7 +1605,33 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Enable-ADAccount -Identity jdupont",
+          "description": "Réactive immédiatement un compte désactivé. L'utilisateur peut se reconnecter dès que la réplication AD est complète (quelques secondes à quelques minutes selon la topo réseau). Utilisé pour les retours de congés, fins de suspension disciplinaire, etc.",
+          "platform": 0
+        },
+        {
+          "command": "Enable-ADAccount -Identity jdupont -PassThru | Select-Object Name,Enabled",
+          "description": "Réactive le compte et affiche immédiatement la confirmation. Le switch -PassThru retourne l'objet utilisateur modifié. Select affiche le nom et le statut Enabled pour vérification visuelle. Pratique pour confirmer que la réactivation a fonctionné.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser -Filter {Enabled -eq $false -and Department -eq 'IT'} | Enable-ADAccount -WhatIf",
+          "description": "Simulation de réactivation de tous les comptes IT désactivés. -WhatIf effectue un dry-run sans modifier l'AD. Affiche quels comptes seraient réactivés. Vérifiez toujours avec -WhatIf avant d'exécuter des actions de masse.",
+          "platform": 0
+        },
+        {
+          "command": "Enable-ADAccount -Identity jdupont -Confirm:$false",
+          "description": "Réactive sans confirmation interactive. Utile dans les scripts automatisés ou les processus de réintégration standardisés. La réactivation est immédiate dès l'exécution.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser -Filter * -Properties Enabled,Description | Where-Object {$_.Enabled -eq $false -and $_.Description -like '*congé*'} | Enable-ADAccount",
+          "description": "Réactive automatiquement les comptes désactivés pour congés (basé sur le champ Description). Utile si votre organisation utilise des conventions de nommage dans Description. Adaptez le filtre selon vos pratiques internes.",
+          "platform": 0
+        }
+      ],
       "notes": "Nécessite des droits d'administration AD. L'ordinateur pourra rejoindre le domaine après activation.",
       "links": []
     },
@@ -1494,7 +1664,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Disable-ADAccount -Identity jdupont",
+          "description": "Désactive immédiatement le compte de jdupont. L'utilisateur ne pourra plus se connecter mais le compte et toutes ses données restent dans AD. La désactivation est réversible avec Enable-ADAccount. Méthode recommandée pour les départs temporaires (congés longs, suspensions).",
+          "platform": 0
+        },
+        {
+          "command": "Disable-ADAccount -Identity jdupont -Confirm:$false",
+          "description": "Désactive le compte sans demander de confirmation. Le paramètre -Confirm:$false supprime l'invite (utile pour les scripts automatisés). Utilisez avec précaution : la désactivation est immédiate et peut déconnecter l'utilisateur de toutes ses sessions actives.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser -Filter {Enabled -eq $true -and LastLogonDate -lt (Get-Date).AddDays(-180)} -Properties LastLogonDate | Disable-ADAccount -WhatIf",
+          "description": "Simulation de désactivation des comptes inactifs depuis 180 jours. Le switch -WhatIf affiche ce qui serait fait SANS exécuter l'action (mode dry-run). Indispensable avant toute action de masse pour éviter les erreurs. Retirez -WhatIf après vérification pour exécuter réellement.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser jdupont -Properties Enabled | Select-Object Name,Enabled,SamAccountName",
+          "description": "Vérifie si un compte est actif ou désactivé. La propriété Enabled vaut $true (actif) ou $false (désactivé). Toujours vérifier l'état avant de désactiver ou réactiver. Utile aussi pour les scripts de reporting et les tableaux de bord.",
+          "platform": 0
+        },
+        {
+          "command": "Disable-ADAccount -Identity jdupont -PassThru | Set-ADUser -Description \"Compte désactivé le $(Get-Date -Format 'dd/MM/yyyy') - Départ entreprise\"",
+          "description": "Désactive le compte et ajoute automatiquement une note avec la date et la raison. Le switch -PassThru permet de passer l'objet au pipeline. Set-ADUser -Description documente l'action pour la traçabilité. Excellente pratique pour les audits : toujours documenter les raisons de désactivation.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser -Filter {Department -eq 'Finance' -and Enabled -eq $true} | Select-Object Name,SamAccountName | Export-Csv C:\\Temp\\FinanceUsersBeforeDisable.csv -NoTypeInformation; Get-ADUser -Filter {Department -eq 'Finance'} | Disable-ADAccount",
+          "description": "Désactivation massive avec sauvegarde préalable : exporte d'abord la liste des utilisateurs Finance actifs, puis les désactive tous. La sauvegarde CSV permet une restauration en cas d'erreur. Les deux commandes sont séparées par un point-virgule pour exécution séquentielle. Toujours faire une sauvegarde avant une opération de masse.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser -Filter * -Properties Enabled,LastLogonDate | Where-Object {$_.Enabled -eq $false} | Select-Object Name,SamAccountName,Enabled,LastLogonDate | Export-Csv C:\\Temp\\DisabledAccounts.csv -NoTypeInformation",
+          "description": "Exporte un rapport complet de tous les comptes désactivés avec leur dernière connexion. Utile pour les audits de sécurité, l'analyse des comptes dormants et la préparation au nettoyage de l'AD. Effectuez ce rapport trimestriellement pour maintenir un AD propre.",
+          "platform": 0
+        }
+      ],
       "notes": "L'ordinateur ne pourra plus communiquer avec le domaine. Utile pour les machines retirées du service.",
       "links": []
     },
@@ -1528,7 +1734,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-ADAccountPassword -Identity jdupont -Reset -NewPassword (ConvertTo-SecureString -AsPlainText \"P@ssw0rd123!\" -Force)",
+          "description": "Réinitialise le mot de passe de jdupont avec un nouveau mot de passe temporaire. ConvertTo-SecureString convertit le texte clair en SecureString (obligatoire pour les mots de passe). Le paramètre -Force supprime l'avertissement de sécurité. ATTENTION : le mot de passe doit respecter la politique de complexité du domaine.",
+          "platform": 0
+        },
+        {
+          "command": "$SecurePassword = Read-Host -AsSecureString -Prompt 'Nouveau mot de passe'; Set-ADAccountPassword -Identity jdupont -Reset -NewPassword $SecurePassword",
+          "description": "Méthode sécurisée : demande interactivement le mot de passe sans l'afficher à l'écran. Read-Host -AsSecureString masque la saisie (affiche des astérisques). Cette approche est plus sécurisée car le mot de passe n'apparaît jamais en clair dans l'historique PowerShell ou les logs. Recommandée pour les réinitialisations manuelles.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADAccountPassword -Identity jdupont -Reset -NewPassword (ConvertTo-SecureString 'TempP@ss2024!' -AsPlainText -Force) -PassThru | Set-ADUser -ChangePasswordAtLogon $true",
+          "description": "Réinitialise le mot de passe ET force l'utilisateur à le changer à la prochaine connexion. Le switch -PassThru passe l'objet utilisateur au pipeline. Set-ADUser -ChangePasswordAtLogon $true active le flag de changement obligatoire. C'est la méthode recommandée pour les réinitialisations : l'admin définit un mot de passe temporaire, l'utilisateur le change immédiatement.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADAccountPassword -Identity jdupont -OldPassword (ConvertTo-SecureString 'OldP@ss' -AsPlainText -Force) -NewPassword (ConvertTo-SecureString 'NewP@ss123!' -AsPlainText -Force)",
+          "description": "Change le mot de passe en connaissant l'ancien (sans droits admin). Utilisez -OldPassword quand l'utilisateur change son propre mot de passe ou quand la politique exige la connaissance de l'ancien. Sans -Reset, cette commande nécessite les droits de l'utilisateur concerné mais pas de droits admin.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADAccountPassword -Identity jdupont -Reset -NewPassword (ConvertTo-SecureString 'P@ssw0rd!' -AsPlainText -Force) -Server DC01.contoso.com",
+          "description": "Réinitialise le mot de passe sur un contrôleur de domaine spécifique. Le paramètre -Server force l'exécution sur le DC nommé. Utile dans les environnements multi-sites pour garantir la réplication immédiate ou lors du troubleshooting de problèmes de réplication.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADUser -Filter {PasswordExpired -eq $true} | Select-Object Name,SamAccountName,PasswordExpired,PasswordLastSet",
+          "description": "Liste tous les utilisateurs dont le mot de passe a expiré. PasswordExpired indique si le mot de passe est périmé selon la politique du domaine. PasswordLastSet affiche la date du dernier changement. Utile pour identifier les comptes nécessitant une réinitialisation et pour les audits de conformité.",
+          "platform": 0
+        },
+        {
+          "command": "Set-ADUser -Identity jdupont -PasswordNeverExpires $true",
+          "description": "Configure le compte pour que le mot de passe n'expire jamais. ATTENTION : cette commande viole généralement les politiques de sécurité et ne devrait être utilisée que pour des comptes de service spécifiques. Documentez toujours la raison et obtenez une validation.",
+          "platform": 0
+        }
+      ],
       "notes": "À exécuter sur l'ordinateur concerné. Résout les problèmes de relation de confiance avec le domaine.",
       "links": [
         {
@@ -1566,7 +1818,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-ADComputer -Filter *",
+          "description": "Liste tous les ordinateurs du domaine Active Directory avec leurs propriétés par défaut. Retourne Name, DNSHostName, DistinguishedName, Enabled, etc. Attention : peut être très long sur de gros domaines avec des milliers de machines.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter {OperatingSystem -like '*Server*'} -Properties OperatingSystem,OperatingSystemVersion",
+          "description": "Liste uniquement les serveurs Windows. Le filtre sur OperatingSystem identifie les OS serveurs (Windows Server 2012/2016/2019/2022). Utile pour l'inventaire des serveurs, les rapports de compliance et la planification des mises à jour.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter {Enabled -eq $true} -Properties LastLogonDate | Where-Object {$_.LastLogonDate -lt (Get-Date).AddDays(-90)} | Select-Object Name,LastLogonDate,Enabled",
+          "description": "Identifie les ordinateurs actifs mais non connectés depuis 90 jours. Détecte les machines zombies, les postes perdus ou volés. LastLogonDate doit être spécifié dans -Properties. Essentiel pour le nettoyage AD et les audits de sécurité.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} -Properties OperatingSystem,IPv4Address",
+          "description": "Recherche tous les ordinateurs portables (selon une convention de nommage). Retourne l'OS et l'adresse IP. Utile pour l'inventaire des laptops, la gestion du parc mobile et les déploiements ciblés.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties * | Select-Object -First 1 | Format-List *",
+          "description": "Affiche TOUTES les propriétés disponibles pour un ordinateur (mode découverte). -Properties * charge toutes les propriétés (coûteux). Format-List * affiche chaque propriété sur une ligne. Utilisez uniquement pour découvrir les noms de propriétés disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Filter * -Properties OperatingSystem,OperatingSystemVersion,Created | Select-Object Name,OperatingSystem,OperatingSystemVersion,Created | Export-Csv C:\\Temp\\ComputerInventory.csv -NoTypeInformation",
+          "description": "Exporte un inventaire complet des ordinateurs avec OS et date de création. Le CSV peut être importé dans Excel pour analyse, reporting ou documentation. Utile pour les audits, la gestion du parc et les statistiques.",
+          "platform": 0
+        },
+        {
+          "command": "Get-ADComputer -Identity WKS-IT-01 -Properties *",
+          "description": "Affiche toutes les informations d'un ordinateur spécifique. -Identity accepte le nom, DN, GUID ou SID. Retourne toutes les propriétés. Utile pour le troubleshooting et la vérification de configuration d'une machine.",
+          "platform": 0
+        }
+      ],
       "notes": "Pour rechercher par OS, modifier le filtre: -Filter {OperatingSystem -like '*Windows 11*'}.",
       "links": []
     },
@@ -9126,7 +9414,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('1.1.1.1','1.0.0.1')",
+          "description": "Configure DNS Cloudflare sur l'interface Ethernet",
+          "platform": 1
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "DNS Cloudflare: le plus rapide (14ms en moyenne). Forte orientation confidentialité (ne vend pas vos données). Recommandé pour le gaming et la navigation générale.",
       "links": [
         {
@@ -9168,7 +9492,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Wi-Fi' -ServerAddresses ('208.67.222.222','208.67.220.220')",
+          "description": "Configure DNS OpenDNS sur l'interface Wi-Fi",
+          "platform": 1
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "DNS OpenDNS: protection contre phishing et malware intégrée. Filtrage de contenu optionnel (configuration via compte OpenDNS). Bon choix pour environnements familiaux ou professionnels.",
       "links": [
         {
@@ -9211,7 +9571,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('9.9.9.9','149.112.112.112')",
+          "description": "Configure DNS Quad9 sur l'interface Ethernet",
+          "platform": 1
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "DNS Quad9: équilibre entre performance et sécurité. Blocage automatique des domaines malveillants. Ne conserve pas les données personnelles. Organisation à but non lucratif basée en Suisse.",
       "links": [
         {
@@ -9268,7 +9664,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ServerAddresses ('192.168.1.1','8.8.8.8')",
+          "description": "Configure un DNS personnalisé (routeur local + Google)",
+          "platform": 1
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "Permet de configurer n'importe quels serveurs DNS. Utile pour DNS d'entreprise, serveurs locaux (pi-hole, AdGuard Home) ou combinaisons personnalisées.",
       "links": []
     },
@@ -9304,7 +9736,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Set-DnsClientServerAddress -InterfaceAlias 'Ethernet' -ResetServerAddresses",
+          "description": "Restaure le DNS automatique via DHCP",
+          "platform": 1
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "$interface = Get-NetAdapter | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "Revient à la configuration DNS fournie par le routeur/DHCP. Utile pour annuler une configuration DNS personnalisée.",
       "links": []
     },
@@ -9981,7 +10449,38 @@
         "commandPattern": "Set-MpPreference -ScanAvgCPULoadFactor 25; Write-Host \"Windows Defender limité à 25% CPU\" -ForegroundColor Green",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25",
+          "description": "Limite Defender à 25% CPU",
+          "platform": 0
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 10",
+          "description": "Limite Defender à 10% CPU (analyses très lentes mais PC fluide)",
+          "platform": 0
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25; Write-Host \"Windows Defender limité à 25% CPU\" -ForegroundColor Green -WhatIf",
+          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+          "platform": 0
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25; Write-Host \"Windows Defender limité à 25% CPU\" -ForegroundColor Green -Confirm:$false",
+          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+          "platform": 0
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25; Write-Host \"Windows Defender limité à 25% CPU\" -ForegroundColor Green -PassThru",
+          "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+          "platform": 0
+        },
+        {
+          "command": "Set-MpPreference -ScanAvgCPULoadFactor 25; Write-Host \"Windows Defender limité à 25% CPU\" -ForegroundColor Green -Verbose",
+          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+          "platform": 0
+        }
+      ],
       "notes": "Par défaut Defender peut utiliser 50-100% CPU lors des analyses, ralentissant le PC. Limiter à 25% (ou 10-15% pour CPU faibles) améliore la fluidité pendant les scans. Les analyses seront plus longues mais moins intrusives.",
       "links": []
     },
@@ -10163,7 +10662,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "EventID 1074 = arrêt système, 1000 = crash application, 4625 = échec authentification. Liste complète sur Microsoft Docs.",
       "links": [
         {
@@ -10202,7 +10747,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "EventID 1000 = Application Error (crash). Peut aider à identifier les applications instables.",
       "links": [
         {
@@ -10242,7 +10833,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "Nécessite des droits d'administrateur. EventID 4625 = échec d'authentification. Utile pour détecter les tentatives d'intrusion.",
       "links": [
         {
@@ -10282,7 +10919,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "EventID 6005 = démarrage Event Log service, 6006 = arrêt Event Log service, 1074 = arrêt initié par utilisateur/application.",
       "links": [
         {
@@ -10337,7 +11020,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "Assurez-vous que le répertoire de destination existe. Le fichier CSV peut être importé dans Excel pour analyse.",
       "links": [
         {
@@ -10392,7 +11121,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "Pour lister tous les fournisseurs disponibles: (Get-WinEvent -ListLog *).ProviderNames | Sort-Object -Unique",
       "links": [
         {
@@ -10422,7 +11197,53 @@
         "commandPattern": "Get-WinEvent -ListLog * | Where-Object {$_.RecordCount -gt 0} | Select-Object LogName,RecordCount,FileSize,LastWriteTime | Sort-Object RecordCount -Descending | Format-Table -AutoSize",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -MaxEvents 100",
+          "description": "Affiche les 100 derniers événements du journal Système. Get-WinEvent est la cmdlet moderne (remplace Get-EventLog). -MaxEvents limite les résultats. Supporte les journaux classiques ET les nouveaux journaux Applications and Services. Plus rapide et plus flexible que Get-EventLog.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Filtre les erreurs (Level=2) des dernières 24h avec FilterHashtable. -FilterHashtable utilise une table de hachage pour des filtres complexes côté serveur (plus rapide que Where-Object). Levels : 1=Critical, 2=Error, 3=Warning, 4=Information. Le filtrage côté serveur peut être 10x plus rapide sur de gros journaux.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Security -FilterHashtable @{ID=4624; StartTime=(Get-Date).AddDays(-1)} | Select-Object TimeCreated,Message -First 50",
+          "description": "Affiche les 50 premières connexions réussies (ID 4624) des dernières 24h. L'Event ID 4624 = authentification réussie. FilterHashtable filtre efficacement par ID et date. Utile pour auditer les connexions, identifier les patterns d'utilisation et détecter les connexions suspectes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -ListLog *",
+          "description": "Liste TOUS les journaux d'événements disponibles sur le système. Retourne le nom, la taille max, le nombre d'enregistrements et le statut (activé/désactivé). Il peut y avoir des centaines de journaux (System, Application, Security + tous les journaux Applications and Services). Utilisez cette commande pour découvrir les journaux disponibles.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName 'Microsoft-Windows-PowerShell/Operational' -MaxEvents 20",
+          "description": "Affiche les événements du journal PowerShell. Les journaux Applications and Services ont des noms avec chemins (slashes). Ce journal enregistre toutes les activités PowerShell : commandes exécutées, erreurs, scripts. Essentiel pour l'audit de sécurité et le troubleshooting PowerShell.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName System -FilterHashtable @{ProviderName='Service Control Manager'; ID=7036}",
+          "description": "Filtre par fournisseur (source) et ID d'événement. ProviderName = composant émetteur. L'ID 7036 = changement d'état de service (démarré/arrêté). Retourne l'historique complet des démarrages/arrêts de services. Utile pour diagnostiquer les services qui crashent ou s'arrêtent.",
+          "platform": 0
+        },
+        {
+          "command": "$xml = 'Security,ApplicationSELECT * FROM Users WHERE Active = 1<Select Path=\"System\">*[System[(Level=1 or Level=2) and TimeCreated[timediff(@SystemTime) &lt;= 86400000]]]</Select></Query></QueryList>'; Get-WinEvent -FilterXml $xml",
+          "description": "Filtre avancé avec XPath/XML pour les requêtes complexes. FilterXml permet des filtres impossibles avec FilterHashtable (conditions multiples, OU logiques complexes, filtres sur le contenu du message). Cet exemple récupère Critical OU Error des dernières 24h. Courbe d'apprentissage élevée mais très puissant.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -LogName Application -FilterHashtable @{Level=2} | Group-Object ProviderName | Sort-Object Count -Descending | Select-Object Count,Name -First 10",
+          "description": "Analyse statistique : top 10 des sources d'erreurs dans Application. Group-Object agrège par fournisseur. Sort trie par fréquence. Identifie rapidement les applications les plus problématiques pour prioriser les actions de correction.",
+          "platform": 0
+        }
+      ],
       "notes": "Utile pour découvrir les journaux disponibles avant de faire des requêtes spécifiques.",
       "links": [
         {
@@ -11214,7 +12035,33 @@
         "commandPattern": "Stop-Service -Name wuauserv,bits -Force; Remove-Item -Path C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv,bits",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Stop-Service wuauserv,bits -Force; Remove-Item C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force; Start-Service wuauserv,bits",
+          "description": "Nettoie complètement le cache de téléchargement Windows Update",
+          "platform": 0
+        },
+        {
+          "command": "Stop-Service -Name wuauserv,bits -Force; Remove-Item -Path C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv,bits -WhatIf",
+          "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+          "platform": 0
+        },
+        {
+          "command": "Stop-Service -Name wuauserv,bits -Force; Remove-Item -Path C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv,bits -Confirm:$false",
+          "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+          "platform": 0
+        },
+        {
+          "command": "Stop-Service -Name wuauserv,bits -Force; Remove-Item -Path C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv,bits -Verbose",
+          "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+          "platform": 0
+        },
+        {
+          "command": "Stop-Service -Name wuauserv,bits -Force; Remove-Item -Path C:\\Windows\\SoftwareDistribution\\Download\\* -Recurse -Force -ErrorAction SilentlyContinue; Start-Service -Name wuauserv,bits",
+          "description": "Cas d'usage standard. Arrête les services Windows Update et nettoie le dossier SoftwareDistribution pour résoudre les problèmes de mises à jour Consultez la documentation pour des paramètres avancés et des options de filtrage.",
+          "platform": 0
+        }
+      ],
       "notes": "ATTENTION: Nécessite des droits administrateur. Arrête temporairement les services Windows Update. À utiliser en cas de problèmes de téléchargement de mises à jour.",
       "links": [
         {
@@ -11844,7 +12691,33 @@
         "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}' -ErrorAction Stop",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}'",
+          "description": "Déclenche la récupération de la stratégie machine",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000022}'",
+          "description": "Déclenche l'évaluation de la stratégie machine",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000021}' -ErrorAction Stop",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "Schedule ID {21} = Machine Policy Retrieval, {22} = Machine Policy Evaluation. Nécessite le client SCCM installé. Vérifier CCM.log pour confirmation.",
       "links": [
         {
@@ -11874,7 +12747,28 @@
         "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}' -ErrorAction Stop",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}'",
+          "description": "Déclenche l'inventaire matériel",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000001}' -ErrorAction Stop",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "Schedule ID {01} = Hardware Inventory Cycle. Utile après modification matérielle ou pour forcer la mise à jour de l'inventaire dans SCCM.",
       "links": [
         {
@@ -11904,7 +12798,28 @@
         "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}' -ErrorAction Stop",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}'",
+          "description": "Déclenche l'inventaire logiciel",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000002}' -ErrorAction Stop",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "Schedule ID {02} = Software Inventory Cycle. L'inventaire logiciel collecte les informations sur les fichiers et applications installés.",
       "links": [
         {
@@ -11934,7 +12849,28 @@
         "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}' -ErrorAction Stop",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}'",
+          "description": "Déclenche l'évaluation des déploiements d'applications",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000121}' -ErrorAction Stop",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "Schedule ID {121} = Application Deployment Evaluation Cycle. Utile pour forcer la vérification de nouvelles applications déployées.",
       "links": [
         {
@@ -11964,7 +12900,33 @@
         "commandPattern": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}' -ErrorAction Stop",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}'",
+          "description": "Déclenche l'analyse des mises à jour",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000114}'",
+          "description": "Déclenche l'évaluation du déploiement des mises à jour",
+          "platform": 0
+        },
+        {
+          "command": "Invoke-WmiMethod -Namespace root\\ccm -Class sms_client -Name TriggerSchedule '{00000000-0000-0000-0000-000000000113}' -ErrorAction Stop",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Invoke-WmiMethod -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "Schedule ID {113} = Software Updates Scan Cycle, {114} = Software Updates Deployment Evaluation. Nécessite SCCM et WSUS configurés.",
       "links": [
         {
@@ -12066,7 +13028,13 @@
         "commandPattern": "net stop wuauserv && net stop cryptSvc && net stop bits && net stop msiserver && ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old && ren C:\\Windows\\System32\\catroot2 catroot2.old && net start wuauserv && net start cryptSvc && net start bits && net start msiserver",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "net stop wuauserv && net stop cryptSvc && net stop bits && net stop msiserver && ren C:\\Windows\\SoftwareDistribution SoftwareDistribution.old && ren C:\\Windows\\System32\\catroot2 catroot2.old && net start wuauserv && net start cryptSvc && net start bits && net start msiserver",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help net -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "⚠️ Nécessite redémarrage du PC après exécution. Supprime tout l'historique de mises à jour. Commande à exécuter avec droits administrateur.",
       "links": []
     },
@@ -12237,7 +13205,23 @@
         "commandPattern": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name ResetPolicy -ArgumentList 1\"",
+          "description": "Réinitialise toutes les stratégies SCCM",
+          "platform": 0
+        }
+      ],
       "notes": "Supprime toutes les stratégies. Le client les re-téléchargera automatiquement. Droits administrateur requis.",
       "links": []
     },
@@ -12261,7 +13245,23 @@
         "commandPattern": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000001}'\"",
+          "description": "Lance un inventaire matériel immédiat",
+          "platform": 0
+        }
+      ],
       "notes": "Droits administrateur requis. GUID {00000000-0000-0000-0000-000000000001} = Hardware Inventory.",
       "links": []
     },
@@ -12285,7 +13285,23 @@
         "commandPattern": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "powershell -Command \"Invoke-WmiMethod -Namespace root\\ccm -Class SMS_Client -Name TriggerSchedule -ArgumentList '{00000000-0000-0000-0000-000000000113}'\"",
+          "description": "Force le scan des mises à jour SCCM",
+          "platform": 0
+        }
+      ],
       "notes": "Droits administrateur requis. GUID {00000000-0000-0000-0000-000000000113} = Software Updates Scan.",
       "links": []
     },
@@ -12309,7 +13325,18 @@
         "commandPattern": "net stop wuauserv && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientId /f && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientIdValidation /f && net start wuauserv && wuauclt /resetauthorization /detectnow",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "wuauclt /resetauthorization /detectnow",
+          "description": "Force la détection après réinitialisation de l'ID",
+          "platform": 0
+        },
+        {
+          "command": "net stop wuauserv && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientId /f && reg delete HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WindowsUpdate /v SusClientIdValidation /f && net start wuauserv && wuauclt /resetauthorization /detectnow",
+          "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help net -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+          "platform": 0
+        }
+      ],
       "notes": "Droits administrateur requis. Utile quand un PC cloné apparaît en double dans WSUS.",
       "links": []
     },
@@ -12653,7 +13680,58 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Resolve-DnsName -Name <Domain> -Server 8.8.8.8",
+          "description": "Force la résolution via un serveur externe (Google). Permet de savoir si le problème vient de votre DNS interne ou de la propagation mondiale.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName -Name <Domain> -Type TXT",
+          "description": "Vérifie les enregistrements TXT (souvent utilisés pour SPF, DKIM, validation de domaine).",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName google.com",
+          "description": "Résout le nom de domaine google.com en adresse(s) IP. Équivalent PowerShell de 'nslookup'. Retourne tous les enregistrements A (IPv4) et AAAA (IPv6) associés. Utilise le serveur DNS configuré sur la machine.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName google.com -Type MX",
+          "description": "Interroge les enregistrements MX (Mail eXchange) de google.com. Les enregistrements MX indiquent les serveurs de messagerie responsables du domaine. Retourne les serveurs mail avec leur priorité. Essentiel pour diagnostiquer les problèmes d'email et vérifier les configurations SMTP.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName contoso.com -Type ALL -Server 8.8.8.8",
+          "description": "Interroge TOUS les types d'enregistrements DNS (A, AAAA, MX, TXT, NS, SOA, etc.) en utilisant le serveur DNS public de Google (8.8.8.8). -Type ALL retourne absolument tous les enregistrements disponibles. -Server force l'utilisation d'un DNS spécifique au lieu du DNS local. Utile pour comparer les résolutions ou diagnostiquer des problèmes de propagation DNS.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName _spf.google.com -Type TXT",
+          "description": "Interroge les enregistrements TXT, souvent utilisés pour SPF (Sender Policy Framework), DKIM, DMARC et vérifications de domaine. Les enregistrements TXT contiennent du texte libre utilisé pour la configuration d'email, la sécurité et les validations de propriété de domaine.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName 8.8.8.8 -Type PTR",
+          "description": "Résolution DNS inverse (reverse lookup) : cherche le nom de domaine associé à l'IP 8.8.8.8. Les enregistrements PTR mappent IP → nom (inverse de A qui mappe nom → IP). Utile pour identifier un serveur à partir de son IP ou vérifier la cohérence des configurations DNS.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName contoso.com -Type NS",
+          "description": "Interroge les enregistrements NS (Name Server) qui indiquent quels serveurs DNS sont autoritaires pour le domaine. Les enregistrements NS définissent où sont hébergées les zones DNS. Essentiel lors de migrations DNS ou pour identifier l'hébergeur DNS d'un domaine.",
+          "platform": 0
+        },
+        {
+          "command": "Resolve-DnsName google.com -DnsOnly",
+          "description": "Force une vraie requête DNS en désactivant le cache local. Le switch -DnsOnly ignore complètement le cache de résolution Windows et force une interrogation du serveur DNS. Utile pour vérifier les changements DNS récents ou diagnostiquer des problèmes de cache.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Content C:\\domains.txt | ForEach-Object {Resolve-DnsName $_ -ErrorAction SilentlyContinue} | Select-Object Name,IPAddress",
+          "description": "Résout en masse une liste de domaines depuis un fichier. Get-Content charge le fichier. ForEach-Object résout chaque ligne. -ErrorAction SilentlyContinue ignore les erreurs (domaines inexistants). Select-Object formate les résultats. Idéal pour valider une liste de domaines ou créer un inventaire DNS.",
+          "platform": 0
+        }
+      ],
       "notes": "Remplace nslookup. Types courants: A (IPv4), AAAA (IPv6), MX (mail), TXT (texte), CNAME (alias). Serveurs DNS publics: 8.8.8.8 (Google), 1.1.1.1 (Cloudflare).",
       "links": [
         {
@@ -13237,7 +14315,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 5",
+          "description": "🔥 PERFORMANCE : Identifie les 5 processus qui consomment le plus de CPU actuellement.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Where-Object {$_.Responding -eq $false}",
+          "description": "Trouve les applications 'Ne répond pas' (Frozen).",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process -Name chrome | Stop-Process -Force",
+          "description": "Kill Switch : Ferme de force toutes les instances d'un processus spécifique. Utile pour nettoyer des processus zombies.",
+          "platform": 1
+        },
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10",
+          "description": "Top 10 des processus par CPU",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Where-Object {$_.CPU -gt 10} | Sort-Object CPU -Descending",
+          "description": "Processus ayant utilisé plus de 10 secondes CPU",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 | Select-Object ProcessName,Id,CPU,@{Name='CPU_Time';Expression={[string]::Format('{0:hh\\:mm\\:ss}',([TimeSpan]::FromSeconds($_.CPU)))}},WorkingSet | Format-Table -AutoSize",
+          "description": "Exemple utilisant le paramètre 'topCount': Nombre de processus à afficher.",
+          "platform": 0
+        }
+      ],
       "notes": "CPU = temps CPU cumulé depuis le démarrage du processus. WorkingSet = mémoire RAM utilisée. Triez par WS pour voir l'utilisation mémoire.",
       "links": [
         {
@@ -13277,7 +14401,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 5",
+          "description": "🔥 PERFORMANCE : Identifie les 5 processus qui consomment le plus de CPU actuellement.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Where-Object {$_.Responding -eq $false}",
+          "description": "Trouve les applications 'Ne répond pas' (Frozen).",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process -Name chrome | Stop-Process -Force",
+          "description": "Kill Switch : Ferme de force toutes les instances d'un processus spécifique. Utile pour nettoyer des processus zombies.",
+          "platform": 1
+        },
+        {
+          "command": "Get-Process | Sort-Object WS -Descending | Select-Object -First 10 ProcessName,@{n='Memory(MB)';e={[int]($_.WS/1MB)}}",
+          "description": "Top 10 des processus par mémoire (simplifié)",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Where-Object {$_.WorkingSet -gt 100MB} | Sort-Object WS -Descending",
+          "description": "Processus utilisant plus de 100 MB",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        },
+        {
+          "command": "Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10 | Select-Object ProcessName,Id,@{Name='Memory_MB';Expression={[math]::Round($_.WorkingSet/1MB,2)}},@{Name='Virtual_MB';Expression={[math]::Round($_.VirtualMemorySize/1MB,2)}},Handles | Format-Table -AutoSize",
+          "description": "Exemple utilisant le paramètre 'topCount': Nombre de processus à afficher.",
+          "platform": 0
+        }
+      ],
       "notes": "WorkingSet = RAM physique utilisée. VirtualMemorySize = mémoire virtuelle. Handles = nombre de handles système ouverts.",
       "links": [
         {
@@ -13638,7 +14808,38 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2; StartTime=(Get-Date).AddHours(-24)}",
+          "description": "Méthode performante pour filtrer les erreurs (Level=2) des dernières 24h. Beaucoup plus rapide que Get-EventLog sur les gros volumes.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624} | Where-Object {$_.Properties[8].Value -eq 10} | Select-Object TimeCreated,Message",
+          "description": "Connexions RDP réussies (LogonType 10)",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625} | Select-Object -First 20",
+          "description": "20 dernières tentatives de connexion échouées",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddDays(-30)} | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddDays(-30)} | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddDays(-30)} | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "EventID 4624 = connexion réussie, 4625 = échec. LogonType 10 = RemoteInteractive (RDP), 3 = Network. Surveillez les échecs répétés (attaque).",
       "links": [
         {
@@ -13869,7 +15070,93 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "journalctl -xe",
+          "description": "🔥 STANDARD : Affiche les logs système les plus récents avec explications étendues. La commande réflexe quand un service Linux refuse de démarrer.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p 3 -xb",
+          "description": "Affiche uniquement les Erreurs (p 3) survenues depuis le dernier démarrage (boot).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -n 50",
+          "description": "Affiche les 50 derniers messages du journal systemd. Le flag -n (lines) limite l'output. journalctl est le système de logs central de systemd qui agrège tous les journaux (kernel, services, applications). Première commande pour diagnostiquer n'importe quel problème sous Linux moderne.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -f",
+          "description": "Mode suivi en temps réel (follow). Le flag -f affiche les nouveaux messages au fur et à mesure. Équivalent de 'tail -f' mais pour tous les logs systemd. Essentiel pour observer en direct l'activité système, surveiller un déploiement ou debugger un service problématique. Arrêtez avec Ctrl+C.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err",
+          "description": "Affiche uniquement les messages d'erreur. Le flag -p (priority) filtre par niveau de sévérité. Niveaux : emerg, alert, crit, err, warning, notice, info, debug. Utilisez -p err pour se concentrer sur les vrais problèmes sans le bruit des infos/warnings.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx.service",
+          "description": "Affiche tous les logs d'un service spécifique (ici nginx). Le flag -u (unit) filtre par unité systemd. Équivalent de consulter /var/log/nginx/* mais via journalctl. Toutes les sorties stdout/stderr du service sont capturées. Parfait pour le troubleshooting service par service.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-15 10:00:00\" --until \"2024-01-15 11:00:00\"",
+          "description": "Affiche les logs d'une plage horaire précise. Les flags --since et --until acceptent des dates absolues. Format : 'YYYY-MM-DD HH:MM:SS'. Indispensable pour investiguer un incident survenu à un moment précis. Vous pouvez aussi utiliser des dates relatives : --since \"1 hour ago\".",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since today -p err",
+          "description": "Affiche toutes les erreurs depuis minuit (aujourd'hui). --since today est un raccourci pour depuis 00:00. Combiné avec -p err pour ne voir que les erreurs. Excellente commande pour la revue quotidienne des problèmes : à exécuter chaque matin pour identifier les incidents de la nuit.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u ssh.service --since \"10 minutes ago\"",
+          "description": "Affiche les logs SSH des 10 dernières minutes. --since accepte des durées relatives (minutes, hours, days ago). Utile pour diagnostiquer un problème de connexion SSH juste après qu'il se soit produit. Adaptez le service et la durée selon vos besoins.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k -n 100",
+          "description": "Affiche les 100 derniers messages du kernel. Le flag -k (kernel) filtre uniquement les messages noyau (équivalent de dmesg). Essentiel pour diagnostiquer les problèmes hardware, drivers, panics kernel, erreurs disque/réseau de bas niveau.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -b -1",
+          "description": "Affiche tous les logs du boot PRÉCÉDENT. Le flag -b (boot) filtre par session de démarrage. -b sans argument = boot actuel. -b -1 = boot précédent. -b -2 = avant-avant-dernier. Crucial pour diagnostiquer pourquoi un système a crashé ou n'a pas démarré correctement : après reboot, consultez les logs du boot raté.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --disk-usage",
+          "description": "Affiche l'espace disque utilisé par les journaux systemd. Les journaux peuvent occuper plusieurs Go sur des systèmes actifs. Utilisez cette commande pour surveiller l'espace et décider si un nettoyage est nécessaire (voir journalctl --vacuum-size ou --vacuum-time).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx -f",
+          "description": "Suivre les logs de nginx en temps réel",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err -b",
+          "description": "Afficher les erreurs depuis le dernier boot",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-01\" --until \"2024-01-02\"",
+          "description": "Logs entre deux dates",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u sshd --no-pager | tail -50",
+          "description": "Les 50 dernières lignes des logs SSH",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k",
+          "description": "Messages du noyau uniquement",
+          "platform": 1
+        }
+      ],
       "notes": "Utiliser -f pour suivre les logs en temps réel. L'extension .service peut souvent être omise.",
       "links": [
         {
@@ -13978,7 +15265,93 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "journalctl -xe",
+          "description": "🔥 STANDARD : Affiche les logs système les plus récents avec explications étendues. La commande réflexe quand un service Linux refuse de démarrer.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p 3 -xb",
+          "description": "Affiche uniquement les Erreurs (p 3) survenues depuis le dernier démarrage (boot).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -n 50",
+          "description": "Affiche les 50 derniers messages du journal systemd. Le flag -n (lines) limite l'output. journalctl est le système de logs central de systemd qui agrège tous les journaux (kernel, services, applications). Première commande pour diagnostiquer n'importe quel problème sous Linux moderne.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -f",
+          "description": "Mode suivi en temps réel (follow). Le flag -f affiche les nouveaux messages au fur et à mesure. Équivalent de 'tail -f' mais pour tous les logs systemd. Essentiel pour observer en direct l'activité système, surveiller un déploiement ou debugger un service problématique. Arrêtez avec Ctrl+C.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err",
+          "description": "Affiche uniquement les messages d'erreur. Le flag -p (priority) filtre par niveau de sévérité. Niveaux : emerg, alert, crit, err, warning, notice, info, debug. Utilisez -p err pour se concentrer sur les vrais problèmes sans le bruit des infos/warnings.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx.service",
+          "description": "Affiche tous les logs d'un service spécifique (ici nginx). Le flag -u (unit) filtre par unité systemd. Équivalent de consulter /var/log/nginx/* mais via journalctl. Toutes les sorties stdout/stderr du service sont capturées. Parfait pour le troubleshooting service par service.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-15 10:00:00\" --until \"2024-01-15 11:00:00\"",
+          "description": "Affiche les logs d'une plage horaire précise. Les flags --since et --until acceptent des dates absolues. Format : 'YYYY-MM-DD HH:MM:SS'. Indispensable pour investiguer un incident survenu à un moment précis. Vous pouvez aussi utiliser des dates relatives : --since \"1 hour ago\".",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since today -p err",
+          "description": "Affiche toutes les erreurs depuis minuit (aujourd'hui). --since today est un raccourci pour depuis 00:00. Combiné avec -p err pour ne voir que les erreurs. Excellente commande pour la revue quotidienne des problèmes : à exécuter chaque matin pour identifier les incidents de la nuit.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u ssh.service --since \"10 minutes ago\"",
+          "description": "Affiche les logs SSH des 10 dernières minutes. --since accepte des durées relatives (minutes, hours, days ago). Utile pour diagnostiquer un problème de connexion SSH juste après qu'il se soit produit. Adaptez le service et la durée selon vos besoins.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k -n 100",
+          "description": "Affiche les 100 derniers messages du kernel. Le flag -k (kernel) filtre uniquement les messages noyau (équivalent de dmesg). Essentiel pour diagnostiquer les problèmes hardware, drivers, panics kernel, erreurs disque/réseau de bas niveau.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -b -1",
+          "description": "Affiche tous les logs du boot PRÉCÉDENT. Le flag -b (boot) filtre par session de démarrage. -b sans argument = boot actuel. -b -1 = boot précédent. -b -2 = avant-avant-dernier. Crucial pour diagnostiquer pourquoi un système a crashé ou n'a pas démarré correctement : après reboot, consultez les logs du boot raté.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --disk-usage",
+          "description": "Affiche l'espace disque utilisé par les journaux systemd. Les journaux peuvent occuper plusieurs Go sur des systèmes actifs. Utilisez cette commande pour surveiller l'espace et décider si un nettoyage est nécessaire (voir journalctl --vacuum-size ou --vacuum-time).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx -f",
+          "description": "Suivre les logs de nginx en temps réel",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err -b",
+          "description": "Afficher les erreurs depuis le dernier boot",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-01\" --until \"2024-01-02\"",
+          "description": "Logs entre deux dates",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u sshd --no-pager | tail -50",
+          "description": "Les 50 dernières lignes des logs SSH",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k",
+          "description": "Messages du noyau uniquement",
+          "platform": 1
+        }
+      ],
       "notes": "Utile pour diagnostiquer les problèmes au démarrage. --list-boots affiche l'historique des boots.",
       "links": [
         {
@@ -14439,7 +15812,93 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "journalctl -xe",
+          "description": "🔥 STANDARD : Affiche les logs système les plus récents avec explications étendues. La commande réflexe quand un service Linux refuse de démarrer.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p 3 -xb",
+          "description": "Affiche uniquement les Erreurs (p 3) survenues depuis le dernier démarrage (boot).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -n 50",
+          "description": "Affiche les 50 derniers messages du journal systemd. Le flag -n (lines) limite l'output. journalctl est le système de logs central de systemd qui agrège tous les journaux (kernel, services, applications). Première commande pour diagnostiquer n'importe quel problème sous Linux moderne.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -f",
+          "description": "Mode suivi en temps réel (follow). Le flag -f affiche les nouveaux messages au fur et à mesure. Équivalent de 'tail -f' mais pour tous les logs systemd. Essentiel pour observer en direct l'activité système, surveiller un déploiement ou debugger un service problématique. Arrêtez avec Ctrl+C.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err",
+          "description": "Affiche uniquement les messages d'erreur. Le flag -p (priority) filtre par niveau de sévérité. Niveaux : emerg, alert, crit, err, warning, notice, info, debug. Utilisez -p err pour se concentrer sur les vrais problèmes sans le bruit des infos/warnings.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx.service",
+          "description": "Affiche tous les logs d'un service spécifique (ici nginx). Le flag -u (unit) filtre par unité systemd. Équivalent de consulter /var/log/nginx/* mais via journalctl. Toutes les sorties stdout/stderr du service sont capturées. Parfait pour le troubleshooting service par service.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-15 10:00:00\" --until \"2024-01-15 11:00:00\"",
+          "description": "Affiche les logs d'une plage horaire précise. Les flags --since et --until acceptent des dates absolues. Format : 'YYYY-MM-DD HH:MM:SS'. Indispensable pour investiguer un incident survenu à un moment précis. Vous pouvez aussi utiliser des dates relatives : --since \"1 hour ago\".",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since today -p err",
+          "description": "Affiche toutes les erreurs depuis minuit (aujourd'hui). --since today est un raccourci pour depuis 00:00. Combiné avec -p err pour ne voir que les erreurs. Excellente commande pour la revue quotidienne des problèmes : à exécuter chaque matin pour identifier les incidents de la nuit.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u ssh.service --since \"10 minutes ago\"",
+          "description": "Affiche les logs SSH des 10 dernières minutes. --since accepte des durées relatives (minutes, hours, days ago). Utile pour diagnostiquer un problème de connexion SSH juste après qu'il se soit produit. Adaptez le service et la durée selon vos besoins.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k -n 100",
+          "description": "Affiche les 100 derniers messages du kernel. Le flag -k (kernel) filtre uniquement les messages noyau (équivalent de dmesg). Essentiel pour diagnostiquer les problèmes hardware, drivers, panics kernel, erreurs disque/réseau de bas niveau.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -b -1",
+          "description": "Affiche tous les logs du boot PRÉCÉDENT. Le flag -b (boot) filtre par session de démarrage. -b sans argument = boot actuel. -b -1 = boot précédent. -b -2 = avant-avant-dernier. Crucial pour diagnostiquer pourquoi un système a crashé ou n'a pas démarré correctement : après reboot, consultez les logs du boot raté.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --disk-usage",
+          "description": "Affiche l'espace disque utilisé par les journaux systemd. Les journaux peuvent occuper plusieurs Go sur des systèmes actifs. Utilisez cette commande pour surveiller l'espace et décider si un nettoyage est nécessaire (voir journalctl --vacuum-size ou --vacuum-time).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx -f",
+          "description": "Suivre les logs de nginx en temps réel",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err -b",
+          "description": "Afficher les erreurs depuis le dernier boot",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-01\" --until \"2024-01-02\"",
+          "description": "Logs entre deux dates",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u sshd --no-pager | tail -50",
+          "description": "Les 50 dernières lignes des logs SSH",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k",
+          "description": "Messages du noyau uniquement",
+          "platform": 1
+        }
+      ],
       "notes": "-k est un raccourci pour --dmesg. Équivalent à dmesg mais avec persistance.",
       "links": [
         {
@@ -14486,7 +15945,93 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "journalctl -xe",
+          "description": "🔥 STANDARD : Affiche les logs système les plus récents avec explications étendues. La commande réflexe quand un service Linux refuse de démarrer.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p 3 -xb",
+          "description": "Affiche uniquement les Erreurs (p 3) survenues depuis le dernier démarrage (boot).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -n 50",
+          "description": "Affiche les 50 derniers messages du journal systemd. Le flag -n (lines) limite l'output. journalctl est le système de logs central de systemd qui agrège tous les journaux (kernel, services, applications). Première commande pour diagnostiquer n'importe quel problème sous Linux moderne.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -f",
+          "description": "Mode suivi en temps réel (follow). Le flag -f affiche les nouveaux messages au fur et à mesure. Équivalent de 'tail -f' mais pour tous les logs systemd. Essentiel pour observer en direct l'activité système, surveiller un déploiement ou debugger un service problématique. Arrêtez avec Ctrl+C.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err",
+          "description": "Affiche uniquement les messages d'erreur. Le flag -p (priority) filtre par niveau de sévérité. Niveaux : emerg, alert, crit, err, warning, notice, info, debug. Utilisez -p err pour se concentrer sur les vrais problèmes sans le bruit des infos/warnings.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx.service",
+          "description": "Affiche tous les logs d'un service spécifique (ici nginx). Le flag -u (unit) filtre par unité systemd. Équivalent de consulter /var/log/nginx/* mais via journalctl. Toutes les sorties stdout/stderr du service sont capturées. Parfait pour le troubleshooting service par service.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-15 10:00:00\" --until \"2024-01-15 11:00:00\"",
+          "description": "Affiche les logs d'une plage horaire précise. Les flags --since et --until acceptent des dates absolues. Format : 'YYYY-MM-DD HH:MM:SS'. Indispensable pour investiguer un incident survenu à un moment précis. Vous pouvez aussi utiliser des dates relatives : --since \"1 hour ago\".",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since today -p err",
+          "description": "Affiche toutes les erreurs depuis minuit (aujourd'hui). --since today est un raccourci pour depuis 00:00. Combiné avec -p err pour ne voir que les erreurs. Excellente commande pour la revue quotidienne des problèmes : à exécuter chaque matin pour identifier les incidents de la nuit.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u ssh.service --since \"10 minutes ago\"",
+          "description": "Affiche les logs SSH des 10 dernières minutes. --since accepte des durées relatives (minutes, hours, days ago). Utile pour diagnostiquer un problème de connexion SSH juste après qu'il se soit produit. Adaptez le service et la durée selon vos besoins.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k -n 100",
+          "description": "Affiche les 100 derniers messages du kernel. Le flag -k (kernel) filtre uniquement les messages noyau (équivalent de dmesg). Essentiel pour diagnostiquer les problèmes hardware, drivers, panics kernel, erreurs disque/réseau de bas niveau.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -b -1",
+          "description": "Affiche tous les logs du boot PRÉCÉDENT. Le flag -b (boot) filtre par session de démarrage. -b sans argument = boot actuel. -b -1 = boot précédent. -b -2 = avant-avant-dernier. Crucial pour diagnostiquer pourquoi un système a crashé ou n'a pas démarré correctement : après reboot, consultez les logs du boot raté.",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --disk-usage",
+          "description": "Affiche l'espace disque utilisé par les journaux systemd. Les journaux peuvent occuper plusieurs Go sur des systèmes actifs. Utilisez cette commande pour surveiller l'espace et décider si un nettoyage est nécessaire (voir journalctl --vacuum-size ou --vacuum-time).",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u nginx -f",
+          "description": "Suivre les logs de nginx en temps réel",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -p err -b",
+          "description": "Afficher les erreurs depuis le dernier boot",
+          "platform": 1
+        },
+        {
+          "command": "journalctl --since \"2024-01-01\" --until \"2024-01-02\"",
+          "description": "Logs entre deux dates",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -u sshd --no-pager | tail -50",
+          "description": "Les 50 dernières lignes des logs SSH",
+          "platform": 1
+        },
+        {
+          "command": "journalctl -k",
+          "description": "Messages du noyau uniquement",
+          "platform": 1
+        }
+      ],
       "notes": "Formats disponibles: json, json-pretty, json-sse. Utile pour intégration avec outils d'analyse.",
       "links": [
         {
@@ -16083,7 +17628,38 @@
         "commandPattern": "uptime",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "uptime",
+          "description": "Affiche uptime et load average",
+          "platform": 1
+        },
+        {
+          "command": "uptime -p",
+          "description": "Format pretty (depuis X jours Y heures)",
+          "platform": 1
+        },
+        {
+          "command": "w",
+          "description": "Uptime + utilisateurs connectés",
+          "platform": 1
+        },
+        {
+          "command": "uptime -s",
+          "description": "Date et heure du dernier démarrage",
+          "platform": 1
+        },
+        {
+          "command": "cat /proc/uptime",
+          "description": "Uptime en secondes",
+          "platform": 1
+        },
+        {
+          "command": "cat /proc/loadavg",
+          "description": "Load average brut",
+          "platform": 1
+        }
+      ],
       "notes": "Ne nécessite pas sudo. Load average: 1min, 5min, 15min. Comparer au nombre de CPU.",
       "links": [
         {
@@ -16251,7 +17827,53 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "vmstat 5 5",
+          "description": "Statistiques toutes les 5 secondes, 5 fois",
+          "platform": 1
+        },
+        {
+          "command": "vmstat -s",
+          "description": "Statistiques mémoire détaillées",
+          "platform": 1
+        },
+        {
+          "command": "vmstat -d",
+          "description": "Statistiques disques",
+          "platform": 1
+        },
+        {
+          "command": "vmstat 5 10",
+          "description": "Exemple utilisant le paramètre 'interval': Intervalle entre les mesures. Remplacez 3600 par la valeur appropriée selon votre environnement.",
+          "platform": 1
+        },
+        {
+          "command": "vmstat 3600 5",
+          "description": "Exemple utilisant le paramètre 'count': Nombre de mesures à effectuer. Remplacez 10 par la valeur appropriée selon votre environnement.",
+          "platform": 1
+        },
+        {
+          "command": "vmstat 1 10",
+          "description": "Stats système toutes les secondes, 10 fois",
+          "platform": 1
+        },
+        {
+          "command": "vmstat -w",
+          "description": "Format large",
+          "platform": 1
+        },
+        {
+          "command": "vmstat -a",
+          "description": "Mémoire active/inactive",
+          "platform": 1
+        },
+        {
+          "command": "vmstat 1 5",
+          "description": "Stats toutes les secondes, 5 fois",
+          "platform": 1
+        }
+      ],
       "notes": "Ne nécessite pas sudo. Colonnes: r=runnable, b=blocked, swpd=swap, free=RAM libre, etc.",
       "links": [
         {
@@ -22621,7 +24243,48 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "systemctl list-timers",
+          "description": "Liste les timers actifs",
+          "platform": 1
+        },
+        {
+          "command": "systemctl list-timers --all",
+          "description": "Liste tous les timers",
+          "platform": 1
+        },
+        {
+          "command": "systemctl status my-backup.timer",
+          "description": "État d'un timer spécifique",
+          "platform": 1
+        },
+        {
+          "command": "systemctl status nginx",
+          "description": "Vérifier l'état du service nginx",
+          "platform": 1
+        },
+        {
+          "command": "systemctl start apache2",
+          "description": "Démarrer le service Apache",
+          "platform": 1
+        },
+        {
+          "command": "systemctl stop mysql",
+          "description": "Arrêter le service MySQL",
+          "platform": 1
+        },
+        {
+          "command": "systemctl restart sshd",
+          "description": "Redémarrer le service SSH",
+          "platform": 1
+        },
+        {
+          "command": "systemctl enable docker",
+          "description": "Activer Docker au démarrage",
+          "platform": 1
+        }
+      ],
       "notes": "Les timers systemd sont plus flexibles que cron. Voir /etc/systemd/system/ pour les définitions.",
       "links": [
         {
@@ -30963,7 +32626,48 @@
         "commandPattern": "Get-MpThreat | Select-Object ThreatID,ThreatName,SeverityID",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "Get-MpThreat | Select-Object ThreatID,ThreatName,SeverityID,Resources",
+          "description": "Liste toutes les menaces avec leurs IDs",
+          "platform": 0
+        },
+        {
+          "command": "Remove-MpThreat -ThreatID 123456",
+          "description": "Supprime la menace avec l'ID 123456",
+          "platform": 0
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.IsActive -eq $true} | ForEach-Object { Remove-MpThreat -ThreatID $_.ThreatID }",
+          "description": "⚠️ Supprime TOUTES les menaces actives détectées",
+          "platform": 0
+        },
+        {
+          "command": "Get-MpThreat | Where-Object {$_.SeverityID -ge 4} | ForEach-Object { Remove-MpThreat -ThreatID $_.ThreatID; Write-Host \"Supprimé: $($_.ThreatName)\" -ForegroundColor Green }",
+          "description": "Supprime toutes les menaces graves/sévères (niveau 4-5)",
+          "platform": 0
+        },
+        {
+          "command": "Get-MpThreat | Select-Object * -First 1",
+          "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+          "platform": 0
+        },
+        {
+          "command": "Get-MpThreat | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 0
+        },
+        {
+          "command": "Get-MpThreat | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 0
+        },
+        {
+          "command": "Get-MpThreat | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 0
+        }
+      ],
       "notes": "Remove-MpThreat supprime définitivement la menace de la quarantaine. ThreatID: identifiant unique de chaque détection. Généralement Defender nettoie automatiquement, utilisez Remove-MpThreat uniquement si nécessaire. Pour voir les actions effectuées: Get-MpThreatDetection.",
       "links": [
         {
@@ -31295,7 +32999,43 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword | Select-Object -ExpandProperty msFVE-RecoveryPassword",
+          "description": "Récupère le mot de passe de récupération BitLocker de PC-001 depuis AD",
+          "platform": 1
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity LAPTOP-005; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,whenCreated | Select-Object @{N='RecoveryPassword';E={$_.'msFVE-RecoveryPassword'}},@{N='DateCreated';E={$_.whenCreated}}",
+          "description": "Récupère les clés BitLocker avec leur date de création",
+          "platform": 1
+        },
+        {
+          "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword; if($keys) { Write-Host \"$($_.Name): $($keys[0].'msFVE-RecoveryPassword')\" } }",
+          "description": "Récupère les clés BitLocker de tous les laptops depuis AD",
+          "platform": 1
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,msFVE-RecoveryGuid; $keys | Select-Object @{N='Password';E={$_.'msFVE-RecoveryPassword'}},@{N='VolumeGUID';E={$_.'msFVE-RecoveryGuid'}}",
+          "description": "Récupère les clés avec leur GUID de volume (utile si plusieurs volumes chiffrés)",
+          "platform": 1
+        },
+        {
+          "command": "$computer = Get-ADComputer -Identity PC-001; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword; $keys.'msFVE-RecoveryPassword' | Out-File \"C:\\BitLocker-Keys-PC-001.txt\"",
+          "description": "Sauvegarde les clés de récupération dans un fichier sécurisé",
+          "platform": 1
+        }
+      ],
       "notes": "⚠️ ADMIN DOMAINE UNIQUEMENT: Cette commande récupère les clés depuis Active Directory (attributs msFVE-*). Nécessite droits de lecture sur les objets msFVE-RecoveryInformation. Les clés sont stockées sous chaque objet ordinateur AD. Plusieurs clés possibles si plusieurs volumes chiffrés. GUID format: {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}.",
       "links": [
         {
@@ -31326,7 +33066,43 @@
         "commandPattern": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; $report += [PSCustomObject]@{ Computer=$_.Name; BitLockerEnabled=$hasKeys; DN=$_.DistinguishedName } }; $report | Format-Table -AutoSize",
         "parameters": []
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; $report += [PSCustomObject]@{Computer=$_.Name; BitLocker=$hasKeys} }; $report | Format-Table",
+          "description": "Liste tous les ordinateurs avec leur statut BitLocker (True/False)",
+          "platform": 1
+        },
+        {
+          "command": "$all = (Get-ADComputer -Filter *).Count; $encrypted = (Get-ADComputer -Filter * | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null }).Count; Write-Host \"BitLocker: $encrypted / $all ordinateurs ($(($encrypted/$all*100).ToString('N1'))%)\" -ForegroundColor Cyan",
+          "description": "Calcule le pourcentage de conformité BitLocker du domaine",
+          "platform": 1
+        },
+        {
+          "command": "Get-ADComputer -Filter * | Where-Object { (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -eq $null } | Select-Object Name",
+          "description": "⚠️ Liste les ordinateurs SANS BitLocker (non conformes!)",
+          "platform": 1
+        },
+        {
+          "command": "$report = @(); Get-ADComputer -Filter * | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties whenCreated -ErrorAction SilentlyContinue; $report += [PSCustomObject]@{Computer=$_.Name; HasBitLocker=($keys -ne $null); KeyCount=$keys.Count; LastKeyDate=($keys | Sort-Object whenCreated -Descending | Select-Object -First 1).whenCreated} }; $report | Export-Csv C:\\BitLocker-Domain-Audit-$(Get-Date -Format 'yyyyMMdd').csv -NoTypeInformation",
+          "description": "Génère un rapport CSV complet avec nombre de clés et date de dernière clé",
+          "platform": 1
+        },
+        {
+          "command": "Get-ADComputer -Filter * -SearchBase 'OU=Laptops,DC=contoso,DC=com' | ForEach-Object { $hasKeys = (Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -ErrorAction SilentlyContinue) -ne $null; [PSCustomObject]@{Laptop=$_.Name; Protected=$hasKeys} }",
+          "description": "Audit BitLocker uniquement pour une OU spécifique (ex: Laptops)",
+          "platform": 1
+        }
+      ],
       "notes": "⚠️ CONFORMITÉ CRITIQUE: Cette commande audit TOUT le domaine AD. Sur gros domaines (1000+ PCs): peut prendre plusieurs minutes. Utilisez -SearchBase pour limiter à une OU. Ordinateurs sans clés BitLocker = NON CONFORMES (risque sécurité!). Exécutez régulièrement (hebdo/mensuel) pour surveiller la conformité.",
       "links": [
         {
@@ -31433,7 +33209,48 @@
           }
         ]
       },
-      "examples": [],
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "$search = '123456-789012'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Where-Object {$_.'msFVE-RecoveryPassword' -like \"*$search*\"} | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; (Get-ADComputer -Identity $computerDN).Name }",
+          "description": "Trouve l'ordinateur correspondant aux premiers chiffres du mot de passe",
+          "platform": 1
+        },
+        {
+          "command": "$fullPassword = '123456-789012-345678-901234-567890-123456-789012-890123'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Where-Object {$_.'msFVE-RecoveryPassword' -eq $fullPassword} | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; Get-ADComputer -Identity $computerDN | Select-Object Name,DNSHostName }",
+          "description": "Trouve l'ordinateur avec le mot de passe complet exact",
+          "platform": 1
+        },
+        {
+          "command": "$keyId = '{12345678-1234-1234-1234-123456789012}'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation' -and msFVE-RecoveryGuid -eq '$keyId'\" -Properties msFVE-RecoveryPassword | ForEach-Object { $computerDN = ($_.DistinguishedName -split ',',2)[1]; [PSCustomObject]@{Computer=(Get-ADComputer -Identity $computerDN).Name; Password=$_.'msFVE-RecoveryPassword'} }",
+          "description": "Trouve l'ordinateur par GUID de clé de récupération",
+          "platform": 1
+        },
+        {
+          "command": "$searchPassword = '123456-789012-345678-901234-567890-123456-789012-890123'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Format-Table -AutoSize",
+          "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+          "platform": 1
+        },
+        {
+          "command": "$searchPassword = '123456-789012-345678-901234-567890-123456-789012-890123'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+          "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+          "platform": 1
+        },
+        {
+          "command": "$searchPassword = '123456-789012-345678-901234-567890-123456-789012-890123'; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -Properties msFVE-RecoveryPassword | Measure-Object",
+          "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+          "platform": 1
+        }
+      ],
       "notes": "CAS D'USAGE: Utilisateur bloqué avec écran de récupération BitLocker, fournit les premiers chiffres du mot de passe, admin cherche à quel PC cela correspond. RECHERCHE PARTIELLE: Utilisez les premiers groupes de chiffres (ex: 123456-789012). RECHERCHE COMPLÈTE: Utilisez le mot de passe entier pour match exact. Très utile pour helpdesk!",
       "links": [
         {
@@ -31765,7 +33582,48 @@
         "parameters": []
       },
       "parameters": [],
-      "examples": []
+      "examples": [
+        {
+          "command": "ss -tulpn",
+          "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+          "platform": 1
+        },
+        {
+          "command": "ss -s",
+          "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+          "platform": 1
+        },
+        {
+          "command": "Get-Volume | Select-Object DriveLetter,Size_GB,Free_GB | Format-Table",
+          "description": "Affiche l'espace disque sur Windows",
+          "platform": 0
+        },
+        {
+          "command": "df -h",
+          "description": "Affiche l'espace disque sur Linux",
+          "platform": 1
+        },
+        {
+          "command": "df -h /home",
+          "description": "Espace disque du point de montage /home",
+          "platform": 1
+        },
+        {
+          "command": "df -T",
+          "description": "Afficher le type de filesystem",
+          "platform": 1
+        },
+        {
+          "command": "df -i",
+          "description": "Afficher l'utilisation des inodes",
+          "platform": 1
+        },
+        {
+          "command": "df -h --total",
+          "description": "Avec le total global",
+          "platform": 1
+        }
+      ]
     },
     {
       "id": "unified-memory-usage",
