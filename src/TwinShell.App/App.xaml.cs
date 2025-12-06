@@ -328,48 +328,39 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// Copies seed data files from installation directory to AppData.
-    /// Supports both legacy single-file and new multi-file category format.
+    /// Copies seed action files from installation directory to AppData.
     /// </summary>
     private void CopySeedDataToAppData(string sourceDir, string destDir)
     {
-        if (!Directory.Exists(sourceDir))
+        var sourceActionsDir = Path.Combine(sourceDir, "actions");
+        if (!Directory.Exists(sourceActionsDir))
         {
-            _logger.LogInfo($"Source seed directory not found: {sourceDir}");
+            _logger.LogInfo($"Source actions directory not found: {sourceActionsDir}");
             return;
         }
 
         try
         {
-            // Copy actions folder if it exists (new format)
-            var sourceActionsDir = Path.Combine(sourceDir, "actions");
             var destActionsDir = Path.Combine(destDir, "actions");
-
-            if (Directory.Exists(sourceActionsDir))
+            if (!Directory.Exists(destActionsDir))
             {
-                if (!Directory.Exists(destActionsDir))
-                {
-                    Directory.CreateDirectory(destActionsDir);
-                }
-
-                foreach (var sourceFile in Directory.GetFiles(sourceActionsDir, "*.json"))
-                {
-                    var destFile = Path.Combine(destActionsDir, Path.GetFileName(sourceFile));
-                    if (!File.Exists(destFile))
-                    {
-                        File.Copy(sourceFile, destFile);
-                    }
-                }
-                _logger.LogInfo($"Seed actions folder copied to AppData ({Directory.GetFiles(destActionsDir, "*.json").Length} files)");
+                Directory.CreateDirectory(destActionsDir);
             }
 
-            // Copy legacy file if it exists (for backwards compatibility)
-            var sourceLegacy = Path.Combine(sourceDir, "initial-actions.json");
-            var destLegacy = Path.Combine(destDir, "initial-actions.json");
-            if (File.Exists(sourceLegacy) && !File.Exists(destLegacy))
+            var copiedCount = 0;
+            foreach (var sourceFile in Directory.GetFiles(sourceActionsDir, "*.json"))
             {
-                File.Copy(sourceLegacy, destLegacy);
-                _logger.LogInfo("Legacy seed file copied to AppData");
+                var destFile = Path.Combine(destActionsDir, Path.GetFileName(sourceFile));
+                if (!File.Exists(destFile))
+                {
+                    File.Copy(sourceFile, destFile);
+                    copiedCount++;
+                }
+            }
+
+            if (copiedCount > 0)
+            {
+                _logger.LogInfo($"Copied {copiedCount} action files to AppData");
             }
         }
         catch (Exception ex)

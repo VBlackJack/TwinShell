@@ -41,16 +41,11 @@
     <ProjectReference Include="..\TwinShell.Infrastructure\TwinShell.Infrastructure.csproj" />
   </ItemGroup>
 
-  <!-- Seed data: category-based JSON files -->
+  <!-- Seed data: individual JSON files per action -->
   <ItemGroup>
     <Content Include="..\..\data\seed\actions\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>data\seed\actions\%(Filename)%(Extension)</Link>
-    </Content>
-    <!-- Keep legacy file for backwards compatibility -->
-    <Content Include="..\..\data\seed\initial-actions.json" Condition="Exists('..\..\data\seed\initial-actions.json')">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>data\seed\initial-actions.json</Link>
     </Content>
   </ItemGroup>
 
