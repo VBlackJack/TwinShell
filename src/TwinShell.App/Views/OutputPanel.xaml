@@ -99,7 +99,7 @@
 
         <!-- Output Console -->
         <Border Grid.Row="1"
-                Background="#1E1E1E"
+                Background="{DynamicResource CodeBackgroundBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">

@@ -259,7 +259,7 @@
                                FontWeight="SemiBold"
                                Padding="12"
                                Background="{DynamicResource PrimaryBrush}"
-                               Foreground="White"/>
+                               Foreground="{DynamicResource TextOnPrimaryBrush}"/>
                     <ListBox ItemsSource="{Binding Categories}"
                              SelectedItem="{Binding SelectedCategory}"
                              BorderThickness="0"
@@ -301,7 +301,7 @@
                                FontWeight="Bold"
                                Padding="12"
                                Background="{DynamicResource PrimaryBrush}"
-                               Foreground="White"/>
+                               Foreground="{DynamicResource TextOnPrimaryBrush}"/>
                     <ListBox ItemsSource="{Binding FilteredActions}"
                              SelectedItem="{Binding SelectedAction}"
                              BorderThickness="0"
@@ -317,10 +317,6 @@
                         <!-- UX: Context menu for power users (right-click actions) -->
                         <ListBox.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="View Details"
-                                          FontWeight="SemiBold"
-                                          ToolTip="View full action details"
-                                          Command="{Binding ViewDetailsCommand}"/>
                                 <MenuItem Header="Edit Action..."
                                           Command="{Binding EditActionCommand}"
                                           ToolTip="Edit this action"/>
@@ -334,6 +330,9 @@
                                 <MenuItem Header="Export Action..."
                                           Command="{Binding ExportActionCommand}"
                                           ToolTip="Export this action to a JSON file"/>
+                                <MenuItem Header="Import Action..."
+                                          Command="{Binding ImportActionCommand}"
+                                          ToolTip="Import an action from a JSON file"/>
                             </ContextMenu>
                         </ListBox.ContextMenu>
                         <ListBox.ItemTemplate>
@@ -396,10 +395,12 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <TextBlock Text="📋"
+                            <TextBlock Text="&#xE8A4;"
+                                       FontFamily="Segoe MDL2 Assets"
                                        FontSize="48"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,16"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                        Opacity="0.6"/>
                             <TextBlock Text="Select an Action"
                                        FontSize="16"
@@ -536,7 +537,7 @@
                                         <Border Background="{DynamicResource SurfaceBrush}"
                                                 BorderBrush="{DynamicResource BorderBrush}"
                                                 BorderThickness="1"
-                                                CornerRadius="12"
+                                                CornerRadius="8"
                                                 Padding="8,4"
                                                 Margin="0,0,4,4">
                                             <TextBlock Text="{Binding}"
@@ -560,7 +561,7 @@
                                     </Style>
                                 </Border.Style>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="⚠" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{DynamicResource DangerBrush}"/>
                                     <TextBlock Text="WARNING: This command can cause significant system changes"
                                                Foreground="{DynamicResource DangerBrush}"
                                                FontWeight="SemiBold"
@@ -819,7 +820,7 @@
                                                 <TextBlock Text="Example Mode"
                                                            FontSize="10"
                                                            FontWeight="SemiBold"
-                                                           Foreground="White"/>
+                                                           Foreground="{DynamicResource TextOnPrimaryBrush}"/>
                                             </Border>
                                         </StackPanel>
 
@@ -902,7 +903,7 @@
                                                 <StackPanel Margin="0,0,0,8">
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock Text="{Binding Label, Mode=OneWay}"/>
-                                                        <TextBlock Text="*" Foreground="Red" Margin="2,0,0,0">
+                                                        <TextBlock Text="*" Foreground="{DynamicResource DangerBrush}" Margin="2,0,0,0">
                                                             <TextBlock.Style>
                                                                 <Style TargetType="TextBlock">
                                                                     <Setter Property="Visibility" Value="Collapsed"/>

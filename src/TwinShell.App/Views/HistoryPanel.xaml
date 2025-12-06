@@ -163,7 +163,7 @@
                            FontWeight="Bold"
                            Padding="12"
                            Background="{DynamicResource PrimaryBrush}"
-                           Foreground="White"/>
+                           Foreground="{DynamicResource TextOnPrimaryBrush}"/>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding HistoryItems}" Margin="8"
@@ -171,10 +171,10 @@
                                   AutomationProperties.HelpText="List of command history entries">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="White"
+                                <Border Background="{DynamicResource SurfaceBrush}"
                                         BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="4"
+                                        CornerRadius="8"
                                         Margin="0,0,0,8"
                                         Padding="12">
                                     <Grid>
@@ -238,7 +238,7 @@
                                                     Padding="12,6"
                                                     MinWidth="60"
                                                     Background="{DynamicResource DangerBrush}"
-                                                    Foreground="White"
+                                                    Foreground="{DynamicResource TextOnPrimaryBrush}"
                                                     BorderThickness="0"
                                                     Cursor="Hand"
                                                     ToolTip="Delete this history entry">
@@ -277,10 +277,12 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{Binding HistoryItems.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
-            <TextBlock Text="🕒"
+            <TextBlock Text="&#xE81C;"
+                       FontFamily="Segoe MDL2 Assets"
                        FontSize="64"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,16"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Opacity="0.3"/>
             <TextBlock Text="No Command History"
                        FontSize="18"

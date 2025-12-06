@@ -2,7 +2,7 @@
 
 **Votre gestionnaire de commandes PowerShell et Bash pour l'administration système**
 
-![Version](https://img.shields.io/badge/version-1.5.0-blue)
+![Version](https://img.shields.io/badge/version-1.5.1-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)

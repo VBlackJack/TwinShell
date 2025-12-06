@@ -106,7 +106,7 @@
                     MinHeight="44"
                     TabIndex="4"
                     Background="{DynamicResource DangerBrush}"
-                    Foreground="White"
+                    Foreground="{DynamicResource TextOnPrimaryBrush}"
                     BorderThickness="0"
                     Cursor="Hand"
                     ToolTip="Delete the selected batch"
@@ -147,7 +147,7 @@
                            FontWeight="SemiBold"
                            Padding="12"
                            Background="{DynamicResource PrimaryBrush}"
-                           Foreground="White"/>
+                           Foreground="{DynamicResource TextOnPrimaryBrush}"/>
 
                 <ListBox ItemsSource="{Binding Batches}"
                          SelectedItem="{Binding SelectedBatch}"
@@ -158,10 +158,10 @@
                          AutomationProperties.HelpText="List of saved command batches. Select one to execute, edit, or delete.">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="White"
+                            <Border Background="{DynamicResource SurfaceBrush}"
                                     BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
-                                    CornerRadius="4"
+                                    CornerRadius="8"
                                     Padding="12"
                                     Margin="8">
                                 <StackPanel>
@@ -243,10 +243,10 @@
                            FontWeight="SemiBold"
                            Padding="12"
                            Background="{DynamicResource PrimaryBrush}"
-                           Foreground="White"/>
+                           Foreground="{DynamicResource TextOnPrimaryBrush}"/>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto"
-                              Background="#1E1E1E"
+                              Background="{DynamicResource CodeBackgroundBrush}"
                               Padding="8">
                     <ItemsControl ItemsSource="{Binding OutputLines}"
                                   AutomationProperties.Name="Command output"
@@ -271,10 +271,12 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{Binding Batches.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
-            <TextBlock Text="📦"
+            <TextBlock Text="&#xE7B8;"
+                       FontFamily="Segoe MDL2 Assets"
                        FontSize="64"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,16"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Opacity="0.3"/>
             <TextBlock Text="No Batches Yet"
                        FontSize="18"

@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:TwinShell.App.ViewModels"
         xmlns:enums="clr-namespace:TwinShell.Core.Enums;assembly=TwinShell.Core"
         mc:Ignorable="d"
-        Title="Éditeur de commande - TwinShell"
+        Title="Action Editor - TwinShell"
         Height="700" Width="900"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource BackgroundBrush}"
@@ -34,7 +34,7 @@
             <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="CornerRadius" Value="8"/>
             <Setter Property="Padding" Value="12"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
@@ -50,7 +50,7 @@
 
         <!-- Header -->
         <TextBlock Grid.Row="0"
-                   Text="Informations de la commande"
+                   Text="Action Information"
                    FontSize="20"
                    FontWeight="SemiBold"
                    Foreground="{DynamicResource PrimaryBrush}"
@@ -58,29 +58,32 @@
 
         <!-- Content - TabControl -->
         <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
-            <!-- Tab Général -->
-            <TabItem Header="Général">
+            <!-- Tab General -->
+            <TabItem Header="General">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
                     <StackPanel>
-                        <TextBlock Text="Titre *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock x:Name="TitleLabel" Text="Title *" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
+                                 AutomationProperties.LabeledBy="{Binding ElementName=TitleLabel}"
                                  TabIndex="1"/>
 
-                        <TextBlock Text="Description" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock x:Name="DescriptionLabel" Text="Description" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
+                                 AutomationProperties.LabeledBy="{Binding ElementName=DescriptionLabel}"
                                  TextWrapping="Wrap" AcceptsReturn="True"
                                  Height="80" TabIndex="2"/>
 
-                        <TextBlock Text="Catégorie *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock x:Name="CategoryLabel" Text="Category *" Style="{StaticResource LabelTextStyle}"/>
                         <ComboBox ItemsSource="{Binding AvailableCategories}"
                                   Text="{Binding Category, UpdateSourceTrigger=PropertyChanged}"
                                   IsEditable="True"
+                                  AutomationProperties.LabeledBy="{Binding ElementName=CategoryLabel}"
                                   Style="{StaticResource {x:Type ComboBox}}"
                                   TabIndex="3"/>
 
-                        <TextBlock Text="Plateforme *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="Platform *" Style="{StaticResource LabelTextStyle}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
                             <RadioButton Content="Windows"
                                        IsChecked="{Binding SelectedPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Windows}"
@@ -88,36 +91,37 @@
                             <RadioButton Content="Linux"
                                        IsChecked="{Binding SelectedPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Linux}"
                                        Margin="0,0,20,0" TabIndex="5"/>
-                            <RadioButton Content="Les deux (Both)"
+                            <RadioButton Content="Both"
                                        IsChecked="{Binding SelectedPlatform, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Both}"
                                        TabIndex="6"/>
                         </StackPanel>
 
-                        <TextBlock Text="Niveau de criticité *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="Criticality Level *" Style="{StaticResource LabelTextStyle}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
-                            <RadioButton Content="Info (lecture seule)"
+                            <RadioButton Content="Info (read-only)"
                                        IsChecked="{Binding SelectedLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Info}"
                                        Margin="0,0,20,0" TabIndex="7"/>
-                            <RadioButton Content="Run (exécution)"
+                            <RadioButton Content="Run (execution)"
                                        IsChecked="{Binding SelectedLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Run}"
                                        Margin="0,0,20,0" TabIndex="8"/>
-                            <RadioButton Content="Dangerous (dangereux)"
+                            <RadioButton Content="Dangerous"
                                        IsChecked="{Binding SelectedLevel, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dangerous}"
                                        TabIndex="9"/>
                         </StackPanel>
 
-                        <TextBlock Text="Tags (séparés par des virgules)" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock x:Name="TagsLabel" Text="Tags (comma separated)" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding Tags, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
+                                 AutomationProperties.LabeledBy="{Binding ElementName=TagsLabel}"
                                  TabIndex="10"/>
-                        <TextBlock Text="Exemple: ad, users, diagnostic"
+                        <TextBlock Text="Example: ad, users, diagnostic"
                                    Style="{StaticResource HintTextStyle}"/>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
             <!-- Tab Windows Command -->
-            <TabItem Header="Commande Windows">
+            <TabItem Header="Windows Command">
                 <TabItem.Visibility>
                     <MultiBinding Converter="{StaticResource PlatformToVisibilityMultiConverter}">
                         <Binding Path="SelectedPlatform"/>
@@ -125,26 +129,28 @@
                 </TabItem.Visibility>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
                     <StackPanel>
-                        <TextBlock Text="Nom de la commande *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="Command Name *" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding WindowsCommandName, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"/>
-                        <TextBlock Text="Exemple: Get-ADUser"
+                        <TextBlock Text="Example: Get-ADUser"
                                    Style="{StaticResource HintTextStyle}"/>
 
-                        <TextBlock Text="Pattern de commande PowerShell *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="PowerShell Command Pattern *" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding WindowsCommandPattern, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
                                  TextWrapping="Wrap" AcceptsReturn="True"
                                  FontFamily="Consolas" Height="120"/>
-                        <TextBlock Text="Utiliser {paramName} pour les paramètres dynamiques"
+                        <TextBlock Text="Use {paramName} for dynamic parameters"
                                    Style="{StaticResource HintTextStyle}"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,16,0,8">
-                            <TextBlock Text="Paramètres" Style="{StaticResource LabelTextStyle}" Margin="0"/>
-                            <Button Content="+ Ajouter"
+                            <TextBlock Text="Parameters" Style="{StaticResource LabelTextStyle}" Margin="0"/>
+                            <Button Content="+ Add"
                                     Command="{Binding AddWindowsParameterCommand}"
                                     Style="{StaticResource PrimaryButtonStyle}"
-                                    Padding="8,4"
+                                    Padding="12,10"
+                                    MinWidth="44"
+                                    MinHeight="44"
                                     Margin="12,0,0,0"/>
                         </StackPanel>
 
@@ -170,12 +176,12 @@
                                                 </Grid.RowDefinitions>
 
                                                 <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
-                                                    <TextBlock Text="Nom du paramètre" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBlock Text="Parameter Name" FontSize="11" Margin="0,0,0,2"/>
                                                     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
 
                                                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
-                                                    <TextBlock Text="Label affiché" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBlock Text="Display Label" FontSize="11" Margin="0,0,0,2"/>
                                                     <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
 
@@ -189,25 +195,29 @@
                                                 </StackPanel>
 
                                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,8,0,0">
-                                                    <TextBlock Text="Valeur par défaut" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBlock Text="Default Value" FontSize="11" Margin="0,0,0,2"/>
                                                     <TextBox Text="{Binding DefaultValue, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
 
                                                 <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,8,0,0">
-                                                    <CheckBox Content="Paramètre requis" IsChecked="{Binding Required}"/>
+                                                    <CheckBox Content="Required parameter" IsChecked="{Binding Required}"/>
                                                     <TextBlock Text="Description" FontSize="11" Margin="0,8,0,2"/>
                                                     <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
                                             </Grid>
 
-                                            <Button Grid.Column="1" Content="🗑️"
+                                            <Button Grid.Column="1" Content="&#xE74D;"
+                                                    FontFamily="Segoe MDL2 Assets"
                                                     Command="{Binding DataContext.RemoveWindowsParameterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                     CommandParameter="{Binding}"
-                                                    Padding="8"
+                                                    Padding="12,10"
+                                                    MinWidth="44"
+                                                    MinHeight="44"
                                                     VerticalAlignment="Top"
                                                     Background="Transparent"
                                                     BorderBrush="{DynamicResource BorderBrush}"
-                                                    ToolTip="Supprimer ce paramètre"/>
+                                                    ToolTip="Remove this parameter"
+                                                    AutomationProperties.Name="Remove parameter"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -218,7 +228,7 @@
             </TabItem>
 
             <!-- Tab Linux Command -->
-            <TabItem Header="Commande Linux">
+            <TabItem Header="Linux Command">
                 <TabItem.Visibility>
                     <MultiBinding Converter="{StaticResource PlatformToVisibilityMultiConverter}">
                         <Binding Path="SelectedPlatform"/>
@@ -226,26 +236,28 @@
                 </TabItem.Visibility>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
                     <StackPanel>
-                        <TextBlock Text="Nom de la commande *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="Command Name *" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding LinuxCommandName, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"/>
-                        <TextBlock Text="Exemple: systemctl"
+                        <TextBlock Text="Example: systemctl"
                                    Style="{StaticResource HintTextStyle}"/>
 
-                        <TextBlock Text="Pattern de commande Bash *" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="Bash Command Pattern *" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding LinuxCommandPattern, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
                                  TextWrapping="Wrap" AcceptsReturn="True"
                                  FontFamily="Consolas" Height="120"/>
-                        <TextBlock Text="Utiliser {paramName} pour les paramètres dynamiques"
+                        <TextBlock Text="Use {paramName} for dynamic parameters"
                                    Style="{StaticResource HintTextStyle}"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,16,0,8">
-                            <TextBlock Text="Paramètres" Style="{StaticResource LabelTextStyle}" Margin="0"/>
-                            <Button Content="+ Ajouter"
+                            <TextBlock Text="Parameters" Style="{StaticResource LabelTextStyle}" Margin="0"/>
+                            <Button Content="+ Add"
                                     Command="{Binding AddLinuxParameterCommand}"
                                     Style="{StaticResource PrimaryButtonStyle}"
-                                    Padding="8,4"
+                                    Padding="12,10"
+                                    MinWidth="44"
+                                    MinHeight="44"
                                     Margin="12,0,0,0"/>
                         </StackPanel>
 
@@ -271,12 +283,12 @@
                                                 </Grid.RowDefinitions>
 
                                                 <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,0">
-                                                    <TextBlock Text="Nom du paramètre" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBlock Text="Parameter Name" FontSize="11" Margin="0,0,0,2"/>
                                                     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
 
                                                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,0">
-                                                    <TextBlock Text="Label affiché" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBlock Text="Display Label" FontSize="11" Margin="0,0,0,2"/>
                                                     <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
 
@@ -290,25 +302,29 @@
                                                 </StackPanel>
 
                                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,8,0,0">
-                                                    <TextBlock Text="Valeur par défaut" FontSize="11" Margin="0,0,0,2"/>
+                                                    <TextBlock Text="Default Value" FontSize="11" Margin="0,0,0,2"/>
                                                     <TextBox Text="{Binding DefaultValue, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
 
                                                 <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,8,0,0">
-                                                    <CheckBox Content="Paramètre requis" IsChecked="{Binding Required}"/>
+                                                    <CheckBox Content="Required parameter" IsChecked="{Binding Required}"/>
                                                     <TextBlock Text="Description" FontSize="11" Margin="0,8,0,2"/>
                                                     <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
                                             </Grid>
 
-                                            <Button Grid.Column="1" Content="🗑️"
+                                            <Button Grid.Column="1" Content="&#xE74D;"
+                                                    FontFamily="Segoe MDL2 Assets"
                                                     Command="{Binding DataContext.RemoveLinuxParameterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                     CommandParameter="{Binding}"
-                                                    Padding="8"
+                                                    Padding="12,10"
+                                                    MinWidth="44"
+                                                    MinHeight="44"
                                                     VerticalAlignment="Top"
                                                     Background="Transparent"
                                                     BorderBrush="{DynamicResource BorderBrush}"
-                                                    ToolTip="Supprimer ce paramètre"/>
+                                                    ToolTip="Remove this parameter"
+                                                    AutomationProperties.Name="Remove parameter"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -322,7 +338,7 @@
             <TabItem Header="Notes">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
                     <StackPanel>
-                        <TextBlock Text="Notes additionnelles" Style="{StaticResource LabelTextStyle}"/>
+                        <TextBlock Text="Additional Notes" Style="{StaticResource LabelTextStyle}"/>
                         <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
                                  TextWrapping="Wrap" AcceptsReturn="True"
@@ -332,23 +348,23 @@
             </TabItem>
 
             <!-- Tab Examples -->
-            <TabItem Header="Exemples">
+            <TabItem Header="Examples">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
                     <StackPanel>
                         <!-- Platform Filter - AT THE TOP -->
                         <Border Background="{DynamicResource SurfaceBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="4"
+                                CornerRadius="8"
                                 Padding="12"
                                 Margin="0,0,0,16">
                             <StackPanel>
-                                <TextBlock Text="Filtrer par plateforme"
+                                <TextBlock Text="Filter by Platform"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextPrimaryBrush}"
                                            Margin="0,0,0,8"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <RadioButton Content="Tous"
+                                    <RadioButton Content="All"
                                                  IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Null}}"
                                                  Margin="0,0,16,0"/>
                                     <RadioButton Content="Windows"
@@ -357,21 +373,23 @@
                                     <RadioButton Content="Linux"
                                                  IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Static enums:Platform.Linux}}"
                                                  Margin="0,0,16,0"/>
-                                    <RadioButton Content="Both (générique)"
+                                    <RadioButton Content="Cross-Platform"
                                                  IsChecked="{Binding SelectedExamplePlatformFilter, Converter={StaticResource NullablePlatformToBoolConverter}, ConverterParameter={x:Static enums:Platform.Both}}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
 
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                            <TextBlock Text="Exemples de commandes" Style="{StaticResource LabelTextStyle}" Margin="0"/>
-                            <Button Content="+ Ajouter un exemple"
+                            <TextBlock Text="Command Examples" Style="{StaticResource LabelTextStyle}" Margin="0"/>
+                            <Button Content="+ Add Example"
                                     Command="{Binding AddExampleCommand}"
                                     Style="{StaticResource PrimaryButtonStyle}"
-                                    Padding="8,4"
+                                    Padding="12,10"
+                                    MinWidth="44"
+                                    MinHeight="44"
                                     Margin="12,0,0,0"/>
                         </StackPanel>
-                        <TextBlock Text="Les exemples aident les utilisateurs à comprendre comment utiliser la commande."
+                        <TextBlock Text="Examples help users understand how to use the command."
                                    Style="{StaticResource HintTextStyle}"
                                    Margin="0,0,0,16"/>
 
@@ -388,7 +406,7 @@
                                             <StackPanel Grid.Column="0">
                                                 <!-- Platform selector for this example -->
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                                    <TextBlock Text="Plateforme:" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                    <TextBlock Text="Platform:" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"/>
                                                     <ComboBox SelectedValue="{Binding Platform}"
                                                               SelectedValuePath="Tag"
                                                               Width="120">
@@ -398,7 +416,7 @@
                                                     </ComboBox>
                                                 </StackPanel>
 
-                                                <TextBlock Text="Commande d'exemple" FontSize="11" Margin="0,0,0,2"/>
+                                                <TextBlock Text="Example Command" FontSize="11" Margin="0,0,0,2"/>
                                                 <TextBox Text="{Binding Command, UpdateSourceTrigger=PropertyChanged}"
                                                          FontFamily="Consolas"
                                                          TextWrapping="Wrap"
@@ -406,20 +424,24 @@
                                                          Height="80"
                                                          Margin="0,0,0,8"/>
 
-                                                <TextBlock Text="Description de l'exemple" FontSize="11" Margin="0,0,0,2"/>
+                                                <TextBlock Text="Example Description" FontSize="11" Margin="0,0,0,2"/>
                                                 <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                                                          TextWrapping="Wrap"
                                                          Height="60"/>
                                             </StackPanel>
 
-                                            <Button Grid.Column="1" Content="🗑️"
+                                            <Button Grid.Column="1" Content="&#xE74D;"
+                                                    FontFamily="Segoe MDL2 Assets"
                                                     Command="{Binding DataContext.RemoveExampleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                     CommandParameter="{Binding}"
-                                                    Padding="8"
+                                                    Padding="12,10"
+                                                    MinWidth="44"
+                                                    MinHeight="44"
                                                     VerticalAlignment="Top"
                                                     Background="Transparent"
                                                     BorderBrush="{DynamicResource BorderBrush}"
-                                                    ToolTip="Supprimer cet exemple"/>
+                                                    ToolTip="Remove this example"
+                                                    AutomationProperties.Name="Remove example"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -432,12 +454,13 @@
 
         <!-- Validation Error -->
         <Border Grid.Row="2"
-                Background="#FFEBEE"
-                BorderBrush="#F44336"
+                Background="{DynamicResource DangerBackgroundBrush}"
+                BorderBrush="{DynamicResource DangerBrush}"
                 BorderThickness="1"
-                CornerRadius="4"
+                CornerRadius="8"
                 Padding="12"
-                Margin="0,16,0,16">
+                Margin="0,16,0,16"
+                AutomationProperties.LiveSetting="Assertive">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -449,9 +472,9 @@
                 </Style>
             </Border.Style>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="⚠" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{DynamicResource DangerBrush}"/>
                 <TextBlock Text="{Binding ValidationError}"
-                           Foreground="#D32F2F"
+                           Foreground="{DynamicResource DangerBrush}"
                            FontWeight="SemiBold"
                            TextWrapping="Wrap"/>
             </StackPanel>
@@ -460,16 +483,18 @@
         <!-- Footer Buttons -->
         <StackPanel Grid.Row="3" Orientation="Horizontal"
                     HorizontalAlignment="Right">
-            <Button Content="Annuler"
+            <Button Content="Cancel"
                     Command="{Binding CancelCommand}"
                     Width="100"
                     Margin="0,0,12,0"
-                    Padding="12,8"/>
-            <Button Content="Enregistrer"
+                    Padding="12,10"
+                    MinHeight="44"/>
+            <Button Content="Save"
                     Command="{Binding SaveCommand}"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Width="120"
-                    Padding="12,8"/>
+                    Padding="12,10"
+                    MinHeight="44"/>
         </StackPanel>
     </Grid>
 </Window>

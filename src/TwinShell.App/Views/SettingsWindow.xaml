@@ -403,7 +403,7 @@
                                     MinHeight="44"
                                     TabIndex="24"
                                     Background="{DynamicResource SuccessBrush}"
-                                    Foreground="White"
+                                    Foreground="{DynamicResource TextOnPrimaryBrush}"
                                     BorderThickness="0"
                                     Cursor="Hand"
                                     ToolTip="Pull, import, export, and push (if enabled)"
@@ -420,12 +420,12 @@
                             </Button>
                         </StackPanel>
 
-                        <!-- Manual YAML Actions -->
-                        <TextBlock Text="Manual YAML Operations"
+                        <!-- Manual JSON Actions -->
+                        <TextBlock Text="Manual JSON Operations"
                                    Style="{StaticResource SettingsLabelStyle}"
                                    Margin="0,8,0,4"/>
                         <StackPanel Orientation="Horizontal">
-                            <Button Content="Export to YAML"
+                            <Button Content="Export to JSON"
                                     Command="{Binding ExportToYamlCommand}"
                                     Padding="16,10"
                                     MinWidth="140"
@@ -437,8 +437,8 @@
                                     BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     Cursor="Hand"
-                                    ToolTip="Export all data to YAML files without Git operations"
-                                    AutomationProperties.Name="Export to YAML">
+                                    ToolTip="Export all data to JSON files without Git operations"
+                                    AutomationProperties.Name="Export to JSON">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}"
@@ -452,7 +452,7 @@
                                 </Button.Template>
                             </Button>
 
-                            <Button Content="Import from YAML"
+                            <Button Content="Import from JSON"
                                     Command="{Binding ImportFromYamlCommand}"
                                     Padding="16,10"
                                     MinWidth="140"
@@ -463,8 +463,8 @@
                                     BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     Cursor="Hand"
-                                    ToolTip="Import data from YAML files without Git operations"
-                                    AutomationProperties.Name="Import from YAML">
+                                    ToolTip="Import data from JSON files without Git operations"
+                                    AutomationProperties.Name="Import from JSON">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}"
@@ -530,7 +530,7 @@
                     Margin="0,0,8,0"
                     TabIndex="7"
                     Background="{DynamicResource DangerBrush}"
-                    Foreground="White"
+                    Foreground="{DynamicResource TextOnPrimaryBrush}"
                     BorderThickness="0"
                     Cursor="Hand"
                     ToolTip="Reset all settings to default values"

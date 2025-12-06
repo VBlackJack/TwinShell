@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="À propos de TwinShell"
+        Title="About TwinShell"
         Height="600" Width="550"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource BackgroundBrush}"
@@ -90,10 +90,10 @@
                        Foreground="{DynamicResource TextSecondaryBrush}"
                        HorizontalAlignment="Center"
                        Margin="0,4,0,8"/>
-            <TextBlock Text="Gestionnaire de Commandes PowerShell &amp; Bash"
+            <TextBlock Text="PowerShell &amp; Bash Command Manager"
                        Style="{StaticResource SubtitleStyle}"
                        Margin="0,0,0,4"/>
-            <TextBlock Text="Pour Administrateurs Système"
+            <TextBlock Text="For System Administrators"
                        Style="{StaticResource SubtitleStyle}"/>
         </StackPanel>
 
@@ -104,47 +104,74 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="8"
                         Padding="16"
                         Margin="0,0,0,12">
                     <TextBlock Style="{StaticResource InfoStyle}">
-                        <Run Text="TwinShell est un outil professionnel conçu pour simplifier la gestion et l'exécution de commandes système. Que vous travailliez sur Windows ou Linux, TwinShell centralise vos commandes fréquentes et vous permet de les exécuter rapidement."/>
+                        <Run Text="TwinShell is a professional tool designed to simplify system command management and execution. Whether you work on Windows or Linux, TwinShell centralizes your frequent commands and lets you execute them quickly."/>
                     </TextBlock>
                 </Border>
 
                 <!-- Author Info -->
-                <TextBlock Text="Développement" Style="{StaticResource SectionHeaderStyle}"/>
+                <TextBlock Text="Development" Style="{StaticResource SectionHeaderStyle}"/>
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="8"
                         Padding="16"
                         Margin="0,0,0,12">
                     <StackPanel>
                         <TextBlock Style="{StaticResource InfoStyle}">
-                            <Run Text="Auteur: " FontWeight="SemiBold"/>
+                            <Run Text="Author: " FontWeight="SemiBold"/>
                             <Run Text="Julien Bombled"/>
                         </TextBlock>
                     </StackPanel>
                 </Border>
 
                 <!-- Features -->
-                <TextBlock Text="Fonctionnalités Principales" Style="{StaticResource SectionHeaderStyle}"/>
+                <TextBlock Text="Key Features" Style="{StaticResource SectionHeaderStyle}"/>
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="8"
                         Padding="16">
                     <StackPanel>
-                        <TextBlock Text="✓ Bibliothèque de commandes PowerShell et Bash" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Exécution directe avec remplissage de paramètres" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Historique complet des exécutions" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Gestion par catégories et tags" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Mode batch pour exécutions multiples" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Recherche avancée et filtrage" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Thèmes clair/sombre" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Import/Export de commandes" Style="{StaticResource FeatureStyle}"/>
-                        <TextBlock Text="✓ Support multi-plateforme" Style="{StaticResource FeatureStyle}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="PowerShell and Bash command library" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Direct execution with parameter filling" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Complete execution history" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Category and tag management" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Batch mode for multiple executions" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Advanced search and filtering" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Light/Dark themes" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Command import/export" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,3">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Cross-platform support" Style="{StaticResource FeatureStyle}" Margin="0"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -153,14 +180,14 @@
         <!-- Footer Section -->
         <StackPanel Grid.Row="2" Margin="0,16,0,0">
             <TextBlock Text="© 2025 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
-            <TextBlock Text="Tous droits réservés" Style="{StaticResource CopyrightStyle}" Margin="0,2,0,16"/>
+            <TextBlock Text="All rights reserved" Style="{StaticResource CopyrightStyle}" Margin="0,2,0,16"/>
 
             <!-- Close Button -->
-            <Button Content="Fermer"
+            <Button Content="Close"
                     Click="CloseButton_Click"
                     Style="{StaticResource PrimaryButtonStyle}"
                     HorizontalAlignment="Center"
-                    Padding="32,10"
+                    Padding="12,10"
                     MinWidth="120"
                     MinHeight="44"/>
         </StackPanel>

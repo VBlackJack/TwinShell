@@ -100,7 +100,7 @@
                                FontWeight="SemiBold"
                                Padding="12"
                                Background="{DynamicResource PrimaryBrush}"
-                               Foreground="White"/>
+                               Foreground="{DynamicResource TextOnPrimaryBrush}"/>
 
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="12,12,12,12">
                         <Button Content="Install Module"
@@ -213,7 +213,7 @@
                                FontWeight="SemiBold"
                                Padding="12"
                                Background="{DynamicResource PrimaryBrush}"
-                               Foreground="White"/>
+                               Foreground="{DynamicResource TextOnPrimaryBrush}"/>
 
                     <Button DockPanel.Dock="Bottom"
                             Content="Import as Action"
@@ -297,10 +297,12 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{Binding Modules.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Invert}">
-            <TextBlock Text="📦"
+            <TextBlock Text="&#xE7B8;"
+                       FontFamily="Segoe MDL2 Assets"
                        FontSize="64"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,16"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Opacity="0.3"/>
             <TextBlock Text="Search the PowerShell Gallery"
                        FontSize="18"

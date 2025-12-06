@@ -1,4 +1,23 @@
-# TwinShell v1.5.0 - Release Notes
+# TwinShell v1.5.1 - Release Notes
+
+## What's New in v1.5.1
+
+### UX Consistency & Localization
+- **UI fully in English** - ActionEditorWindow and AboutWindow translated from French
+- **Icons standardized** - All emojis replaced with Segoe MDL2 Assets icons
+- **Theme compatibility** - Hardcoded colors replaced with DynamicResource brushes
+- **Accessibility improved** - AutomationProperties added to forms and error messages
+- **Design consistency** - Standardized CornerRadius (8px), button padding (12,10)
+
+### Action Import/Export
+- **Export single action** - Right-click context menu to export action to JSON
+- **Import single action** - Right-click context menu to import action from JSON
+- **Copy action ID** - Quick copy action ID to clipboard
+
+### UI Label Fixes
+- Settings menu: "YAML" labels corrected to "JSON"
+
+---
 
 ## What's New in v1.5.0
 

@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Json;
 using TwinShell.Core.Constants;
+using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using ActionModel = TwinShell.Core.Models.Action;
@@ -109,6 +110,177 @@ public class ImportExportService : IImportExportService
                 Success = false,
                 ActionCount = 0,
                 ErrorMessage = ex.Message
+            };
+        }
+    }
+
+    public async Task<ExportResult> ExportSingleActionAsync(string filePath, ActionModel action)
+    {
+        try
+        {
+            // Create export data structure for a single action
+            var exportData = new
+            {
+                id = action.Id,
+                title = action.Title,
+                description = action.Description,
+                category = action.Category,
+                platform = action.Platform.ToString().ToLowerInvariant(),
+                level = action.Level.ToString().ToLowerInvariant(),
+                tags = action.Tags ?? new List<string>(),
+                windowsCommandTemplateId = action.WindowsCommandTemplateId,
+                windowsCommandTemplate = action.WindowsCommandTemplate != null ? new
+                {
+                    id = action.WindowsCommandTemplate.Id,
+                    platform = action.WindowsCommandTemplate.Platform.ToString().ToLowerInvariant(),
+                    name = action.WindowsCommandTemplate.Name,
+                    commandPattern = action.WindowsCommandTemplate.CommandPattern,
+                    parameters = action.WindowsCommandTemplate.Parameters.Select(p => new
+                    {
+                        name = p.Name,
+                        label = p.Label,
+                        type = p.Type,
+                        defaultValue = p.DefaultValue,
+                        required = p.Required,
+                        description = p.Description
+                    })
+                } : null,
+                linuxCommandTemplateId = action.LinuxCommandTemplateId,
+                linuxCommandTemplate = action.LinuxCommandTemplate != null ? new
+                {
+                    id = action.LinuxCommandTemplate.Id,
+                    platform = action.LinuxCommandTemplate.Platform.ToString().ToLowerInvariant(),
+                    name = action.LinuxCommandTemplate.Name,
+                    commandPattern = action.LinuxCommandTemplate.CommandPattern,
+                    parameters = action.LinuxCommandTemplate.Parameters.Select(p => new
+                    {
+                        name = p.Name,
+                        label = p.Label,
+                        type = p.Type,
+                        defaultValue = p.DefaultValue,
+                        required = p.Required,
+                        description = p.Description
+                    })
+                } : null,
+                windowsExamples = action.Examples?.Where(e => e.Platform == Platform.Windows)
+                    .Select(e => new { command = e.Command, description = e.Description }) ?? Enumerable.Empty<object>(),
+                linuxExamples = action.Examples?.Where(e => e.Platform == Platform.Linux)
+                    .Select(e => new { command = e.Command, description = e.Description }) ?? Enumerable.Empty<object>(),
+                notes = action.Notes,
+                links = action.Links?.Select(l => new { url = l.Url, title = l.Title }) ?? Enumerable.Empty<object>(),
+                isUserCreated = action.IsUserCreated
+            };
+
+            // Serialize to JSON with formatting
+            var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            });
+
+            // Write to file
+            await File.WriteAllTextAsync(filePath, json);
+
+            return new ExportResult
+            {
+                Success = true,
+                ActionCount = 1
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ExportResult
+            {
+                Success = false,
+                ActionCount = 0,
+                ErrorMessage = ex.Message
+            };
+        }
+    }
+
+    public async Task<ImportResult> ImportSingleActionAsync(string filePath)
+    {
+        try
+        {
+            // SECURITY: Validate file size
+            var fileInfo = new FileInfo(filePath);
+            const long MaxFileSizeBytes = 5 * 1024 * 1024; // 5 MB for single action
+            if (fileInfo.Length > MaxFileSizeBytes)
+            {
+                return new ImportResult
+                {
+                    Success = false,
+                    ErrorMessage = $"File too large. Maximum size is {MaxFileSizeBytes / 1024} KB."
+                };
+            }
+
+            // Read and parse JSON
+            var json = await File.ReadAllTextAsync(filePath);
+            var actionData = JsonSerializer.Deserialize<SingleActionImportData>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                MaxDepth = 32
+            });
+
+            if (actionData == null || string.IsNullOrWhiteSpace(actionData.Id) || string.IsNullOrWhiteSpace(actionData.Title))
+            {
+                return new ImportResult
+                {
+                    Success = false,
+                    ErrorMessage = "Invalid file format: missing required fields (id, title)."
+                };
+            }
+
+            // Check if action already exists
+            var existingAction = await _actionRepository.GetByIdAsync(actionData.Id);
+
+            // Map to Action model
+            var action = MapSingleActionImportToAction(actionData);
+
+            if (existingAction != null)
+            {
+                // Update existing action
+                action.CreatedAt = existingAction.CreatedAt;
+                action.UpdatedAt = DateTime.UtcNow;
+                await _actionRepository.UpdateAsync(action);
+
+                return new ImportResult
+                {
+                    Success = true,
+                    Updated = 1,
+                    Message = $"Action '{action.Title}' updated successfully."
+                };
+            }
+            else
+            {
+                // Add new action
+                action.CreatedAt = DateTime.UtcNow;
+                action.UpdatedAt = DateTime.UtcNow;
+                action.IsUserCreated = true;
+                await _actionRepository.AddAsync(action);
+
+                return new ImportResult
+                {
+                    Success = true,
+                    Imported = 1,
+                    Message = $"Action '{action.Title}' imported successfully."
+                };
+            }
+        }
+        catch (JsonException ex)
+        {
+            return new ImportResult
+            {
+                Success = false,
+                ErrorMessage = $"Invalid JSON format: {ex.Message}"
+            };
+        }
+        catch (Exception ex)
+        {
+            return new ImportResult
+            {
+                Success = false,
+                ErrorMessage = $"Import failed: {ex.Message}"
             };
         }
     }
@@ -484,5 +656,186 @@ public class ImportExportService : IImportExportService
     {
         public string? SchemaVersion { get; set; }
         public List<ActionModel> Actions { get; set; } = new();
+    }
+
+    /// <summary>
+    /// Data structure for single action JSON import (compatible with data/seed/actions/*.json format)
+    /// </summary>
+    private class SingleActionImportData
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string Category { get; set; } = string.Empty;
+        public string Platform { get; set; } = "windows";
+        public string Level { get; set; } = "standard";
+        public List<string>? Tags { get; set; }
+        public string? WindowsCommandTemplateId { get; set; }
+        public CommandTemplateData? WindowsCommandTemplate { get; set; }
+        public string? LinuxCommandTemplateId { get; set; }
+        public CommandTemplateData? LinuxCommandTemplate { get; set; }
+        public List<ExampleData>? WindowsExamples { get; set; }
+        public List<ExampleData>? LinuxExamples { get; set; }
+        public string? Notes { get; set; }
+        public List<LinkData>? Links { get; set; }
+        public bool IsUserCreated { get; set; }
+    }
+
+    private class CommandTemplateData
+    {
+        public string Id { get; set; } = string.Empty;
+        public string? Platform { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string CommandPattern { get; set; } = string.Empty;
+        public List<ParameterData>? Parameters { get; set; }
+    }
+
+    private class ParameterData
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Label { get; set; }
+        public string? Type { get; set; }
+        public string? DefaultValue { get; set; }
+        public bool Required { get; set; }
+        public string? Description { get; set; }
+    }
+
+    private class ExampleData
+    {
+        public string Command { get; set; } = string.Empty;
+        public string? Description { get; set; }
+    }
+
+    private class LinkData
+    {
+        public string Url { get; set; } = string.Empty;
+        public string? Title { get; set; }
+    }
+
+    /// <summary>
+    /// Maps single action import data to an Action model
+    /// </summary>
+    private static ActionModel MapSingleActionImportToAction(SingleActionImportData source)
+    {
+        var action = new ActionModel
+        {
+            Id = source.Id,
+            Title = source.Title,
+            Description = source.Description ?? string.Empty,
+            Category = source.Category,
+            Platform = ParsePlatform(source.Platform),
+            Level = ParseLevel(source.Level),
+            Tags = source.Tags ?? new List<string>(),
+            Notes = source.Notes,
+            IsUserCreated = source.IsUserCreated
+        };
+
+        // Combine Windows and Linux examples
+        var examples = new List<CommandExample>();
+        if (source.WindowsExamples != null)
+        {
+            examples.AddRange(source.WindowsExamples.Select(e => new CommandExample
+            {
+                Command = e.Command,
+                Description = e.Description ?? string.Empty,
+                Platform = Platform.Windows
+            }));
+        }
+        if (source.LinuxExamples != null)
+        {
+            examples.AddRange(source.LinuxExamples.Select(e => new CommandExample
+            {
+                Command = e.Command,
+                Description = e.Description ?? string.Empty,
+                Platform = Platform.Linux
+            }));
+        }
+        action.Examples = examples;
+
+        // Map links
+        if (source.Links != null)
+        {
+            action.Links = source.Links.Select(l => new ExternalLink
+            {
+                Url = l.Url,
+                Title = l.Title ?? string.Empty
+            }).ToList();
+        }
+        else
+        {
+            action.Links = new List<ExternalLink>();
+        }
+
+        // Map Windows command template
+        if (source.WindowsCommandTemplate != null)
+        {
+            action.WindowsCommandTemplateId = source.WindowsCommandTemplateId ?? source.WindowsCommandTemplate.Id;
+            action.WindowsCommandTemplate = new CommandTemplate
+            {
+                Id = source.WindowsCommandTemplate.Id,
+                Platform = Platform.Windows,
+                Name = source.WindowsCommandTemplate.Name,
+                CommandPattern = source.WindowsCommandTemplate.CommandPattern,
+                Parameters = source.WindowsCommandTemplate.Parameters?.Select(p => new TemplateParameter
+                {
+                    Name = p.Name,
+                    Label = p.Label ?? p.Name,
+                    Type = p.Type ?? "string",
+                    DefaultValue = p.DefaultValue,
+                    Required = p.Required,
+                    Description = p.Description
+                }).ToList() ?? new List<TemplateParameter>()
+            };
+        }
+
+        // Map Linux command template
+        if (source.LinuxCommandTemplate != null)
+        {
+            action.LinuxCommandTemplateId = source.LinuxCommandTemplateId ?? source.LinuxCommandTemplate.Id;
+            action.LinuxCommandTemplate = new CommandTemplate
+            {
+                Id = source.LinuxCommandTemplate.Id,
+                Platform = Platform.Linux,
+                Name = source.LinuxCommandTemplate.Name,
+                CommandPattern = source.LinuxCommandTemplate.CommandPattern,
+                Parameters = source.LinuxCommandTemplate.Parameters?.Select(p => new TemplateParameter
+                {
+                    Name = p.Name,
+                    Label = p.Label ?? p.Name,
+                    Type = p.Type ?? "string",
+                    DefaultValue = p.DefaultValue,
+                    Required = p.Required,
+                    Description = p.Description
+                }).ToList() ?? new List<TemplateParameter>()
+            };
+        }
+
+        return action;
+    }
+
+    private static Platform ParsePlatform(string? platform)
+    {
+        return platform?.ToLowerInvariant() switch
+        {
+            "windows" => Platform.Windows,
+            "linux" => Platform.Linux,
+            "both" => Platform.Both,
+            _ => Platform.Windows
+        };
+    }
+
+    private static CriticalityLevel ParseLevel(string? level)
+    {
+        return level?.ToLowerInvariant() switch
+        {
+            "info" => CriticalityLevel.Info,
+            "safe" => CriticalityLevel.Info,
+            "run" => CriticalityLevel.Run,
+            "standard" => CriticalityLevel.Run,
+            "dangerous" => CriticalityLevel.Dangerous,
+            "caution" => CriticalityLevel.Dangerous,
+            "critical" => CriticalityLevel.Dangerous,
+            _ => CriticalityLevel.Run
+        };
     }
 }

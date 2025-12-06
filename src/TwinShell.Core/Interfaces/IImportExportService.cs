@@ -13,6 +13,21 @@ public interface IImportExportService
     Task<ExportResult> ExportActionsAsync(string filePath);
 
     /// <summary>
+    /// Export a single action to a JSON file
+    /// </summary>
+    /// <param name="filePath">Path to the export file</param>
+    /// <param name="action">The action to export</param>
+    /// <returns>Export result with status</returns>
+    Task<ExportResult> ExportSingleActionAsync(string filePath, Models.Action action);
+
+    /// <summary>
+    /// Import a single action from a JSON file
+    /// </summary>
+    /// <param name="filePath">Path to the import file</param>
+    /// <returns>Import result with status</returns>
+    Task<ImportResult> ImportSingleActionAsync(string filePath);
+
+    /// <summary>
     /// Import actions from a JSON file
     /// </summary>
     /// <param name="filePath">Path to the import file</param>

@@ -285,7 +285,7 @@
                                                 MinHeight="44"
                                                 HorizontalAlignment="Stretch"
                                                 Background="{DynamicResource DangerBrush}"
-                                                Foreground="White"
+                                                Foreground="{DynamicResource TextOnPrimaryBrush}"
                                                 BorderThickness="0"
                                                 Cursor="Hand"
                                                 ToolTip="Delete this category from all actions"
@@ -334,10 +334,12 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <TextBlock Text="🏷️"
+                            <TextBlock Text="&#xE8EC;"
+                                       FontFamily="Segoe MDL2 Assets"
                                        FontSize="64"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,16"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
                                        Opacity="0.3"/>
                             <TextBlock Text="No Category Selected"
                                        FontSize="18"

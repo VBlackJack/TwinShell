@@ -1171,6 +1171,105 @@ public partial class MainViewModel : ObservableObject, IDisposable
     }
 
     /// <summary>
+    /// Export the selected action to a JSON file
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
+    private async Task ExportActionAsync()
+    {
+        if (SelectedAction == null) return;
+
+        try
+        {
+            var fileName = _dialogService.ShowSaveFileDialog(
+                "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                ".json",
+                $"{SelectedAction.Id}.json");
+
+            if (fileName != null)
+            {
+                var result = await _importExportService.ExportSingleActionAsync(fileName, SelectedAction);
+
+                if (result.Success)
+                {
+                    StatusMessage = $"✓ Action exported to {fileName}";
+                }
+                else
+                {
+                    _dialogService.ShowError(
+                        $"Export failed: {result.ErrorMessage ?? "Unknown error"}",
+                        _localizationService.GetString("DialogTitleExportFailed"));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error exporting action: {ActionId}", SelectedAction?.Id);
+            _dialogService.ShowError(
+                _localizationService.GetString("MessageExportError"),
+                _localizationService.GetString("DialogTitleError"));
+        }
+    }
+
+    /// <summary>
+    /// Import a single action from a JSON file
+    /// </summary>
+    [RelayCommand]
+    private async Task ImportActionAsync()
+    {
+        try
+        {
+            var fileName = _dialogService.ShowOpenFileDialog(
+                "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                ".json");
+
+            if (fileName != null)
+            {
+                var result = await _importExportService.ImportSingleActionAsync(fileName);
+
+                if (result.Success)
+                {
+                    // Reload actions to show the imported action
+                    await LoadActionsAsync();
+                    StatusMessage = $"✓ {result.Message}";
+                }
+                else
+                {
+                    _dialogService.ShowError(
+                        $"Import failed: {result.ErrorMessage ?? "Unknown error"}",
+                        _localizationService.GetString("DialogTitleImportFailed"));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error importing action");
+            _dialogService.ShowError(
+                _localizationService.GetString("MessageImportError"),
+                _localizationService.GetString("DialogTitleError"));
+        }
+    }
+
+    /// <summary>
+    /// Copy the selected action ID to clipboard
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
+    private void CopyActionId()
+    {
+        if (SelectedAction == null) return;
+
+        try
+        {
+            System.Windows.Clipboard.SetText(SelectedAction.Id);
+            StatusMessage = $"✓ Action ID copied: {SelectedAction.Id}";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error copying action ID to clipboard");
+            StatusMessage = "Failed to copy action ID";
+        }
+    }
+
+    /// <summary>
     /// Check if the selected action is a favorite
     /// </summary>
     public bool IsSelectedActionFavorite()
