@@ -47,5 +47,6 @@
       "description": "Liste les services Windows modifiables par les utilisateurs simples. Permet de détecter des services mal configurés.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "82111b46-6e6b-4f61-bf2a-8c4a3d117390"
 }

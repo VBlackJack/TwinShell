@@ -33,5 +33,6 @@
       "description": "Tue toutes les instances de Chrome et toute leur arborescence de processus enfants (-t). Radical pour nettoyer un navigateur planté.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "ceb1f423-3586-449e-ae43-ff3c0a6f7c54"
 }

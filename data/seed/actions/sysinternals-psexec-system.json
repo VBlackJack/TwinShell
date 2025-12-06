@@ -32,5 +32,6 @@
       "title": "PsExec Documentation",
       "url": "https://learn.microsoft.com/en-us/sysinternals/downloads/psexec"
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "5ea4cc01-1fbe-4df0-84cb-8127d0a21585"
 }

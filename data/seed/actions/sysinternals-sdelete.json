@@ -47,5 +47,6 @@
       "description": "🔥 FREE SPACE WIPE : Nettoie l'espace libre du disque C: (écrit des zéros). Utile avant de cloner un disque virtuel (réduit la taille du VHD) ou avant de rendre un PC.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "0fc6d7b0-4bb3-4aa7-8789-2ada1d01d84d"
 }

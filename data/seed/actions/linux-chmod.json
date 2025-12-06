@@ -51,5 +51,6 @@
       "description": "Sécurise une clé privée SSH (lecture/écriture uniquement pour le propriétaire).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "a9615835-5cdd-48bd-b864-f28a733d0feb"
 }

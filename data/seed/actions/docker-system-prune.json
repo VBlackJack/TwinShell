@@ -38,5 +38,7 @@
       "description": "Supprime uniquement les images inutilisées.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "d17e8958-8344-4322-a66b-d5bd263e5856",
+  "windowsCommandTemplateId": "c029a309-ef74-456a-8bb1-def5eeb88980"
 }

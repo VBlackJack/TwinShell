@@ -44,5 +44,6 @@
       "description": "Suit les redirections (-L) et affiche le détail de la connexion SSL (-v).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "9269b12e-99e9-42ee-85bd-c6ad069219db"
 }

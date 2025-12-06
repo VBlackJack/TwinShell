@@ -29,5 +29,6 @@
       "description": "Vérifie qui est connecté sur un serveur distant.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "e7e3cfd9-421d-4fdb-bf5e-bb11d5d7ab1c"
 }

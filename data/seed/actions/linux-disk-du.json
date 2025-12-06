@@ -34,5 +34,6 @@
       "description": "🔥 ENQUÊTEUR : Affiche les 10 plus gros dossiers/fichiers du répertoire courant, triés par taille décroissante. Indispensable pour trouver qui mange le disque.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "c1bdd523-de45-4cf1-97ec-af202ac32f5a"
 }

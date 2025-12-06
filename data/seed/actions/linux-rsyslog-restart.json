@@ -24,5 +24,6 @@
       "description": "Suit en temps réel les logs du service rsyslog (pour voir pourquoi il ne transfère pas les messages).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "ebd7dbea-68f6-4fb2-8499-aab345e0eb7d"
 }

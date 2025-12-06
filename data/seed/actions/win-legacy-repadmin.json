@@ -35,5 +35,6 @@
       "description": "Force le KCC (Knowledge Consistency Checker) à recalculer la topologie de réplication. Utile si un DC vient d'être ajouté ou supprimé.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "06d34abe-fc02-49e0-84f4-79b78c28d421"
 }

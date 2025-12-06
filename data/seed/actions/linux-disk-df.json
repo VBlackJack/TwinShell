@@ -35,5 +35,6 @@
       "description": "Affiche l'utilisation des Inodes (parfois le disque est plein d'inodes même s'il reste de la place en Go).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "a7f71b4b-d990-4438-8097-a1d3b590bd63"
 }

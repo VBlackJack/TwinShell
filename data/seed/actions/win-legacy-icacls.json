@@ -53,5 +53,6 @@
       "description": "Sauvegarde toutes les permissions dans un fichier texte. Utile avant une migration ou une modification risquée. Restaurer avec /restore.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "11f285b1-4f34-4366-87e4-7483e496705f"
 }

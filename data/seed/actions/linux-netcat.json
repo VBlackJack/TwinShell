@@ -53,5 +53,6 @@
       "description": "Test avec timeout de 2 secondes (-w 2).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "1e3c236c-393a-40be-aa82-15c364a01213"
 }

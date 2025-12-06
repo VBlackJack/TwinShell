@@ -47,5 +47,6 @@
       "description": "🔥 TEST RESEAU : Envoie un log directement à un serveur distant (-n) en UDP, en contournant le démon local. Idéal pour tester le pare-feu/réseau.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "1e605fe9-b556-4145-a7ca-5a2556903843"
 }

@@ -67,5 +67,7 @@
       "description": "🔥 POURQUOI ÇA PLANTE ? : Regardez la section 'Events' tout en bas de la sortie. C'est là que K8s explique les erreurs (ImagePullBackOff, OOMKilled, FailedScheduling).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "0031e0a8-2119-4cdd-b19f-405372f2dbec",
+  "windowsCommandTemplateId": "727348e4-a095-45aa-bfdd-33e3d368c08b"
 }

@@ -50,5 +50,6 @@
       "description": "Liste l'état de toutes les bases de données (Online, Recovery, Suspect).",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "302fc47e-9c7b-4333-8fd5-4f67aec742c2"
 }

@@ -30,5 +30,6 @@
       "description": "Vérifie les signatures numériques (-v) de Microsoft. Cache les entrées signées par Microsoft pour se concentrer sur les tiers.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "9077aae3-d9a7-430c-8d91-484989845849"
 }

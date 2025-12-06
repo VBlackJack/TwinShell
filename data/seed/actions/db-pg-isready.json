@@ -67,5 +67,7 @@
       "description": "Simple ping PostgreSQL. Retourne 'accepting connections' ou 'no response'.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "54f945cf-e616-428e-bd7d-4addd1d7e127",
+  "windowsCommandTemplateId": "57114737-cf80-4f51-9af2-13a8b4f5ef1c"
 }

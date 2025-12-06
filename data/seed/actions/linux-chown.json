@@ -55,5 +55,6 @@
       "description": "Remet les droits root sur un fichier système.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "eb337443-e9db-4c46-843d-8addd385df09"
 }

@@ -39,5 +39,6 @@
       "description": "🔥 DNS TRACE : Trace la résolution depuis les serveurs racines (.) jusqu'au domaine final. Indispensable pour debuguer les problèmes de propagation.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "97e0881f-0806-45ae-864a-68b32ac5d383"
 }

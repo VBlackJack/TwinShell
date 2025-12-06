@@ -39,5 +39,6 @@
       "description": "Donne la propriété au groupe Administrateurs (/a) plutôt qu'à l'utilisateur courant.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "656ebe05-656e-49a6-9356-faa48dcd87af"
 }

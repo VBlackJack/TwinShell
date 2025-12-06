@@ -25,5 +25,6 @@
       "description": "Affichage personnalisé pour voir l'état des disques.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "299ad41a-2aaa-42a8-86ef-1d9cc075e1c3"
 }

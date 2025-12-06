@@ -85,5 +85,6 @@
       "description": "Membres du groupe sudo",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "groups-cmd"
 }

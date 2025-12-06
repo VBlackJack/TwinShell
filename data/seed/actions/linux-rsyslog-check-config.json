@@ -30,5 +30,6 @@
       "description": "Vérifie un fichier de configuration spécifique.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "024aaaaa-e143-4ca7-a1d0-8fd1d4674999"
 }

@@ -72,5 +72,7 @@
       "description": "Affiche les statistiques vitales (Uptime, Threads, Slow queries).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "fbe94b36-6f8b-42bc-85f7-d7714c5d61a4",
+  "windowsCommandTemplateId": "193d03b3-ce1c-486a-82bc-cd26282ca996"
 }

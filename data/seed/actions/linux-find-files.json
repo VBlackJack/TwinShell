@@ -56,5 +56,6 @@
       "description": "Trouve les fichiers contenant le mot 'error' (combine find et grep).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "d5086d24-2152-4fbc-aad6-d9548b122f8f"
 }

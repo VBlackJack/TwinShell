@@ -71,5 +71,7 @@
       "description": "Affiche uniquement les logs générés depuis 30 minutes.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "ff040900-b553-4242-8926-017d7d19f7a8",
+  "windowsCommandTemplateId": "63bf7995-cb6c-4368-a5b3-f77ed0754d14"
 }

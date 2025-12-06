@@ -42,5 +42,6 @@
       "description": "Cherche 'Exception' récursivement (-r), avec numéro de ligne (-n) et mot entier (-w) dans /var/log.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "618a0557-eb37-4ce3-9dd8-3c9259176994"
 }

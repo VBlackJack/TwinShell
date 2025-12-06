@@ -61,5 +61,7 @@
       "description": "Entre dans le conteneur en tant que ROOT (user 0). Utile si l'user par défaut n'a pas les droits d'installation d'outils de debug.",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "26d6e56f-5604-4a86-841e-e43e6b058dfc",
+  "windowsCommandTemplateId": "dddbeeba-1030-40be-8275-e624002f2889"
 }

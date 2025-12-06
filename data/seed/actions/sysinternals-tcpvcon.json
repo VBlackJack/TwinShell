@@ -24,5 +24,6 @@
       "description": "Affiche toutes les connexions (-a) sans résolution DNS (-n) au format CSV (-c). Idéal pour scripter ou analyser dans Excel.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "6a97b19b-d2fd-4b3b-8e43-502b585e074c"
 }

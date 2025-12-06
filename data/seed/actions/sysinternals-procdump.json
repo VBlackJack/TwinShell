@@ -52,5 +52,6 @@
       "description": "Déclenche un dump dès qu'une exception spécifique (Access Violation C0000005) survient.",
       "platform": 0
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "2db0eee4-efb0-4027-b533-b9a9cafbc8b4"
 }

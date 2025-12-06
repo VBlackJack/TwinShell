@@ -67,5 +67,6 @@
       "title": "Robocopy Docs",
       "url": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy"
     }
-  ]
+  ],
+  "windowsCommandTemplateId": "e9651f13-04b4-4e5a-a3b4-381bf498816d"
 }

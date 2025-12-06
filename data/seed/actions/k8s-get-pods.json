@@ -38,5 +38,7 @@
       "description": "Affiche uniquement les pods qui ne sont PAS en statut 'Running' (CrashLoop, Pending, Error).",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "51b77f21-af64-4c31-b554-e3a5c5d4656a",
+  "windowsCommandTemplateId": "55a34bb4-f487-45e5-aefb-9bf850b0c905"
 }

@@ -145,5 +145,6 @@
       "description": "Trafic vers/depuis une IP",
       "platform": 1
     }
-  ]
+  ],
+  "linuxCommandTemplateId": "tcpdump-cmd"
 }
