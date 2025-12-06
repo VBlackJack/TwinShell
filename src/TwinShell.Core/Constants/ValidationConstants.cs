@@ -126,4 +126,43 @@ public static class ValidationConstants
     /// Maximum length for command template pattern (1000 characters).
     /// </summary>
     public const int MaxTemplateCommandPatternLength = 1000;
+
+    // ===== Service Limits =====
+
+    /// <summary>
+    /// Maximum number of user favorites (50).
+    /// </summary>
+    public const int MaxFavorites = 50;
+
+    /// <summary>
+    /// Maximum number of custom categories (50).
+    /// </summary>
+    public const int MaxCustomCategories = 50;
+
+    /// <summary>
+    /// Default audit log retention in days (90 days).
+    /// </summary>
+    public const int DefaultAuditLogRetentionDays = 90;
+
+    /// <summary>
+    /// Default audit log limit per query (100 entries).
+    /// </summary>
+    public const int DefaultAuditLogLimit = 100;
+
+    /// <summary>
+    /// Maximum search term length for package managers (200 characters).
+    /// </summary>
+    public const int MaxSearchTermLength = 200;
+
+    /// <summary>
+    /// Maximum module name length (100 characters).
+    /// </summary>
+    public const int MaxModuleNameLength = 100;
+
+    // ===== UI Constants =====
+
+    /// <summary>
+    /// Default snackbar notification duration in milliseconds (3000ms = 3 seconds).
+    /// </summary>
+    public const int DefaultSnackbarDurationMs = 3000;
 }

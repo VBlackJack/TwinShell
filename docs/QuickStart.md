@@ -28,7 +28,7 @@
 
 Au premier lancement, TwinShell :
 - Crée automatiquement sa base de données SQLite
-- Charge **479 commandes** PowerShell et Bash
+- Charge **513 commandes** PowerShell et Bash
 - Est prêt à l'emploi !
 
 ---

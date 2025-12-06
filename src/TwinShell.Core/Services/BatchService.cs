@@ -11,6 +11,18 @@ public class BatchService : IBatchService
 {
     private readonly IBatchRepository _repository;
 
+    // PERFORMANCE: Static JsonSerializerOptions to avoid recreation on each call
+    private static readonly JsonSerializerOptions ExportJsonOptions = new()
+    {
+        WriteIndented = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
+    private static readonly JsonSerializerOptions ImportJsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     public BatchService(IBatchRepository repository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -79,23 +91,12 @@ public class BatchService : IBatchService
 
     public string ExportBatchToJson(CommandBatch batch)
     {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
-        return JsonSerializer.Serialize(batch, options);
+        return JsonSerializer.Serialize(batch, ExportJsonOptions);
     }
 
     public CommandBatch ImportBatchFromJson(string json)
     {
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
-        var batch = JsonSerializer.Deserialize<CommandBatch>(json, options);
+        var batch = JsonSerializer.Deserialize<CommandBatch>(json, ImportJsonOptions);
 
         if (batch == null)
         {

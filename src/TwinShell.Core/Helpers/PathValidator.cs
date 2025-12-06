@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 
 namespace TwinShell.Core.Helpers;
@@ -8,6 +9,8 @@ namespace TwinShell.Core.Helpers;
 /// </summary>
 public static class PathValidator
 {
+    // Note: We use Debug.WriteLine for security-related validation failures
+    // to avoid dependency on ILogger while still providing diagnostic info in debug builds
     /// <summary>
     /// Validates an export file path (allows user-chosen paths with security checks).
     /// </summary>
@@ -43,8 +46,9 @@ public static class PathValidator
 
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine($"[PathValidator] Export path validation failed for '{filePath}': {ex.Message}");
             return false;
         }
     }
@@ -85,8 +89,9 @@ public static class PathValidator
 
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine($"[PathValidator] Import path validation failed for '{filePath}': {ex.Message}");
             return false;
         }
     }
@@ -144,8 +149,9 @@ public static class PathValidator
 
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine($"[PathValidator] Directory boundary validation failed for '{filePath}' in '{baseDirectory}': {ex.Message}");
             return false;
         }
     }

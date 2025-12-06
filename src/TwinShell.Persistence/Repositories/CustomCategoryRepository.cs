@@ -152,4 +152,29 @@ public class CustomCategoryRepository : ICustomCategoryRepository
         var maxOrder = await _context.CustomCategories.MaxAsync(c => (int?)c.DisplayOrder);
         return (maxOrder ?? 0) + 1;
     }
+
+    public async Task<int> GetCountAsync()
+    {
+        return await _context.CustomCategories.CountAsync();
+    }
+
+    public async Task<bool> ExistsByNameAsync(string name, string? excludeId = null)
+    {
+        return await _context.CustomCategories
+            .AnyAsync(c => c.Name.ToLower() == name.ToLower() &&
+                          (excludeId == null || c.Id != excludeId));
+    }
+
+    public async Task UpdateBatchAsync(IEnumerable<CustomCategory> categories)
+    {
+        foreach (var category in categories)
+        {
+            var entity = await _context.CustomCategories.FindAsync(category.Id);
+            if (entity != null)
+            {
+                CustomCategoryMapper.UpdateEntity(entity, category);
+            }
+        }
+        await _context.SaveChangesAsync();
+    }
 }

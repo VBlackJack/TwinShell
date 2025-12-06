@@ -190,11 +190,11 @@ public class SearchHistoryRepository : ISearchHistoryRepository
 
         var cutoffDate = DateTime.UtcNow.AddDays(-daysToKeep);
 
-        var entitiesToDelete = await _context.SearchHistories
+        // PERFORMANCE: Use ExecuteDeleteAsync instead of loading entities into memory
+        var deletedCount = await _context.SearchHistories
             .Where(h => h.LastSearchedAt < cutoffDate)
-            .ToListAsync();
+            .ExecuteDeleteAsync();
 
-        _context.SearchHistories.RemoveRange(entitiesToDelete);
-        await _context.SaveChangesAsync();
+        _logger.LogInformation("Deleted {Count} search history entries older than {Days} days", deletedCount, daysToKeep);
     }
 }

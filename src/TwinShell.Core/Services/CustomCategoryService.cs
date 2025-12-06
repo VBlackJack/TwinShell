@@ -1,3 +1,4 @@
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -9,7 +10,6 @@ namespace TwinShell.Core.Services;
 public class CustomCategoryService : ICustomCategoryService
 {
     private readonly ICustomCategoryRepository _repository;
-    private const int MaxCategoriesLimit = 50; // Limit to prevent excessive categories
 
     public CustomCategoryService(ICustomCategoryRepository repository)
     {
@@ -45,10 +45,10 @@ public class CustomCategoryService : ICustomCategoryService
         if (!isUnique)
             throw new InvalidOperationException($"A category with the name '{name}' already exists");
 
-        // Check category count limit
-        var allCategories = await _repository.GetAllAsync();
-        if (allCategories.Count() >= MaxCategoriesLimit)
-            throw new InvalidOperationException($"Maximum number of categories ({MaxCategoriesLimit}) reached");
+        // Check category count limit - PERFORMANCE: Use CountAsync instead of GetAllAsync
+        var categoryCount = await _repository.GetCountAsync();
+        if (categoryCount >= ValidationConstants.MaxCustomCategories)
+            throw new InvalidOperationException($"Maximum number of categories ({ValidationConstants.MaxCustomCategories}) reached");
 
         // Create category
         var category = new CustomCategory
@@ -120,6 +120,8 @@ public class CustomCategoryService : ICustomCategoryService
         var categories = await _repository.GetAllAsync();
         var categoryDict = categories.ToDictionary(c => c.Id);
 
+        // PERFORMANCE: Batch update instead of N individual updates
+        var categoriesToUpdate = new List<CustomCategory>();
         int order = 0;
         foreach (var categoryId in categoryIdsInOrder)
         {
@@ -127,8 +129,13 @@ public class CustomCategoryService : ICustomCategoryService
             {
                 category.DisplayOrder = order++;
                 category.ModifiedAt = DateTime.UtcNow;
-                await _repository.UpdateAsync(category);
+                categoriesToUpdate.Add(category);
             }
+        }
+
+        if (categoriesToUpdate.Count > 0)
+        {
+            await _repository.UpdateBatchAsync(categoriesToUpdate);
         }
     }
 
@@ -155,11 +162,8 @@ public class CustomCategoryService : ICustomCategoryService
         if (string.IsNullOrWhiteSpace(name))
             return false;
 
-        // BUGFIX: Use AnyAsync instead of GetAllAsync for better performance
-        // Check if any category exists with the same name (case-insensitive) except the excluded one
-        var allCategories = await _repository.GetAllAsync();
-        return !allCategories.Any(c =>
-            c.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
-            c.Id != excludeCategoryId);
+        // PERFORMANCE: Use ExistsByNameAsync instead of loading all categories
+        var exists = await _repository.ExistsByNameAsync(name, excludeCategoryId);
+        return !exists;
     }
 }

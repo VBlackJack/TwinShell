@@ -373,13 +373,23 @@ public class CommandGeneratorService : ICommandGeneratorService
                 return false;
 
             // SECURITY FIX: Validate that path is within allowed base directories
-            // Only allow paths within user's AppData or LocalAppData folders
+            // Only allow paths within user's AppData or LocalAppData folders (not full UserProfile)
+            var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var blockedSubfolders = new[] { "Desktop", "Downloads", "Documents" };
+
             var allowedBases = new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
             };
+
+            // Block dangerous subfolders within UserProfile
+            foreach (var blocked in blockedSubfolders)
+            {
+                var blockedPath = Path.Combine(userProfile, blocked);
+                if (fullPath.StartsWith(Path.GetFullPath(blockedPath), StringComparison.OrdinalIgnoreCase))
+                    return false;
+            }
 
             var isInAllowedDirectory = allowedBases.Any(baseDir =>
             {

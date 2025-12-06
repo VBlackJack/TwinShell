@@ -18,4 +18,7 @@ public interface ICustomCategoryRepository
     Task RemoveActionFromCategoryAsync(string actionId, string categoryId);
     Task<bool> IsCategorySystemAsync(string categoryId);
     Task<int> GetNextDisplayOrderAsync();
+    Task<int> GetCountAsync();
+    Task<bool> ExistsByNameAsync(string name, string? excludeId = null);
+    Task UpdateBatchAsync(IEnumerable<CustomCategory> categories);
 }

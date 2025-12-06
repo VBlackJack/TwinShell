@@ -222,23 +222,21 @@ public class FavoritesRepository : IFavoritesRepository
     /// <param name="userId">Optional user ID filter</param>
     public async Task ClearAllAsync(string? userId = null)
     {
-        var query = _context.UserFavorites.AsQueryable();
-
+        // PERFORMANCE: Use ExecuteDeleteAsync instead of loading entities into memory
+        int deletedCount;
         if (userId != null)
         {
-            query = query.Where(f => f.UserId == userId);
+            deletedCount = await _context.UserFavorites
+                .Where(f => f.UserId == userId)
+                .ExecuteDeleteAsync();
         }
         else
         {
-            query = query.Where(f => f.UserId == null);
+            deletedCount = await _context.UserFavorites
+                .Where(f => f.UserId == null)
+                .ExecuteDeleteAsync();
         }
 
-        var entities = await query.ToListAsync();
-        // PERFORMANCE: Use Count for List instead of Any()
-        if (entities.Count > 0)
-        {
-            _context.UserFavorites.RemoveRange(entities);
-            await _context.SaveChangesAsync();
-        }
+        _logger.LogInformation("Cleared {Count} favorites for user {UserId}", deletedCount, userId ?? "default");
     }
 }

@@ -147,7 +147,13 @@ Recherche : "aws ec2"
 Résultats : "Lister les instances EC2", "Démarrer une instance"
 
 Recherche : "k8s pods"
-Résultats : "kubectl-get-pods", "kubectl-describe-pod"
+Résultats : "Lister les Pods (Kubectl)", "Diagnostiquer un Pod"
+
+Recherche : "docker log"
+Résultats : "Voir les logs conteneur", "Entrer dans un conteneur"
+
+Recherche : "robocopy"
+Résultats : "Copie de fichiers robuste"
 ```
 
 ### Filtres Avancés

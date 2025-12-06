@@ -164,15 +164,15 @@ public class CommandHistoryRepository : ICommandHistoryRepository
 
     public async Task DeleteRangeAsync(IEnumerable<string> ids)
     {
-        var entities = await _context.CommandHistories
-            .Where(h => ids.Contains(h.Id))
-            .ToListAsync();
-
-        // PERFORMANCE: Use AnyAsync for existence checks (but here we need the entities)
-        if (entities.Count > 0)
+        // PERFORMANCE: Use ExecuteDeleteAsync instead of loading entities into memory
+        var idList = ids.ToList();
+        if (idList.Count > 0)
         {
-            _context.CommandHistories.RemoveRange(entities);
-            await _context.SaveChangesAsync();
+            var deletedCount = await _context.CommandHistories
+                .Where(h => idList.Contains(h.Id))
+                .ExecuteDeleteAsync();
+
+            _logger.LogInformation("Deleted {Count} command history entries", deletedCount);
         }
     }
 

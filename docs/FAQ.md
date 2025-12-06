@@ -61,7 +61,7 @@ Il n'existe pas de version Mac ou Linux pour le moment.
 
 ### Q : Combien de commandes sont disponibles dans TwinShell ?
 
-**R :** TwinShell inclut **479 commandes** PowerShell et Bash au lancement initial.
+**R :** TwinShell inclut **513 commandes** PowerShell et Bash au lancement initial.
 
 **Catégories couvertes (15 au total) :**
 - 🏢 Active Directory & GPO (utilisateurs, groupes, GPO)
@@ -719,7 +719,7 @@ Appuyez sur **F1** pour afficher la liste complète des raccourcis.
 
 ### Q : Quand pourrai-je ajouter mes propres commandes via l'interface ?
 
-**R :** Cette fonctionnalité est **disponible depuis la version 1.2.0**.
+**R :** Cette fonctionnalité est prévue pour la version **1.5.0**.
 
 **Fonctionnalités attendues :**
 - Créer une nouvelle commande via un formulaire

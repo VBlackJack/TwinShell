@@ -67,5 +67,10 @@ public class CommandHistoryConfiguration : IEntityTypeConfiguration<CommandHisto
 
         builder.HasIndex(e => e.UserId)
             .HasDatabaseName("IX_CommandHistories_UserId");
+
+        // PERFORMANCE: Index for text search on GeneratedCommand and ActionTitle
+        // Used by SearchAsync with EF.Functions.Like
+        builder.HasIndex(e => e.ActionTitle)
+            .HasDatabaseName("IX_CommandHistories_ActionTitle");
     }
 }
