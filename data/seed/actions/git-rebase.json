@@ -49,11 +49,6 @@
       "command": "git rebase main",
       "description": "Rebase la branche actuelle sur main",
       "platform": 2
-    },
-    {
-      "command": "git rebase -i HEAD~5",
-      "description": "Rebase interactif des 5 derniers commits",
-      "platform": 1
     }
   ],
   "notes": "ATTENTION : Ne rebasez jamais des commits déjà poussés sur un dépôt public. Utilisez -i pour un rebase interactif.",
@@ -61,6 +56,13 @@
     {
       "title": "Git Rebase Documentation",
       "url": "https://git-scm.com/docs/git-rebase"
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "git rebase -i HEAD~5",
+      "description": "Rebase interactif des 5 derniers commits",
+      "platform": 1
     }
   ]
 }

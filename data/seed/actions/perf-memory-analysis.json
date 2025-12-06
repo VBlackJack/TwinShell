@@ -30,12 +30,22 @@
     "commandPattern": "free -h && echo '\n=== Top Memory Processes ===' && ps aux --sort=-%mem | head -n 11",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "WorkingSet = mémoire physique (RAM). PrivateMemorySize = mémoire virtuelle privée. Sur Linux, buff/cache est de la mémoire disponible.",
+  "links": [
+    {
+      "title": "Documentation Win32_OperatingSystem",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem"
+    }
+  ],
+  "windowsExamples": [
     {
       "command": "systeminfo | findstr /C:\"Total Physical Memory\" /C:\"Available Physical Memory\"",
       "description": "Mémoire système Windows (cmd.exe)",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "free -h",
       "description": "Affichage mémoire Linux (human-readable)",
@@ -60,13 +70,6 @@
       "command": "free -w",
       "description": "Afficher buffers et cache séparément",
       "platform": 1
-    }
-  ],
-  "notes": "WorkingSet = mémoire physique (RAM). PrivateMemorySize = mémoire virtuelle privée. Sur Linux, buff/cache est de la mémoire disponible.",
-  "links": [
-    {
-      "title": "Documentation Win32_OperatingSystem",
-      "url": "https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-operatingsystem"
     }
   ]
 }

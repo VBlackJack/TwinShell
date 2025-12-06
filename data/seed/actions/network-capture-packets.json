@@ -37,7 +37,59 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "ATTENTION: Nécessite droits administrateur. Pour arrêter: 'netsh trace stop'. Le fichier .etl peut être analysé avec Microsoft Network Monitor ou Wireshark.",
+  "links": [
+    {
+      "title": "Netsh Trace Commands",
+      "url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/jj129382(v=ws.11)"
+    }
+  ],
+  "linuxCommandTemplate": {
+    "id": "tcpdump-cmd",
+    "platform": 1,
+    "name": "tcpdump",
+    "commandPattern": "tcpdump -i {interface} -c {count} {filter}",
+    "parameters": [
+      {
+        "name": "interface",
+        "label": "Interface",
+        "type": "string",
+        "defaultValue": "any",
+        "required": true,
+        "description": "Interface réseau (any, eth0, wlan0, etc.)"
+      },
+      {
+        "name": "count",
+        "label": "Nombre de paquets",
+        "type": "number",
+        "defaultValue": "100",
+        "required": true,
+        "description": "Nombre de paquets à capturer"
+      },
+      {
+        "name": "filter",
+        "label": "Filtre",
+        "type": "string",
+        "defaultValue": "",
+        "required": false,
+        "description": "Filtre BPF (port 80, host 192.168.1.1, etc.)"
+      }
+    ]
+  },
+  "windowsExamples": [
+    {
+      "command": "netsh trace start capture=yes tracefile=C:\\Temp\\trace.etl maxSize=500",
+      "description": "Démarre une capture réseau (max 500 MB)",
+      "platform": 0
+    },
+    {
+      "command": "netsh trace start capture=yes tracefile=C:\\Reports\\output.txt maxSize=100",
+      "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help netsh -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "tcpdump -i any port 80 -A -n",
       "description": "🔥 DEBUG APP : Capture le trafic HTTP et affiche le contenu en ASCII (-A). Le flag -n est CRITIQUE pour la vitesse (pas de DNS). Permet de lire les headers HTTP en temps réel.",
@@ -52,16 +104,6 @@
       "command": "tcpdump -i eth0 dst port 53",
       "description": "Audit DNS : Surveille uniquement les requêtes DNS sortantes. Utile pour diagnostiquer des problèmes de résolution ou repérer des malwares communiquant par DNS.",
       "platform": 1
-    },
-    {
-      "command": "netsh trace start capture=yes tracefile=C:\\Temp\\trace.etl maxSize=500",
-      "description": "Démarre une capture réseau (max 500 MB)",
-      "platform": 0
-    },
-    {
-      "command": "netsh trace start capture=yes tracefile=C:\\Reports\\output.txt maxSize=100",
-      "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help netsh -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
-      "platform": 0
     },
     {
       "command": "sudo tcpdump -i any -c 100",
@@ -103,44 +145,5 @@
       "description": "Trafic vers/depuis une IP",
       "platform": 1
     }
-  ],
-  "notes": "ATTENTION: Nécessite droits administrateur. Pour arrêter: 'netsh trace stop'. Le fichier .etl peut être analysé avec Microsoft Network Monitor ou Wireshark.",
-  "links": [
-    {
-      "title": "Netsh Trace Commands",
-      "url": "https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/jj129382(v=ws.11)"
-    }
-  ],
-  "linuxCommandTemplate": {
-    "id": "tcpdump-cmd",
-    "platform": 1,
-    "name": "tcpdump",
-    "commandPattern": "tcpdump -i {interface} -c {count} {filter}",
-    "parameters": [
-      {
-        "name": "interface",
-        "label": "Interface",
-        "type": "string",
-        "defaultValue": "any",
-        "required": true,
-        "description": "Interface réseau (any, eth0, wlan0, etc.)"
-      },
-      {
-        "name": "count",
-        "label": "Nombre de paquets",
-        "type": "number",
-        "defaultValue": "100",
-        "required": true,
-        "description": "Nombre de paquets à capturer"
-      },
-      {
-        "name": "filter",
-        "label": "Filtre",
-        "type": "string",
-        "defaultValue": "",
-        "required": false,
-        "description": "Filtre BPF (port 80, host 192.168.1.1, etc.)"
-      }
-    ]
-  }
+  ]
 }

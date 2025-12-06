@@ -60,7 +60,8 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "linuxExamples": [
     {
       "command": "kubectl describe pod my-app-xyz -n prod",
       "description": "🔥 POURQUOI ÇA PLANTE ? : Regardez la section 'Events' tout en bas de la sortie. C'est là que K8s explique les erreurs (ImagePullBackOff, OOMKilled, FailedScheduling).",

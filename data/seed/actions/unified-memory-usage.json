@@ -28,7 +28,8 @@
     "parameters": []
   },
   "parameters": [],
-  "examples": [
+  "examples": [],
+  "windowsExamples": [
     {
       "command": "Get-CimInstance Win32_OperatingSystem | Select-Object TotalVisibleMemorySize,FreePhysicalMemory",
       "description": "Affiche l'utilisation mémoire sur Windows",

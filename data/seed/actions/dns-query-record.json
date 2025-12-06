@@ -61,17 +61,10 @@
       }
     ]
   },
-  "examples": [
-    {
-      "command": "Resolve-DnsName -Name <Domain> -Server 8.8.8.8",
-      "description": "Force la résolution via un serveur externe (Google). Permet de savoir si le problème vient de votre DNS interne ou de la propagation mondiale.",
-      "platform": 2
-    },
-    {
-      "command": "Resolve-DnsName -Name <Domain> -Type TXT",
-      "description": "Vérifie les enregistrements TXT (souvent utilisés pour SPF, DKIM, validation de domaine).",
-      "platform": 2
-    },
+  "examples": [],
+  "notes": "Sur Linux, installer bind-utils pour utiliser dig. Alternative : nslookup disponible sur les deux plateformes.",
+  "links": [],
+  "windowsExamples": [
     {
       "command": "Resolve-DnsName google.com",
       "description": "Résout le nom de domaine google.com en adresse(s) IP. Équivalent PowerShell de 'nslookup'. Retourne tous les enregistrements A (IPv4) et AAAA (IPv6) associés. Utilise le serveur DNS configuré sur la machine.",
@@ -113,11 +106,21 @@
       "platform": 0
     },
     {
+      "command": "Resolve-DnsName -Name <Domain> -Server 8.8.8.8",
+      "description": "Force la résolution via un serveur externe (Google). Permet de savoir si le problème vient de votre DNS interne ou de la propagation mondiale.",
+      "platform": 0
+    },
+    {
+      "command": "Resolve-DnsName -Name <Domain> -Type TXT",
+      "description": "Vérifie les enregistrements TXT (souvent utilisés pour SPF, DKIM, validation de domaine).",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
       "command": "dig contoso.com A",
       "description": "Exemple Linux utilisant dig. Remplacez les paramètres entre <> par vos valeurs.",
       "platform": 1
     }
-  ],
-  "notes": "Sur Linux, installer bind-utils pour utiliser dig. Alternative : nslookup disponible sur les deux plateformes.",
-  "links": []
+  ]
 }

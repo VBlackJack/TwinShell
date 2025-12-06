@@ -44,7 +44,8 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "linuxExamples": [
     {
       "command": "docker exec -it web_app /bin/bash",
       "description": "🔥 DEBUG : Ouvre un terminal Bash dans le conteneur 'web_app'. Si bash n'existe pas, essayez /bin/sh.",

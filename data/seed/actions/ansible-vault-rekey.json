@@ -46,7 +46,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez cette commande pour faire une rotation des mots de passe Vault. L'ancien et le nouveau mot de passe seront demandés.",
+  "links": [
+    {
+      "title": "Ansible Vault",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-vault rekey C:\\Data\\report.xlsx",
+      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-vault rekey secrets.yml",
       "description": "Change le mot de passe du fichier",
@@ -58,11 +73,6 @@
       "platform": 1
     },
     {
-      "command": "ansible-vault rekey C:\\Data\\report.xlsx",
-      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-vault rekey --new-vault-password-file=.new_vault secrets.yml",
       "description": "Avec fichier",
       "platform": 1
@@ -71,13 +81,6 @@
       "command": "ansible-vault rekey group_vars/*/vault.yml",
       "description": "Rekey plusieurs fichiers",
       "platform": 1
-    }
-  ],
-  "notes": "Utilisez cette commande pour faire une rotation des mots de passe Vault. L'ancien et le nouveau mot de passe seront demandés.",
-  "links": [
-    {
-      "title": "Ansible Vault",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
     }
   ]
 }

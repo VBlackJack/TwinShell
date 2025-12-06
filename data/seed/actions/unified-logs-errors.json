@@ -58,12 +58,15 @@
     ]
   },
   "parameters": [],
-  "examples": [
+  "examples": [],
+  "windowsExamples": [
     {
       "command": "Get-EventLog -LogName System -EntryType Error -Newest 20",
       "description": "Affiche les 20 dernières erreurs système sur Windows",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "journalctl -p err -n 20",
       "description": "Affiche les 20 dernières erreurs sur Linux",

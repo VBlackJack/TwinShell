@@ -26,12 +26,17 @@
     "commandPattern": "uptime -p",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "Sur Windows, calculer la différence avec Get-Date pour obtenir la durée. Sur Linux, 'uptime' sans option donne plus d'infos.",
+  "links": [],
+  "windowsExamples": [
     {
       "command": "(Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime",
       "description": "Affiche la date/heure du dernier démarrage (Windows)",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "uptime -p",
       "description": "Affiche l'uptime en format lisible (Linux)",
@@ -52,7 +57,5 @@
       "description": "Uptime + utilisateurs connectés",
       "platform": 1
     }
-  ],
-  "notes": "Sur Windows, calculer la différence avec Get-Date pour obtenir la durée. Sur Linux, 'uptime' sans option donne plus d'infos.",
-  "links": []
+  ]
 }

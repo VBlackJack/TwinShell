@@ -28,12 +28,15 @@
     "parameters": []
   },
   "parameters": [],
-  "examples": [
+  "examples": [],
+  "windowsExamples": [
     {
       "command": "Get-Volume | Select-Object DriveLetter,Size,SizeRemaining | Format-Table",
       "description": "Affiche l'espace disque sur Windows avec taille totale et restante",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "df -h",
       "description": "Affiche l'espace disque sur Linux",

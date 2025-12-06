@@ -75,6 +75,11 @@
       "command": "Move-Item -Path \"{sourcePath}\" -Destination \"<destinationPath>\" -Force",
       "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "Move-Item -Path \"C:\\Source\\data.csv\" -Destination \"D:\\Backup\\data.csv\" -Force",
+      "description": "Exemple Windows pour Déplacer ou renommer des fichiers",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "file-move-linux-cmd",
@@ -137,22 +142,6 @@
       "command": "mv \"{sourcePath}\" \"<destinationPath>\"",
       "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement.",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe: Windows utilise 'Move-Item', Linux utilise 'mv'"
-    ],
-    "commonalities": [
-      "Les deux permettent de déplacer ou renommer des fichiers",
-      "Fonctionnalité équivalente sur les deux plateformes"
-    ]
-  },
-  "examples": [
-    {
-      "command": "Move-Item -Path \"C:\\Source\\data.csv\" -Destination \"D:\\Backup\\data.csv\" -Force",
-      "description": "Exemple Windows pour Déplacer ou renommer des fichiers",
-      "platform": 0
     },
     {
       "command": "mv \"C:\\Source\\data.csv\" \"D:\\Backup\\data.csv\"",
@@ -179,5 +168,15 @@
       "description": "Mode verbose",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Move-Item', Linux utilise 'mv'"
+    ],
+    "commonalities": [
+      "Les deux permettent de déplacer ou renommer des fichiers",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

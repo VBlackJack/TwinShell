@@ -44,7 +44,10 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Sur Linux, utiliser 'top' ou 'htop' pour monitoring interactif.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "ps aux --sort=-%mem | head -n 10",
       "description": "🔥 MEMOIRE : Affiche les 10 processus les plus gourmands en RAM. Indispensable pour diagnostiquer les OOM (Out Of Memory).",
@@ -95,7 +98,5 @@
       "description": "Top CPU",
       "platform": 1
     }
-  ],
-  "notes": "Sur Linux, utiliser 'top' ou 'htop' pour monitoring interactif.",
-  "links": []
+  ]
 }

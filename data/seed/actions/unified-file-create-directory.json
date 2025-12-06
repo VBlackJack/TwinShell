@@ -65,6 +65,36 @@
       "command": "New-Item -Path \"<path>\" -ItemType Directory -Force",
       "description": "Exemple utilisant le paramètre 'path': Chemin du nouveau dossier à créer. Remplacez <path> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "New-Item -Path \"C:\\Logs\\app.log\" -ItemType Directory -Force",
+      "description": "Exemple Windows pour Créer un répertoire",
+      "platform": 0
+    },
+    {
+      "command": "mkdir -p \"C:\\Logs\\app.log\"",
+      "description": "Exemple Linux pour Créer un répertoire",
+      "platform": 0
+    },
+    {
+      "command": "mkdir -p /var/www/app/logs",
+      "description": "Créer avec parents",
+      "platform": 0
+    },
+    {
+      "command": "mkdir -m 755 /opt/myapp",
+      "description": "Créer avec permissions",
+      "platform": 0
+    },
+    {
+      "command": "mkdir -v new_folder",
+      "description": "Mode verbose",
+      "platform": 0
+    },
+    {
+      "command": "mkdir project/{src,bin,lib,docs}",
+      "description": "Créer plusieurs dossiers",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "file-create-directory-linux-cmd",
@@ -125,36 +155,5 @@
       "Fonctionnalité équivalente sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "New-Item -Path \"C:\\Logs\\app.log\" -ItemType Directory -Force",
-      "description": "Exemple Windows pour Créer un répertoire",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -p \"C:\\Logs\\app.log\"",
-      "description": "Exemple Linux pour Créer un répertoire",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -p /var/www/app/logs",
-      "description": "Créer avec parents",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -m 755 /opt/myapp",
-      "description": "Créer avec permissions",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -v new_folder",
-      "description": "Mode verbose",
-      "platform": 0
-    },
-    {
-      "command": "mkdir project/{src,bin,lib,docs}",
-      "description": "Créer plusieurs dossiers",
-      "platform": 0
-    }
-  ]
+  "examples": []
 }

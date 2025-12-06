@@ -62,7 +62,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Le mode --check simule l'exécution sans appliquer les changements. --diff affiche les différences avant/après.",
+  "links": [
+    {
+      "title": "Ansible Check Mode",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks_checkmode.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --check --diff",
+      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-playbook deploy.yml -i production --check --diff",
       "description": "Simule le déploiement et affiche les modifications",
@@ -84,21 +99,9 @@
       "platform": 1
     },
     {
-      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --check --diff",
-      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-playbook --check deploy.yml",
       "description": "Mode check",
       "platform": 1
-    }
-  ],
-  "notes": "Le mode --check simule l'exécution sans appliquer les changements. --diff affiche les différences avant/après.",
-  "links": [
-    {
-      "title": "Ansible Check Mode",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks_checkmode.html"
     }
   ]
 }

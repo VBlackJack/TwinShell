@@ -28,7 +28,10 @@
     "commandPattern": "npm install",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "npm ci est plus rapide et déterministe pour CI/CD. --save-dev pour dev dependencies.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "npm install",
       "description": "Installe toutes les dépendances de package.json",
@@ -44,7 +47,5 @@
       "description": "Installation propre pour CI/CD",
       "platform": 1
     }
-  ],
-  "notes": "npm ci est plus rapide et déterministe pour CI/CD. --save-dev pour dev dependencies.",
-  "links": []
+  ]
 }

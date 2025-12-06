@@ -42,7 +42,11 @@
       "command": "mvn clean package -DskipTests",
       "description": "Package sans exécuter les tests",
       "platform": 2
-    },
+    }
+  ],
+  "notes": "clean supprime le dossier target. package crée le JAR/WAR. install met dans le repo local Maven.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "mvn test",
       "description": "Exécuter les tests",
@@ -63,7 +67,5 @@
       "description": "Démarrer une application Spring Boot",
       "platform": 1
     }
-  ],
-  "notes": "clean supprime le dossier target. package crée le JAR/WAR. install met dans le repo local Maven.",
-  "links": []
+  ]
 }

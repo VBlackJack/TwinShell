@@ -89,6 +89,21 @@
       "command": "useradd -m -s {shell} newuser",
       "description": "Exemple utilisant le paramètre 'username': Nom du nouvel utilisateur. Remplacez <username> par la valeur appropriée selon votre environnement.",
       "platform": 1
+    },
+    {
+      "command": "useradd -m -s bash jdupont",
+      "description": "Exemple Linux pour Créer un utilisateur local",
+      "platform": 1
+    },
+    {
+      "command": "useradd -m -s /bin/bash jdupont",
+      "description": "Créer un utilisateur avec home et bash",
+      "platform": 1
+    },
+    {
+      "command": "useradd -m -d /opt/app -s /bin/bash appuser",
+      "description": "Utilisateur avec home personnalisé",
+      "platform": 1
     }
   ],
   "windowsCommandTemplateId": "create-localuser-win-cmd",
@@ -128,6 +143,11 @@
       "command": "Get-Help New-LocalUser -Full",
       "description": "Affiche l'aide complète de New-LocalUser",
       "platform": 0
+    },
+    {
+      "command": "New-LocalUser -Name \"jdupont\" -NoPassword",
+      "description": "Exemple Windows pour Créer un utilisateur local",
+      "platform": 0
     }
   ],
   "crossPlatformNotes": {
@@ -140,26 +160,5 @@
       "Fonctionnalité équivalente sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "New-LocalUser -Name \"jdupont\" -NoPassword",
-      "description": "Exemple Windows pour Créer un utilisateur local",
-      "platform": 0
-    },
-    {
-      "command": "useradd -m -s bash jdupont",
-      "description": "Exemple Linux pour Créer un utilisateur local",
-      "platform": 1
-    },
-    {
-      "command": "useradd -m -s /bin/bash jdupont",
-      "description": "Créer un utilisateur avec home et bash",
-      "platform": 1
-    },
-    {
-      "command": "useradd -m -d /opt/app -s /bin/bash appuser",
-      "description": "Utilisateur avec home personnalisé",
-      "platform": 1
-    }
-  ]
+  "examples": []
 }

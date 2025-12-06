@@ -125,6 +125,11 @@
       "command": "docker exec {options} mycontainer {command}",
       "description": "Exemple utilisant le paramètre 'container': Nom ou ID du conteneur. Remplacez <container> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "docker exec -v -f webapp Get-Process",
+      "description": "Exemple Windows pour Exécuter une commande dans un conteneur",
+      "platform": 0
     }
   ],
   "linuxExamples": [
@@ -173,11 +178,5 @@
       "Fonctionnalité identique sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "docker exec -v -f webapp Get-Process",
-      "description": "Exemple Windows pour Exécuter une commande dans un conteneur",
-      "platform": 0
-    }
-  ]
+  "examples": []
 }

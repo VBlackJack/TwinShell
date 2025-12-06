@@ -61,7 +61,10 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Un pare-feu peut bloquer les requêtes ICMP. Utiliser -t (Windows) ou sans -c (Linux) pour ping continu.",
+  "links": [],
+  "windowsExamples": [
     {
       "command": "Test-Connection -ComputerName google.com -Count 4",
       "description": "Envoie 4 paquets ICMP (ping) vers google.com. Équivalent PowerShell de 'ping'. Retourne le temps de réponse, le TTL et le statut. Le paramètre -Count limite le nombre de paquets (par défaut : 4). Utile pour vérifier la connectivité Internet basique.",
@@ -96,7 +99,9 @@
       "command": "Test-Connection -ComputerName google.com -Count 4 | Select-Object Address,ResponseTime | Format-Table -AutoSize",
       "description": "Affiche uniquement l'adresse et le temps de réponse dans un tableau propre. Select-Object filtre les colonnes pertinentes. Format-Table -AutoSize optimise l'affichage. Utile pour des rapports de performance réseau lisibles.",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ping -c 10 srv-web-01.contoso.com",
       "description": "Exemple Linux utilisant ping. Remplacez les paramètres entre <> par vos valeurs.",
@@ -162,7 +167,5 @@
       "description": "Ping IPv6",
       "platform": 1
     }
-  ],
-  "notes": "Un pare-feu peut bloquer les requêtes ICMP. Utiliser -t (Windows) ou sans -c (Linux) pour ping continu.",
-  "links": []
+  ]
 }

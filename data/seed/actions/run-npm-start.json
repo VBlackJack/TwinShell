@@ -28,7 +28,10 @@
     "commandPattern": "npm start",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "npm start exécute le script 'start' de package.json. npm run dev pour le mode développement.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "npm start",
       "description": "Démarre l'application selon package.json",
@@ -39,7 +42,5 @@
       "description": "Lance le script dev (mode développement)",
       "platform": 1
     }
-  ],
-  "notes": "npm start exécute le script 'start' de package.json. npm run dev pour le mode développement.",
-  "links": []
+  ]
 }

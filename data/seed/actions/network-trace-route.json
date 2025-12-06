@@ -45,21 +45,26 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Peut être lent. Sur Linux, installer traceroute si non disponible : sudo apt install traceroute",
+  "links": [],
+  "windowsExamples": [
     {
       "command": "tracert google.com",
       "description": "Trace la route vers google.com (Windows)",
       "platform": 0
     },
     {
-      "command": "traceroute google.com",
-      "description": "Trace la route vers google.com (Linux)",
-      "platform": 1
-    },
-    {
       "command": "tracert srv-web-01.contoso.com",
       "description": "Exemple utilisant le paramètre 'target': Adresse IP ou nom d'hôte. Remplacez srv-web-01.contoso.com par la valeur appropriée selon votre environnement.",
       "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "traceroute google.com",
+      "description": "Trace la route vers google.com (Linux)",
+      "platform": 1
     },
     {
       "command": "traceroute -n 8.8.8.8",
@@ -81,7 +86,5 @@
       "description": "Limiter à 15 sauts maximum",
       "platform": 1
     }
-  ],
-  "notes": "Peut être lent. Sur Linux, installer traceroute si non disponible : sudo apt install traceroute",
-  "links": []
+  ]
 }

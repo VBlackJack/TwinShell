@@ -76,7 +76,15 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Les commandes ad-hoc sont parfaites pour les tâches ponctuelles sans nécessiter un playbook complet.",
+  "links": [
+    {
+      "title": "Ansible Ad-Hoc Commands",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html"
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible all -m ping",
       "description": "Teste la connectivité sur tous les hôtes",
@@ -96,13 +104,6 @@
       "command": "ansible *.contoso.com -m pester -a \"-NoProfile -ExecutionPolicy Bypass\"",
       "description": "Exemple utilisant le paramètre 'args': Arguments pour le module. Remplacez -NoProfile -ExecutionPolicy Bypass par la valeur appropriée selon votre environnement.",
       "platform": 1
-    }
-  ],
-  "notes": "Les commandes ad-hoc sont parfaites pour les tâches ponctuelles sans nécessiter un playbook complet.",
-  "links": [
-    {
-      "title": "Ansible Ad-Hoc Commands",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html"
     }
   ]
 }

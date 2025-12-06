@@ -65,7 +65,11 @@
       "command": "java -jar \"C:\\Apps\\myapp.jar\"",
       "description": "Exemple utilisant le paramètre 'jarPath': Chemin du fichier .jar. Remplacez C:\\Apps\\myapp.jar par la valeur appropriée selon votre environnement.",
       "platform": 2
-    },
+    }
+  ],
+  "notes": "-Xmx définit la mémoire max. -Xms définit la mémoire initiale. Les arguments après le JAR sont passés à l'app.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "java -Xmx2g -jar app.jar",
       "description": "Exécuter avec 2 Go de heap",
@@ -91,7 +95,5 @@
       "description": "Avec port personnalisé",
       "platform": 1
     }
-  ],
-  "notes": "-Xmx définit la mémoire max. -Xms définit la mémoire initiale. Les arguments après le JAR sont passés à l'app.",
-  "links": []
+  ]
 }

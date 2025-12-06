@@ -45,23 +45,26 @@
       }
     ]
   },
-  "examples": [
-    {
-      "command": "ansible-galaxy search warning",
-      "description": "Exemple Windows utilisant ansible-galaxy. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
-      "command": "ansible-galaxy search --platforms ubuntu",
-      "description": "Pour Ubuntu",
-      "platform": 1
-    }
-  ],
+  "examples": [],
   "notes": "Galaxy héberge des milliers de rôles réutilisables créés par la communauté.",
   "links": [
     {
       "title": "Ansible Galaxy",
       "url": "https://galaxy.ansible.com/"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-galaxy search warning",
+      "description": "Exemple Windows utilisant ansible-galaxy. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "ansible-galaxy search --platforms ubuntu",
+      "description": "Pour Ubuntu",
+      "platform": 1
     }
   ]
 }

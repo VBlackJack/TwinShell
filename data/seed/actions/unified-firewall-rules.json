@@ -28,12 +28,15 @@
     "parameters": []
   },
   "parameters": [],
-  "examples": [
+  "examples": [],
+  "windowsExamples": [
     {
       "command": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Format-Table",
       "description": "Liste les règles de pare-feu actives sur Windows",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "iptables -L -n -v --line-numbers",
       "description": "Liste les règles iptables sur Linux",

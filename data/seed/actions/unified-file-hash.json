@@ -72,6 +72,11 @@
       "command": "Get-Help Get-FileHash -Full",
       "description": "Affiche l'aide complète de Get-FileHash",
       "platform": 0
+    },
+    {
+      "command": "Get-FileHash -Path \"C:\\Data\\report.xlsx\" -Algorithm SHA256",
+      "description": "Exemple Windows pour Calculer le hash d'un fichier",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "file-hash-linux-cmd",
@@ -116,23 +121,6 @@
       "command": "man sha256sum",
       "description": "Affiche le manuel complet de sha256sum",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe: Windows utilise 'Get-FileHash', Linux utilise 'sha256sum'",
-      "Windows: format objet PowerShell, Linux: format texte"
-    ],
-    "commonalities": [
-      "Les deux calculent le hash SHA256 d'un fichier",
-      "Fonctionnalité équivalente sur les deux plateformes"
-    ]
-  },
-  "examples": [
-    {
-      "command": "Get-FileHash -Path \"C:\\Data\\report.xlsx\" -Algorithm SHA256",
-      "description": "Exemple Windows pour Calculer le hash d'un fichier",
-      "platform": 0
     },
     {
       "command": "sha256sum \"C:\\Data\\report.xlsx\"",
@@ -159,5 +147,16 @@
       "description": "Vérifier les checksums",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Get-FileHash', Linux utilise 'sha256sum'",
+      "Windows: format objet PowerShell, Linux: format texte"
+    ],
+    "commonalities": [
+      "Les deux calculent le hash SHA256 d'un fichier",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

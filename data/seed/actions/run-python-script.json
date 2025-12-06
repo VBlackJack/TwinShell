@@ -47,6 +47,27 @@
   },
   "examples": [
     {
+      "command": "python \"C:\\Scripts\\deploy.ps1\"",
+      "description": "Exemple utilisant le paramètre 'scriptPath': Chemin du fichier .py. Remplacez C:\\Scripts\\deploy.ps1 par la valeur appropriée selon votre environnement.",
+      "platform": 2
+    }
+  ],
+  "notes": "python3 pour Linux/Mac, python pour Windows. -m pour exécuter un module.",
+  "links": [],
+  "windowsExamples": [
+    {
+      "command": "python script.py",
+      "description": "Exécute un script Python",
+      "platform": 0
+    },
+    {
+      "command": "python -m module_name",
+      "description": "Exécute un module Python",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
       "command": "python3 script.py",
       "description": "Exécute un script Python",
       "platform": 1
@@ -62,21 +83,6 @@
       "platform": 1
     },
     {
-      "command": "python \"C:\\Scripts\\deploy.ps1\"",
-      "description": "Exemple utilisant le paramètre 'scriptPath': Chemin du fichier .py. Remplacez C:\\Scripts\\deploy.ps1 par la valeur appropriée selon votre environnement.",
-      "platform": 2
-    },
-    {
-      "command": "python script.py",
-      "description": "Exécute un script Python",
-      "platform": 0
-    },
-    {
-      "command": "python -m module_name",
-      "description": "Exécute un module Python",
-      "platform": 0
-    },
-    {
       "command": "python3 -m venv venv && source venv/bin/activate",
       "description": "Créer et activer un venv",
       "platform": 1
@@ -86,7 +92,5 @@
       "description": "Exécuter une ligne de code",
       "platform": 1
     }
-  ],
-  "notes": "python3 pour Linux/Mac, python pour Windows. -m pour exécuter un module.",
-  "links": []
+  ]
 }

@@ -45,7 +45,15 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Les arguments après -- sont passés à l'application. --no-build évite la recompilation.",
+  "links": [
+    {
+      "title": "Documentation dotnet run",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-run"
+    }
+  ],
+  "windowsExamples": [
     {
       "command": "dotnet run",
       "description": "Lance le projet du dossier courant",
@@ -65,7 +73,9 @@
       "command": "dotnet run --project \".\"",
       "description": "Exemple utilisant le paramètre 'projectPath': Chemin du projet .csproj. Remplacez C:\\Projects\\MyApp par la valeur appropriée selon votre environnement.",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "dotnet run --project \"C:\\Projects\\MyApp\"",
       "description": "Exemple Linux utilisant dotnet run. Remplacez les paramètres entre <> par vos valeurs.",
@@ -75,13 +85,6 @@
       "command": "dotnet restore",
       "description": "Restaurer les dépendances NuGet",
       "platform": 1
-    }
-  ],
-  "notes": "Les arguments après -- sont passés à l'application. --no-build évite la recompilation.",
-  "links": [
-    {
-      "title": "Documentation dotnet run",
-      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-run"
     }
   ]
 }

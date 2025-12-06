@@ -44,7 +44,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez --graph pour une vue hiérarchique de l'inventaire.",
+  "links": [
+    {
+      "title": "Ansible Inventory",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-inventory --list -i /etc/ansible/hosts",
+      "description": "Exemple Windows utilisant ansible-inventory. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-inventory --list -i production",
       "description": "Liste l'inventaire de production au format JSON",
@@ -61,11 +76,6 @@
       "platform": 1
     },
     {
-      "command": "ansible-inventory --list -i /etc/ansible/hosts",
-      "description": "Exemple Windows utilisant ansible-inventory. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-inventory --list",
       "description": "Lister tout",
       "platform": 1
@@ -74,13 +84,6 @@
       "command": "ansible-inventory -i inventory.ini --list",
       "description": "Inventaire spécifique",
       "platform": 1
-    }
-  ],
-  "notes": "Utilisez --graph pour une vue hiérarchique de l'inventaire.",
-  "links": [
-    {
-      "title": "Ansible Inventory",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html"
     }
   ]
 }

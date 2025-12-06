@@ -61,18 +61,19 @@
       }
     ]
   },
-  "examples": [
-    {
-      "command": "ansible-pull -U https://github.com/user/repo.git",
-      "description": "Pull et exécuter",
-      "platform": 1
-    }
-  ],
+  "examples": [],
   "notes": "Mode pull inversé : les serveurs récupèrent leur configuration au lieu d'être configurés à distance. Idéal pour les environnements à grande échelle.",
   "links": [
     {
       "title": "Ansible Pull",
       "url": "https://docs.ansible.com/ansible/latest/cli/ansible-pull.html"
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "ansible-pull -U https://github.com/user/repo.git",
+      "description": "Pull et exécuter",
+      "platform": 1
     }
   ]
 }

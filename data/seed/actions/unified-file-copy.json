@@ -74,6 +74,11 @@
       "command": "Copy-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Recurse -Force",
       "description": "Cas d'usage standard. Copie des fichiers ou des répertoires avec leurs sous-dossiers. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
       "platform": 0
+    },
+    {
+      "command": "Copy-Item -Path \"C:\\Source\\data.csv\" -Destination \"D:\\Backup\\data.csv\" -Recurse -Force",
+      "description": "Exemple Windows pour Copier des fichiers ou dossiers",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "file-copy-linux-cmd",
@@ -136,22 +141,6 @@
       "command": "cp -r \"{sourcePath}\" \"<destinationPath>\"",
       "description": "Exemple utilisant le paramètre 'destinationPath': Chemin de destination. Remplacez <destinationPath> par la valeur appropriée selon votre environnement.",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe: Windows utilise 'Copy-Item', Linux utilise 'cp'"
-    ],
-    "commonalities": [
-      "Les deux permettent de copier des fichiers ou dossiers",
-      "Fonctionnalité équivalente sur les deux plateformes"
-    ]
-  },
-  "examples": [
-    {
-      "command": "Copy-Item -Path \"C:\\Source\\data.csv\" -Destination \"D:\\Backup\\data.csv\" -Recurse -Force",
-      "description": "Exemple Windows pour Copier des fichiers ou dossiers",
-      "platform": 0
     },
     {
       "command": "cp -r \"C:\\Source\\data.csv\" \"D:\\Backup\\data.csv\"",
@@ -178,5 +167,15 @@
       "description": "Copier uniquement les plus récents",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Copy-Item', Linux utilise 'cp'"
+    ],
+    "commonalities": [
+      "Les deux permettent de copier des fichiers ou dossiers",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

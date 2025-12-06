@@ -27,7 +27,15 @@
     "commandPattern": "ansible-galaxy list",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "Par défaut, les rôles sont installés dans ~/.ansible/roles ou /etc/ansible/roles.",
+  "links": [
+    {
+      "title": "Ansible Galaxy",
+      "url": "https://galaxy.ansible.com/"
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-galaxy list",
       "description": "Liste tous les rôles installés",
@@ -52,13 +60,6 @@
       "command": "ls -la ~/.ansible/roles/",
       "description": "Répertoire des rôles",
       "platform": 1
-    }
-  ],
-  "notes": "Par défaut, les rôles sont installés dans ~/.ansible/roles ou /etc/ansible/roles.",
-  "links": [
-    {
-      "title": "Ansible Galaxy",
-      "url": "https://galaxy.ansible.com/"
     }
   ]
 }

@@ -27,7 +27,10 @@
     "commandPattern": "npm run build",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "Le script doit être défini dans package.json. npm run liste tous les scripts disponibles.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "npm run build",
       "description": "Exécute le script build de package.json",
@@ -38,7 +41,5 @@
       "description": "Exécute un script build personnalisé",
       "platform": 1
     }
-  ],
-  "notes": "Le script doit être défini dans package.json. npm run liste tous les scripts disponibles.",
-  "links": []
+  ]
 }

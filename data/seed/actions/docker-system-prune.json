@@ -26,7 +26,8 @@
     "commandPattern": "docker system prune -a --volumes",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "linuxExamples": [
     {
       "command": "docker system prune -a --volumes",
       "description": "🔥 FREE SPACE : Supprime TOUT ce qui n'est pas utilisé (Images, Conteneurs stoppés, Volumes, Réseaux). Attention : destructif, mais sauve un serveur disque plein.",

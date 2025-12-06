@@ -60,7 +60,8 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "linuxExamples": [
     {
       "command": "mysqladmin -u root -p processlist",
       "description": "Affiche la liste des requêtes en cours d'exécution (équivalent de SHOW PROCESSLIST). Utile pour détecter les blocages.",

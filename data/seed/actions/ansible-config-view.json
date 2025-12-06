@@ -27,7 +27,15 @@
     "commandPattern": "ansible-config dump --only-changed",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez cette commande pour diagnostiquer les problèmes de configuration et vérifier les paramètres appliqués.",
+  "links": [
+    {
+      "title": "Ansible Configuration",
+      "url": "https://docs.ansible.com/ansible/latest/reference_appendices/config.html"
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-config dump --only-changed",
       "description": "Affiche uniquement les paramètres modifiés",
@@ -52,13 +60,6 @@
       "command": "ansible --version",
       "description": "Version et config",
       "platform": 1
-    }
-  ],
-  "notes": "Utilisez cette commande pour diagnostiquer les problèmes de configuration et vérifier les paramètres appliqués.",
-  "links": [
-    {
-      "title": "Ansible Configuration",
-      "url": "https://docs.ansible.com/ansible/latest/reference_appendices/config.html"
     }
   ]
 }

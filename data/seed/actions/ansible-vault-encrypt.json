@@ -45,7 +45,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez un mot de passe fort et stockez-le de manière sécurisée. Pour exécuter un playbook avec des fichiers chiffrés, utilisez --ask-vault-pass.",
+  "links": [
+    {
+      "title": "Ansible Vault",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-vault encrypt C:\\Data\\report.xlsx",
+      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-vault encrypt vars/secrets.yml",
       "description": "Chiffre le fichier de secrets",
@@ -62,11 +77,6 @@
       "platform": 1
     },
     {
-      "command": "ansible-vault encrypt C:\\Data\\report.xlsx",
-      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-vault encrypt --vault-id prod@prompt secrets.yml",
       "description": "Avec vault ID",
       "platform": 1
@@ -75,13 +85,6 @@
       "command": "ansible-vault encrypt_string 'secret' --name 'password'",
       "description": "Chiffrer une string",
       "platform": 1
-    }
-  ],
-  "notes": "Utilisez un mot de passe fort et stockez-le de manière sécurisée. Pour exécuter un playbook avec des fichiers chiffrés, utilisez --ask-vault-pass.",
-  "links": [
-    {
-      "title": "Ansible Vault",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
     }
   ]
 }

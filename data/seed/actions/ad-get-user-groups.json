@@ -28,12 +28,38 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Affiche les groupes directs et indirects (imbriqués). Utile pour l'audit des permissions.",
+  "links": [
+    {
+      "title": "Documentation Get-ADPrincipalGroupMembership",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adprincipalgroupmembership"
+    }
+  ],
+  "linuxCommandTemplate": {
+    "id": "groups-cmd",
+    "platform": 1,
+    "name": "groups",
+    "commandPattern": "groups {username}",
+    "parameters": [
+      {
+        "name": "username",
+        "label": "Nom d'utilisateur",
+        "type": "string",
+        "defaultValue": "",
+        "required": false,
+        "description": "Utilisateur (vide = utilisateur actuel)"
+      }
+    ]
+  },
+  "windowsExamples": [
     {
       "command": "Get-ADGroup -Filter {GroupCategory -eq 'Security' -and GroupScope -eq 'Global'}",
       "description": "Liste uniquement les groupes de sécurité globaux. GroupCategory peut être 'Security' ou 'Distribution'. GroupScope peut être 'DomainLocal', 'Global' ou 'Universal'. Les groupes de sécurité globaux sont les plus courants pour les permissions sur ressources.",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "groups",
       "description": "Affiche vos groupes",
@@ -59,28 +85,5 @@
       "description": "Membres du groupe sudo",
       "platform": 1
     }
-  ],
-  "notes": "Affiche les groupes directs et indirects (imbriqués). Utile pour l'audit des permissions.",
-  "links": [
-    {
-      "title": "Documentation Get-ADPrincipalGroupMembership",
-      "url": "https://learn.microsoft.com/en-us/powershell/module/activedirectory/get-adprincipalgroupmembership"
-    }
-  ],
-  "linuxCommandTemplate": {
-    "id": "groups-cmd",
-    "platform": 1,
-    "name": "groups",
-    "commandPattern": "groups {username}",
-    "parameters": [
-      {
-        "name": "username",
-        "label": "Nom d'utilisateur",
-        "type": "string",
-        "defaultValue": "",
-        "required": false,
-        "description": "Utilisateur (vide = utilisateur actuel)"
-      }
-    ]
-  }
+  ]
 }

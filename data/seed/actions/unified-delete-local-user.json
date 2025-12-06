@@ -85,6 +85,31 @@
       "command": "userdel {options} john",
       "description": "Exemple utilisant le paramètre 'username': Utilisateur à supprimer. Remplacez <username> par la valeur appropriée selon votre environnement.",
       "platform": 1
+    },
+    {
+      "command": "userdel -v -f jdupont",
+      "description": "Exemple Linux pour Supprimer un utilisateur local",
+      "platform": 1
+    },
+    {
+      "command": "userdel jdupont",
+      "description": "Supprimer l'utilisateur jdupont",
+      "platform": 1
+    },
+    {
+      "command": "userdel -r olduser",
+      "description": "Supprimer l'utilisateur et son home",
+      "platform": 1
+    },
+    {
+      "command": "userdel -f lockeduser",
+      "description": "Forcer la suppression même si connecté",
+      "platform": 1
+    },
+    {
+      "command": "userdel -r jdupont",
+      "description": "Avec suppression du home",
+      "platform": 1
     }
   ],
   "windowsCommandTemplateId": "delete-localuser-win-cmd",
@@ -124,6 +149,11 @@
       "command": "Get-Help Remove-LocalUser -Full",
       "description": "Affiche l'aide complète de Remove-LocalUser",
       "platform": 0
+    },
+    {
+      "command": "Remove-LocalUser -Name \"jdupont\"",
+      "description": "Exemple Windows pour Supprimer un utilisateur local",
+      "platform": 0
     }
   ],
   "crossPlatformNotes": {
@@ -136,36 +166,5 @@
       "Fonctionnalité équivalente sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "Remove-LocalUser -Name \"jdupont\"",
-      "description": "Exemple Windows pour Supprimer un utilisateur local",
-      "platform": 0
-    },
-    {
-      "command": "userdel -v -f jdupont",
-      "description": "Exemple Linux pour Supprimer un utilisateur local",
-      "platform": 1
-    },
-    {
-      "command": "userdel jdupont",
-      "description": "Supprimer l'utilisateur jdupont",
-      "platform": 1
-    },
-    {
-      "command": "userdel -r olduser",
-      "description": "Supprimer l'utilisateur et son home",
-      "platform": 1
-    },
-    {
-      "command": "userdel -f lockeduser",
-      "description": "Forcer la suppression même si connecté",
-      "platform": 1
-    },
-    {
-      "command": "userdel -r jdupont",
-      "description": "Avec suppression du home",
-      "platform": 1
-    }
-  ]
+  "examples": []
 }

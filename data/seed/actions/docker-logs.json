@@ -108,6 +108,11 @@
       "command": "docker logs {options} container_name",
       "description": "Exemple utilisant le paramètre 'container': Nom ou ID du conteneur. Remplacez <container> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "docker logs -v -f webapp",
+      "description": "Exemple Windows pour Consulter les logs d'un conteneur",
+      "platform": 0
     }
   ],
   "linuxExamples": [
@@ -145,6 +150,11 @@
       "command": "docker logs {options} container_name",
       "description": "Exemple utilisant le paramètre 'container': Nom ou ID du conteneur. Remplacez <container> par la valeur appropriée selon votre environnement.",
       "platform": 1
+    },
+    {
+      "command": "docker logs -f webapp",
+      "description": "Suivre les logs du conteneur webapp",
+      "platform": 1
     }
   ],
   "crossPlatformNotes": {
@@ -156,16 +166,5 @@
       "Fonctionnalité identique sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "docker logs -v -f webapp",
-      "description": "Exemple Windows pour Consulter les logs d'un conteneur",
-      "platform": 0
-    },
-    {
-      "command": "docker logs -f webapp",
-      "description": "Suivre les logs du conteneur webapp",
-      "platform": 1
-    }
-  ]
+  "examples": []
 }

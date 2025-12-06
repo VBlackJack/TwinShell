@@ -62,7 +62,15 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "--self-contained inclut le runtime. --runtime spécifie la plateforme cible (win-x64, linux-x64, osx-x64).",
+  "links": [
+    {
+      "title": "Documentation dotnet publish",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish"
+    }
+  ],
+  "windowsExamples": [
     {
       "command": "dotnet publish -c Release -o ./publish",
       "description": "Publie en mode Release",
@@ -82,7 +90,9 @@
       "command": "dotnet publish \"C:\\Projects\\MyApp\" --configuration Release --output \"./publish\"",
       "description": "Exemple utilisant le paramètre 'outputPath': Dossier où publier. Remplacez C:\\Reports\\output.txt par la valeur appropriée selon votre environnement.",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "dotnet publish \"C:\\Projects\\MyApp\" --configuration Release --output \"C:\\Reports\\output.txt\"",
       "description": "Exemple Linux utilisant dotnet publish. Remplacez les paramètres entre <> par vos valeurs.",
@@ -92,13 +102,6 @@
       "command": "dotnet publish -c Release",
       "description": "Publier en mode Release",
       "platform": 1
-    }
-  ],
-  "notes": "--self-contained inclut le runtime. --runtime spécifie la plateforme cible (win-x64, linux-x64, osx-x64).",
-  "links": [
-    {
-      "title": "Documentation dotnet publish",
-      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish"
     }
   ]
 }

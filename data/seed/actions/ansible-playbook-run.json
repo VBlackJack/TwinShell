@@ -61,7 +61,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utiliser --check pour un dry-run, --diff pour voir les changements, -v/-vv/-vvv pour plus de verbosité.",
+  "links": [
+    {
+      "title": "Ansible Playbooks",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts",
+      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-playbook site.yml -i production",
       "description": "Exécute le playbook sur l'inventaire de production",
@@ -83,21 +98,9 @@
       "platform": 1
     },
     {
-      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts",
-      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-playbook deploy.yml",
       "description": "Exécuter un playbook",
       "platform": 1
-    }
-  ],
-  "notes": "Utiliser --check pour un dry-run, --diff pour voir les changements, -v/-vv/-vvv pour plus de verbosité.",
-  "links": [
-    {
-      "title": "Ansible Playbooks",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/playbooks.html"
     }
   ]
 }

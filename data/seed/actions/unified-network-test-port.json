@@ -89,6 +89,11 @@
       "command": "Test-NetConnection server01 -CommonTCPPort RDP",
       "description": "Teste un port courant en utilisant son nom au lieu du numéro. -CommonTCPPort accepte : HTTP (80), RDP (3389), SMB (445), WINRM (5985). Plus lisible que les numéros de port, facilite la compréhension des scripts.",
       "platform": 0
+    },
+    {
+      "command": "Test-NetConnection -ComputerName srv-web-01 -Port 443 | Select-Object ComputerName,RemoteAddress,RemotePort,TcpTestSucceeded",
+      "description": "Exemple Windows pour Tester l'ouverture d'un port TCP",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "network-test-port-linux-cmd",
@@ -146,22 +151,6 @@
       "command": "for port in 22 80 443 3389; do nc -zv server01 $port; done",
       "description": "Teste plusieurs ports sur un serveur",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe: Windows utilise 'Test-NetConnection', Linux utilise 'nc' (netcat)"
-    ],
-    "commonalities": [
-      "Les deux permettent de tester si un port TCP est ouvert",
-      "Fonctionnalité équivalente sur les deux plateformes"
-    ]
-  },
-  "examples": [
-    {
-      "command": "Test-NetConnection -ComputerName srv-web-01 -Port 443 | Select-Object ComputerName,RemoteAddress,RemotePort,TcpTestSucceeded",
-      "description": "Exemple Windows pour Tester l'ouverture d'un port TCP",
-      "platform": 0
     },
     {
       "command": "nc -zv srv-web-01 443",
@@ -188,5 +177,15 @@
       "description": "Test sans netcat",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Test-NetConnection', Linux utilise 'nc' (netcat)"
+    ],
+    "commonalities": [
+      "Les deux permettent de tester si un port TCP est ouvert",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

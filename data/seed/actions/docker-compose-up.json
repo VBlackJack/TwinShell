@@ -87,6 +87,11 @@
       "command": "docker-compose up -d",
       "description": "Exemple utilisant le paramètre 'options': Options (-d=detached, --build, --scale, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "docker-compose up -v -f",
+      "description": "Exemple Windows pour Démarrer une stack Docker Compose",
+      "platform": 0
     }
   ],
   "linuxExamples": [
@@ -119,22 +124,6 @@
       "command": "docker-compose up -d",
       "description": "Exemple utilisant le paramètre 'options': Options (-d=detached, --build, --scale, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe identique sur Windows et Linux"
-    ],
-    "commonalities": [
-      "Docker CLI est cross-platform",
-      "Fonctionnalité identique sur les deux plateformes"
-    ]
-  },
-  "examples": [
-    {
-      "command": "docker-compose up -v -f",
-      "description": "Exemple Windows pour Démarrer une stack Docker Compose",
-      "platform": 0
     },
     {
       "command": "docker-compose up -d",
@@ -156,5 +145,15 @@
       "description": "État des services",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe identique sur Windows et Linux"
+    ],
+    "commonalities": [
+      "Docker CLI est cross-platform",
+      "Fonctionnalité identique sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

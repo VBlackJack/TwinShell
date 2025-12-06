@@ -44,7 +44,10 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "⚠️ ATTENTION : Peut causer une perte de données non sauvegardées. -9 (SIGKILL) est un arrêt forcé.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "kill -9 1234",
       "description": "Termine le processus 1234 (Linux)",
@@ -75,7 +78,5 @@
       "description": "Tuer par clic graphique",
       "platform": 1
     }
-  ],
-  "notes": "⚠️ ATTENTION : Peut causer une perte de données non sauvegardées. -9 (SIGKILL) est un arrêt forcé.",
-  "links": []
+  ]
 }

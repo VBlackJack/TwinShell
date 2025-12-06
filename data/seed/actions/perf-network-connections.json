@@ -31,7 +31,15 @@
     "commandPattern": "netstat -tunap | grep ESTABLISHED",
     "parameters": []
   },
-  "examples": [
+  "examples": [],
+  "notes": "États TCP: Established, Listen, TimeWait, CloseWait. Pour UDP, utilisez Get-NetUDPEndpoint. ss est plus rapide que netstat sur Linux.",
+  "links": [
+    {
+      "title": "Documentation Get-NetTCPConnection",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-nettcpconnection"
+    }
+  ],
+  "windowsExamples": [
     {
       "command": "netstat -anob",
       "description": "🔥 URGENCE : Affiche TOUS les ports écoutés avec le nom de l'exécutable (-b) et le PID (-o). Le flag -n (numérique) évite les lenteurs de résolution DNS. Nécessite des droits Admin.",
@@ -51,7 +59,9 @@
       "command": "netstat -ano | findstr ESTABLISHED",
       "description": "Connexions établies avec PID (Windows cmd)",
       "platform": 0
-    },
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ss -tunap | grep ESTAB",
       "description": "Alternative moderne sur Linux (ss au lieu de netstat)",
@@ -71,13 +81,6 @@
       "command": "netstat -r",
       "description": "Table de routage",
       "platform": 1
-    }
-  ],
-  "notes": "États TCP: Established, Listen, TimeWait, CloseWait. Pour UDP, utilisez Get-NetUDPEndpoint. ss est plus rapide que netstat sur Linux.",
-  "links": [
-    {
-      "title": "Documentation Get-NetTCPConnection",
-      "url": "https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-nettcpconnection"
     }
   ]
 }

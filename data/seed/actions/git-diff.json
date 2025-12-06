@@ -44,7 +44,15 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez --staged pour voir ce qui sera commité, --stat pour un résumé.",
+  "links": [
+    {
+      "title": "Git Diff Documentation",
+      "url": "https://git-scm.com/docs/git-diff"
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "git diff",
       "description": "Affiche les modifications non staged",
@@ -64,13 +72,6 @@
       "command": "git diff srv-web-01.contoso.com",
       "description": "Exemple utilisant le paramètre 'target': Branche, commit ou fichier à comparer. Remplacez srv-web-01.contoso.com par la valeur appropriée selon votre environnement.",
       "platform": 1
-    }
-  ],
-  "notes": "Utilisez --staged pour voir ce qui sera commité, --stat pour un résumé.",
-  "links": [
-    {
-      "title": "Git Diff Documentation",
-      "url": "https://git-scm.com/docs/git-diff"
     }
   ]
 }

@@ -45,7 +45,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Commande en lecture seule, idéale pour consulter rapidement des secrets sans risque de modification.",
+  "links": [
+    {
+      "title": "Ansible Vault",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-vault view C:\\Data\\report.xlsx",
+      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-vault view vars/secrets.yml",
       "description": "Affiche le contenu déchiffré",
@@ -57,21 +72,9 @@
       "platform": 1
     },
     {
-      "command": "ansible-vault view C:\\Data\\report.xlsx",
-      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-vault view group_vars/prod/vault.yml",
       "description": "Dans group_vars",
       "platform": 1
-    }
-  ],
-  "notes": "Commande en lecture seule, idéale pour consulter rapidement des secrets sans risque de modification.",
-  "links": [
-    {
-      "title": "Ansible Vault",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
     }
   ]
 }

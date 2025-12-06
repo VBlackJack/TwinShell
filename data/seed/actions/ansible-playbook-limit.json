@@ -77,7 +77,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez --limit pour tester un playbook sur un sous-ensemble d'hôtes avant un déploiement complet.",
+  "links": [
+    {
+      "title": "Ansible Patterns",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --limit \"*.contoso.com\"",
+      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-playbook site.yml --limit \"webservers\"",
       "description": "Exécute uniquement sur le groupe webservers",
@@ -102,18 +117,6 @@
       "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --limit \"webservers\"",
       "description": "Exemple utilisant le paramètre 'hostPattern': Pattern pour limiter les hôtes ciblés. Remplacez *.contoso.com par la valeur appropriée selon votre environnement.",
       "platform": 1
-    },
-    {
-      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --limit \"*.contoso.com\"",
-      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    }
-  ],
-  "notes": "Utilisez --limit pour tester un playbook sur un sous-ensemble d'hôtes avant un déploiement complet.",
-  "links": [
-    {
-      "title": "Ansible Patterns",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html"
     }
   ]
 }

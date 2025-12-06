@@ -28,7 +28,8 @@
     "parameters": []
   },
   "parameters": [],
-  "examples": [
+  "examples": [],
+  "windowsExamples": [
     {
       "command": "route print -4",
       "description": "🔥 ROUTAGE WINDOWS : Affiche la table de routage IPv4 standard. Plus lisible que Get-NetRoute pour les anciens admins.",

@@ -46,7 +46,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Le fichier est automatiquement déchiffré pour l'édition et rechiffré à la sauvegarde.",
+  "links": [
+    {
+      "title": "Ansible Vault",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-vault edit C:\\Data\\report.xlsx",
+      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-vault edit group_vars/all/vault.yml",
       "description": "Édite le fichier vault du groupe 'all'",
@@ -63,11 +78,6 @@
       "platform": 1
     },
     {
-      "command": "ansible-vault edit C:\\Data\\report.xlsx",
-      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-vault edit group_vars/prod/vault.yml",
       "description": "Éditer dans group_vars",
       "platform": 1
@@ -76,13 +86,6 @@
       "command": "EDITOR=nano ansible-vault edit secrets.yml",
       "description": "Avec nano",
       "platform": 1
-    }
-  ],
-  "notes": "Le fichier est automatiquement déchiffré pour l'édition et rechiffré à la sauvegarde.",
-  "links": [
-    {
-      "title": "Ansible Vault",
-      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
     }
   ]
 }

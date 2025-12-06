@@ -46,19 +46,9 @@
   },
   "examples": [
     {
-      "command": "git commit -m \"Fix: correction du bug #123\"",
-      "description": "Crée un commit avec un message",
-      "platform": 1
-    },
-    {
       "command": "git commit --amend",
       "description": "Modifie le dernier commit",
       "platform": 2
-    },
-    {
-      "command": "git commit -m \"feat: ajout nouvelle fonctionnalité\"",
-      "description": "Créer un commit",
-      "platform": 1
     }
   ],
   "notes": "Écrivez des messages de commit clairs et descriptifs. Utilisez --amend pour corriger le dernier commit.",
@@ -66,6 +56,18 @@
     {
       "title": "Git Commit Documentation",
       "url": "https://git-scm.com/docs/git-commit"
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "git commit -m \"Fix: correction du bug #123\"",
+      "description": "Crée un commit avec un message",
+      "platform": 1
+    },
+    {
+      "command": "git commit -m \"feat: ajout nouvelle fonctionnalité\"",
+      "description": "Créer un commit",
+      "platform": 1
     }
   ]
 }

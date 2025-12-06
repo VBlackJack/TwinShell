@@ -46,7 +46,22 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Utilisez -l pour lister tous les modules disponibles, -t pour spécifier le type de plugin (lookup, callback, etc.).",
+  "links": [
+    {
+      "title": "Ansible Modules Index",
+      "url": "https://docs.ansible.com/ansible/latest/collections/index_module.html"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "ansible-doc Az.Accounts",
+      "description": "Exemple Windows utilisant ansible-doc. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
     {
       "command": "ansible-doc copy",
       "description": "Documentation du module copy",
@@ -58,11 +73,6 @@
       "platform": 1
     },
     {
-      "command": "ansible-doc Az.Accounts",
-      "description": "Exemple Windows utilisant ansible-doc. Remplacez les paramètres entre <> par vos valeurs.",
-      "platform": 0
-    },
-    {
       "command": "ansible-doc -l",
       "description": "Lister les modules",
       "platform": 1
@@ -71,13 +81,6 @@
       "command": "ansible-doc -s copy",
       "description": "Snippet du module",
       "platform": 1
-    }
-  ],
-  "notes": "Utilisez -l pour lister tous les modules disponibles, -t pour spécifier le type de plugin (lookup, callback, etc.).",
-  "links": [
-    {
-      "title": "Ansible Modules Index",
-      "url": "https://docs.ansible.com/ansible/latest/collections/index_module.html"
     }
   ]
 }

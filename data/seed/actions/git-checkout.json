@@ -51,16 +51,6 @@
       "platform": 2
     },
     {
-      "command": "git checkout -b new-feature",
-      "description": "Crée et bascule sur une nouvelle branche",
-      "platform": 0
-    },
-    {
-      "command": "git checkout -- file.txt",
-      "description": "Restaure un fichier depuis le dernier commit",
-      "platform": 1
-    },
-    {
       "command": "git checkout srv-web-01.contoso.com",
       "description": "Exemple utilisant le paramètre 'target': Branche ou fichier à checkout. Remplacez srv-web-01.contoso.com par la valeur appropriée selon votre environnement.",
       "platform": 2
@@ -71,6 +61,20 @@
     {
       "title": "Git Checkout Documentation",
       "url": "https://git-scm.com/docs/git-checkout"
+    }
+  ],
+  "windowsExamples": [
+    {
+      "command": "git checkout -b new-feature",
+      "description": "Crée et bascule sur une nouvelle branche",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "git checkout -- file.txt",
+      "description": "Restaure un fichier depuis le dernier commit",
+      "platform": 1
     }
   ]
 }

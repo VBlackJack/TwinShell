@@ -72,6 +72,11 @@
       "command": "Remove-Item -Path \"<path>\" -Recurse -Force",
       "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "Remove-Item -Path \"C:\\Logs\\app.log\" -Recurse -Force",
+      "description": "Exemple Windows pour Supprimer des fichiers ou dossiers",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "file-delete-linux-cmd",
@@ -126,22 +131,6 @@
       "command": "rm -rf \"<path>\"",
       "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement.",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe: Windows utilise 'Remove-Item', Linux utilise 'rm'"
-    ],
-    "commonalities": [
-      "Les deux permettent de supprimer des fichiers ou dossiers",
-      "Fonctionnalité équivalente sur les deux plateformes"
-    ]
-  },
-  "examples": [
-    {
-      "command": "Remove-Item -Path \"C:\\Logs\\app.log\" -Recurse -Force",
-      "description": "Exemple Windows pour Supprimer des fichiers ou dossiers",
-      "platform": 0
     },
     {
       "command": "rm -rf \"C:\\Logs\\app.log\"",
@@ -168,5 +157,15 @@
       "description": "Supprimer par pattern",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Remove-Item', Linux utilise 'rm'"
+    ],
+    "commonalities": [
+      "Les deux permettent de supprimer des fichiers ou dossiers",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

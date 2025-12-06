@@ -88,6 +88,11 @@
       "command": "docker stats <options>",
       "description": "Exemple utilisant le paramètre 'options': Options (--no-stream, --format, container_name). Remplacez <options> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "docker stats -v -f",
+      "description": "Exemple Windows pour Statistiques des conteneurs Docker",
+      "platform": 0
     }
   ],
   "linuxExamples": [
@@ -131,11 +136,5 @@
       "Fonctionnalité identique sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "docker stats -v -f",
-      "description": "Exemple Windows pour Statistiques des conteneurs Docker",
-      "platform": 0
-    }
-  ]
+  "examples": []
 }

@@ -37,7 +37,11 @@
       "command": "gradle clean build",
       "description": "Nettoie puis compile",
       "platform": 2
-    },
+    }
+  ],
+  "notes": "Préférer ./gradlew (wrapper) pour la portabilité. --no-daemon pour CI/CD.",
+  "links": [],
+  "linuxExamples": [
     {
       "command": "./gradlew build",
       "description": "Utilise le wrapper Gradle",
@@ -63,7 +67,5 @@
       "description": "Afficher les dépendances",
       "platform": 1
     }
-  ],
-  "notes": "Préférer ./gradlew (wrapper) pour la portabilité. --no-daemon pour CI/CD.",
-  "links": []
+  ]
 }

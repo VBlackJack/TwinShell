@@ -59,7 +59,8 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "linuxExamples": [
     {
       "command": "docker logs --tail 50 -f web_server",
       "description": "Suivi en temps réel (-f) des 50 dernières lignes de logs.",

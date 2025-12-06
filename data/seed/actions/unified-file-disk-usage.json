@@ -83,18 +83,7 @@
       "command": "df -h",
       "description": "Cas d'usage standard. Affiche l'utilisation de l'espace disque pour les systèmes de fichiers montés. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
       "platform": 1
-    }
-  ],
-  "crossPlatformNotes": {
-    "differences": [
-      "Syntaxe: Windows utilise 'Get-PSDrive', Linux utilise 'df'"
-    ],
-    "commonalities": [
-      "Les deux permettent de vérifier l'espace disque",
-      "Fonctionnalité équivalente sur les deux plateformes"
-    ]
-  },
-  "examples": [
+    },
     {
       "command": "df -h",
       "description": "Exemple Linux pour Vérifier l'espace disque",
@@ -115,5 +104,15 @@
       "description": "Avec le total global",
       "platform": 1
     }
-  ]
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Get-PSDrive', Linux utilise 'df'"
+    ],
+    "commonalities": [
+      "Les deux permettent de vérifier l'espace disque",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": []
 }

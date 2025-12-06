@@ -80,11 +80,6 @@
       "command": "git clone https://github.com/contoso/myapp.git D:\\Archive",
       "description": "Exemple utilisant le paramètre 'destination': Répertoire de destination (optionnel). Remplacez D:\\Archive par la valeur appropriée selon votre environnement.",
       "platform": 2
-    },
-    {
-      "command": "git clone https://github.com/user/repo.git",
-      "description": "Cloner un dépôt",
-      "platform": 1
     }
   ],
   "notes": "Utilisez --depth 1 pour un clone superficiel si vous n'avez pas besoin de l'historique complet.",
@@ -92,6 +87,13 @@
     {
       "title": "Git Clone Documentation",
       "url": "https://git-scm.com/docs/git-clone"
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "git clone https://github.com/user/repo.git",
+      "description": "Cloner un dépôt",
+      "platform": 1
     }
   ]
 }

@@ -45,23 +45,26 @@
       }
     ]
   },
-  "examples": [
+  "examples": [],
+  "notes": "Ansible Galaxy est le dépôt officiel de rôles Ansible réutilisables.",
+  "links": [
     {
-      "command": "ansible-galaxy install -r requirements.yml",
-      "description": "Installe tous les rôles listés dans requirements.yml",
-      "platform": 1
-    },
+      "title": "Ansible Galaxy",
+      "url": "https://galaxy.ansible.com/"
+    }
+  ],
+  "windowsExamples": [
     {
       "command": "ansible-galaxy install webserver",
       "description": "Exemple Windows utilisant ansible-galaxy. Remplacez les paramètres entre <> par vos valeurs.",
       "platform": 0
     }
   ],
-  "notes": "Ansible Galaxy est le dépôt officiel de rôles Ansible réutilisables.",
-  "links": [
+  "linuxExamples": [
     {
-      "title": "Ansible Galaxy",
-      "url": "https://galaxy.ansible.com/"
+      "command": "ansible-galaxy install -r requirements.yml",
+      "description": "Installe tous les rôles listés dans requirements.yml",
+      "platform": 1
     }
   ]
 }

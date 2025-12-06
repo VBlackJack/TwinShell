@@ -92,6 +92,11 @@
       "command": "Get-ChildItem -Path \".\" -Filter \"{filePattern}\" -Recurse | Select-String -Pattern \"{searchTerm}\"",
       "description": "Exemple utilisant le paramètre 'searchPath': Dossier où chercher. Remplacez <searchPath> par la valeur appropriée selon votre environnement.",
       "platform": 0
+    },
+    {
+      "command": "Get-ChildItem -Path \"C:\\Windows\\System32\" -Filter \"*.log\" -Recurse | Select-String -Pattern \"Admin\"",
+      "description": "Exemple Windows pour Rechercher dans le contenu de fichiers",
+      "platform": 0
     }
   ],
   "linuxCommandTemplateId": "search-content-linux-cmd",
@@ -154,6 +159,11 @@
       "command": "grep -r \"{searchTerm}\" \".\"",
       "description": "Exemple utilisant le paramètre 'searchPath': Dossier où chercher. Remplacez <searchPath> par la valeur appropriée selon votre environnement.",
       "platform": 1
+    },
+    {
+      "command": "grep -r \"Admin\" \"C:\\Windows\\System32\"",
+      "description": "Exemple Linux pour Rechercher dans le contenu de fichiers",
+      "platform": 1
     }
   ],
   "crossPlatformNotes": {
@@ -165,16 +175,5 @@
       "Fonctionnalité équivalente sur les deux plateformes"
     ]
   },
-  "examples": [
-    {
-      "command": "Get-ChildItem -Path \"C:\\Windows\\System32\" -Filter \"*.log\" -Recurse | Select-String -Pattern \"Admin\"",
-      "description": "Exemple Windows pour Rechercher dans le contenu de fichiers",
-      "platform": 0
-    },
-    {
-      "command": "grep -r \"Admin\" \"C:\\Windows\\System32\"",
-      "description": "Exemple Linux pour Rechercher dans le contenu de fichiers",
-      "platform": 1
-    }
-  ]
+  "examples": []
 }

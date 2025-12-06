@@ -28,7 +28,8 @@
     "parameters": []
   },
   "parameters": [],
-  "examples": [
+  "examples": [],
+  "windowsExamples": [
     {
       "command": "Get-Process | Sort-Object CPU -Descending | Select-Object -First 5",
       "description": "🔥 PERFORMANCE : Identifie les 5 processus qui consomment le plus de CPU actuellement.",
@@ -40,14 +41,16 @@
       "platform": 0
     },
     {
-      "command": "Get-Process -Name chrome | Stop-Process -Force",
-      "description": "Kill Switch : Ferme de force toutes les instances d'un processus spécifique. Utile pour nettoyer des processus zombies.",
-      "platform": 1
-    },
-    {
       "command": "Get-NetTCPConnection -State Listen | Select-Object LocalAddress,LocalPort,ProcessName | Format-Table",
       "description": "Liste les ports en écoute sur Windows",
       "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "Get-Process -Name chrome | Stop-Process -Force",
+      "description": "Kill Switch : Ferme de force toutes les instances d'un processus spécifique. Utile pour nettoyer des processus zombies.",
+      "platform": 1
     },
     {
       "command": "netstat -i",
