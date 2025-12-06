@@ -85,7 +85,7 @@
             </Border>
 
             <TextBlock Text="TwinShell" Style="{StaticResource TitleStyle}"/>
-            <TextBlock Text="Version 1.2.0"
+            <TextBlock x:Name="VersionText"
                        FontSize="14"
                        Foreground="{DynamicResource TextSecondaryBrush}"
                        HorizontalAlignment="Center"
