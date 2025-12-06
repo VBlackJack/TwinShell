@@ -1,0 +1,87 @@
+{
+  "id": "ansible-vault-encrypt",
+  "title": "Chiffrer un fichier avec Ansible Vault",
+  "description": "Chiffre un fichier contenant des données sensibles avec Ansible Vault",
+  "category": "🔒 Security & Encryption",
+  "platform": 2,
+  "level": 1,
+  "tags": [
+    "ansible",
+    "vault",
+    "encryption",
+    "security"
+  ],
+  "windowsCommandTemplateId": "ansible-vault-encrypt-win",
+  "windowsCommandTemplate": {
+    "id": "ansible-vault-encrypt-win",
+    "platform": 0,
+    "name": "ansible-vault",
+    "commandPattern": "ansible-vault encrypt {filePath}",
+    "parameters": [
+      {
+        "name": "filePath",
+        "label": "Fichier à chiffrer",
+        "type": "string",
+        "defaultValue": "secrets.yml",
+        "required": true,
+        "description": "Chemin du fichier à chiffrer"
+      }
+    ]
+  },
+  "linuxCommandTemplateId": "ansible-vault-encrypt-linux",
+  "linuxCommandTemplate": {
+    "id": "ansible-vault-encrypt-linux",
+    "platform": 1,
+    "name": "ansible-vault",
+    "commandPattern": "ansible-vault encrypt {filePath}",
+    "parameters": [
+      {
+        "name": "filePath",
+        "label": "Fichier à chiffrer",
+        "type": "string",
+        "defaultValue": "secrets.yml",
+        "required": true,
+        "description": "Chemin du fichier à chiffrer"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "ansible-vault encrypt vars/secrets.yml",
+      "description": "Chiffre le fichier de secrets",
+      "platform": 1
+    },
+    {
+      "command": "ansible-vault decrypt vars/secrets.yml",
+      "description": "Déchiffre le fichier de secrets",
+      "platform": 1
+    },
+    {
+      "command": "ansible-vault encrypt secrets.yml",
+      "description": "Exemple utilisant le paramètre 'filePath': Chemin du fichier à chiffrer. Remplacez C:\\Data\\report.xlsx par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    },
+    {
+      "command": "ansible-vault encrypt C:\\Data\\report.xlsx",
+      "description": "Exemple Windows utilisant ansible-vault. Remplacez les paramètres entre <> par vos valeurs.",
+      "platform": 0
+    },
+    {
+      "command": "ansible-vault encrypt --vault-id prod@prompt secrets.yml",
+      "description": "Avec vault ID",
+      "platform": 1
+    },
+    {
+      "command": "ansible-vault encrypt_string 'secret' --name 'password'",
+      "description": "Chiffrer une string",
+      "platform": 1
+    }
+  ],
+  "notes": "Utilisez un mot de passe fort et stockez-le de manière sécurisée. Pour exécuter un playbook avec des fichiers chiffrés, utilisez --ask-vault-pass.",
+  "links": [
+    {
+      "title": "Ansible Vault",
+      "url": "https://docs.ansible.com/ansible/latest/user_guide/vault.html"
+    }
+  ]
+}

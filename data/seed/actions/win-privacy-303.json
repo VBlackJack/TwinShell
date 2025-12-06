@@ -1,0 +1,54 @@
+{
+  "id": "WIN-PRIVACY-303",
+  "title": "Désactiver télémétrie Google",
+  "description": "Désactive la télémétrie de Google Update et Chrome (si installés). Bloque les services de tracking Google.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "privacy",
+    "confidentialité",
+    "télémétrie",
+    "google",
+    "chrome",
+    "third-party",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-privacy-303-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-privacy-303-cmd",
+    "platform": 0,
+    "name": "Disable-GoogleTelemetry",
+    "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'MetricsReportingEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'ChromeCleanupEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'ChromeCleanupReportingEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'UserFeedbackAllowed' -Type DWord -Value 0; New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Update' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Update' -Name 'AutoUpdateCheckPeriodMinutes' -Type DWord -Value 0 -ErrorAction SilentlyContinue; Stop-Service -Name 'gupdate' -Force -ErrorAction SilentlyContinue; Stop-Service -Name 'gupdatem' -Force -ErrorAction SilentlyContinue; Set-Service -Name 'gupdate' -StartupType Disabled -ErrorAction SilentlyContinue; Set-Service -Name 'gupdatem' -StartupType Disabled -ErrorAction SilentlyContinue",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Name 'MetricsReportingEnabled' -Value 0",
+      "description": "Désactive la télémétrie Chrome",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Force -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Google\\Chrome' -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactive toute télémétrie Google Chrome et Google Update. Arrête les services de mise à jour automatique Google. Améliore la confidentialité et réduit l'utilisation réseau.",
+  "links": []
+}

@@ -1,0 +1,51 @@
+{
+  "id": "WIN-DEBLOAT-101",
+  "title": "Supprimer les apps Microsoft inutiles",
+  "description": "Supprime 38 applications Microsoft préinstallées considérées comme non essentielles (3D Viewer, Alarms, BingNews, etc.).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "microsoft-apps",
+    "cleanup",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-101-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-101-cmd",
+    "platform": 0,
+    "name": "Remove-MicrosoftBloatware",
+    "commandPattern": "$apps = @('Microsoft.3DBuilder', 'Microsoft.BingNews', 'Microsoft.BingWeather', 'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.MicrosoftOfficeHub', 'Microsoft.MicrosoftSolitaire*', 'Microsoft.MixedReality.Portal', 'Microsoft.Office.OneNote', 'Microsoft.People', 'Microsoft.SkypeApp', 'Microsoft.Todos', 'Microsoft.Wallet', 'Microsoft.WindowsAlarms', 'Microsoft.WindowsCamera', 'Microsoft.WindowsFeedbackHub', 'Microsoft.WindowsMaps', 'Microsoft.WindowsSoundRecorder', 'Microsoft.YourPhone', 'Microsoft.ZuneMusic', 'Microsoft.ZuneVideo'); foreach ($app in $apps) { Get-AppxPackage $app | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Get-AppxPackage Microsoft.BingNews | Remove-AppxPackage",
+      "description": "Supprime Bing News",
+      "platform": 0
+    },
+    {
+      "command": "$apps = @('Microsoft.3DBuilder', 'Microsoft.BingNews', 'Microsoft.BingWeather', 'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.MicrosoftOfficeHub', 'Microsoft.MicrosoftSolitaire*', 'Microsoft.MixedReality.Portal', 'Microsoft.Office.OneNote', 'Microsoft.People', 'Microsoft.SkypeApp', 'Microsoft.Todos', 'Microsoft.Wallet', 'Microsoft.WindowsAlarms', 'Microsoft.WindowsCamera', 'Microsoft.WindowsFeedbackHub', 'Microsoft.WindowsMaps', 'Microsoft.WindowsSoundRecorder', 'Microsoft.YourPhone', 'Microsoft.ZuneMusic', 'Microsoft.ZuneVideo'); foreach ($app in $apps) { Get-AppxPackage $app | Select-Object * -First 1",
+      "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+      "platform": 0
+    },
+    {
+      "command": "$apps = @('Microsoft.3DBuilder', 'Microsoft.BingNews', 'Microsoft.BingWeather', 'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.MicrosoftOfficeHub', 'Microsoft.MicrosoftSolitaire*', 'Microsoft.MixedReality.Portal', 'Microsoft.Office.OneNote', 'Microsoft.People', 'Microsoft.SkypeApp', 'Microsoft.Todos', 'Microsoft.Wallet', 'Microsoft.WindowsAlarms', 'Microsoft.WindowsCamera', 'Microsoft.WindowsFeedbackHub', 'Microsoft.WindowsMaps', 'Microsoft.WindowsSoundRecorder', 'Microsoft.YourPhone', 'Microsoft.ZuneMusic', 'Microsoft.ZuneVideo'); foreach ($app in $apps) { Get-AppxPackage $app | Format-Table -AutoSize",
+      "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+      "platform": 0
+    },
+    {
+      "command": "$apps = @('Microsoft.3DBuilder', 'Microsoft.BingNews', 'Microsoft.BingWeather', 'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.MicrosoftOfficeHub', 'Microsoft.MicrosoftSolitaire*', 'Microsoft.MixedReality.Portal', 'Microsoft.Office.OneNote', 'Microsoft.People', 'Microsoft.SkypeApp', 'Microsoft.Todos', 'Microsoft.Wallet', 'Microsoft.WindowsAlarms', 'Microsoft.WindowsCamera', 'Microsoft.WindowsFeedbackHub', 'Microsoft.WindowsMaps', 'Microsoft.WindowsSoundRecorder', 'Microsoft.YourPhone', 'Microsoft.ZuneMusic', 'Microsoft.ZuneVideo'); foreach ($app in $apps) { Get-AppxPackage $app | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+      "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+      "platform": 0
+    },
+    {
+      "command": "$apps = @('Microsoft.3DBuilder', 'Microsoft.BingNews', 'Microsoft.BingWeather', 'Microsoft.GetHelp', 'Microsoft.Getstarted', 'Microsoft.MicrosoftOfficeHub', 'Microsoft.MicrosoftSolitaire*', 'Microsoft.MixedReality.Portal', 'Microsoft.Office.OneNote', 'Microsoft.People', 'Microsoft.SkypeApp', 'Microsoft.Todos', 'Microsoft.Wallet', 'Microsoft.WindowsAlarms', 'Microsoft.WindowsCamera', 'Microsoft.WindowsFeedbackHub', 'Microsoft.WindowsMaps', 'Microsoft.WindowsSoundRecorder', 'Microsoft.YourPhone', 'Microsoft.ZuneMusic', 'Microsoft.ZuneVideo'); foreach ($app in $apps) { Get-AppxPackage $app | Measure-Object",
+      "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+      "platform": 0
+    }
+  ],
+  "notes": "Supprime les applications Microsoft non essentielles. Conserve les apps critiques système.",
+  "links": []
+}

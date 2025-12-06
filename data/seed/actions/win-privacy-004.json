@@ -1,0 +1,62 @@
+{
+  "id": "WIN-PRIVACY-004",
+  "title": "Désactiver l'accès au système de fichiers",
+  "description": "Restreint l'accès des applications au système de fichiers complet. Protection des données sensibles.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "privacy",
+    "confidentialité",
+    "rgpd",
+    "permissions",
+    "fichiers",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-privacy-004-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-privacy-004-cmd",
+    "platform": 0,
+    "name": "Disable-FileSystemAccess",
+    "commandPattern": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' }; New-Item -Path $path -Force | Out-Null; Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Deny'; $path2 = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\broadFileSystemAccess' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\broadFileSystemAccess' }; New-Item -Path $path2 -Force | Out-Null; Set-ItemProperty -Path $path2 -Name 'Value' -Type String -Value 'Deny'",
+    "parameters": [
+      {
+        "name": "Scope",
+        "label": "Portée",
+        "type": "string",
+        "defaultValue": "CurrentUser",
+        "required": false,
+        "description": "CurrentUser ou AllUsers"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\broadFileSystemAccess' -Name 'Value' -Value 'Deny'",
+      "description": "Restreint l'accès aux fichiers",
+      "platform": 0
+    },
+    {
+      "command": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' }; New-Item -Path $path -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' }; New-Item -Path $path -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' }; New-Item -Path $path -Force -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "param([string]$Scope = 'CurrentUser'); $path = if ($Scope -eq 'AllUsers') { 'HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' } else { 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\documentsLibrary' }; New-Item -Path $path -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "Limite l'accès aux bibliothèques de documents et au système de fichiers complet. Certaines applications peuvent nécessiter une réactivation.",
+  "links": []
+}

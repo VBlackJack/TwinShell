@@ -1,0 +1,160 @@
+{
+  "id": "docker-compose-up",
+  "title": "Démarrer une stack Docker Compose",
+  "description": "Lance tous les services définis dans un fichier docker-compose.yml",
+  "category": "🐳 Containers & VMs",
+  "platform": 2,
+  "level": 1,
+  "tags": [
+    "docker",
+    "compose",
+    "orchestration",
+    "stack",
+    "windows"
+  ],
+  "linuxCommandTemplateId": "docker-compose-up-cmd",
+  "linuxCommandTemplate": {
+    "id": "docker-compose-up-cmd",
+    "platform": 1,
+    "name": "docker-compose",
+    "commandPattern": "docker-compose up {options}",
+    "parameters": [
+      {
+        "name": "options",
+        "label": "Options",
+        "type": "string",
+        "defaultValue": "-d",
+        "required": false,
+        "description": "Options (-d=detached, --build, --scale, etc.)"
+      }
+    ]
+  },
+  "notes": "Windows & Linux: Doit être exécuté dans le répertoire contenant docker-compose.yml. -d pour detached mode.",
+  "links": [
+    {
+      "title": "Docker Compose documentation",
+      "url": "https://docs.docker.com/compose/reference/up/"
+    }
+  ],
+  "supportedPlatforms": [
+    0,
+    1
+  ],
+  "windowsCommandTemplate": {
+    "id": "docker-compose-up-win-cmd",
+    "platform": 0,
+    "name": "docker-compose",
+    "commandPattern": "docker-compose up {options}",
+    "parameters": [
+      {
+        "name": "options",
+        "label": "Options",
+        "type": "string",
+        "defaultValue": "-d",
+        "required": false,
+        "description": "Options (-d=detached, --build, --scale, etc.)"
+      }
+    ]
+  },
+  "windowsCommandTemplateId": "docker-compose-up-win-cmd",
+  "windowsExamples": [
+    {
+      "command": "docker-compose up -d",
+      "description": "Démarre en arrière-plan",
+      "platform": 0
+    },
+    {
+      "command": "docker-compose up --build",
+      "description": "Rebuild les images avant de démarrer",
+      "platform": 0
+    },
+    {
+      "command": "docker-compose down",
+      "description": "Arrête et supprime les conteneurs",
+      "platform": 0
+    },
+    {
+      "command": "docker-compose --help",
+      "description": "Affiche l'aide complète de la commande docker-compose. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 0
+    },
+    {
+      "command": "man docker-compose",
+      "description": "Affiche le manuel complet de docker-compose. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 0
+    },
+    {
+      "command": "docker-compose up -d",
+      "description": "Exemple utilisant le paramètre 'options': Options (-d=detached, --build, --scale, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "docker-compose up -d",
+      "description": "Démarre en arrière-plan",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose up --build",
+      "description": "Rebuild les images avant de démarrer",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose down",
+      "description": "Arrête et supprime les conteneurs",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose --help",
+      "description": "Affiche l'aide complète de la commande docker-compose. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 1
+    },
+    {
+      "command": "man docker-compose",
+      "description": "Affiche le manuel complet de docker-compose. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose up -d",
+      "description": "Exemple utilisant le paramètre 'options': Options (-d=detached, --build, --scale, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    }
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe identique sur Windows et Linux"
+    ],
+    "commonalities": [
+      "Docker CLI est cross-platform",
+      "Fonctionnalité identique sur les deux plateformes"
+    ]
+  },
+  "examples": [
+    {
+      "command": "docker-compose up -v -f",
+      "description": "Exemple Windows pour Démarrer une stack Docker Compose",
+      "platform": 0
+    },
+    {
+      "command": "docker-compose up -d",
+      "description": "Démarrer les services en arrière-plan",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose down",
+      "description": "Arrêter et supprimer les conteneurs",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose logs -f",
+      "description": "Suivre les logs de tous les services",
+      "platform": 1
+    },
+    {
+      "command": "docker-compose ps",
+      "description": "État des services",
+      "platform": 1
+    }
+  ]
+}

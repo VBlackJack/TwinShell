@@ -1,0 +1,183 @@
+{
+  "id": "unified-file-move",
+  "title": "Déplacer ou renommer des fichiers",
+  "description": "Déplace ou renomme des fichiers et dossiers.",
+  "category": "📁 Files & Storage",
+  "platform": 2,
+  "supportedPlatforms": [
+    0,
+    1
+  ],
+  "level": 1,
+  "tags": [
+    "déplacer",
+    "renommer",
+    "windows",
+    "fichier",
+    "linux",
+    "mv",
+    "move"
+  ],
+  "notes": "Windows: -Force écrase les fichiers existants sans demander confirmation.\nLinux: mv sert à la fois pour déplacer et renommer. Utiliser -i pour confirmation, -v pour verbeux.",
+  "links": [
+    {
+      "title": "Documentation Move-Item",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/move-item"
+    }
+  ],
+  "windowsCommandTemplateId": "file-move-windows-cmd",
+  "windowsCommandTemplate": {
+    "id": "file-move-windows-cmd",
+    "platform": 0,
+    "name": "Move-Item",
+    "commandPattern": "Move-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Force",
+    "parameters": [
+      {
+        "name": "sourcePath",
+        "label": "Chemin source",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Chemin du fichier ou dossier à déplacer"
+      },
+      {
+        "name": "destinationPath",
+        "label": "Chemin destination",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Nouveau chemin ou nom"
+      }
+    ]
+  },
+  "windowsExamples": [
+    {
+      "command": "Move-Item -Path \"C:\\Temp\\file.txt\" -Destination \"D:\\Archive\\file.txt\"",
+      "description": "Déplace un fichier vers un autre disque",
+      "platform": 0
+    },
+    {
+      "command": "Move-Item -Path \"C:\\OldName\" -Destination \"C:\\NewName\"",
+      "description": "Renomme un dossier",
+      "platform": 0
+    },
+    {
+      "command": "Move-Item -Path \"{sourcePath}\" -Destination \"{destinationPath}\" -Force",
+      "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help Move-Item -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+      "platform": 0
+    },
+    {
+      "command": "Move-Item -Path \"<sourcePath>\" -Destination \"{destinationPath}\" -Force",
+      "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à déplacer. Remplacez <sourcePath> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    },
+    {
+      "command": "Move-Item -Path \"{sourcePath}\" -Destination \"<destinationPath>\" -Force",
+      "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    }
+  ],
+  "linuxCommandTemplateId": "file-move-linux-cmd",
+  "linuxCommandTemplate": {
+    "id": "file-move-linux-cmd",
+    "platform": 1,
+    "name": "mv",
+    "commandPattern": "mv \"{sourcePath}\" \"{destinationPath}\"",
+    "parameters": [
+      {
+        "name": "sourcePath",
+        "label": "Chemin source",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Chemin du fichier ou dossier à déplacer"
+      },
+      {
+        "name": "destinationPath",
+        "label": "Chemin destination",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Nouveau chemin ou nom"
+      }
+    ]
+  },
+  "linuxExamples": [
+    {
+      "command": "mv /tmp/file.txt /archive/file.txt",
+      "description": "Déplace un fichier vers un autre dossier",
+      "platform": 1
+    },
+    {
+      "command": "mv oldname.txt newname.txt",
+      "description": "Renomme un fichier",
+      "platform": 1
+    },
+    {
+      "command": "mv \"{sourcePath}\" \"{destinationPath}\" -v",
+      "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement.",
+      "platform": 1
+    },
+    {
+      "command": "mv --help",
+      "description": "Affiche l'aide complète de la commande mv. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 1
+    },
+    {
+      "command": "man mv",
+      "description": "Affiche le manuel complet de mv. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 1
+    },
+    {
+      "command": "mv \"<sourcePath>\" \"{destinationPath}\"",
+      "description": "Exemple utilisant le paramètre 'sourcePath': Chemin du fichier ou dossier à déplacer. Remplacez <sourcePath> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    },
+    {
+      "command": "mv \"{sourcePath}\" \"<destinationPath>\"",
+      "description": "Exemple utilisant le paramètre 'destinationPath': Nouveau chemin ou nom. Remplacez <destinationPath> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    }
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Move-Item', Linux utilise 'mv'"
+    ],
+    "commonalities": [
+      "Les deux permettent de déplacer ou renommer des fichiers",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": [
+    {
+      "command": "Move-Item -Path \"C:\\Source\\data.csv\" -Destination \"D:\\Backup\\data.csv\" -Force",
+      "description": "Exemple Windows pour Déplacer ou renommer des fichiers",
+      "platform": 0
+    },
+    {
+      "command": "mv \"C:\\Source\\data.csv\" \"D:\\Backup\\data.csv\"",
+      "description": "Exemple Linux pour Déplacer ou renommer des fichiers",
+      "platform": 1
+    },
+    {
+      "command": "mv old_name.txt new_name.txt",
+      "description": "Renommer un fichier",
+      "platform": 1
+    },
+    {
+      "command": "mv /tmp/download/* /home/user/files/",
+      "description": "Déplacer plusieurs fichiers",
+      "platform": 1
+    },
+    {
+      "command": "mv -i source.txt /dest/",
+      "description": "Demander confirmation si existe",
+      "platform": 1
+    },
+    {
+      "command": "mv -v *.log /archive/",
+      "description": "Mode verbose",
+      "platform": 1
+    }
+  ]
+}

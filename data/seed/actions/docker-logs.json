@@ -1,0 +1,171 @@
+{
+  "id": "docker-logs",
+  "title": "Consulter les logs d'un conteneur",
+  "description": "Affiche les logs stdout/stderr d'un conteneur Docker",
+  "category": "🐳 Containers & VMs",
+  "platform": 2,
+  "level": 0,
+  "tags": [
+    "docker",
+    "logs",
+    "container",
+    "debug",
+    "windows"
+  ],
+  "linuxCommandTemplateId": "docker-logs-cmd",
+  "linuxCommandTemplate": {
+    "id": "docker-logs-cmd",
+    "platform": 1,
+    "name": "docker",
+    "commandPattern": "docker logs {options} {container}",
+    "parameters": [
+      {
+        "name": "options",
+        "label": "Options",
+        "type": "string",
+        "defaultValue": "-f",
+        "required": false,
+        "description": "Options (-f=follow, --tail=n, --since, -t=timestamps)"
+      },
+      {
+        "name": "container",
+        "label": "Conteneur",
+        "type": "string",
+        "defaultValue": "container_name",
+        "required": true,
+        "description": "Nom ou ID du conteneur"
+      }
+    ]
+  },
+  "notes": "Windows & Linux: Ctrl+C pour arrêter le suivi. --tail limite le nombre de lignes.",
+  "links": [
+    {
+      "title": "Docker logs",
+      "url": "https://docs.docker.com/engine/reference/commandline/logs/"
+    }
+  ],
+  "supportedPlatforms": [
+    0,
+    1
+  ],
+  "windowsCommandTemplate": {
+    "id": "docker-logs-win-cmd",
+    "platform": 0,
+    "name": "docker",
+    "commandPattern": "docker logs {options} {container}",
+    "parameters": [
+      {
+        "name": "options",
+        "label": "Options",
+        "type": "string",
+        "defaultValue": "-f",
+        "required": false,
+        "description": "Options (-f=follow, --tail=n, --since, -t=timestamps)"
+      },
+      {
+        "name": "container",
+        "label": "Conteneur",
+        "type": "string",
+        "defaultValue": "container_name",
+        "required": true,
+        "description": "Nom ou ID du conteneur"
+      }
+    ]
+  },
+  "windowsCommandTemplateId": "docker-logs-win-cmd",
+  "windowsExamples": [
+    {
+      "command": "docker logs -f mycontainer",
+      "description": "Suit les logs en temps réel",
+      "platform": 0
+    },
+    {
+      "command": "docker logs --tail 100 mycontainer",
+      "description": "Affiche les 100 dernières lignes",
+      "platform": 0
+    },
+    {
+      "command": "docker logs --since 1h mycontainer",
+      "description": "Logs de la dernière heure",
+      "platform": 0
+    },
+    {
+      "command": "docker --help",
+      "description": "Affiche l'aide complète de la commande docker. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 0
+    },
+    {
+      "command": "man docker",
+      "description": "Affiche le manuel complet de docker. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 0
+    },
+    {
+      "command": "docker logs -f {container}",
+      "description": "Exemple utilisant le paramètre 'options': Options (-f=follow, --tail=n, --since, -t=timestamps). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    },
+    {
+      "command": "docker logs {options} container_name",
+      "description": "Exemple utilisant le paramètre 'container': Nom ou ID du conteneur. Remplacez <container> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "docker logs -f mycontainer",
+      "description": "Suit les logs en temps réel",
+      "platform": 1
+    },
+    {
+      "command": "docker logs --tail 100 mycontainer",
+      "description": "Affiche les 100 dernières lignes",
+      "platform": 1
+    },
+    {
+      "command": "docker logs --since 1h mycontainer",
+      "description": "Logs de la dernière heure",
+      "platform": 1
+    },
+    {
+      "command": "docker --help",
+      "description": "Affiche l'aide complète de la commande docker. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 1
+    },
+    {
+      "command": "man docker",
+      "description": "Affiche le manuel complet de docker. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 1
+    },
+    {
+      "command": "docker logs -f {container}",
+      "description": "Exemple utilisant le paramètre 'options': Options (-f=follow, --tail=n, --since, -t=timestamps). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    },
+    {
+      "command": "docker logs {options} container_name",
+      "description": "Exemple utilisant le paramètre 'container': Nom ou ID du conteneur. Remplacez <container> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    }
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe identique sur Windows et Linux"
+    ],
+    "commonalities": [
+      "Docker CLI est cross-platform",
+      "Fonctionnalité identique sur les deux plateformes"
+    ]
+  },
+  "examples": [
+    {
+      "command": "docker logs -v -f webapp",
+      "description": "Exemple Windows pour Consulter les logs d'un conteneur",
+      "platform": 0
+    },
+    {
+      "command": "docker logs -f webapp",
+      "description": "Suivre les logs du conteneur webapp",
+      "platform": 1
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "id": "unified-create-local-user",
+  "title": "Créer un utilisateur local",
+  "description": "Crée un nouveau compte utilisateur local sur le système.",
+  "category": "🔒 Security & Encryption",
+  "platform": 2,
+  "level": 1,
+  "tags": [
+    "user",
+    "account",
+    "create",
+    "useradd",
+    "new-localuser",
+    "windows",
+    "linux"
+  ],
+  "linuxCommandTemplateId": "useradd-cmd",
+  "linuxCommandTemplate": {
+    "id": "useradd-cmd",
+    "platform": 1,
+    "name": "useradd",
+    "commandPattern": "useradd -m -s {shell} {username}",
+    "parameters": [
+      {
+        "name": "shell",
+        "label": "Shell",
+        "type": "string",
+        "defaultValue": "/bin/bash",
+        "required": true,
+        "description": "Shell par défaut"
+      },
+      {
+        "name": "username",
+        "label": "Nom d'utilisateur",
+        "type": "string",
+        "defaultValue": "newuser",
+        "required": true,
+        "description": "Nom du nouvel utilisateur"
+      }
+    ]
+  },
+  "notes": "Windows: New-LocalUser crée un utilisateur local (pas AD). -NoPassword pour compte sans mot de passe.\nLinux: useradd nécessite sudo. -m crée le répertoire home. Utiliser passwd ensuite pour définir le mot de passe.",
+  "links": [
+    {
+      "title": "useradd documentation",
+      "url": "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    },
+    {
+      "title": "New-LocalUser documentation",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.localaccounts/new-localuser"
+    }
+  ],
+  "supportedPlatforms": [
+    0,
+    1
+  ],
+  "linuxExamples": [
+    {
+      "command": "sudo useradd -m -s /bin/bash john",
+      "description": "Crée l'utilisateur john avec répertoire home",
+      "platform": 1
+    },
+    {
+      "command": "sudo useradd -m -G sudo,docker john",
+      "description": "Crée john et l'ajoute aux groupes sudo et docker",
+      "platform": 1
+    },
+    {
+      "command": "sudo passwd john",
+      "description": "Définit le mot de passe après création",
+      "platform": 1
+    },
+    {
+      "command": "useradd --help",
+      "description": "Affiche l'aide complète de la commande useradd. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 1
+    },
+    {
+      "command": "man useradd",
+      "description": "Affiche le manuel complet de useradd. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 1
+    },
+    {
+      "command": "useradd -m -s /bin/bash {username}",
+      "description": "Exemple utilisant le paramètre 'shell': Shell par défaut. Remplacez <shell> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    },
+    {
+      "command": "useradd -m -s {shell} newuser",
+      "description": "Exemple utilisant le paramètre 'username': Nom du nouvel utilisateur. Remplacez <username> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    }
+  ],
+  "windowsCommandTemplateId": "create-localuser-win-cmd",
+  "windowsCommandTemplate": {
+    "id": "create-localuser-win-cmd",
+    "platform": 0,
+    "name": "New-LocalUser",
+    "commandPattern": "New-LocalUser -Name \"{username}\" -NoPassword",
+    "parameters": [
+      {
+        "name": "username",
+        "label": "Nom d'utilisateur",
+        "type": "string",
+        "defaultValue": "newuser",
+        "required": true,
+        "description": "Nom du nouvel utilisateur"
+      }
+    ]
+  },
+  "windowsExamples": [
+    {
+      "command": "New-LocalUser -Name \"john\" -NoPassword",
+      "description": "Crée l'utilisateur john sans mot de passe",
+      "platform": 0
+    },
+    {
+      "command": "New-LocalUser -Name \"john\" -Password (Read-Host -AsSecureString)",
+      "description": "Crée john avec mot de passe interactif",
+      "platform": 0
+    },
+    {
+      "command": "New-LocalUser -Name \"john\" -FullName \"John Doe\" -Description \"Developer\"",
+      "description": "Crée john avec nom complet et description",
+      "platform": 0
+    },
+    {
+      "command": "Get-Help New-LocalUser -Full",
+      "description": "Affiche l'aide complète de New-LocalUser",
+      "platform": 0
+    }
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'New-LocalUser', Linux utilise 'useradd'",
+      "Windows: -NoPassword par défaut, Linux: passwd séparé"
+    ],
+    "commonalities": [
+      "Les deux permettent de créer un utilisateur local",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": [
+    {
+      "command": "New-LocalUser -Name \"jdupont\" -NoPassword",
+      "description": "Exemple Windows pour Créer un utilisateur local",
+      "platform": 0
+    },
+    {
+      "command": "useradd -m -s bash jdupont",
+      "description": "Exemple Linux pour Créer un utilisateur local",
+      "platform": 1
+    },
+    {
+      "command": "useradd -m -s /bin/bash jdupont",
+      "description": "Créer un utilisateur avec home et bash",
+      "platform": 1
+    },
+    {
+      "command": "useradd -m -d /opt/app -s /bin/bash appuser",
+      "description": "Utilisateur avec home personnalisé",
+      "platform": 1
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "id": "unified-file-delete",
+  "title": "Supprimer des fichiers ou dossiers",
+  "description": "Supprime des fichiers ou des répertoires de manière permanente.",
+  "category": "📁 Files & Storage",
+  "platform": 2,
+  "supportedPlatforms": [
+    0,
+    1
+  ],
+  "level": 2,
+  "tags": [
+    "linux",
+    "windows",
+    "fichier",
+    "delete",
+    "remove",
+    "rm",
+    "supprimer"
+  ],
+  "notes": "Windows: ATTENTION: Suppression définitive, pas de corbeille. -Recurse supprime les sous-dossiers.\nLinux: ATTENTION: rm -rf est dangereux! -r pour récursif, -f pour forcer, -i pour demander confirmation.",
+  "links": [
+    {
+      "title": "Documentation Remove-Item",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-item"
+    }
+  ],
+  "windowsCommandTemplateId": "file-delete-windows-cmd",
+  "windowsCommandTemplate": {
+    "id": "file-delete-windows-cmd",
+    "platform": 0,
+    "name": "Remove-Item",
+    "commandPattern": "Remove-Item -Path \"{path}\" -Recurse -Force",
+    "parameters": [
+      {
+        "name": "path",
+        "label": "Chemin",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Chemin du fichier ou dossier à supprimer"
+      }
+    ]
+  },
+  "windowsExamples": [
+    {
+      "command": "Remove-Item -Path \"C:\\Temp\\*\" -Recurse -Force",
+      "description": "Supprime tout le contenu de C:\\Temp",
+      "platform": 0
+    },
+    {
+      "command": "Remove-Item -Path \"C:\\file.txt\"",
+      "description": "Supprime un fichier spécifique",
+      "platform": 0
+    },
+    {
+      "command": "Remove-Item -Path \"{path}\" -Recurse -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "Remove-Item -Path \"{path}\" -Recurse -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "Remove-Item -Path \"{path}\" -Recurse -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    },
+    {
+      "command": "Remove-Item -Path \"<path>\" -Recurse -Force",
+      "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    }
+  ],
+  "linuxCommandTemplateId": "file-delete-linux-cmd",
+  "linuxCommandTemplate": {
+    "id": "file-delete-linux-cmd",
+    "platform": 1,
+    "name": "rm",
+    "commandPattern": "rm -rf \"{path}\"",
+    "parameters": [
+      {
+        "name": "path",
+        "label": "Chemin",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Chemin du fichier ou dossier à supprimer"
+      }
+    ]
+  },
+  "linuxExamples": [
+    {
+      "command": "rm -rf /tmp/oldfiles",
+      "description": "Supprime un dossier et son contenu",
+      "platform": 1
+    },
+    {
+      "command": "rm file.txt",
+      "description": "Supprime un fichier",
+      "platform": 1
+    },
+    {
+      "command": "rm -i *.log",
+      "description": "Supprime tous les .log avec confirmation",
+      "platform": 1
+    },
+    {
+      "command": "rm -rf \"{path}\" -v",
+      "description": "Exécute la commande en mode verbeux. Le flag -v (verbose) affiche chaque action effectuée en temps réel. Essentiel pour suivre la progression des opérations longues et vérifier que tout se déroule correctement.",
+      "platform": 1
+    },
+    {
+      "command": "rm --help",
+      "description": "Affiche l'aide complète de la commande rm. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 1
+    },
+    {
+      "command": "man rm",
+      "description": "Affiche le manuel complet de rm. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 1
+    },
+    {
+      "command": "rm -rf \"<path>\"",
+      "description": "Exemple utilisant le paramètre 'path': Chemin du fichier ou dossier à supprimer. Remplacez <path> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    }
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe: Windows utilise 'Remove-Item', Linux utilise 'rm'"
+    ],
+    "commonalities": [
+      "Les deux permettent de supprimer des fichiers ou dossiers",
+      "Fonctionnalité équivalente sur les deux plateformes"
+    ]
+  },
+  "examples": [
+    {
+      "command": "Remove-Item -Path \"C:\\Logs\\app.log\" -Recurse -Force",
+      "description": "Exemple Windows pour Supprimer des fichiers ou dossiers",
+      "platform": 0
+    },
+    {
+      "command": "rm -rf \"C:\\Logs\\app.log\"",
+      "description": "Exemple Linux pour Supprimer des fichiers ou dossiers",
+      "platform": 1
+    },
+    {
+      "command": "rm -rf /tmp/cache/*",
+      "description": "Supprimer récursivement le cache",
+      "platform": 1
+    },
+    {
+      "command": "rm -i *.tmp",
+      "description": "Supprimer avec confirmation",
+      "platform": 1
+    },
+    {
+      "command": "rm -v old_file.log",
+      "description": "Supprimer en mode verbose",
+      "platform": 1
+    },
+    {
+      "command": "find /tmp -name \"*.bak\" -delete",
+      "description": "Supprimer par pattern",
+      "platform": 1
+    }
+  ]
+}

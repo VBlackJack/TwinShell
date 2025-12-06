@@ -1,0 +1,33 @@
+{
+  "id": "WIN-PERF-104",
+  "title": "Désactiver le mode veille hybride",
+  "description": "Désactive le mode veille hybride pour accélérer la mise en veille et le réveil du PC.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "power",
+    "sleep",
+    "hybrid",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-104-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-104-cmd",
+    "platform": 0,
+    "name": "powercfg",
+    "commandPattern": "powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setdcvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0; powercfg -setactive SCHEME_CURRENT; Write-Host \"Mode veille hybride désactivé\" -ForegroundColor Green",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "powercfg -setacvalueindex SCHEME_CURRENT SUB_SLEEP HYBRIDSLEEP 0",
+      "description": "Désactive la veille hybride sur secteur",
+      "platform": 0
+    }
+  ],
+  "notes": "Veille hybride: combine veille et hibernation (écrit RAM sur disque). Désactiver améliore la vitesse de mise en veille/réveil sur PC avec SSD. Moins utile sur HDD. Pas de risque de perte de données avec un PC stable.",
+  "links": []
+}

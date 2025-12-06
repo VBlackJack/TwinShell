@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-204",
+  "title": "Désinstaller Copilot",
+  "description": "⚠️ DANGEROUS: Désinstalle Windows Copilot AI.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 2,
+  "tags": [
+    "debloat",
+    "copilot",
+    "ai",
+    "dangerous",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-204-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-204-cmd",
+    "platform": 0,
+    "name": "Remove-Copilot",
+    "commandPattern": "Get-AppxPackage *Copilot* | Remove-AppxPackage -ErrorAction SilentlyContinue; New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot' -Name 'TurnOffWindowsCopilot' -Type DWord -Value 1",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Get-AppxPackage *Copilot* | Remove-AppxPackage",
+      "description": "Supprime Copilot",
+      "platform": 0
+    },
+    {
+      "command": "Get-AppxPackage *Copilot* | Select-Object * -First 1",
+      "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+      "platform": 0
+    },
+    {
+      "command": "Get-AppxPackage *Copilot* | Format-Table -AutoSize",
+      "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+      "platform": 0
+    },
+    {
+      "command": "Get-AppxPackage *Copilot* | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+      "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+      "platform": 0
+    },
+    {
+      "command": "Get-AppxPackage *Copilot* | Measure-Object",
+      "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+      "platform": 0
+    }
+  ],
+  "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Désactive également Copilot via le registre.",
+  "links": []
+}

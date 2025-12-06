@@ -1,0 +1,33 @@
+{
+  "id": "WIN-PERF-103",
+  "title": "Désactiver l'hibernation",
+  "description": "Désactive l'hibernation Windows et supprime le fichier hiberfil.sys pour libérer de l'espace disque (souvent plusieurs Go).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "power",
+    "hibernation",
+    "disk-space",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-103-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-103-cmd",
+    "platform": 0,
+    "name": "powercfg",
+    "commandPattern": "powercfg /hibernate off; Write-Host \"Hibernation désactivée. Le fichier hiberfil.sys sera supprimé\" -ForegroundColor Green",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "powercfg /hibernate off",
+      "description": "Désactive l'hibernation",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactiver l'hibernation: libère de l'espace disque égal à la RAM (8-32 Go typiquement). Supprime hiberfil.sys. Vous perdrez la fonctionnalité de mise en veille prolongée. La mise en veille normale (RAM) reste disponible.",
+  "links": []
+}

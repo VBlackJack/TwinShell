@@ -1,0 +1,75 @@
+{
+  "id": "bitlocker-ad-get-recovery-keys",
+  "title": "Récupérer les clés BitLocker depuis Active Directory",
+  "description": "Récupère les clés de récupération BitLocker stockées dans Active Directory pour un ordinateur spécifique (commande admin domaine).",
+  "category": "🔒 Security & Encryption",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "bitlocker",
+    "ad",
+    "recovery",
+    "domain-admin"
+  ],
+  "windowsCommandTemplateId": "bitlocker-ad-get-recovery-keys-cmd",
+  "windowsCommandTemplate": {
+    "id": "bitlocker-ad-get-recovery-keys-cmd",
+    "platform": 0,
+    "name": "Get-ADObject",
+    "commandPattern": "$computer = Get-ADComputer -Identity {computerName}; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,msFVE-RecoveryGuid,whenCreated | Select-Object @{N='ComputerName';E={{computerName}}},@{N='RecoveryPassword';E={$_.'msFVE-RecoveryPassword'}},@{N='RecoveryGuid';E={$_.'msFVE-RecoveryGuid'}},whenCreated | Format-Table -AutoSize",
+    "parameters": [
+      {
+        "name": "computerName",
+        "label": "Nom de l'ordinateur",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Nom NetBIOS de l'ordinateur (ex: PC-001)"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "ss -tulpn",
+      "description": "🔥 STANDARD LINUX : Liste tous les ports TCP/UDP en écoute (-tul) avec les processus associés (-p) et sans résolution DNS (-n). La commande de référence pour savoir 'qui écoute sur ce port'.",
+      "platform": 1
+    },
+    {
+      "command": "ss -s",
+      "description": "Résumé statistique rapide des sockets (Total, TCP, UDP). Utile pour détecter une saturation de sockets ou une attaque DDoS.",
+      "platform": 1
+    },
+    {
+      "command": "$computer = Get-ADComputer -Identity PC-001; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword | Select-Object -ExpandProperty msFVE-RecoveryPassword",
+      "description": "Récupère le mot de passe de récupération BitLocker de PC-001 depuis AD",
+      "platform": 1
+    },
+    {
+      "command": "$computer = Get-ADComputer -Identity LAPTOP-005; Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,whenCreated | Select-Object @{N='RecoveryPassword';E={$_.'msFVE-RecoveryPassword'}},@{N='DateCreated';E={$_.whenCreated}}",
+      "description": "Récupère les clés BitLocker avec leur date de création",
+      "platform": 1
+    },
+    {
+      "command": "Get-ADComputer -Filter {Name -like 'LAPTOP-*'} | ForEach-Object { $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $_.DistinguishedName -Properties msFVE-RecoveryPassword; if($keys) { Write-Host \"$($_.Name): $($keys[0].'msFVE-RecoveryPassword')\" } }",
+      "description": "Récupère les clés BitLocker de tous les laptops depuis AD",
+      "platform": 1
+    },
+    {
+      "command": "$computer = Get-ADComputer -Identity PC-001; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword,msFVE-RecoveryGuid; $keys | Select-Object @{N='Password';E={$_.'msFVE-RecoveryPassword'}},@{N='VolumeGUID';E={$_.'msFVE-RecoveryGuid'}}",
+      "description": "Récupère les clés avec leur GUID de volume (utile si plusieurs volumes chiffrés)",
+      "platform": 1
+    },
+    {
+      "command": "$computer = Get-ADComputer -Identity PC-001; $keys = Get-ADObject -Filter \"objectClass -eq 'msFVE-RecoveryInformation'\" -SearchBase $computer.DistinguishedName -Properties msFVE-RecoveryPassword; $keys.'msFVE-RecoveryPassword' | Out-File \"C:\\BitLocker-Keys-PC-001.txt\"",
+      "description": "Sauvegarde les clés de récupération dans un fichier sécurisé",
+      "platform": 1
+    }
+  ],
+  "notes": "⚠️ ADMIN DOMAINE UNIQUEMENT: Cette commande récupère les clés depuis Active Directory (attributs msFVE-*). Nécessite droits de lecture sur les objets msFVE-RecoveryInformation. Les clés sont stockées sous chaque objet ordinateur AD. Plusieurs clés possibles si plusieurs volumes chiffrés. GUID format: {XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}.",
+  "links": [
+    {
+      "title": "BitLocker Recovery in Active Directory",
+      "url": "https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/recovery-overview"
+    }
+  ]
+}

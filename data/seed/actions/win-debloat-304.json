@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-304",
+  "title": "Désactiver Hyper-V",
+  "description": "Désactive la fonctionnalité Hyper-V de Windows (virtualisation).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "hyper-v",
+    "virtualization",
+    "performance",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-304-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-304-cmd",
+    "platform": 0,
+    "name": "Disable-HyperV",
+    "commandPattern": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All' -NoRestart",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All'",
+      "description": "Désactive Hyper-V",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All' -NoRestart -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All' -NoRestart -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All' -NoRestart -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Microsoft-Hyper-V-All' -NoRestart",
+      "description": "Cas d'usage standard. Désactive la fonctionnalité Hyper-V de Windows (virtualisation). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactive Hyper-V. Peut améliorer les performances de jeux. Nécessite un redémarrage. Incompatible avec certains émulateurs.",
+  "links": []
+}

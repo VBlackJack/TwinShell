@@ -1,0 +1,28 @@
+{
+  "id": "sysinternals-tcpvcon",
+  "title": "Connexions TCP détaillées (Tcpvcon)",
+  "description": "Version ligne de commande de TCPView. Affiche les connexions réseau avec les processus associés.",
+  "category": "🌐 Network & DNS",
+  "platform": 0,
+  "level": 0,
+  "tags": [
+    "sysinternals",
+    "tcpvcon",
+    "network",
+    "sockets"
+  ],
+  "windowsCommandTemplate": {
+    "id": "6a97b19b-d2fd-4b3b-8e43-502b585e074c",
+    "platform": 0,
+    "name": "tcpvcon",
+    "commandPattern": "tcpvcon.exe -a -n -AcceptEula",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "tcpvcon.exe -a -n -c -AcceptEula",
+      "description": "Affiche toutes les connexions (-a) sans résolution DNS (-n) au format CSV (-c). Idéal pour scripter ou analyser dans Excel.",
+      "platform": 0
+    }
+  ]
+}

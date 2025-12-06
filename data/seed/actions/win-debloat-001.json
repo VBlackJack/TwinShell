@@ -1,0 +1,57 @@
+{
+  "id": "WIN-DEBLOAT-001",
+  "title": "Supprimer tous les bloatwares tiers",
+  "description": "Supprime automatiquement tous les bloatwares tiers préinstallés (Candy Crush, Spotify, Disney+, etc.).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "bloatware",
+    "cleanup",
+    "third-party",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-001-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-001-cmd",
+    "platform": 0,
+    "name": "Remove-ThirdPartyBloatware",
+    "commandPattern": "$bloatware = @('CandyCrush', 'Spotify', 'Disney', 'Netflix', 'Twitter', 'Facebook'); Get-AppxPackage | Where-Object { $bloatware -match $_.Name } | Remove-AppxPackage -ErrorAction SilentlyContinue",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Get-AppxPackage *CandyCrush* | Remove-AppxPackage",
+      "description": "Supprime Candy Crush",
+      "platform": 0
+    },
+    {
+      "command": "$bloatware = @('CandyCrush', 'Spotify', 'Disney', 'Netflix', 'Twitter', 'Facebook'); Get-AppxPackage | Select-Object * -First 1",
+      "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+      "platform": 0
+    },
+    {
+      "command": "$bloatware = @('CandyCrush', 'Spotify', 'Disney', 'Netflix', 'Twitter', 'Facebook'); Get-AppxPackage | Format-Table -AutoSize",
+      "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+      "platform": 0
+    },
+    {
+      "command": "$bloatware = @('CandyCrush', 'Spotify', 'Disney', 'Netflix', 'Twitter', 'Facebook'); Get-AppxPackage | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+      "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+      "platform": 0
+    },
+    {
+      "command": "$bloatware = @('CandyCrush', 'Spotify', 'Disney', 'Netflix', 'Twitter', 'Facebook'); Get-AppxPackage | Measure-Object",
+      "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+      "platform": 0
+    }
+  ],
+  "notes": "Supprime les applications tierces préinstallées. Peut nécessiter des droits administrateur.",
+  "links": [
+    {
+      "title": "Remove-AppxPackage Documentation",
+      "url": "https://learn.microsoft.com/en-us/powershell/module/appx/remove-appxpackage"
+    }
+  ]
+}

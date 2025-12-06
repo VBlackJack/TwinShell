@@ -1,0 +1,54 @@
+{
+  "id": "WIN-PRIVACY-202",
+  "title": "Désactiver Game DVR",
+  "description": "Désactive Game DVR et les fonctionnalités d'enregistrement Xbox. Économise des ressources système.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "privacy",
+    "confidentialité",
+    "rgpd",
+    "télémétrie",
+    "gaming",
+    "xbox",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-privacy-202-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-privacy-202-cmd",
+    "platform": 0,
+    "name": "Disable-GameDVR",
+    "commandPattern": "New-Item -Path 'HKCU:\\System\\GameConfigStore' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_Enabled' -Type DWord -Value 0; New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR' -Name 'AllowGameDVR' -Type DWord -Value 0",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_Enabled' -Value 0",
+      "description": "Désactive Game DVR",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\System\\GameConfigStore' -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\System\\GameConfigStore' -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\System\\GameConfigStore' -Force -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\System\\GameConfigStore' -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactive l'enregistrement de gameplay et les fonctionnalités Xbox Game Bar. Améliore les performances gaming et réduit la collecte de données.",
+  "links": []
+}

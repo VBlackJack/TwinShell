@@ -1,0 +1,50 @@
+{
+  "id": "build-npm-install",
+  "title": "Installer les dépendances npm",
+  "description": "Installe les dépendances Node.js d'un projet.",
+  "category": "🔧 Development",
+  "platform": 2,
+  "level": 0,
+  "tags": [
+    "npm",
+    "nodejs",
+    "install",
+    "dependencies",
+    "development"
+  ],
+  "windowsCommandTemplateId": "build-npm-install-win-cmd",
+  "windowsCommandTemplate": {
+    "id": "build-npm-install-win-cmd",
+    "platform": 0,
+    "name": "npm install",
+    "commandPattern": "npm install",
+    "parameters": []
+  },
+  "linuxCommandTemplateId": "build-npm-install-linux-cmd",
+  "linuxCommandTemplate": {
+    "id": "build-npm-install-linux-cmd",
+    "platform": 1,
+    "name": "npm install",
+    "commandPattern": "npm install",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "npm install",
+      "description": "Installe toutes les dépendances de package.json",
+      "platform": 1
+    },
+    {
+      "command": "npm install --production",
+      "description": "Installe uniquement les dépendances de production",
+      "platform": 1
+    },
+    {
+      "command": "npm ci",
+      "description": "Installation propre pour CI/CD",
+      "platform": 1
+    }
+  ],
+  "notes": "npm ci est plus rapide et déterministe pour CI/CD. --save-dev pour dev dependencies.",
+  "links": []
+}

@@ -1,0 +1,33 @@
+{
+  "id": "WIN-PERF-205",
+  "title": "Désactiver Windows Search Indexing",
+  "description": "Désactive le service d'indexation Windows Search pour libérer CPU et disque (la recherche de fichiers sera plus lente).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "services",
+    "search",
+    "indexing",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-205-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-205-cmd",
+    "platform": 0,
+    "name": "Disable-WindowsSearch",
+    "commandPattern": "Stop-Service -Name 'WSearch' -Force -ErrorAction SilentlyContinue; Set-Service -Name 'WSearch' -StartupType Disabled; Write-Host \"Windows Search Indexing désactivé\" -ForegroundColor Green; Write-Warning \"La recherche de fichiers sera plus lente mais le CPU/disque sera libéré\"",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-Service -Name 'WSearch' -StartupType Disabled",
+      "description": "Désactive le service d'indexation",
+      "platform": 0
+    }
+  ],
+  "notes": "Windows Search Indexing: indexe en permanence vos fichiers pour accélérer la recherche. Consomme CPU/disque en arrière-plan. Désactiver libère des ressources mais rend la recherche Windows beaucoup plus lente. Recommandé si vous n'utilisez pas la recherche Windows ou préférez Everything/Listary.",
+  "links": []
+}

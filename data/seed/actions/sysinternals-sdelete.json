@@ -1,0 +1,51 @@
+{
+  "id": "sysinternals-sdelete",
+  "title": "Suppression sécurisée (SDelete)",
+  "description": "Supprime définitivement des fichiers ou nettoie l'espace libre pour empêcher la récupération de données (norme DoD).",
+  "category": "📁 Files & Storage",
+  "platform": 0,
+  "level": 2,
+  "tags": [
+    "sysinternals",
+    "sdelete",
+    "wipe",
+    "security",
+    "file"
+  ],
+  "windowsCommandTemplate": {
+    "id": "0fc6d7b0-4bb3-4aa7-8789-2ada1d01d84d",
+    "platform": 0,
+    "name": "sdelete",
+    "commandPattern": "sdelete.exe -p {passes} -s -AcceptEula {path}",
+    "parameters": [
+      {
+        "name": "passes",
+        "label": "Nombre de passes",
+        "type": "number",
+        "defaultValue": "3",
+        "required": true,
+        "description": "Nombre de réécritures"
+      },
+      {
+        "name": "path",
+        "label": "Chemin",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Fichier ou dossier à détruire"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "sdelete.exe -p 3 -s -AcceptEula C:\\Confidential\\*",
+      "description": "Supprime récursivement (-s) tout le contenu du dossier avec 3 passes d'écrasement. Irrécupérable.",
+      "platform": 0
+    },
+    {
+      "command": "sdelete.exe -z C:",
+      "description": "🔥 FREE SPACE WIPE : Nettoie l'espace libre du disque C: (écrit des zéros). Utile avant de cloner un disque virtuel (réduit la taille du VHD) ou avant de rendre un PC.",
+      "platform": 0
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-401",
+  "title": "Désactiver les recommandations Edge",
+  "description": "Désactive les recommandations et suggestions dans Microsoft Edge.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "edge",
+    "recommendations",
+    "privacy",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-401-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-401-cmd",
+    "platform": 0,
+    "name": "Disable-EdgeRecommendations",
+    "commandPattern": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force | Out-Null; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'ShowRecommendationsEnabled' -Type DWord -Value 0; Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'HideFirstRunExperience' -Type DWord -Value 1",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Name 'ShowRecommendationsEnabled' -Value 0",
+      "description": "Désactive les recommandations",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge' -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactive les suggestions de contenu dans Edge. Nécessite des droits administrateur.",
+  "links": []
+}

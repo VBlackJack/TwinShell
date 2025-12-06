@@ -1,0 +1,53 @@
+{
+  "id": "WIN-PRIVACY-010",
+  "title": "Restaurer les permissions par défaut",
+  "description": "Restaure toutes les permissions d'accès des applications à leurs valeurs par défaut Windows.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "privacy",
+    "confidentialité",
+    "restore",
+    "permissions",
+    "default",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-privacy-010-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-privacy-010-cmd",
+    "platform": 0,
+    "name": "Restore-DefaultAppPermissions",
+    "commandPattern": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Allow' -ErrorAction SilentlyContinue } }",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\webcam' -Name 'Value' -Value 'Allow'",
+      "description": "Réactive l'accès caméra",
+      "platform": 0
+    },
+    {
+      "command": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Allow' -ErrorAction SilentlyContinue } } -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Allow' -ErrorAction SilentlyContinue } } -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Allow' -ErrorAction SilentlyContinue } } -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "$permissions = @('location', 'webcam', 'microphone', 'documentsLibrary', 'broadFileSystemAccess', 'contacts', 'appointments', 'email', 'userNotificationListener', 'phoneCall', 'radios', 'chat'); foreach ($perm in $permissions) { $path = \"HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\$perm\"; if (Test-Path $path) { Set-ItemProperty -Path $path -Name 'Value' -Type String -Value 'Allow' -ErrorAction SilentlyContinue } } -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "Restaure les permissions par défaut. Utile après une configuration trop restrictive ou pour réinitialiser le système.",
+  "links": []
+}

@@ -1,0 +1,36 @@
+{
+  "id": "sysinternals-psexec-system",
+  "title": "Ouvrir un Shell en tant que SYSTEM (PsExec)",
+  "description": "Lance une invite de commande interactive avec les privilèges NT AUTHORITY\\SYSTEM. C'est le niveau de privilège le plus élevé sur Windows, au-dessus de l'Administrateur.",
+  "category": "⚙️ Services & Automation",
+  "platform": 0,
+  "level": 2,
+  "tags": [
+    "sysinternals",
+    "psexec",
+    "system",
+    "security",
+    "debug"
+  ],
+  "windowsCommandTemplate": {
+    "id": "5ea4cc01-1fbe-4df0-84cb-8127d0a21585",
+    "platform": 0,
+    "name": "psexec",
+    "commandPattern": "psexec.exe -i -s -AcceptEula cmd.exe",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "psexec.exe -i -s -AcceptEula cmd.exe",
+      "description": "🔥 GOD MODE : Ouvre une fenêtre CMD avec les droits SYSTEM. Permet d'accéder aux clés de registre protégées, aux fichiers SAM, et de tuer n'importe quel processus.",
+      "platform": 0
+    }
+  ],
+  "notes": "Nécessite l'outil PsExec de la suite Sysinternals. Antivirus peut bloquer cet outil.",
+  "links": [
+    {
+      "title": "PsExec Documentation",
+      "url": "https://learn.microsoft.com/en-us/sysinternals/downloads/psexec"
+    }
+  ]
+}

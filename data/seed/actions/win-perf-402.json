@@ -1,0 +1,39 @@
+{
+  "id": "WIN-PERF-402",
+  "title": "Désactiver Core Isolation",
+  "description": "Désactive l'isolation des cœurs (Memory Integrity/VBS) pour améliorer les performances en jeu (perte de 5-10% FPS avec VBS actif).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "security",
+    "vbs",
+    "gaming",
+    "core-isolation",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-402-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-402-cmd",
+    "platform": 0,
+    "name": "Disable-CoreIsolation",
+    "commandPattern": "Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity' -Name 'Enabled' -Type DWord -Value 0 -ErrorAction SilentlyContinue; bcdedit /set hypervisorlaunchtype off; Write-Host \"Core Isolation désactivé\" -ForegroundColor Green; Write-Warning \"Redémarrage requis. Impact sécurité: protection contre exploits kernel réduite\"",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "bcdedit /set hypervisorlaunchtype off",
+      "description": "Désactive l'hyperviseur",
+      "platform": 0
+    }
+  ],
+  "notes": "⚠️ Core Isolation (VBS/Memory Integrity): protection contre exploits kernel via virtualisation. Impact performances: -5 à -10% FPS en jeu. Désactiver améliore perfs mais réduit sécurité. Recommandé pour PC gaming dédié, déconseillé pour usage professionnel/sensible.",
+  "links": [
+    {
+      "title": "VBS Performance Impact",
+      "url": "https://www.tomshardware.com/news/windows-11-vbs-performance-impact"
+    }
+  ]
+}

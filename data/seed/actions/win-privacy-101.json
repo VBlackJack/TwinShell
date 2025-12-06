@@ -1,0 +1,59 @@
+{
+  "id": "WIN-PRIVACY-101",
+  "title": "Désactiver toute synchronisation cloud",
+  "description": "Désactive TOUTE synchronisation Windows avec le cloud Microsoft (paramètres, mots de passe, thèmes, navigateur). Configuration RGPD maximale.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 2,
+  "tags": [
+    "privacy",
+    "confidentialité",
+    "rgpd",
+    "sync",
+    "cloud",
+    "microsoft",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-privacy-101-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-privacy-101-cmd",
+    "platform": 0,
+    "name": "Disable-AllCloudSync",
+    "commandPattern": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Name 'SyncPolicy' -Type DWord -Value 5; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Personalization' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\BrowserSettings' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Credentials' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Accessibility' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Accessibility' -Name 'Enabled' -Type DWord -Value 0; New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync\\Groups\\Windows' -Name 'Enabled' -Type DWord -Value 0",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Name 'SyncPolicy' -Value 5",
+      "description": "Désactive toute la synchronisation",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Force -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SettingSync' -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "ATTENTION: Désactive complètement la synchronisation avec le cloud Microsoft. Conforme RGPD - empêche le transfert de données vers les serveurs Microsoft. Les paramètres ne seront plus synchronisés entre appareils.",
+  "links": [
+    {
+      "title": "RGPD - Article 44 - Transfert de données",
+      "url": "https://gdpr.eu/article-44-transfer-of-personal-data/"
+    }
+  ]
+}

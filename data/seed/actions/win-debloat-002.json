@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-002",
+  "title": "Supprimer les extensions média",
+  "description": "Supprime les extensions média optionnelles (HEIF, VP9, WebP, AV1) pour libérer de l'espace.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "media",
+    "codecs",
+    "extensions",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-002-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-002-cmd",
+    "platform": 0,
+    "name": "Remove-MediaExtensions",
+    "commandPattern": "$extensions = @('*HEIF*', '*VP9*', '*WebP*', '*AV1*'); foreach ($ext in $extensions) { Get-AppxPackage $ext | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Get-AppxPackage *HEIF* | Remove-AppxPackage",
+      "description": "Supprime l'extension HEIF",
+      "platform": 0
+    },
+    {
+      "command": "$extensions = @('*HEIF*', '*VP9*', '*WebP*', '*AV1*'); foreach ($ext in $extensions) { Get-AppxPackage $ext | Select-Object * -First 1",
+      "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+      "platform": 0
+    },
+    {
+      "command": "$extensions = @('*HEIF*', '*VP9*', '*WebP*', '*AV1*'); foreach ($ext in $extensions) { Get-AppxPackage $ext | Format-Table -AutoSize",
+      "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+      "platform": 0
+    },
+    {
+      "command": "$extensions = @('*HEIF*', '*VP9*', '*WebP*', '*AV1*'); foreach ($ext in $extensions) { Get-AppxPackage $ext | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+      "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+      "platform": 0
+    },
+    {
+      "command": "$extensions = @('*HEIF*', '*VP9*', '*WebP*', '*AV1*'); foreach ($ext in $extensions) { Get-AppxPackage $ext | Measure-Object",
+      "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+      "platform": 0
+    }
+  ],
+  "notes": "Supprime les codecs média optionnels. Vérifiez vos besoins avant de supprimer.",
+  "links": []
+}

@@ -158,42 +158,24 @@ public partial class App : Application
 
         // Seed Service
         // ARCHITECTURE FIX: Use AppData for seed files to avoid Program Files read-only issues
-        var appDataSeedPath = Path.Combine(
+        var appDataSeedDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "TwinShell",
             "data",
-            "seed",
-            "initial-actions.json");
+            "seed");
 
         // Ensure seed directory exists in AppData
-        var appDataSeedDir = Path.GetDirectoryName(appDataSeedPath);
-        if (!string.IsNullOrEmpty(appDataSeedDir) && !Directory.Exists(appDataSeedDir))
+        if (!Directory.Exists(appDataSeedDir))
         {
             Directory.CreateDirectory(appDataSeedDir);
         }
 
-        // Copy seed file from installation to AppData if not already present
-        if (!File.Exists(appDataSeedPath))
-        {
-            var installSeedPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
-            if (File.Exists(installSeedPath))
-            {
-                try
-                {
-                    File.Copy(installSeedPath, appDataSeedPath, overwrite: false);
-                    _logger.LogInfo($"Seed file copied to AppData: {appDataSeedPath}");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("Failed to copy seed file to AppData, will use installation path as fallback", ex);
-                }
-            }
-        }
+        // Copy seed files from installation to AppData if not already present
+        var installSeedDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed");
+        CopySeedDataToAppData(installSeedDir, appDataSeedDir);
 
-        // Use AppData path if available, fallback to installation path
-        var seedFilePath = File.Exists(appDataSeedPath)
-            ? appDataSeedPath
-            : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", "seed", "initial-actions.json");
+        // Use AppData path (JsonSeedService will look for actions/ folder or legacy file)
+        var seedFilePath = Path.Combine(appDataSeedDir, "initial-actions.json");
 
         services.AddScoped<ISeedService>(sp =>
             new JsonSeedService(sp.GetRequiredService<IActionRepository>(), seedFilePath));
@@ -342,6 +324,57 @@ public partial class App : Application
         {
             _logger.LogError("Error during startup Git sync", ex);
             // Don't show error to user for startup sync failures - they can check settings
+        }
+    }
+
+    /// <summary>
+    /// Copies seed data files from installation directory to AppData.
+    /// Supports both legacy single-file and new multi-file category format.
+    /// </summary>
+    private void CopySeedDataToAppData(string sourceDir, string destDir)
+    {
+        if (!Directory.Exists(sourceDir))
+        {
+            _logger.LogInfo($"Source seed directory not found: {sourceDir}");
+            return;
+        }
+
+        try
+        {
+            // Copy actions folder if it exists (new format)
+            var sourceActionsDir = Path.Combine(sourceDir, "actions");
+            var destActionsDir = Path.Combine(destDir, "actions");
+
+            if (Directory.Exists(sourceActionsDir))
+            {
+                if (!Directory.Exists(destActionsDir))
+                {
+                    Directory.CreateDirectory(destActionsDir);
+                }
+
+                foreach (var sourceFile in Directory.GetFiles(sourceActionsDir, "*.json"))
+                {
+                    var destFile = Path.Combine(destActionsDir, Path.GetFileName(sourceFile));
+                    if (!File.Exists(destFile))
+                    {
+                        File.Copy(sourceFile, destFile);
+                    }
+                }
+                _logger.LogInfo($"Seed actions folder copied to AppData ({Directory.GetFiles(destActionsDir, "*.json").Length} files)");
+            }
+
+            // Copy legacy file if it exists (for backwards compatibility)
+            var sourceLegacy = Path.Combine(sourceDir, "initial-actions.json");
+            var destLegacy = Path.Combine(destDir, "initial-actions.json");
+            if (File.Exists(sourceLegacy) && !File.Exists(destLegacy))
+            {
+                File.Copy(sourceLegacy, destLegacy);
+                _logger.LogInfo("Legacy seed file copied to AppData");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to copy seed data to AppData", ex);
         }
     }
 

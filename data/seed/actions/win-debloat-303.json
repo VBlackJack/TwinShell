@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-303",
+  "title": "Désactiver Internet Explorer",
+  "description": "Désactive le composant Internet Explorer (IE11) de Windows.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "internet-explorer",
+    "ie11",
+    "legacy",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-303-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-303-cmd",
+    "platform": 0,
+    "name": "Disable-InternetExplorer",
+    "commandPattern": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64'",
+      "description": "Désactive Internet Explorer 11",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    },
+    {
+      "command": "Disable-WindowsOptionalFeature -Online -FeatureName 'Internet-Explorer-Optional-amd64' -NoRestart",
+      "description": "Cas d'usage standard. Désactive le composant Internet Explorer (IE11) de Windows. Consultez la documentation pour des paramètres avancés et des options de filtrage.",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactive IE11. Certaines applications legacy peuvent nécessiter IE. Nécessite des droits administrateur.",
+  "links": []
+}

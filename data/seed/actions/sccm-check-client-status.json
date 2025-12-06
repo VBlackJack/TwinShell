@@ -1,0 +1,36 @@
+{
+  "id": "sccm-check-client-status",
+  "title": "Vérifier l'état du client SCCM",
+  "description": "Affiche l'état détaillé du client SCCM incluant la version, le site assigné et la dernière communication",
+  "category": "🔄 Windows Updates",
+  "platform": 0,
+  "level": 0,
+  "tags": [
+    "sccm",
+    "client",
+    "status",
+    "diagnostic"
+  ],
+  "windowsCommandTemplateId": "sccm-check-client-status-cmd",
+  "windowsCommandTemplate": {
+    "id": "sccm-check-client-status-cmd",
+    "platform": 0,
+    "name": "Get-WmiObject",
+    "commandPattern": "Get-WmiObject -Namespace root\\ccm -Class SMS_Client | Select-Object ClientVersion,@{Name='SiteCode';Expression={(Get-WmiObject -Namespace root\\ccm -Class SMS_Authority).CurrentManagementPoint}},@{Name='LastPolicyRequest';Expression={(Get-WmiObject -Namespace root\\ccm\\Policy\\Machine -Class CCM_Policy_Policy5 -Filter \"PolicySource='SMS:$((Get-WmiObject -Namespace root\\ccm -Class SMS_Authority).Name.Split(':')[1])'\" | Select-Object -First 1 -ExpandProperty PolicyDownloadTime)}} | Format-List",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Get-Service ccmexec | Select-Object Name,Status,StartType",
+      "description": "Vérifie l'état du service client SCCM",
+      "platform": 0
+    }
+  ],
+  "notes": "Le service ccmexec doit être en cours d'exécution. Vérifier C:\\Windows\\CCM\\Logs pour les logs détaillés.",
+  "links": [
+    {
+      "title": "SCCM Client Troubleshooting",
+      "url": "https://learn.microsoft.com/en-us/mem/configmgr/core/clients/manage/monitor-clients"
+    }
+  ]
+}

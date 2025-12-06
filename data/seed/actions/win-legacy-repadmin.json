@@ -1,0 +1,39 @@
+{
+  "id": "win-legacy-repadmin",
+  "title": "Diagnostic Réplication AD (RepAdmin)",
+  "description": "Outil en ligne de commande pour diagnostiquer et gérer la réplication Active Directory.",
+  "category": "🏢 Active Directory & GPO",
+  "platform": 0,
+  "level": 0,
+  "tags": [
+    "windows",
+    "ad",
+    "replication",
+    "repadmin",
+    "diagnostic"
+  ],
+  "windowsCommandTemplate": {
+    "id": "06d34abe-fc02-49e0-84f4-79b78c28d421",
+    "platform": 0,
+    "name": "repadmin",
+    "commandPattern": "repadmin /replsummary",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "repadmin /replsummary",
+      "description": "🔥 DAILY CHECK : Affiche un résumé rapide de l'état de réplication de toute la forêt. Affiche les échecs et les deltas de temps. À lancer tous les matins.",
+      "platform": 0
+    },
+    {
+      "command": "repadmin /syncall /A /e /P",
+      "description": "Force la réplication immédiate de toutes les partitions vers tous les contrôleurs. Utile après une modification urgente (création utilisateur, GPO).",
+      "platform": 0
+    },
+    {
+      "command": "repadmin /kcc",
+      "description": "Force le KCC (Knowledge Consistency Checker) à recalculer la topologie de réplication. Utile si un DC vient d'être ajouté ou supprimé.",
+      "platform": 0
+    }
+  ]
+}

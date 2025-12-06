@@ -1,0 +1,38 @@
+{
+  "id": "linux-disk-du",
+  "title": "Analyser taille dossiers (du)",
+  "description": "Estime l'espace disque utilisé par les fichiers et répertoires.",
+  "category": "📁 Files & Storage",
+  "platform": 1,
+  "level": 0,
+  "tags": [
+    "linux",
+    "disk",
+    "size",
+    "folder",
+    "du"
+  ],
+  "linuxCommandTemplate": {
+    "id": "c1bdd523-de45-4cf1-97ec-af202ac32f5a",
+    "platform": 1,
+    "name": "du",
+    "commandPattern": "du -sh {path}",
+    "parameters": [
+      {
+        "name": "path",
+        "label": "Chemin",
+        "type": "string",
+        "defaultValue": "*",
+        "required": true,
+        "description": "Cible"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "du -sh * | sort -rh | head -10",
+      "description": "🔥 ENQUÊTEUR : Affiche les 10 plus gros dossiers/fichiers du répertoire courant, triés par taille décroissante. Indispensable pour trouver qui mange le disque.",
+      "platform": 1
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-104",
+  "title": "Supprimer les apps météo/actualités",
+  "description": "Supprime les applications d'information Microsoft (Météo, Actualités, Sports).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "weather",
+    "news",
+    "info",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-104-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-104-cmd",
+    "platform": 0,
+    "name": "Remove-InfoApps",
+    "commandPattern": "$info = @('Microsoft.BingWeather', 'Microsoft.BingNews', 'Microsoft.BingSports', 'Microsoft.BingFinance'); foreach ($app in $info) { Get-AppxPackage $app | Remove-AppxPackage -ErrorAction SilentlyContinue }",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Get-AppxPackage Microsoft.BingWeather | Remove-AppxPackage",
+      "description": "Supprime l'app Météo",
+      "platform": 0
+    },
+    {
+      "command": "$info = @('Microsoft.BingWeather', 'Microsoft.BingNews', 'Microsoft.BingSports', 'Microsoft.BingFinance'); foreach ($app in $info) { Get-AppxPackage $app | Select-Object * -First 1",
+      "description": "Affiche toutes les propriétés du premier objet retourné. Select-Object * élargit l'affichage pour montrer toutes les colonnes. -First 1 limite au premier résultat. Utilisez cette commande pour découvrir les propriétés disponibles avant de filtrer.",
+      "platform": 0
+    },
+    {
+      "command": "$info = @('Microsoft.BingWeather', 'Microsoft.BingNews', 'Microsoft.BingSports', 'Microsoft.BingFinance'); foreach ($app in $info) { Get-AppxPackage $app | Format-Table -AutoSize",
+      "description": "Affiche les résultats dans un tableau optimisé pour la console. Format-Table -AutoSize ajuste automatiquement la largeur des colonnes pour un affichage lisible. Idéal pour visualiser rapidement les données structurées.",
+      "platform": 0
+    },
+    {
+      "command": "$info = @('Microsoft.BingWeather', 'Microsoft.BingNews', 'Microsoft.BingSports', 'Microsoft.BingFinance'); foreach ($app in $info) { Get-AppxPackage $app | Export-Csv C:\\Temp\\Export.csv -NoTypeInformation -Encoding UTF8",
+      "description": "Exporte les résultats vers un fichier CSV exploitable dans Excel. -NoTypeInformation supprime la ligne de métadonnées. -Encoding UTF8 garantit la compatibilité des caractères accentués. Utile pour l'archivage, les rapports et l'analyse externe.",
+      "platform": 0
+    },
+    {
+      "command": "$info = @('Microsoft.BingWeather', 'Microsoft.BingNews', 'Microsoft.BingSports', 'Microsoft.BingFinance'); foreach ($app in $info) { Get-AppxPackage $app | Measure-Object",
+      "description": "Compte le nombre total d'objets retournés. Measure-Object retourne Count, Sum, Average, Min, Max selon les propriétés. Utile pour les statistiques rapides et la validation de résultats.",
+      "platform": 0
+    }
+  ],
+  "notes": "Supprime les apps d'actualités et météo Microsoft.",
+  "links": []
+}

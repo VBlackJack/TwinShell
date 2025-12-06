@@ -1,0 +1,141 @@
+{
+  "id": "docker-stats",
+  "title": "Statistiques des conteneurs Docker",
+  "description": "Affiche en temps réel l'utilisation CPU, mémoire, réseau et I/O des conteneurs",
+  "category": "🐳 Containers & VMs",
+  "platform": 2,
+  "level": 0,
+  "tags": [
+    "docker",
+    "stats",
+    "monitoring",
+    "performance",
+    "resources",
+    "windows"
+  ],
+  "linuxCommandTemplateId": "docker-stats-cmd",
+  "linuxCommandTemplate": {
+    "id": "docker-stats-cmd",
+    "platform": 1,
+    "name": "docker",
+    "commandPattern": "docker stats {options}",
+    "parameters": [
+      {
+        "name": "options",
+        "label": "Options",
+        "type": "string",
+        "defaultValue": "",
+        "required": false,
+        "description": "Options (--no-stream, --format, container_name)"
+      }
+    ]
+  },
+  "notes": "Windows & Linux: Ctrl+C pour quitter. --no-stream pour affichage unique.",
+  "links": [
+    {
+      "title": "Docker stats",
+      "url": "https://docs.docker.com/engine/reference/commandline/stats/"
+    }
+  ],
+  "supportedPlatforms": [
+    0,
+    1
+  ],
+  "windowsCommandTemplate": {
+    "id": "docker-stats-win-cmd",
+    "platform": 0,
+    "name": "docker",
+    "commandPattern": "docker stats {options}",
+    "parameters": [
+      {
+        "name": "options",
+        "label": "Options",
+        "type": "string",
+        "defaultValue": "",
+        "required": false,
+        "description": "Options (--no-stream, --format, container_name)"
+      }
+    ]
+  },
+  "windowsCommandTemplateId": "docker-stats-win-cmd",
+  "windowsExamples": [
+    {
+      "command": "docker stats",
+      "description": "Stats en temps réel de tous les conteneurs",
+      "platform": 0
+    },
+    {
+      "command": "docker stats --no-stream",
+      "description": "Snapshot instantané (pas de rafraîchissement)",
+      "platform": 0
+    },
+    {
+      "command": "docker stats mycontainer",
+      "description": "Stats d'un conteneur spécifique",
+      "platform": 0
+    },
+    {
+      "command": "docker --help",
+      "description": "Affiche l'aide complète de la commande docker. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 0
+    },
+    {
+      "command": "man docker",
+      "description": "Affiche le manuel complet de docker. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 0
+    },
+    {
+      "command": "docker stats <options>",
+      "description": "Exemple utilisant le paramètre 'options': Options (--no-stream, --format, container_name). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    }
+  ],
+  "linuxExamples": [
+    {
+      "command": "docker stats",
+      "description": "Stats en temps réel de tous les conteneurs",
+      "platform": 1
+    },
+    {
+      "command": "docker stats --no-stream",
+      "description": "Snapshot instantané (pas de rafraîchissement)",
+      "platform": 1
+    },
+    {
+      "command": "docker stats mycontainer",
+      "description": "Stats d'un conteneur spécifique",
+      "platform": 1
+    },
+    {
+      "command": "docker --help",
+      "description": "Affiche l'aide complète de la commande docker. --help liste tous les paramètres disponibles, les options et des exemples d'utilisation. Première commande à utiliser pour découvrir les capacités d'un outil.",
+      "platform": 1
+    },
+    {
+      "command": "man docker",
+      "description": "Affiche le manuel complet de docker. Les pages man fournissent la documentation détaillée : syntaxe, paramètres, exemples, notes. Plus complet que --help. Naviguez avec flèches, cherchez avec '/', quittez avec 'q'.",
+      "platform": 1
+    },
+    {
+      "command": "docker stats <options>",
+      "description": "Exemple utilisant le paramètre 'options': Options (--no-stream, --format, container_name). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "platform": 1
+    }
+  ],
+  "crossPlatformNotes": {
+    "differences": [
+      "Syntaxe identique sur Windows et Linux"
+    ],
+    "commonalities": [
+      "Docker CLI est cross-platform",
+      "Fonctionnalité identique sur les deux plateformes"
+    ]
+  },
+  "examples": [
+    {
+      "command": "docker stats -v -f",
+      "description": "Exemple Windows pour Statistiques des conteneurs Docker",
+      "platform": 0
+    }
+  ]
+}

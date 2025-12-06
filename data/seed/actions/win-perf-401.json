@@ -1,0 +1,54 @@
+{
+  "id": "WIN-PERF-401",
+  "title": "Désactiver HAGS (Hardware Accelerated GPU Scheduling)",
+  "description": "Désactive l'ordonnancement GPU accéléré par matériel (peut causer des micro-stutters dans certains jeux).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "gpu",
+    "gaming",
+    "hags",
+    "graphics",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-401-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-401-cmd",
+    "platform": 0,
+    "name": "Disable-HAGS",
+    "commandPattern": "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Force -ErrorAction SilentlyContinue | Out-Null; Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Name 'HwSchMode' -Type DWord -Value 1; Write-Host \"HAGS désactivé\" -ForegroundColor Green; Write-Warning \"Redémarrage requis pour appliquer les changements\"",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Force -ErrorAction SilentlyContinue -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Force -ErrorAction SilentlyContinue -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Force -ErrorAction SilentlyContinue -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers' -Force -ErrorAction SilentlyContinue -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "HAGS (Windows 10 2004+): délègue l'ordonnancement GPU au matériel. Théoriquement améliore les perfs, mais cause des micro-stutters sur certaines configs (surtout Nvidia). Tester avec/sans pour voir l'impact. Désactiver souvent améliore la fluidité en jeu.",
+  "links": [
+    {
+      "title": "HAGS explanation",
+      "url": "https://devblogs.microsoft.com/directx/hardware-accelerated-gpu-scheduling/"
+    }
+  ]
+}

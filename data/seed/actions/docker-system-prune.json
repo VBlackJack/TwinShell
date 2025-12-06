@@ -1,0 +1,41 @@
+{
+  "id": "docker-system-prune",
+  "title": "Nettoyage disque Docker (System Prune)",
+  "description": "Supprime les données Docker inutilisées (conteneurs stoppés, réseaux, images sans tag) pour libérer de l'espace.",
+  "category": "🐳 Containers & VMs",
+  "platform": 2,
+  "level": 1,
+  "tags": [
+    "docker",
+    "clean",
+    "disk",
+    "prune",
+    "maintenance"
+  ],
+  "windowsCommandTemplate": {
+    "id": "c029a309-ef74-456a-8bb1-def5eeb88980",
+    "platform": 0,
+    "name": "docker",
+    "commandPattern": "docker system prune -a --volumes",
+    "parameters": []
+  },
+  "linuxCommandTemplate": {
+    "id": "d17e8958-8344-4322-a66b-d5bd263e5856",
+    "platform": 1,
+    "name": "docker",
+    "commandPattern": "docker system prune -a --volumes",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "docker system prune -a --volumes",
+      "description": "🔥 FREE SPACE : Supprime TOUT ce qui n'est pas utilisé (Images, Conteneurs stoppés, Volumes, Réseaux). Attention : destructif, mais sauve un serveur disque plein.",
+      "platform": 1
+    },
+    {
+      "command": "docker image prune -a",
+      "description": "Supprime uniquement les images inutilisées.",
+      "platform": 1
+    }
+  ]
+}

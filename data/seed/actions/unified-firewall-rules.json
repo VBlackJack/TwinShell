@@ -1,0 +1,63 @@
+{
+  "id": "unified-firewall-rules",
+  "title": "Lister les règles de pare-feu actives",
+  "description": "Affiche toutes les règles de pare-feu actives sur le système",
+  "category": "🔒 Security & Encryption",
+  "platform": 2,
+  "level": 0,
+  "tags": [
+    "firewall",
+    "security",
+    "rules",
+    "network",
+    "iptables",
+    "netfirewall"
+  ],
+  "windowsCommandTemplateId": "unified-firewall-rules-win-cmd",
+  "windowsCommandTemplate": {
+    "id": "unified-firewall-rules-win-cmd",
+    "platform": 0,
+    "commandPattern": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Select-Object DisplayName,Direction,Action,Profile | Sort-Object Direction,DisplayName | Format-Table -AutoSize",
+    "parameters": []
+  },
+  "linuxCommandTemplateId": "unified-firewall-rules-linux-cmd",
+  "linuxCommandTemplate": {
+    "id": "unified-firewall-rules-linux-cmd",
+    "platform": 1,
+    "commandPattern": "iptables -L -n -v --line-numbers",
+    "parameters": []
+  },
+  "parameters": [],
+  "examples": [
+    {
+      "command": "Get-NetFirewallRule | Where-Object {$_.Enabled -eq 'True'} | Format-Table",
+      "description": "Liste les règles de pare-feu actives sur Windows",
+      "platform": 0
+    },
+    {
+      "command": "iptables -L -n -v --line-numbers",
+      "description": "Liste les règles iptables sur Linux",
+      "platform": 1
+    },
+    {
+      "command": "iptables -L -n -v",
+      "description": "Lister les règles avec statistiques",
+      "platform": 1
+    },
+    {
+      "command": "iptables -A INPUT -p tcp --dport 22 -j ACCEPT",
+      "description": "Autoriser SSH",
+      "platform": 1
+    },
+    {
+      "command": "iptables -A INPUT -s 192.168.1.0/24 -j ACCEPT",
+      "description": "Autoriser un sous-réseau",
+      "platform": 1
+    },
+    {
+      "command": "iptables -D INPUT 3",
+      "description": "Supprimer la règle n°3",
+      "platform": 1
+    }
+  ]
+}

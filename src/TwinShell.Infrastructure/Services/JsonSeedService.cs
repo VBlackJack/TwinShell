@@ -7,63 +7,49 @@ using ActionModel = TwinShell.Core.Models.Action;
 namespace TwinShell.Infrastructure.Services;
 
 /// <summary>
-/// Service for seeding initial data from JSON file
+/// Service for seeding initial data from JSON files.
+/// Supports both legacy single-file format (initial-actions.json) and
+/// new multi-file format (actions/*.json) for better maintainability.
 /// </summary>
 public class JsonSeedService : ISeedService
 {
     private readonly IActionRepository _actionRepository;
-    private readonly string _seedFilePath;
+    private readonly string _seedBasePath;
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     public JsonSeedService(IActionRepository actionRepository, string seedFilePath)
     {
         _actionRepository = actionRepository;
-        _seedFilePath = seedFilePath;
+        // Store base path (parent directory of seed file or actions folder)
+        _seedBasePath = Path.GetDirectoryName(seedFilePath) ?? seedFilePath;
     }
 
     public async Task SeedAsync()
     {
         // Check if database is empty
-        // BUGFIX: ConfigureAwait(false) prevents deadlock when called from UI thread
         var existingCount = await _actionRepository.CountAsync().ConfigureAwait(false);
         if (existingCount > 0)
         {
-            // Database already has data, skip seeding
             return;
         }
 
-        // BUGFIX: Return early with warning instead of throwing FileNotFoundException
-        // This allows the application to start even if the seed file is missing
-        if (!File.Exists(_seedFilePath))
+        var allActions = await LoadAllActionsAsync().ConfigureAwait(false);
+
+        if (allActions.Count == 0)
         {
-            Console.WriteLine($"Warning: Seed file not found: {_seedFilePath}. Skipping data seeding.");
+            Console.WriteLine("Warning: No actions found to seed.");
             return;
         }
 
-        var json = await File.ReadAllTextAsync(_seedFilePath).ConfigureAwait(false);
-
-        // SECURITY: Limit JSON size to prevent DoS
-        const int MaxJsonSizeBytes = 10 * 1024 * 1024; // 10 MB
-        if (json.Length > MaxJsonSizeBytes)
-        {
-            Console.WriteLine($"Warning: Seed file too large ({json.Length} bytes). Maximum allowed is {MaxJsonSizeBytes} bytes.");
-            return;
-        }
-
-        var seedData = JsonSerializer.Deserialize<SeedData>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        });
-
-        if (seedData?.Actions == null || seedData.Actions.Count == 0)
-        {
-            return;
-        }
-
-        // SECURITY: Validate and sanitize each action before insertion
+        // Insert all validated actions
         var validActionsCount = 0;
         var skippedActionsCount = 0;
 
-        foreach (var action in seedData.Actions)
+        foreach (var action in allActions)
         {
             if (!ValidateAction(action))
             {
@@ -81,6 +67,107 @@ public class JsonSeedService : ISeedService
         }
 
         Console.WriteLine($"Seeding completed: {validActionsCount} actions inserted, {skippedActionsCount} actions skipped.");
+    }
+
+    /// <summary>
+    /// Loads all actions from available formats.
+    /// Priority: actions/*.json (individual files) > initial-actions.json (legacy)
+    /// </summary>
+    private async Task<List<ActionModel>> LoadAllActionsAsync()
+    {
+        var actionsDir = Path.Combine(_seedBasePath, "actions");
+
+        // Try new individual-file format first (one JSON per action)
+        if (Directory.Exists(actionsDir))
+        {
+            var jsonFiles = Directory.GetFiles(actionsDir, "*.json")
+                .Where(f => !Path.GetFileName(f).StartsWith("_"))
+                .ToArray();
+
+            if (jsonFiles.Length > 0)
+            {
+                var actions = await LoadActionsFromIndividualFilesAsync(jsonFiles).ConfigureAwait(false);
+                if (actions.Count > 0)
+                {
+                    Console.WriteLine($"Loaded {actions.Count} actions from {jsonFiles.Length} individual files.");
+                    return actions;
+                }
+            }
+        }
+
+        // Fallback to legacy single-file format
+        var legacyPath = Path.Combine(_seedBasePath, "initial-actions.json");
+        if (File.Exists(legacyPath))
+        {
+            var actions = await LoadActionsFromLegacyFileAsync(legacyPath).ConfigureAwait(false);
+            Console.WriteLine($"Loaded {actions.Count} actions from legacy file.");
+            return actions;
+        }
+
+        Console.WriteLine($"Warning: No seed files found in {_seedBasePath}");
+        return new List<ActionModel>();
+    }
+
+    /// <summary>
+    /// Loads actions from individual JSON files (one action per file).
+    /// </summary>
+    private async Task<List<ActionModel>> LoadActionsFromIndividualFilesAsync(string[] jsonFiles)
+    {
+        var allActions = new List<ActionModel>();
+        var errorCount = 0;
+
+        foreach (var filePath in jsonFiles.OrderBy(f => f))
+        {
+            try
+            {
+                var json = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+
+                // Security: Limit file size (100KB per action file)
+                const int MaxFileSizeBytes = 100 * 1024;
+                if (json.Length > MaxFileSizeBytes)
+                {
+                    Console.WriteLine($"Warning: File {Path.GetFileName(filePath)} too large, skipping.");
+                    errorCount++;
+                    continue;
+                }
+
+                var action = JsonSerializer.Deserialize<ActionModel>(json, JsonOptions);
+                if (action != null)
+                {
+                    allActions.Add(action);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Failed to load {Path.GetFileName(filePath)}: {ex.Message}");
+                errorCount++;
+            }
+        }
+
+        if (errorCount > 0)
+        {
+            Console.WriteLine($"Warning: {errorCount} files failed to load.");
+        }
+
+        return allActions;
+    }
+
+    /// <summary>
+    /// Loads actions from the legacy single-file format (initial-actions.json).
+    /// </summary>
+    private async Task<List<ActionModel>> LoadActionsFromLegacyFileAsync(string filePath)
+    {
+        var json = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
+
+        const int MaxJsonSizeBytes = 10 * 1024 * 1024; // 10 MB
+        if (json.Length > MaxJsonSizeBytes)
+        {
+            Console.WriteLine($"Warning: Seed file too large ({json.Length} bytes).");
+            return new List<ActionModel>();
+        }
+
+        var seedData = JsonSerializer.Deserialize<LegacySeedData>(json, JsonOptions);
+        return seedData?.Actions ?? new List<ActionModel>();
     }
 
     /// <summary>
@@ -126,7 +213,10 @@ public class JsonSeedService : ISeedService
         return true;
     }
 
-    private class SeedData
+    /// <summary>
+    /// Data structure for legacy single-file format (initial-actions.json).
+    /// </summary>
+    private class LegacySeedData
     {
         public string SchemaVersion { get; set; } = string.Empty;
         public List<ActionModel> Actions { get; set; } = new();

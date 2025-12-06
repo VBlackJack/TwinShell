@@ -1,0 +1,34 @@
+{
+  "id": "WIN-PERF-301",
+  "title": "Désactiver Superfetch/SysMain",
+  "description": "Désactive le service Superfetch (SysMain) qui précharge des applications en RAM. Utile sur SSD.",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "services",
+    "superfetch",
+    "sysmain",
+    "ssd",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-301-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-301-cmd",
+    "platform": 0,
+    "name": "Disable-Superfetch",
+    "commandPattern": "Stop-Service -Name 'SysMain' -Force -ErrorAction SilentlyContinue; Set-Service -Name 'SysMain' -StartupType Disabled; Write-Host \"Superfetch/SysMain désactivé\" -ForegroundColor Green",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-Service -Name 'SysMain' -StartupType Disabled",
+      "description": "Désactive Superfetch",
+      "platform": 0
+    }
+  ],
+  "notes": "Superfetch (SysMain): précharge les applications fréquemment utilisées en RAM. Utile sur HDD, contre-productif sur SSD (les SSD sont déjà rapides). Désactiver sur SSD libère RAM et réduit les écritures disque. Garder actif sur HDD.",
+  "links": []
+}

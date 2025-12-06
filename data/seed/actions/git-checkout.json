@@ -1,0 +1,76 @@
+{
+  "id": "git-checkout",
+  "title": "Changer de branche ou restaurer des fichiers",
+  "description": "Bascule sur une autre branche ou restaure des fichiers du working directory",
+  "category": "🔧 Development",
+  "platform": 2,
+  "level": 1,
+  "tags": [
+    "git",
+    "checkout",
+    "switch"
+  ],
+  "windowsCommandTemplateId": "git-checkout-win",
+  "windowsCommandTemplate": {
+    "id": "git-checkout-win",
+    "platform": 0,
+    "name": "git",
+    "commandPattern": "git checkout {target}",
+    "parameters": [
+      {
+        "name": "target",
+        "label": "Cible",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Branche ou fichier à checkout"
+      }
+    ]
+  },
+  "linuxCommandTemplateId": "git-checkout-linux",
+  "linuxCommandTemplate": {
+    "id": "git-checkout-linux",
+    "platform": 1,
+    "name": "git",
+    "commandPattern": "git checkout {target}",
+    "parameters": [
+      {
+        "name": "target",
+        "label": "Cible",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Branche ou fichier"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "git checkout main",
+      "description": "Bascule sur la branche main",
+      "platform": 2
+    },
+    {
+      "command": "git checkout -b new-feature",
+      "description": "Crée et bascule sur une nouvelle branche",
+      "platform": 0
+    },
+    {
+      "command": "git checkout -- file.txt",
+      "description": "Restaure un fichier depuis le dernier commit",
+      "platform": 1
+    },
+    {
+      "command": "git checkout srv-web-01.contoso.com",
+      "description": "Exemple utilisant le paramètre 'target': Branche ou fichier à checkout. Remplacez srv-web-01.contoso.com par la valeur appropriée selon votre environnement.",
+      "platform": 2
+    }
+  ],
+  "notes": "Utilisez -b pour créer et basculer sur une nouvelle branche. Préférez 'git switch' et 'git restore' dans Git moderne.",
+  "links": [
+    {
+      "title": "Git Checkout Documentation",
+      "url": "https://git-scm.com/docs/git-checkout"
+    }
+  ]
+}

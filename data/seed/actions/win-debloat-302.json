@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-302",
+  "title": "Désactiver Recall",
+  "description": "Désactive la fonctionnalité Recall AI de Windows 11 (enregistrement de l'activité).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "debloat",
+    "recall",
+    "ai",
+    "privacy",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-302-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-302-cmd",
+    "platform": 0,
+    "name": "Disable-Recall",
+    "commandPattern": "New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Force | Out-Null; Set-ItemProperty -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Name 'DisableAIDataAnalysis' -Type DWord -Value 1",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "Set-ItemProperty -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Name 'DisableAIDataAnalysis' -Value 1",
+      "description": "Désactive Recall",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Force -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Force -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Force -PassThru",
+      "description": "Force la commande à retourner l'objet modifié/créé dans le pipeline. Par défaut, les cmdlets Set-/New- ne retournent rien. -PassThru active le retour pour permettre des opérations en chaîne ou des vérifications immédiates.",
+      "platform": 0
+    },
+    {
+      "command": "New-Item -Path 'HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsAI' -Force -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    }
+  ],
+  "notes": "Désactive l'enregistrement de l'activité par Recall AI. Améliore la confidentialité.",
+  "links": []
+}

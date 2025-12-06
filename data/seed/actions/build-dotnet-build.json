@@ -1,0 +1,104 @@
+{
+  "id": "build-dotnet-build",
+  "title": "Compiler un projet .NET",
+  "description": "Compile un projet ou une solution .NET.",
+  "category": "🔧 Development",
+  "platform": 2,
+  "level": 0,
+  "tags": [
+    "build",
+    "dotnet",
+    "compile",
+    "csharp",
+    "development"
+  ],
+  "windowsCommandTemplateId": "build-dotnet-build-win-cmd",
+  "windowsCommandTemplate": {
+    "id": "build-dotnet-build-win-cmd",
+    "platform": 0,
+    "name": "dotnet build",
+    "commandPattern": "dotnet build \"{projectPath}\" --configuration {configuration}",
+    "parameters": [
+      {
+        "name": "projectPath",
+        "label": "Projet/Solution",
+        "type": "string",
+        "defaultValue": ".",
+        "required": false,
+        "description": "Chemin du .csproj, .sln ou dossier"
+      },
+      {
+        "name": "configuration",
+        "label": "Configuration",
+        "type": "string",
+        "defaultValue": "Release",
+        "required": false,
+        "description": "Debug ou Release"
+      }
+    ]
+  },
+  "linuxCommandTemplateId": "build-dotnet-build-linux-cmd",
+  "linuxCommandTemplate": {
+    "id": "build-dotnet-build-linux-cmd",
+    "platform": 1,
+    "name": "dotnet build",
+    "commandPattern": "dotnet build \"{projectPath}\" --configuration {configuration}",
+    "parameters": [
+      {
+        "name": "projectPath",
+        "label": "Projet/Solution",
+        "type": "string",
+        "defaultValue": ".",
+        "required": false,
+        "description": "Chemin du .csproj, .sln ou dossier"
+      },
+      {
+        "name": "configuration",
+        "label": "Configuration",
+        "type": "string",
+        "defaultValue": "Release",
+        "required": false,
+        "description": "Debug ou Release"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "dotnet build MyApp.csproj --configuration Release",
+      "description": "Compile en mode Release",
+      "platform": 0
+    },
+    {
+      "command": "dotnet build --no-restore",
+      "description": "Compile sans restaurer les packages",
+      "platform": 0
+    },
+    {
+      "command": "dotnet build \".\" --configuration Release",
+      "description": "Exemple utilisant le paramètre 'projectPath': Chemin du .csproj, .sln ou dossier. Remplacez C:\\Projects\\MyApp par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    },
+    {
+      "command": "dotnet build \"C:\\Projects\\MyApp\" --configuration Release",
+      "description": "Exemple utilisant le paramètre 'configuration': Debug ou Release. Remplacez Release par la valeur appropriée selon votre environnement.",
+      "platform": 0
+    },
+    {
+      "command": "dotnet build",
+      "description": "Compiler le projet",
+      "platform": 1
+    },
+    {
+      "command": "dotnet test",
+      "description": "Exécuter les tests",
+      "platform": 1
+    }
+  ],
+  "notes": "--no-restore évite la restauration des packages. --output pour spécifier le dossier de sortie.",
+  "links": [
+    {
+      "title": "Documentation dotnet build",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build"
+    }
+  ]
+}

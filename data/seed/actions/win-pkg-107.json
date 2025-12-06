@@ -1,0 +1,59 @@
+{
+  "id": "WIN-PKG-107",
+  "title": "Ajouter une source Chocolatey",
+  "description": "Ajoute une nouvelle source de packages Chocolatey personnalisée.",
+  "category": "📦 Package Management",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "chocolatey",
+    "package",
+    "source",
+    "repository",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "choco-source-add-cmd",
+  "windowsCommandTemplate": {
+    "id": "choco-source-add-cmd",
+    "platform": 0,
+    "name": "choco",
+    "commandPattern": "choco source add --name={name} --source={url}",
+    "parameters": [
+      {
+        "name": "name",
+        "label": "Nom de la source",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "Nom à donner à la source"
+      },
+      {
+        "name": "url",
+        "label": "URL de la source",
+        "type": "string",
+        "defaultValue": "",
+        "required": true,
+        "description": "URL du dépôt de packages"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "command": "choco source add --name=MyRepo --source=https://packages.example.com/chocolatey",
+      "description": "Ajoute une source personnalisée",
+      "platform": 0
+    },
+    {
+      "command": "choco source add --name=MyResource --source=https://www.contoso.com",
+      "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help choco -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+      "platform": 0
+    }
+  ],
+  "notes": "Nécessite des droits administrateur. Vérifier la fiabilité de la source avant de l'ajouter.",
+  "links": [
+    {
+      "title": "Chocolatey source documentation",
+      "url": "https://docs.chocolatey.org/en-us/choco/commands/source"
+    }
+  ]
+}

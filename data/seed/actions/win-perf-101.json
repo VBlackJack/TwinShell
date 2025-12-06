@@ -1,0 +1,48 @@
+{
+  "id": "WIN-PERF-101",
+  "title": "Activer le plan Ultimate Performance",
+  "description": "Active le plan d'alimentation Ultimate Performance de Windows pour maximiser les performances (déconseillé sur portable).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 1,
+  "tags": [
+    "performance",
+    "power",
+    "alimentation",
+    "ultimate",
+    "optimisation",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-perf-101-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-perf-101-cmd",
+    "platform": 0,
+    "name": "powercfg",
+    "commandPattern": "powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61; $ultimateGuid = (powercfg -list | Select-String 'Ultimate' | Select-Object -First 1) -replace '.*GUID: ([a-f0-9\\-]+).*','$1'; if ($ultimateGuid) { powercfg /setactive $ultimateGuid; Write-Host \"Plan Ultimate Performance activé\" -ForegroundColor Green } else { Write-Host \"Erreur: impossible de créer le plan Ultimate Performance\" -ForegroundColor Red }",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61",
+      "description": "Crée le plan Ultimate Performance",
+      "platform": 0
+    },
+    {
+      "command": "powercfg /setactive GUID",
+      "description": "Active le plan d'alimentation",
+      "platform": 0
+    },
+    {
+      "command": "powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61; $ultimateGuid = (powercfg -list",
+      "description": "Exécution standard de la commande None. Consultez la documentation officielle avec Get-Help powercfg -Full pour plus de détails sur les paramètres disponibles et les cas d'usage avancés.",
+      "platform": 0
+    }
+  ],
+  "notes": "Plan Ultimate Performance: élimine les micro-latences, désactive les économies d'énergie. Augmente la consommation électrique de 5-10%. Recommandé uniquement pour PC fixes gaming/workstation. Sur portable: réduit considérablement l'autonomie.",
+  "links": [
+    {
+      "title": "Ultimate Performance Power Plan",
+      "url": "https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/customize-power-slider"
+    }
+  ]
+}

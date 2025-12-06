@@ -1,0 +1,52 @@
+{
+  "id": "WIN-DEBLOAT-202",
+  "title": "Désinstaller OneDrive (complet)",
+  "description": "⚠️ DANGEROUS: Désinstallation complète de OneDrive avec nettoyage du registre et des fichiers (30+ étapes).",
+  "category": "🧹 Windows Debloat",
+  "platform": 0,
+  "level": 2,
+  "tags": [
+    "debloat",
+    "onedrive",
+    "dangerous",
+    "registry",
+    "windows"
+  ],
+  "windowsCommandTemplateId": "win-debloat-202-cmd",
+  "windowsCommandTemplate": {
+    "id": "win-debloat-202-cmd",
+    "platform": 0,
+    "name": "Remove-OneDrive",
+    "commandPattern": "taskkill /f /im OneDrive.exe; Start-Sleep -Seconds 2; if (Test-Path \"$env:SystemRoot\\System32\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\System32\\OneDriveSetup.exe\" /uninstall } elseif (Test-Path \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\" /uninstall }; Start-Sleep -Seconds 5; Remove-Item -Path \"$env:USERPROFILE\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\Microsoft\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:PROGRAMDATA\\Microsoft OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue",
+    "parameters": []
+  },
+  "examples": [
+    {
+      "command": "taskkill /f /im OneDrive.exe",
+      "description": "Arrête le processus OneDrive",
+      "platform": 0
+    },
+    {
+      "command": "taskkill /f /im OneDrive.exe; Start-Sleep -Seconds 2; if (Test-Path \"$env:SystemRoot\\System32\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\System32\\OneDriveSetup.exe\" /uninstall } elseif (Test-Path \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\" /uninstall }; Start-Sleep -Seconds 5; Remove-Item -Path \"$env:USERPROFILE\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\Microsoft\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:PROGRAMDATA\\Microsoft OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue -WhatIf",
+      "description": "Simulation de l'action sans exécution réelle (dry-run). Le switch -WhatIf affiche ce qui serait modifié sans appliquer les changements. INDISPENSABLE avant toute action de masse ou modification critique. Retirez -WhatIf après validation pour exécuter.",
+      "platform": 0
+    },
+    {
+      "command": "taskkill /f /im OneDrive.exe; Start-Sleep -Seconds 2; if (Test-Path \"$env:SystemRoot\\System32\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\System32\\OneDriveSetup.exe\" /uninstall } elseif (Test-Path \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\" /uninstall }; Start-Sleep -Seconds 5; Remove-Item -Path \"$env:USERPROFILE\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\Microsoft\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:PROGRAMDATA\\Microsoft OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue -Confirm:$false",
+      "description": "Exécute l'action sans demander de confirmation interactive. -Confirm:$false supprime les invites de validation. Utile dans les scripts automatisés mais à utiliser avec précaution : aucun filet de sécurité.",
+      "platform": 0
+    },
+    {
+      "command": "taskkill /f /im OneDrive.exe; Start-Sleep -Seconds 2; if (Test-Path \"$env:SystemRoot\\System32\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\System32\\OneDriveSetup.exe\" /uninstall } elseif (Test-Path \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\" /uninstall }; Start-Sleep -Seconds 5; Remove-Item -Path \"$env:USERPROFILE\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\Microsoft\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:PROGRAMDATA\\Microsoft OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue -Verbose",
+      "description": "Affiche des informations détaillées sur l'exécution de la commande. -Verbose active les messages de débogage pour comprendre précisément ce qui se passe. Essentiel pour le troubleshooting et la compréhension des opérations internes.",
+      "platform": 0
+    },
+    {
+      "command": "taskkill /f /im OneDrive.exe; Start-Sleep -Seconds 2; if (Test-Path \"$env:SystemRoot\\System32\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\System32\\OneDriveSetup.exe\" /uninstall } elseif (Test-Path \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\") { & \"$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe\" /uninstall }; Start-Sleep -Seconds 5; Remove-Item -Path \"$env:USERPROFILE\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:LOCALAPPDATA\\Microsoft\\OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue; Remove-Item -Path \"$env:PROGRAMDATA\\Microsoft OneDrive\" -Force -Recurse -ErrorAction SilentlyContinue",
+      "description": "Cas d'usage standard. ⚠️ DANGEROUS: Désinstallation complète de OneDrive avec nettoyage du registre et des fichiers (30+ étapes). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
+      "platform": 0
+    }
+  ],
+  "notes": "⚠️ ATTENTION: Cette action est irréversible. Sauvegarde système recommandée. Désactive la synchronisation cloud OneDrive. Inclut nettoyage registre et fichiers.",
+  "links": []
+}
