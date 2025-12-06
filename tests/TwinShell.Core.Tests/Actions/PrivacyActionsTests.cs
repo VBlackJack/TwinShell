@@ -12,21 +12,30 @@ namespace TwinShell.Core.Tests.Actions;
 public class PrivacyActionsTests
 {
     private readonly List<Action> _actions;
-    private const string ActionsFilePath = "../../../../../data/seed/initial-actions.json";
+    private const string ActionsDirectoryPath = "../../../../../data/seed/actions";
 
     public PrivacyActionsTests()
     {
-        // Load actions from seed file
-        var json = File.ReadAllText(ActionsFilePath);
-        var jsonDoc = JsonDocument.Parse(json);
-        var actionsArray = jsonDoc.RootElement.GetProperty("actions");
-
+        // Load actions from individual JSON files (v1.5.0+ format)
         _actions = new List<Action>();
-        foreach (var actionElement in actionsArray.EnumerateArray())
+
+        var actionsDir = Path.GetFullPath(ActionsDirectoryPath);
+        if (!Directory.Exists(actionsDir))
         {
+            throw new DirectoryNotFoundException($"Actions directory not found: {actionsDir}");
+        }
+
+        foreach (var filePath in Directory.GetFiles(actionsDir, "*.json"))
+        {
+            var fileName = Path.GetFileName(filePath);
+            if (fileName == "_index.json") continue; // Skip index file
+
+            var json = File.ReadAllText(filePath);
+            var actionElement = JsonDocument.Parse(json).RootElement;
+
             var action = new Action
             {
-                Id = actionElement.GetProperty("id").GetString() ?? string.Empty,
+                Id = actionElement.GetProperty("id").GetString()?.ToUpperInvariant() ?? string.Empty,
                 Title = actionElement.GetProperty("title").GetString() ?? string.Empty,
                 Description = actionElement.GetProperty("description").GetString() ?? string.Empty,
                 Category = actionElement.GetProperty("category").GetString() ?? string.Empty,
