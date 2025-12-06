@@ -1,4 +1,26 @@
-# TwinShell v1.4.0 - Release Notes
+# TwinShell v1.5.0 - Release Notes
+
+## What's New in v1.5.0
+
+### Actions Architecture Refactoring
+- **513 commands** now stored as individual JSON files in `data/seed/actions/`
+- Each action is a separate file for easier maintenance and collaboration
+- Better Git history and merge conflict handling
+- Cleaner structure for community contributions
+
+### Examples Organization
+- **2,732 examples** properly organized by platform
+- Cross-platform actions now use `windowsExamples` and `linuxExamples` arrays
+- Fixed 79 actions with mixed platform examples
+- Fixed 36 actions with missing command template IDs
+
+### Quality Improvements
+- All 513 JSON files validated
+- IDs normalized to lowercase (89 files fixed)
+- Removed duplicate examples (928 duplicates cleaned)
+- Dynamic version display in About window
+
+---
 
 ## What's New in v1.4.0
 
@@ -81,11 +103,11 @@
 
 ## Core Features
 
-TwinShell is a comprehensive PowerShell and Bash command library for system administrators, featuring 479 ready-to-use commands.
+TwinShell is a comprehensive PowerShell and Bash command library for system administrators, featuring 513 ready-to-use commands.
 
 ### Key Features
 
-- **479 commands** organized in 13 categorized collections
+- **513 commands** organized in 13 categorized collections
 - **Search and filtering** capabilities for quick command discovery
 - **Command history** with export functionality
 - **Favorites system** to bookmark frequently used commands
@@ -188,6 +210,14 @@ Developed with:
 ---
 
 ## Version History
+
+### v1.5.0 (2025-12-06)
+- Actions architecture refactored (513 individual JSON files)
+- 2,732 examples properly organized by platform
+- Fixed 79 cross-platform actions with mixed examples
+- Fixed 36 actions with missing template IDs
+- 928 duplicate examples removed
+- Dynamic version in About window
 
 ### v1.4.0 (2025-12-05)
 - Commands database audit and cleanup (479 commands, 13 categories)
