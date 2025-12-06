@@ -85,8 +85,8 @@ Il n'existe pas de version Mac ou Linux pour le moment.
 **R :** **Pas encore via l'interface.**
 
 **Méthode actuelle (technique) :**
-1. Modifiez le fichier `data/seed/initial-actions.json`
-2. Ajoutez votre commande au format JSON
+1. Créez un fichier JSON dans `data/seed/actions/` (ex: `ma-commande.json`)
+2. Utilisez le format JSON standard des actions existantes
 3. Relancez l'application (la base de données sera mise à jour)
 
 **À venir :** Une interface pour créer des commandes personnalisées est prévue dans une future version.
@@ -244,7 +244,7 @@ TwinShell tolère jusqu'à **30% de différence** entre votre recherche et les m
 #### 4. Commande inexistante
 
 - Toutes les commandes ne sont pas forcément dans la base
-- Consultez la liste dans `data/seed/initial-actions.json`
+- Consultez les fichiers dans `data/seed/actions/`
 
 ---
 

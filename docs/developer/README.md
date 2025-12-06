@@ -36,7 +36,7 @@ TwinShell/
 │   ├── TwinShell.Core.Tests/
 │   └── TwinShell.Persistence.Tests/
 ├── data/seed/
-│   └── initial-actions.json     # Donnees de seed
+│   └── actions/*.json           # 513 fichiers (un par action)
 └── docs/                        # Documentation
 ```
 

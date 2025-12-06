@@ -979,11 +979,11 @@ Tapez :
 
 Toutes les commandes ne sont pas forcément dans la base de données.
 
-Consultez la liste complète dans : `data/seed/initial-actions.json`
+Consultez les fichiers dans : `data/seed/actions/` (513 fichiers JSON, un par commande)
 
 Si une commande manque, vous pouvez :
 - Créer une issue sur GitHub pour demander son ajout
-- Modifier manuellement le fichier JSON (nécessite des connaissances techniques)
+- Créer un nouveau fichier JSON dans `data/seed/actions/`
 
 ---
 

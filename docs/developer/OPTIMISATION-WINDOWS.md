@@ -151,7 +151,7 @@ TwinShell/
 │   └── Audit Logger (traçabilité)
 │
 ├── Data Layer
-│   ├── initial-actions.json (définitions actions)
+│   ├── actions/*.json (513 fichiers, un par action)
 │   ├── initial-batches.json (presets)
 │   └── SQLite DB (historique, favoris)
 │
@@ -1682,7 +1682,7 @@ Si vous rencontrez des problèmes:
 ### Scripts de référence
 
 Les scripts PowerShell utilisés par TwinShell sont disponibles dans:
-- `/data/seed/initial-actions.json` - Définitions des actions
+- `/data/seed/actions/` - 513 fichiers JSON (un par action)
 - Documentation Microsoft sur Remove-AppxPackage
 - Documentation Microsoft sur les GPO Windows
 

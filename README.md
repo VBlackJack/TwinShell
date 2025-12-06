@@ -360,7 +360,7 @@ R : Tapez simplement les mots séparés par des espaces (ex: "AD user"). TOUS le
 ### Fonctionnalités
 
 **Q : Puis-je ajouter mes propres commandes ?**
-R : Cette fonctionnalité n'est pas encore disponible dans l'interface. Vous pouvez modifier le fichier `data/seed/initial-actions.json` et relancer l'application.
+R : Cette fonctionnalité n'est pas encore disponible dans l'interface. Vous pouvez créer un fichier JSON dans `data/seed/actions/` et relancer l'application.
 
 **Q : Combien de favoris puis-je avoir ?**
 R : Maximum 50 favoris par utilisateur.
