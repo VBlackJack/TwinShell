@@ -38,17 +38,17 @@
   },
   "examples": [
     {
-      "command": "Test-NetConnection -ComputerName <Host> -Port 443",
-      "description": "🔥 DIAGNOSTIC EXPRESS : Vérifie si un port spécifique (ex: HTTPS) est ouvert. Indispensable pour distinguer un problème de service arrêté d'un problème de pare-feu.",
+      "command": "Test-NetConnection -ComputerName google.com -Port 443",
+      "description": "DIAGNOSTIC EXPRESS : Vérifie si un port spécifique (ex: HTTPS) est ouvert. Indispensable pour distinguer un problème de service arrêté d'un problème de pare-feu.",
       "platform": 0
     },
     {
-      "command": "Test-NetConnection -ComputerName <Host> -TraceRoute",
+      "command": "Test-NetConnection -ComputerName 8.8.8.8 -TraceRoute",
       "description": "Diagnostique la route réseau (Hops). Permet d'identifier à quel routeur/firewall les paquets sont perdus.",
       "platform": 0
     },
     {
-      "command": "Test-NetConnection -ComputerName <Host> -InformationLevel Detailed",
+      "command": "Test-NetConnection -ComputerName cloudflare.com -InformationLevel Detailed",
       "description": "Affiche des détails techniques complets (résolution DNS, adresse source, interface de sortie).",
       "platform": 0
     }

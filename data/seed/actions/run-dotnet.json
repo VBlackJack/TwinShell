@@ -77,8 +77,8 @@
   ],
   "linuxExamples": [
     {
-      "command": "dotnet run --project \"C:\\Projects\\MyApp\"",
-      "description": "Exemple Linux utilisant dotnet run. Remplacez les paramètres entre <> par vos valeurs.",
+      "command": "dotnet run --project \"./MyApp\"",
+      "description": "Lance un projet .NET depuis un chemin relatif",
       "platform": 1
     },
     {

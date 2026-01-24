@@ -144,7 +144,7 @@
       "platform": 1
     },
     {
-      "command": "mv \"C:\\Source\\data.csv\" \"D:\\Backup\\data.csv\"",
+      "command": "mv /home/user/data.csv /backup/data.csv",
       "description": "Exemple Linux pour Déplacer ou renommer des fichiers",
       "platform": 1
     },

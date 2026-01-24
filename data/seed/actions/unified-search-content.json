@@ -161,7 +161,7 @@
       "platform": 1
     },
     {
-      "command": "grep -r \"Admin\" \"C:\\Windows\\System32\"",
+      "command": "grep -r \"error\" /var/log",
       "description": "Exemple Linux pour Rechercher dans le contenu de fichiers",
       "platform": 1
     }

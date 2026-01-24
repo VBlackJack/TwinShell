@@ -62,8 +62,8 @@
       "platform": 0
     },
     {
-      "command": "Get-Service -Name <serviceName>",
-      "description": "Exemple utilisant le paramètre 'serviceName': Nom du service Windows (ex: W32Time, Spooler). Remplacez <serviceName> par la valeur appropriée selon votre environnement.",
+      "command": "Get-Service -Name Spooler",
+      "description": "Vérifie le statut du service d'impression Windows (Spooler).",
       "platform": 0
     },
     {
@@ -111,13 +111,13 @@
       "platform": 1
     },
     {
-      "command": "systemctl status <serviceName>",
-      "description": "Exemple utilisant le paramètre 'serviceName': Nom du service systemd (ex: nginx, apache2, ssh). Remplacez <serviceName> par la valeur appropriée selon votre environnement.",
+      "command": "systemctl status apache2",
+      "description": "Vérifie le statut du serveur web Apache.",
       "platform": 1
     },
     {
-      "command": "systemctl status wuauserv",
-      "description": "Exemple Linux pour Vérifier le statut d'un service",
+      "command": "systemctl status cron",
+      "description": "Vérifie le statut du service de tâches planifiées cron.",
       "platform": 1
     }
   ],

@@ -116,7 +116,7 @@
       "platform": 1
     },
     {
-      "command": "tree \"C:\\Logs\\app.log\"",
+      "command": "tree /var/log",
       "description": "Exemple Linux pour Afficher l'arborescence de dossiers",
       "platform": 1
     },

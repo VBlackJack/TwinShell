@@ -133,7 +133,7 @@
       "platform": 1
     },
     {
-      "command": "rm -rf \"C:\\Logs\\app.log\"",
+      "command": "rm -rf /var/log/app.log",
       "description": "Exemple Linux pour Supprimer des fichiers ou dossiers",
       "platform": 1
     },

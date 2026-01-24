@@ -15,8 +15,8 @@
   "windowsCommandTemplate": {
     "id": "sccm-check-client-status-cmd",
     "platform": 0,
-    "name": "Get-WmiObject",
-    "commandPattern": "Get-WmiObject -Namespace root\\ccm -Class SMS_Client | Select-Object ClientVersion,@{Name='SiteCode';Expression={(Get-WmiObject -Namespace root\\ccm -Class SMS_Authority).CurrentManagementPoint}},@{Name='LastPolicyRequest';Expression={(Get-WmiObject -Namespace root\\ccm\\Policy\\Machine -Class CCM_Policy_Policy5 -Filter \"PolicySource='SMS:$((Get-WmiObject -Namespace root\\ccm -Class SMS_Authority).Name.Split(':')[1])'\" | Select-Object -First 1 -ExpandProperty PolicyDownloadTime)}} | Format-List",
+    "name": "Get-CimInstance",
+    "commandPattern": "Get-CimInstance -Namespace root\\ccm -ClassName SMS_Client | Select-Object ClientVersion,@{Name='SiteCode';Expression={(Get-CimInstance -Namespace root\\ccm -ClassName SMS_Authority).CurrentManagementPoint}},@{Name='LastPolicyRequest';Expression={(Get-CimInstance -Namespace root\\ccm\\Policy\\Machine -ClassName CCM_Policy_Policy5 -Filter \"PolicySource='SMS:$((Get-CimInstance -Namespace root\\ccm -ClassName SMS_Authority).Name.Split(':')[1])'\" | Select-Object -First 1 -ExpandProperty PolicyDownloadTime)}} | Format-List",
     "parameters": []
   },
   "examples": [

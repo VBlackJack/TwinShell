@@ -123,7 +123,7 @@
       "platform": 1
     },
     {
-      "command": "sha256sum \"C:\\Data\\report.xlsx\"",
+      "command": "sha256sum /home/user/report.xlsx",
       "description": "Exemple Linux pour Calculer le hash d'un fichier",
       "platform": 1
     },

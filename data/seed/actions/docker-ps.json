@@ -84,8 +84,8 @@
       "platform": 0
     },
     {
-      "command": "docker ps <options>",
-      "description": "Exemple utilisant le paramètre 'options': Options (-a=all, -q=quiet, --filter, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "command": "docker ps --filter status=exited",
+      "description": "Filtre pour afficher uniquement les conteneurs arrêtés.",
       "platform": 0
     },
     {
@@ -121,8 +121,8 @@
       "platform": 1
     },
     {
-      "command": "docker ps <options>",
-      "description": "Exemple utilisant le paramètre 'options': Options (-a=all, -q=quiet, --filter, etc.). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "command": "docker ps --format \"table {{.Names}}\\t{{.Status}}\"",
+      "description": "Affiche les conteneurs avec un format personnalisé (nom et statut).",
       "platform": 1
     },
     {

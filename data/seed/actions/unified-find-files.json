@@ -153,7 +153,7 @@
       "platform": 1
     },
     {
-      "command": "find \"C:\\Windows\\System32\" -name \"*.txt\"",
+      "command": "find /usr/share -name \"*.txt\"",
       "description": "Exemple Linux pour Rechercher des fichiers par nom",
       "platform": 1
     }

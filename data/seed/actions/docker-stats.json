@@ -85,8 +85,8 @@
       "platform": 0
     },
     {
-      "command": "docker stats <options>",
-      "description": "Exemple utilisant le paramètre 'options': Options (--no-stream, --format, container_name). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "command": "docker stats --format \"table {{.Name}}\\t{{.CPUPerc}}\\t{{.MemUsage}}\"",
+      "description": "Affiche les stats avec un format personnalisé (nom, CPU, mémoire).",
       "platform": 0
     },
     {
@@ -122,8 +122,8 @@
       "platform": 1
     },
     {
-      "command": "docker stats <options>",
-      "description": "Exemple utilisant le paramètre 'options': Options (--no-stream, --format, container_name). Remplacez <options> par la valeur appropriée selon votre environnement.",
+      "command": "docker stats --no-stream --format \"{{.Name}}: {{.CPUPerc}}\"",
+      "description": "Affiche un snapshot des stats CPU avec format simplifié.",
       "platform": 1
     }
   ],

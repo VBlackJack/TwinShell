@@ -94,8 +94,8 @@
   ],
   "linuxExamples": [
     {
-      "command": "dotnet publish \"C:\\Projects\\MyApp\" --configuration Release --output \"C:\\Reports\\output.txt\"",
-      "description": "Exemple Linux utilisant dotnet publish. Remplacez les paramètres entre <> par vos valeurs.",
+      "command": "dotnet publish \"./MyApp\" --configuration Release --output \"./publish\"",
+      "description": "Publie un projet .NET en mode Release",
       "platform": 1
     },
     {

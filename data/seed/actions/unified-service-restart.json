@@ -52,8 +52,8 @@
       "platform": 0
     },
     {
-      "command": "Restart-Service -Name <serviceName> -Force",
-      "description": "Exemple utilisant le paramètre 'serviceName': Nom du service à redémarrer. Remplacez <serviceName> par la valeur appropriée selon votre environnement.",
+      "command": "Restart-Service -Name W32Time -Force",
+      "description": "Redémarre le service Windows Time pour resynchroniser l'horloge.",
       "platform": 0
     },
     {
@@ -101,18 +101,18 @@
       "platform": 1
     },
     {
-      "command": "sudo systemctl restart <serviceName>",
-      "description": "Exemple utilisant le paramètre 'serviceName': Nom du service à redémarrer. Remplacez <serviceName> par la valeur appropriée selon votre environnement.",
+      "command": "sudo systemctl restart mysql",
+      "description": "Redémarre le service de base de données MySQL.",
       "platform": 1
     },
     {
-      "command": "sudo systemctl restart {serviceName}",
-      "description": "Cas d'usage standard. Redémarre un service systemd (arrêt puis démarrage). Consultez la documentation pour des paramètres avancés et des options de filtrage.",
+      "command": "sudo systemctl restart sshd",
+      "description": "Redémarre le service SSH pour appliquer une nouvelle configuration.",
       "platform": 1
     },
     {
-      "command": "sudo systemctl restart wuauserv",
-      "description": "Exemple Linux pour Redémarrer un service",
+      "command": "sudo systemctl restart apache2",
+      "description": "Redémarre le serveur web Apache.",
       "platform": 1
     }
   ],

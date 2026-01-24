@@ -46,12 +46,12 @@
   },
   "examples": [
     {
-      "command": "Resolve-DnsName -Name <Domain> -Server 8.8.8.8",
+      "command": "Resolve-DnsName -Name microsoft.com -Server 8.8.8.8",
       "description": "Force la résolution via un serveur externe (Google). Permet de savoir si le problème vient de votre DNS interne ou de la propagation mondiale.",
       "platform": 0
     },
     {
-      "command": "Resolve-DnsName -Name <Domain> -Type TXT",
+      "command": "Resolve-DnsName -Name outlook.com -Type TXT",
       "description": "Vérifie les enregistrements TXT (souvent utilisés pour SPF, DKIM, validation de domaine).",
       "platform": 0
     },
