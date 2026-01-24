@@ -2,9 +2,9 @@
 ; Requires Inno Setup 6.0 or later: https://jrsoftware.org/isinfo.php
 
 #define MyAppName "TwinShell"
-#define MyAppVersion "1.5.1"
+#define MyAppVersion "1.6.0"
 #define MyAppPublisher "TwinShell"
-#define MyAppURL "https://github.com/VBlackJack/TwinShell"
+#define MyAppURL "https://github.com/jbombled/TwinShell"
 #define MyAppExeName "TwinShell.App.exe"
 #define MyAppDescription "A comprehensive PowerShell command library for Windows system administrators"
 
