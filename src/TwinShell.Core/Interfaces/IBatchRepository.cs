@@ -36,4 +36,9 @@ public interface IBatchRepository
     /// Searches batches by name or description
     /// </summary>
     Task<IEnumerable<CommandBatch>> SearchAsync(string query);
+
+    /// <summary>
+    /// Gets a batch by its public ID (for GitOps sync)
+    /// </summary>
+    Task<CommandBatch?> GetByPublicIdAsync(Guid publicId);
 }

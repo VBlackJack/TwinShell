@@ -21,4 +21,9 @@ public interface ICustomCategoryRepository
     Task<int> GetCountAsync();
     Task<bool> ExistsByNameAsync(string name, string? excludeId = null);
     Task UpdateBatchAsync(IEnumerable<CustomCategory> categories);
+
+    /// <summary>
+    /// Gets a category by its public ID (for GitOps sync)
+    /// </summary>
+    Task<CustomCategory?> GetByPublicIdAsync(Guid publicId);
 }

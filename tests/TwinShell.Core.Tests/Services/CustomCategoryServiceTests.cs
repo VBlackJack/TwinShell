@@ -552,4 +552,9 @@ internal class FakeCustomCategoryRepository : ICustomCategoryRepository
         }
         return Task.CompletedTask;
     }
+
+    public Task<CustomCategory?> GetByPublicIdAsync(Guid publicId)
+    {
+        return Task.FromResult(Categories.FirstOrDefault(c => c.PublicId == publicId));
+    }
 }

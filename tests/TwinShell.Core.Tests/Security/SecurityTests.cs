@@ -534,6 +534,10 @@ public class SecurityTests
         public Task<int> CountByCategoryAsync(string category) => Task.FromResult(0);
         public Task<bool> ExistsAsync(string id) => Task.FromResult(false);
         public Task<int> UpdateCategoryForActionsAsync(string oldCategory, string? newCategory) => Task.FromResult(0);
+        public Task<TwinShell.Core.Models.Action?> GetByPublicIdAsync(Guid publicId) => Task.FromResult<TwinShell.Core.Models.Action?>(null);
+        public Task<IEnumerable<TwinShell.Core.Models.Action>> GetAllWithTemplatesAsync() => Task.FromResult(Enumerable.Empty<TwinShell.Core.Models.Action>());
+        public Task AddRangeAsync(IEnumerable<TwinShell.Core.Models.Action> actions) => Task.CompletedTask;
+        public Task UpdateRangeAsync(IEnumerable<TwinShell.Core.Models.Action> actions) => Task.CompletedTask;
     }
 
     #endregion

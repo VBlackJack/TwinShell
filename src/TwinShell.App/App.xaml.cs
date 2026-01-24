@@ -136,6 +136,7 @@ public partial class App : Application
         services.AddScoped<IBatchRepository, BatchRepository>();
         services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
         services.AddScoped<ISyncHistoryRepository, SyncHistoryRepository>();
+        services.AddScoped<ICommandTemplateRepository, CommandTemplateRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();
@@ -162,6 +163,7 @@ public partial class App : Application
         services.AddSingleton<IDialogService, TwinShell.App.Services.DialogService>();
         services.AddScoped<ICommandExecutionService, CommandExecutionService>();
         services.AddScoped<IImportExportService, ImportExportService>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ISyncService, JsonSyncService>();
         services.AddSingleton<IGitSyncService, GitSyncService>();
 

@@ -166,4 +166,29 @@ public static class MessageKeys
     public const string GitSyncRepositoryNotInitialized = "GitSync.RepositoryNotInitialized";
     public const string GitSyncRetrying = "GitSync.Retrying";
     public const string GitSyncConflictDetected = "GitSync.ConflictDetected";
+    public const string GitSyncFailedToClone = "GitSync.FailedToClone";
+    public const string GitSyncFailedToInitialize = "GitSync.FailedToInitialize";
+    public const string GitSyncPullSucceededImportFailed = "GitSync.PullSucceededImportFailed";
+    public const string GitSyncFailedToPull = "GitSync.FailedToPull";
+    public const string GitSyncFailedToSync = "GitSync.FailedToSync";
+    public const string GitSyncInvalidRepositoryPath = "GitSync.InvalidRepositoryPath";
+    public const string GitSyncInvalidRepositoryPathDetails = "GitSync.InvalidRepositoryPathDetails";
+    public const string GitSyncFailedToConnect = "GitSync.FailedToConnect";
+    public const string GitSyncConnectionTestFailed = "GitSync.ConnectionTestFailed";
+    public const string GitSyncExportSucceededPushFailed = "GitSync.ExportSucceededPushFailed";
+    public const string GitSyncFailedToExportAndPush = "GitSync.FailedToExportAndPush";
+
+    // Sync messages (for JsonSyncService and YamlSyncService)
+    public const string SyncExportFailed = "Sync.ExportFailed";
+    public const string SyncImportFailed = "Sync.ImportFailed";
+    public const string SyncRollbackFailed = "Sync.RollbackFailed";
+    public const string SyncChangesRolledBack = "Sync.ChangesRolledBack";
+    public const string SyncInvalidCategoryFile = "Sync.InvalidCategoryFile";
+    public const string SyncInvalidTemplateFile = "Sync.InvalidTemplateFile";
+    public const string SyncInvalidActionFile = "Sync.InvalidActionFile";
+    public const string SyncInvalidBatchFile = "Sync.InvalidBatchFile";
+    public const string SyncInvalidFile = "Sync.InvalidFile";
+    public const string SyncValidationFailed = "Sync.ValidationFailed";
+    public const string SyncFileTooLarge = "Sync.FileTooLarge";
+    public const string SyncFileImportFailed = "Sync.FileImportFailed";
 }

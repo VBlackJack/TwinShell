@@ -11,6 +11,11 @@ public class CustomCategory
     public string Id { get; set; } = string.Empty;
 
     /// <summary>
+    /// Universal unique identifier for GitOps synchronization
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// Display name of the category.
     /// </summary>
     public string Name { get; set; } = string.Empty;

@@ -13,6 +13,11 @@ public class CommandTemplate
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
+    /// Universal unique identifier for GitOps synchronization
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// Platform for this template
     /// </summary>
     public Platform Platform { get; set; }

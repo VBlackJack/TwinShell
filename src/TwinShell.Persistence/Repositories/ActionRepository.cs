@@ -285,4 +285,154 @@ public class ActionRepository : IActionRepository
 
         return result;
     }
+
+    /// <summary>
+    /// Gets an action by its public ID (for GitOps sync)
+    /// </summary>
+    public async Task<Core.Models.Action?> GetByPublicIdAsync(Guid publicId)
+    {
+        var entity = await _context.Actions
+            .AsNoTracking()
+            .Include(a => a.WindowsCommandTemplate)
+            .Include(a => a.LinuxCommandTemplate)
+            .FirstOrDefaultAsync(a => a.PublicId == publicId);
+
+        return entity != null ? ActionMapper.ToModel(entity) : null;
+    }
+
+    /// <summary>
+    /// Gets all actions with their associated command templates
+    /// </summary>
+    public async Task<IEnumerable<Core.Models.Action>> GetAllWithTemplatesAsync()
+    {
+        var entities = await _context.Actions
+            .AsNoTracking()
+            .Include(a => a.WindowsCommandTemplate)
+            .Include(a => a.LinuxCommandTemplate)
+            .ToListAsync();
+
+        return entities.Select(ActionMapper.ToModel);
+    }
+
+    /// <summary>
+    /// PERFORMANCE: Adds multiple actions in a single batch operation
+    /// Uses EF Core's AddRange for better performance than individual adds
+    /// </summary>
+    public async Task AddRangeAsync(IEnumerable<Core.Models.Action> actions)
+    {
+        try
+        {
+            var actionsList = actions.ToList();
+            if (!actionsList.Any())
+                return;
+
+            // Collect all templates first
+            var templates = new List<Entities.CommandTemplateEntity>();
+            foreach (var action in actionsList)
+            {
+                if (action.WindowsCommandTemplate != null)
+                {
+                    templates.Add(CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate));
+                }
+                if (action.LinuxCommandTemplate != null)
+                {
+                    templates.Add(CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate));
+                }
+            }
+
+            // Add templates in batch (filter out duplicates by Id)
+            if (templates.Any())
+            {
+                var uniqueTemplates = templates
+                    .GroupBy(t => t.Id)
+                    .Select(g => g.First())
+                    .ToList();
+                _context.CommandTemplates.AddRange(uniqueTemplates);
+            }
+
+            // Add actions in batch
+            var entities = actionsList.Select(ActionMapper.ToEntity).ToList();
+            _context.Actions.AddRange(entities);
+
+            // Single SaveChanges for all operations
+            await _context.SaveChangesAsync();
+
+            // Invalidate cache
+            InvalidateCategoriesCache();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while batch adding {Count} actions", actions.Count());
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// PERFORMANCE: Updates multiple actions in a single batch operation
+    /// Uses EF Core's UpdateRange for better performance than individual updates
+    /// </summary>
+    public async Task UpdateRangeAsync(IEnumerable<Core.Models.Action> actions)
+    {
+        try
+        {
+            var actionsList = actions.ToList();
+            if (!actionsList.Any())
+                return;
+
+            // Update templates first
+            foreach (var action in actionsList)
+            {
+                if (action.WindowsCommandTemplate != null)
+                {
+                    var templateEntity = CommandTemplateMapper.ToEntity(action.WindowsCommandTemplate);
+                    var tracked = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
+                        .FirstOrDefault(e => e.Entity.Id == templateEntity.Id);
+                    if (tracked != null)
+                    {
+                        tracked.State = EntityState.Detached;
+                    }
+                    _context.CommandTemplates.Update(templateEntity);
+                }
+
+                if (action.LinuxCommandTemplate != null)
+                {
+                    var templateEntity = CommandTemplateMapper.ToEntity(action.LinuxCommandTemplate);
+                    var tracked = _context.ChangeTracker.Entries<Entities.CommandTemplateEntity>()
+                        .FirstOrDefault(e => e.Entity.Id == templateEntity.Id);
+                    if (tracked != null)
+                    {
+                        tracked.State = EntityState.Detached;
+                    }
+                    _context.CommandTemplates.Update(templateEntity);
+                }
+            }
+
+            // Update actions in batch
+            var entities = actionsList.Select(ActionMapper.ToEntity).ToList();
+
+            // Detach any tracked entities first
+            foreach (var entity in entities)
+            {
+                var tracked = _context.ChangeTracker.Entries<Entities.ActionEntity>()
+                    .FirstOrDefault(e => e.Entity.Id == entity.Id);
+                if (tracked != null)
+                {
+                    tracked.State = EntityState.Detached;
+                }
+            }
+
+            _context.Actions.UpdateRange(entities);
+
+            // Single SaveChanges for all operations
+            await _context.SaveChangesAsync();
+
+            // Invalidate cache
+            InvalidateCategoriesCache();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while batch updating {Count} actions", actions.Count());
+            throw;
+        }
+    }
 }

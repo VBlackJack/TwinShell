@@ -61,6 +61,12 @@ public interface IGitSyncService
     bool IsConfigured { get; }
 
     /// <summary>
+    /// Gets whether a sync operation is currently in progress.
+    /// Used to prevent concurrent operations.
+    /// </summary>
+    bool IsOperationInProgress { get; }
+
+    /// <summary>
     /// Gets or sets the current synchronization status message.
     /// </summary>
     string StatusMessage { get; }
@@ -106,6 +112,11 @@ public interface IGitSyncService
     /// </summary>
     /// <returns>Repository status information</returns>
     Task<GitRepositoryStatus> GetRepositoryStatusAsync();
+
+    /// <summary>
+    /// Cancels any currently running sync operation.
+    /// </summary>
+    void CancelOperation();
 }
 
 /// <summary>

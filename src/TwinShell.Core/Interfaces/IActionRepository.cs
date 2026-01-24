@@ -32,4 +32,24 @@ public interface IActionRepository
     /// <param name="newCategory">New category name (null or empty to clear)</param>
     /// <returns>Number of actions updated</returns>
     Task<int> UpdateCategoryForActionsAsync(string oldCategory, string? newCategory);
+
+    /// <summary>
+    /// Gets an action by its public ID (for GitOps sync)
+    /// </summary>
+    Task<ActionModel?> GetByPublicIdAsync(Guid publicId);
+
+    /// <summary>
+    /// Gets all actions with their associated command templates
+    /// </summary>
+    Task<IEnumerable<ActionModel>> GetAllWithTemplatesAsync();
+
+    /// <summary>
+    /// Adds multiple actions in a single batch operation (performance optimization)
+    /// </summary>
+    Task AddRangeAsync(IEnumerable<ActionModel> actions);
+
+    /// <summary>
+    /// Updates multiple actions in a single batch operation (performance optimization)
+    /// </summary>
+    Task UpdateRangeAsync(IEnumerable<ActionModel> actions);
 }

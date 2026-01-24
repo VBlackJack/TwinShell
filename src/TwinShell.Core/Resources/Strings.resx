@@ -369,4 +369,75 @@ For more information, visit the documentation.</value>
   <data name="GitSync.ConflictDetected" xml:space="preserve">
     <value>Conflict: {0} '{1}' - local is newer, kept local version</value>
   </data>
+  <data name="GitSync.FailedToClone" xml:space="preserve">
+    <value>Failed to clone repository</value>
+  </data>
+  <data name="GitSync.FailedToInitialize" xml:space="preserve">
+    <value>Failed to initialize repository</value>
+  </data>
+  <data name="GitSync.PullSucceededImportFailed" xml:space="preserve">
+    <value>Pull succeeded but import failed</value>
+  </data>
+  <data name="GitSync.FailedToPull" xml:space="preserve">
+    <value>Failed to pull changes</value>
+  </data>
+  <data name="GitSync.FailedToSync" xml:space="preserve">
+    <value>Failed to sync</value>
+  </data>
+  <data name="GitSync.InvalidRepositoryPath" xml:space="preserve">
+    <value>Invalid repository path</value>
+  </data>
+  <data name="GitSync.InvalidRepositoryPathDetails" xml:space="preserve">
+    <value>Repository path contains invalid characters or path traversal attempts.</value>
+  </data>
+  <data name="GitSync.FailedToConnect" xml:space="preserve">
+    <value>Failed to connect to remote repository</value>
+  </data>
+  <data name="GitSync.ConnectionTestFailed" xml:space="preserve">
+    <value>Connection test failed</value>
+  </data>
+  <data name="GitSync.ExportSucceededPushFailed" xml:space="preserve">
+    <value>Export succeeded but push failed. You can push manually with git push.</value>
+  </data>
+  <data name="GitSync.FailedToExportAndPush" xml:space="preserve">
+    <value>Failed to export and push: {0}</value>
+  </data>
+
+  <!-- Sync Messages (for JsonSyncService and YamlSyncService) -->
+  <data name="Sync.ExportFailed" xml:space="preserve">
+    <value>Export failed: {0}</value>
+  </data>
+  <data name="Sync.ImportFailed" xml:space="preserve">
+    <value>Import failed: {0}</value>
+  </data>
+  <data name="Sync.RollbackFailed" xml:space="preserve">
+    <value>Rollback failed: {0}</value>
+  </data>
+  <data name="Sync.ChangesRolledBack" xml:space="preserve">
+    <value>All changes have been rolled back.</value>
+  </data>
+  <data name="Sync.InvalidCategoryFile" xml:space="preserve">
+    <value>Invalid category file: {0}</value>
+  </data>
+  <data name="Sync.InvalidTemplateFile" xml:space="preserve">
+    <value>Invalid template file: {0}</value>
+  </data>
+  <data name="Sync.InvalidActionFile" xml:space="preserve">
+    <value>Invalid action file: {0}</value>
+  </data>
+  <data name="Sync.InvalidBatchFile" xml:space="preserve">
+    <value>Invalid batch file: {0}</value>
+  </data>
+  <data name="Sync.InvalidFile" xml:space="preserve">
+    <value>Invalid {0} file: {1}</value>
+  </data>
+  <data name="Sync.ValidationFailed" xml:space="preserve">
+    <value>Validation failed: {0}</value>
+  </data>
+  <data name="Sync.FileTooLarge" xml:space="preserve">
+    <value>File too large, skipped: {0}</value>
+  </data>
+  <data name="Sync.FileImportFailed" xml:space="preserve">
+    <value>Failed to import {0} from '{1}': {2}</value>
+  </data>
 </root>

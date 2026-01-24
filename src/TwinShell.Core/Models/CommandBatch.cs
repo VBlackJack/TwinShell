@@ -13,6 +13,11 @@ public class CommandBatch
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
+    /// Universal unique identifier for GitOps synchronization
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// Batch name/title
     /// </summary>
     public string Name { get; set; } = string.Empty;

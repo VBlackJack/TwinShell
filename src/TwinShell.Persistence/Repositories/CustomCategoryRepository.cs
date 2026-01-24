@@ -177,4 +177,25 @@ public class CustomCategoryRepository : ICustomCategoryRepository
         }
         await _context.SaveChangesAsync();
     }
+
+    /// <summary>
+    /// Gets a category by its public ID (for GitOps sync)
+    /// </summary>
+    public async Task<CustomCategory?> GetByPublicIdAsync(Guid publicId)
+    {
+        var entity = await _context.CustomCategories
+            .AsNoTracking()
+            .Include(c => c.ActionMappings)
+            .FirstOrDefaultAsync(c => c.PublicId == publicId);
+
+        if (entity == null)
+            return null;
+
+        var mappings = await _context.ActionCategoryMappings
+            .AsNoTracking()
+            .Where(m => m.CategoryId == entity.Id)
+            .ToListAsync();
+
+        return CustomCategoryMapper.ToDomain(entity, mappings);
+    }
 }

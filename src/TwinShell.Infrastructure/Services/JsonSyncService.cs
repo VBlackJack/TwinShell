@@ -1,22 +1,41 @@
+/*
+ * Copyright 2025 Julien Bombled
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using System.IO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
-using TwinShell.Persistence;
-using TwinShell.Persistence.Entities;
+using TwinShell.Core.Models;
 
 namespace TwinShell.Infrastructure.Services;
 
 /// <summary>
 /// Service for GitOps synchronization of TwinShell data via JSON files.
 /// Enables collaborative editing through Git-synchronized folders.
+/// Decoupled from database context - uses repository interfaces for data access.
 /// </summary>
 public class JsonSyncService : ISyncService
 {
-    private readonly TwinShellDbContext _dbContext;
+    private readonly IActionRepository _actionRepository;
+    private readonly IBatchRepository _batchRepository;
+    private readonly ICustomCategoryRepository _categoryRepository;
+    private readonly ICommandTemplateRepository _templateRepository;
+    private readonly IUnitOfWork? _unitOfWork;
     private readonly JsonSerializerOptions _jsonOptions;
 
     // Folder structure constants
@@ -25,12 +44,21 @@ public class JsonSyncService : ISyncService
     private const string TemplatesFolderName = "templates";
     private const string CategoriesFolderName = "categories";
 
-    // File size limit for security
-    private const long MaxFileSizeBytes = 10 * 1024 * 1024; // 10 MB
+    // File size limit for security (100KB per individual sync file)
+    private const long MaxFileSizeBytes = 100 * 1024; // 100 KB
 
-    public JsonSyncService(TwinShellDbContext dbContext)
+    public JsonSyncService(
+        IActionRepository actionRepository,
+        IBatchRepository batchRepository,
+        ICustomCategoryRepository categoryRepository,
+        ICommandTemplateRepository templateRepository,
+        IUnitOfWork? unitOfWork = null)
     {
-        _dbContext = dbContext;
+        _actionRepository = actionRepository;
+        _batchRepository = batchRepository;
+        _categoryRepository = categoryRepository;
+        _templateRepository = templateRepository;
+        _unitOfWork = unitOfWork;
         _jsonOptions = JsonOptionsHelper.SyncService;
     }
 
@@ -73,7 +101,7 @@ public class JsonSyncService : ISyncService
     private async Task<int> ExportCategoriesAsync(string rootFolderPath, SyncExportResult result)
     {
         var categoriesPath = Path.Combine(rootFolderPath, CategoriesFolderName);
-        var categories = await _dbContext.CustomCategories.ToListAsync();
+        var categories = await _categoryRepository.GetAllAsync();
         int count = 0;
 
         foreach (var category in categories)
@@ -110,14 +138,22 @@ public class JsonSyncService : ISyncService
     private async Task<int> ExportTemplatesAsync(string rootFolderPath, SyncExportResult result)
     {
         var templatesPath = Path.Combine(rootFolderPath, TemplatesFolderName);
-        var templates = await _dbContext.CommandTemplates.ToListAsync();
+        var templates = await _templateRepository.GetAllAsync();
         int count = 0;
 
         foreach (var template in templates)
         {
             try
             {
-                var parameters = DeserializeJson<List<TemplateParameterModel>>(template.ParametersJson) ?? new();
+                var parameters = template.Parameters.Select(p => new TemplateParameterModel
+                {
+                    Name = p.Name,
+                    Label = p.Label,
+                    Type = p.Type,
+                    DefaultValue = p.DefaultValue,
+                    Required = p.Required,
+                    Description = p.Description
+                }).ToList();
 
                 var model = new TemplateModel
                 {
@@ -146,10 +182,7 @@ public class JsonSyncService : ISyncService
     private async Task<int> ExportActionsAsync(string rootFolderPath, SyncExportResult result)
     {
         var actionsPath = Path.Combine(rootFolderPath, ActionsFolderName);
-        var actions = await _dbContext.Actions
-            .Include(a => a.WindowsCommandTemplate)
-            .Include(a => a.LinuxCommandTemplate)
-            .ToListAsync();
+        var actions = await _actionRepository.GetAllWithTemplatesAsync();
 
         int count = 0;
 
@@ -174,14 +207,33 @@ public class JsonSyncService : ISyncService
                     Category = action.Category,
                     Platform = action.Platform.ToString(),
                     Level = action.Level.ToString(),
-                    Tags = DeserializeJson<List<string>>(action.TagsJson) ?? new(),
+                    Tags = action.Tags,
                     WindowsTemplateId = windowsTemplatePublicId,
                     LinuxTemplateId = linuxTemplatePublicId,
-                    Examples = DeserializeJson<List<ExampleModel>>(action.ExamplesJson) ?? new(),
-                    WindowsExamples = DeserializeJson<List<ExampleModel>>(action.WindowsExamplesJson) ?? new(),
-                    LinuxExamples = DeserializeJson<List<ExampleModel>>(action.LinuxExamplesJson) ?? new(),
+                    Examples = action.Examples.Select(e => new ExampleModel
+                    {
+                        Command = e.Command,
+                        Description = e.Description,
+                        Platform = e.Platform.ToString()
+                    }).ToList(),
+                    WindowsExamples = action.WindowsExamples.Select(e => new ExampleModel
+                    {
+                        Command = e.Command,
+                        Description = e.Description,
+                        Platform = e.Platform.ToString()
+                    }).ToList(),
+                    LinuxExamples = action.LinuxExamples.Select(e => new ExampleModel
+                    {
+                        Command = e.Command,
+                        Description = e.Description,
+                        Platform = e.Platform.ToString()
+                    }).ToList(),
                     Notes = action.Notes,
-                    Links = DeserializeJson<List<LinkModel>>(action.LinksJson) ?? new(),
+                    Links = action.Links.Select(l => new LinkModel
+                    {
+                        Title = l.Title,
+                        Url = l.Url
+                    }).ToList(),
                     IsUserCreated = action.IsUserCreated,
                     UpdatedAt = action.UpdatedAt
                 };
@@ -204,14 +256,23 @@ public class JsonSyncService : ISyncService
     private async Task<int> ExportBatchesAsync(string rootFolderPath, SyncExportResult result)
     {
         var batchesPath = Path.Combine(rootFolderPath, BatchesFolderName);
-        var batches = await _dbContext.CommandBatches.ToListAsync();
+        var batches = await _batchRepository.GetAllAsync();
         int count = 0;
 
         foreach (var batch in batches)
         {
             try
             {
-                var commands = DeserializeJson<List<BatchCommandModel>>(batch.CommandsJson) ?? new();
+                var commands = batch.Commands.Select(c => new BatchCommandModel
+                {
+                    Id = c.Id,
+                    Order = c.Order,
+                    ActionId = c.ActionId,
+                    ActionTitle = c.ActionTitle,
+                    Command = c.Command,
+                    Platform = c.Platform.ToString(),
+                    Description = c.Description
+                }).ToList();
 
                 var model = new BatchModel
                 {
@@ -219,7 +280,7 @@ public class JsonSyncService : ISyncService
                     Name = batch.Name,
                     Description = batch.Description,
                     ExecutionMode = batch.ExecutionMode.ToString(),
-                    Tags = DeserializeJson<List<string>>(batch.TagsJson) ?? new(),
+                    Tags = batch.Tags,
                     Commands = commands,
                     IsUserCreated = batch.IsUserCreated,
                     UpdatedAt = batch.UpdatedAt
@@ -250,6 +311,12 @@ public class JsonSyncService : ISyncService
 
         try
         {
+            // Start transaction for atomic import (all or nothing)
+            if (_unitOfWork != null)
+            {
+                await _unitOfWork.BeginTransactionAsync();
+            }
+
             // Import in order: categories, templates, actions, batches
             // (respecting dependencies)
 
@@ -277,12 +344,30 @@ public class JsonSyncService : ISyncService
                 await ImportBatchesAsync(batchesPath, result);
             }
 
-            await _dbContext.SaveChangesAsync();
+            // Commit transaction if successful
+            if (_unitOfWork != null && result.Success)
+            {
+                await _unitOfWork.CommitTransactionAsync();
+            }
         }
         catch (Exception ex)
         {
             result.Success = false;
             result.Errors.Add($"Import failed: {ex.Message}");
+
+            // Rollback transaction on failure
+            if (_unitOfWork != null)
+            {
+                try
+                {
+                    await _unitOfWork.RollbackTransactionAsync();
+                    result.Errors.Add("All changes have been rolled back.");
+                }
+                catch (Exception rollbackEx)
+                {
+                    result.Errors.Add($"Rollback failed: {rollbackEx.Message}");
+                }
+            }
         }
 
         return result;
@@ -311,8 +396,7 @@ public class JsonSyncService : ISyncService
                     continue;
                 }
 
-                var existing = await _dbContext.CustomCategories
-                    .FirstOrDefaultAsync(c => c.PublicId == model.Id);
+                var existing = await _categoryRepository.GetByPublicIdAsync(model.Id);
 
                 if (existing != null)
                 {
@@ -324,13 +408,14 @@ public class JsonSyncService : ISyncService
                     existing.IsSystemCategory = model.IsSystemCategory;
                     existing.DisplayOrder = model.DisplayOrder;
                     existing.IsHidden = model.IsHidden;
-                    existing.ModifiedAt = DateTime.UtcNow;
+
+                    await _categoryRepository.UpdateAsync(existing);
                     result.CategoriesUpdated++;
                 }
                 else
                 {
                     // Create new
-                    var entity = new CustomCategoryEntity
+                    var category = new CustomCategory
                     {
                         Id = Guid.NewGuid().ToString(),
                         PublicId = model.Id,
@@ -340,10 +425,9 @@ public class JsonSyncService : ISyncService
                         ColorHex = model.ColorHex ?? "#2196F3",
                         IsSystemCategory = model.IsSystemCategory,
                         DisplayOrder = model.DisplayOrder,
-                        IsHidden = model.IsHidden,
-                        CreatedAt = DateTime.UtcNow
+                        IsHidden = model.IsHidden
                     };
-                    _dbContext.CustomCategories.Add(entity);
+                    await _categoryRepository.CreateAsync(category);
                     result.CategoriesCreated++;
                 }
             }
@@ -382,10 +466,18 @@ public class JsonSyncService : ISyncService
                     platform = Platform.Windows;
                 }
 
-                var parametersJson = SerializeJson(model.Parameters ?? new List<TemplateParameterModel>());
+                var parameters = (model.Parameters ?? new List<TemplateParameterModel>())
+                    .Select(p => new TemplateParameter
+                    {
+                        Name = p.Name,
+                        Label = p.Label,
+                        Type = p.Type ?? "string",
+                        DefaultValue = p.DefaultValue,
+                        Required = p.Required,
+                        Description = p.Description
+                    }).ToList();
 
-                var existing = await _dbContext.CommandTemplates
-                    .FirstOrDefaultAsync(t => t.PublicId == model.Id);
+                var existing = await _templateRepository.GetByPublicIdAsync(model.Id);
 
                 if (existing != null)
                 {
@@ -393,22 +485,24 @@ public class JsonSyncService : ISyncService
                     existing.Name = model.Name;
                     existing.Platform = platform;
                     existing.CommandPattern = model.CommandPattern;
-                    existing.ParametersJson = parametersJson;
+                    existing.Parameters = parameters;
+
+                    await _templateRepository.UpdateAsync(existing);
                     result.TemplatesUpdated++;
                 }
                 else
                 {
                     // Create new
-                    var entity = new CommandTemplateEntity
+                    var template = new CommandTemplate
                     {
                         Id = Guid.NewGuid().ToString(),
                         PublicId = model.Id,
                         Name = model.Name,
                         Platform = platform,
                         CommandPattern = model.CommandPattern,
-                        ParametersJson = parametersJson
+                        Parameters = parameters
                     };
-                    _dbContext.CommandTemplates.Add(entity);
+                    await _templateRepository.AddAsync(template);
                     result.TemplatesCreated++;
                 }
             }
@@ -454,31 +548,20 @@ public class JsonSyncService : ISyncService
                 }
 
                 // Resolve template references
-                string? windowsTemplateId = null;
-                string? linuxTemplateId = null;
+                CommandTemplate? windowsTemplate = null;
+                CommandTemplate? linuxTemplate = null;
 
                 if (model.WindowsTemplateId.HasValue)
                 {
-                    var template = await _dbContext.CommandTemplates
-                        .FirstOrDefaultAsync(t => t.PublicId == model.WindowsTemplateId.Value);
-                    windowsTemplateId = template?.Id;
+                    windowsTemplate = await _templateRepository.GetByPublicIdAsync(model.WindowsTemplateId.Value);
                 }
 
                 if (model.LinuxTemplateId.HasValue)
                 {
-                    var template = await _dbContext.CommandTemplates
-                        .FirstOrDefaultAsync(t => t.PublicId == model.LinuxTemplateId.Value);
-                    linuxTemplateId = template?.Id;
+                    linuxTemplate = await _templateRepository.GetByPublicIdAsync(model.LinuxTemplateId.Value);
                 }
 
-                var tagsJson = SerializeJson(model.Tags ?? new List<string>());
-                var examplesJson = SerializeJson(model.Examples ?? new List<ExampleModel>());
-                var windowsExamplesJson = SerializeJson(model.WindowsExamples ?? new List<ExampleModel>());
-                var linuxExamplesJson = SerializeJson(model.LinuxExamples ?? new List<ExampleModel>());
-                var linksJson = SerializeJson(model.Links ?? new List<LinkModel>());
-
-                var existing = await _dbContext.Actions
-                    .FirstOrDefaultAsync(a => a.PublicId == model.Id);
+                var existing = await _actionRepository.GetByPublicIdAsync(model.Id);
 
                 if (existing != null)
                 {
@@ -508,22 +591,24 @@ public class JsonSyncService : ISyncService
                     existing.Category = model.Category;
                     existing.Platform = platform;
                     existing.Level = level;
-                    existing.TagsJson = tagsJson;
-                    existing.WindowsCommandTemplateId = windowsTemplateId;
-                    existing.LinuxCommandTemplateId = linuxTemplateId;
-                    existing.ExamplesJson = examplesJson;
-                    existing.WindowsExamplesJson = windowsExamplesJson;
-                    existing.LinuxExamplesJson = linuxExamplesJson;
+                    existing.Tags = model.Tags ?? new List<string>();
+                    existing.WindowsCommandTemplate = windowsTemplate;
+                    existing.LinuxCommandTemplate = linuxTemplate;
+                    existing.Examples = ParseExamples(model.Examples);
+                    existing.WindowsExamples = ParseExamples(model.WindowsExamples);
+                    existing.LinuxExamples = ParseExamples(model.LinuxExamples);
                     existing.Notes = model.Notes;
-                    existing.LinksJson = linksJson;
+                    existing.Links = ParseLinks(model.Links);
                     existing.IsUserCreated = model.IsUserCreated;
                     existing.UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow;
+
+                    await _actionRepository.UpdateAsync(existing);
                     result.ActionsUpdated++;
                 }
                 else
                 {
                     // Create new
-                    var entity = new ActionEntity
+                    var action = new Core.Models.Action
                     {
                         Id = Guid.NewGuid().ToString(),
                         PublicId = model.Id,
@@ -532,19 +617,19 @@ public class JsonSyncService : ISyncService
                         Category = model.Category,
                         Platform = platform,
                         Level = level,
-                        TagsJson = tagsJson,
-                        WindowsCommandTemplateId = windowsTemplateId,
-                        LinuxCommandTemplateId = linuxTemplateId,
-                        ExamplesJson = examplesJson,
-                        WindowsExamplesJson = windowsExamplesJson,
-                        LinuxExamplesJson = linuxExamplesJson,
+                        Tags = model.Tags ?? new List<string>(),
+                        WindowsCommandTemplate = windowsTemplate,
+                        LinuxCommandTemplate = linuxTemplate,
+                        Examples = ParseExamples(model.Examples),
+                        WindowsExamples = ParseExamples(model.WindowsExamples),
+                        LinuxExamples = ParseExamples(model.LinuxExamples),
                         Notes = model.Notes,
-                        LinksJson = linksJson,
+                        Links = ParseLinks(model.Links),
                         IsUserCreated = model.IsUserCreated,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow
                     };
-                    _dbContext.Actions.Add(entity);
+                    await _actionRepository.AddAsync(action);
                     result.ActionsCreated++;
                 }
             }
@@ -583,11 +668,19 @@ public class JsonSyncService : ISyncService
                     executionMode = BatchExecutionMode.StopOnError;
                 }
 
-                var commandsJson = SerializeJson(model.Commands ?? new List<BatchCommandModel>());
-                var tagsJson = SerializeJson(model.Tags ?? new List<string>());
+                var commands = (model.Commands ?? new List<BatchCommandModel>())
+                    .Select(c => new BatchCommandItem
+                    {
+                        Id = c.Id ?? Guid.NewGuid().ToString(),
+                        Order = c.Order,
+                        ActionId = c.ActionId,
+                        ActionTitle = c.ActionTitle,
+                        Command = c.Command,
+                        Platform = Enum.TryParse<Platform>(c.Platform, true, out var p) ? p : Platform.Windows,
+                        Description = c.Description
+                    }).ToList();
 
-                var existing = await _dbContext.CommandBatches
-                    .FirstOrDefaultAsync(b => b.PublicId == model.Id);
+                var existing = await _batchRepository.GetByPublicIdAsync(model.Id);
 
                 if (existing != null)
                 {
@@ -615,29 +708,31 @@ public class JsonSyncService : ISyncService
                     existing.Name = model.Name;
                     existing.Description = model.Description;
                     existing.ExecutionMode = executionMode;
-                    existing.CommandsJson = commandsJson;
-                    existing.TagsJson = tagsJson;
+                    existing.Commands = commands;
+                    existing.Tags = model.Tags ?? new List<string>();
                     existing.IsUserCreated = model.IsUserCreated;
                     existing.UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow;
+
+                    await _batchRepository.UpdateAsync(existing);
                     result.BatchesUpdated++;
                 }
                 else
                 {
                     // Create new
-                    var entity = new CommandBatchEntity
+                    var batch = new CommandBatch
                     {
                         Id = Guid.NewGuid().ToString(),
                         PublicId = model.Id,
                         Name = model.Name,
                         Description = model.Description,
                         ExecutionMode = executionMode,
-                        CommandsJson = commandsJson,
-                        TagsJson = tagsJson,
+                        Commands = commands,
+                        Tags = model.Tags ?? new List<string>(),
                         IsUserCreated = model.IsUserCreated,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow
                     };
-                    _dbContext.CommandBatches.Add(entity);
+                    await _batchRepository.AddAsync(batch);
                     result.BatchesCreated++;
                 }
             }
@@ -774,9 +869,16 @@ public class JsonSyncService : ISyncService
             return Guid.NewGuid().ToString();
         }
 
+        // SECURITY: Protect against path traversal attacks
+        // Remove any path separators and parent directory references
+        var sanitized = name
+            .Replace("..", "")
+            .Replace("/", "_")
+            .Replace("\\", "_");
+
         // Remove invalid characters
         var invalidChars = Path.GetInvalidFileNameChars();
-        var sanitized = new string(name
+        sanitized = new string(sanitized
             .Select(c => invalidChars.Contains(c) ? '_' : c)
             .ToArray());
 
@@ -790,31 +892,37 @@ public class JsonSyncService : ISyncService
             sanitized = sanitized.Substring(0, 100);
         }
 
+        // SECURITY: Final check - ensure no path traversal possible
+        if (sanitized.Contains("..") || Path.IsPathRooted(sanitized))
+        {
+            return Guid.NewGuid().ToString();
+        }
+
         // If empty after sanitization, use GUID
         return string.IsNullOrWhiteSpace(sanitized) ? Guid.NewGuid().ToString() : sanitized;
     }
 
-    private static T? DeserializeJson<T>(string? json) where T : class
+    private static List<CommandExample> ParseExamples(List<ExampleModel>? models)
     {
-        if (string.IsNullOrWhiteSpace(json))
-        {
-            return null;
-        }
+        if (models == null) return new List<CommandExample>();
 
-        try
+        return models.Select(e => new CommandExample
         {
-            return JsonSerializer.Deserialize<T>(json, JsonOptionsHelper.CaseInsensitive);
-        }
-        catch (JsonException)
-        {
-            // Invalid JSON format - return null to indicate parse failure
-            return null;
-        }
+            Command = e.Command,
+            Description = e.Description,
+            Platform = Enum.TryParse<Platform>(e.Platform, true, out var p) ? p : Platform.Both
+        }).ToList();
     }
 
-    private static string SerializeJson<T>(T obj)
+    private static List<ExternalLink> ParseLinks(List<LinkModel>? models)
     {
-        return JsonSerializer.Serialize(obj, JsonOptionsHelper.CamelCaseForImport);
+        if (models == null) return new List<ExternalLink>();
+
+        return models.Select(l => new ExternalLink
+        {
+            Title = l.Title,
+            Url = l.Url
+        }).ToList();
     }
 
     #endregion

@@ -28,8 +28,8 @@ public class YamlSyncService : ISyncService
     private const string TemplatesFolderName = "templates";
     private const string CategoriesFolderName = "categories";
 
-    // File size limit for security
-    private const long MaxFileSizeBytes = 10 * 1024 * 1024; // 10 MB
+    // File size limit for security (100KB per individual sync file)
+    private const long MaxFileSizeBytes = 100 * 1024; // 100 KB
 
     public YamlSyncService(TwinShellDbContext dbContext)
     {
@@ -755,9 +755,16 @@ public class YamlSyncService : ISyncService
             return Guid.NewGuid().ToString();
         }
 
+        // SECURITY: Protect against path traversal attacks
+        // Remove any path separators and parent directory references
+        var sanitized = name
+            .Replace("..", "")
+            .Replace("/", "_")
+            .Replace("\\", "_");
+
         // Remove invalid characters
         var invalidChars = Path.GetInvalidFileNameChars();
-        var sanitized = new string(name
+        sanitized = new string(sanitized
             .Select(c => invalidChars.Contains(c) ? '_' : c)
             .ToArray());
 
@@ -769,6 +776,12 @@ public class YamlSyncService : ISyncService
         if (sanitized.Length > 100)
         {
             sanitized = sanitized.Substring(0, 100);
+        }
+
+        // SECURITY: Final check - ensure no path traversal possible
+        if (sanitized.Contains("..") || Path.IsPathRooted(sanitized))
+        {
+            return Guid.NewGuid().ToString();
         }
 
         // If empty after sanitization, use GUID

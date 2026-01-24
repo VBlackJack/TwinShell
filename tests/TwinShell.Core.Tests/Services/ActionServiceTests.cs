@@ -527,4 +527,33 @@ internal class FakeActionRepository : IActionRepository
         }
         return Task.FromResult(count);
     }
+
+    public Task<ActionModel?> GetByPublicIdAsync(Guid publicId)
+    {
+        return Task.FromResult(Actions.FirstOrDefault(a => a.PublicId == publicId));
+    }
+
+    public Task<IEnumerable<ActionModel>> GetAllWithTemplatesAsync()
+    {
+        return Task.FromResult(Actions.AsEnumerable());
+    }
+
+    public Task AddRangeAsync(IEnumerable<ActionModel> actions)
+    {
+        Actions.AddRange(actions);
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateRangeAsync(IEnumerable<ActionModel> actions)
+    {
+        foreach (var action in actions)
+        {
+            var index = Actions.FindIndex(a => a.Id == action.Id);
+            if (index >= 0)
+            {
+                Actions[index] = action;
+            }
+        }
+        return Task.CompletedTask;
+    }
 }

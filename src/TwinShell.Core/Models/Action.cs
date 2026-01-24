@@ -13,6 +13,11 @@ public class Action
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
+    /// Universal unique identifier for GitOps synchronization
+    /// </summary>
+    public Guid PublicId { get; set; } = Guid.NewGuid();
+
+    /// <summary>
     /// Action title
     /// </summary>
     public string Title { get; set; } = string.Empty;

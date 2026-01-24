@@ -19,6 +19,7 @@ public static class CommandBatchMapper
         return new CommandBatchEntity
         {
             Id = batch.Id,
+            PublicId = batch.PublicId,
             Name = batch.Name,
             Description = batch.Description,
             ExecutionMode = batch.ExecutionMode,
@@ -38,6 +39,7 @@ public static class CommandBatchMapper
         return new CommandBatch
         {
             Id = entity.Id,
+            PublicId = entity.PublicId,
             Name = entity.Name,
             Description = entity.Description,
             ExecutionMode = entity.ExecutionMode,

@@ -19,6 +19,7 @@ public static class CommandTemplateMapper
         return new CommandTemplateEntity
         {
             Id = template.Id,
+            PublicId = template.PublicId,
             Platform = template.Platform,
             Name = template.Name,
             CommandPattern = template.CommandPattern,
@@ -33,6 +34,7 @@ public static class CommandTemplateMapper
         return new CommandTemplate
         {
             Id = entity.Id,
+            PublicId = entity.PublicId,
             Platform = entity.Platform,
             Name = entity.Name,
             CommandPattern = entity.CommandPattern,

@@ -473,4 +473,75 @@ Cela supprimera la catégorie de toutes les {1} action(s) qui l'utilisent.</valu
   <data name="GitSync.ConflictDetected" xml:space="preserve">
     <value>Conflit: {0} '{1}' - la version locale est plus recente, version locale conservee</value>
   </data>
+  <data name="GitSync.FailedToClone" xml:space="preserve">
+    <value>Echec du clonage du depot</value>
+  </data>
+  <data name="GitSync.FailedToInitialize" xml:space="preserve">
+    <value>Echec de l'initialisation du depot</value>
+  </data>
+  <data name="GitSync.PullSucceededImportFailed" xml:space="preserve">
+    <value>Pull reussi mais l'import a echoue</value>
+  </data>
+  <data name="GitSync.FailedToPull" xml:space="preserve">
+    <value>Echec du pull des modifications</value>
+  </data>
+  <data name="GitSync.FailedToSync" xml:space="preserve">
+    <value>Echec de la synchronisation</value>
+  </data>
+  <data name="GitSync.InvalidRepositoryPath" xml:space="preserve">
+    <value>Chemin du depot invalide</value>
+  </data>
+  <data name="GitSync.InvalidRepositoryPathDetails" xml:space="preserve">
+    <value>Le chemin du depot contient des caracteres invalides ou des tentatives de traversee de repertoire.</value>
+  </data>
+  <data name="GitSync.FailedToConnect" xml:space="preserve">
+    <value>Echec de la connexion au depot distant</value>
+  </data>
+  <data name="GitSync.ConnectionTestFailed" xml:space="preserve">
+    <value>Echec du test de connexion</value>
+  </data>
+  <data name="GitSync.ExportSucceededPushFailed" xml:space="preserve">
+    <value>Export reussi mais le push a echoue. Vous pouvez pousser manuellement avec git push.</value>
+  </data>
+  <data name="GitSync.FailedToExportAndPush" xml:space="preserve">
+    <value>Echec de l'export et du push: {0}</value>
+  </data>
+
+  <!-- Messages Sync (pour JsonSyncService et YamlSyncService) -->
+  <data name="Sync.ExportFailed" xml:space="preserve">
+    <value>Echec de l'export: {0}</value>
+  </data>
+  <data name="Sync.ImportFailed" xml:space="preserve">
+    <value>Echec de l'import: {0}</value>
+  </data>
+  <data name="Sync.RollbackFailed" xml:space="preserve">
+    <value>Echec de l'annulation: {0}</value>
+  </data>
+  <data name="Sync.ChangesRolledBack" xml:space="preserve">
+    <value>Toutes les modifications ont ete annulees.</value>
+  </data>
+  <data name="Sync.InvalidCategoryFile" xml:space="preserve">
+    <value>Fichier categorie invalide: {0}</value>
+  </data>
+  <data name="Sync.InvalidTemplateFile" xml:space="preserve">
+    <value>Fichier modele invalide: {0}</value>
+  </data>
+  <data name="Sync.InvalidActionFile" xml:space="preserve">
+    <value>Fichier action invalide: {0}</value>
+  </data>
+  <data name="Sync.InvalidBatchFile" xml:space="preserve">
+    <value>Fichier batch invalide: {0}</value>
+  </data>
+  <data name="Sync.InvalidFile" xml:space="preserve">
+    <value>Fichier {0} invalide: {1}</value>
+  </data>
+  <data name="Sync.ValidationFailed" xml:space="preserve">
+    <value>Echec de la validation: {0}</value>
+  </data>
+  <data name="Sync.FileTooLarge" xml:space="preserve">
+    <value>Fichier trop volumineux, ignore: {0}</value>
+  </data>
+  <data name="Sync.FileImportFailed" xml:space="preserve">
+    <value>Echec de l'import de {0} depuis '{1}': {2}</value>
+  </data>
 </root>

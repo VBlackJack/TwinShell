@@ -92,4 +92,16 @@ public class BatchRepository : IBatchRepository
 
         return entities.Select(CommandBatchMapper.ToModel);
     }
+
+    /// <summary>
+    /// Gets a batch by its public ID (for GitOps sync)
+    /// </summary>
+    public async Task<CommandBatch?> GetByPublicIdAsync(Guid publicId)
+    {
+        var entity = await _context.CommandBatches
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.PublicId == publicId);
+
+        return entity == null ? null : CommandBatchMapper.ToModel(entity);
+    }
 }

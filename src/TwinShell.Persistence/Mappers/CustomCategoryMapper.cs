@@ -19,6 +19,7 @@ public static class CustomCategoryMapper
         return new CustomCategory
         {
             Id = entity.Id,
+            PublicId = entity.PublicId,
             Name = entity.Name,
             IconKey = entity.IconKey,
             ColorHex = entity.ColorHex,
@@ -39,6 +40,7 @@ public static class CustomCategoryMapper
         return new CustomCategoryEntity
         {
             Id = domain.Id,
+            PublicId = domain.PublicId,
             Name = domain.Name,
             IconKey = domain.IconKey,
             ColorHex = domain.ColorHex,

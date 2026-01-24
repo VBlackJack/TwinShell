@@ -19,6 +19,7 @@ public static class ActionMapper
         return new ActionEntity
         {
             Id = action.Id,
+            PublicId = action.PublicId,
             Title = action.Title,
             Description = action.Description,
             Category = action.Category,
@@ -45,6 +46,7 @@ public static class ActionMapper
         var action = new Core.Models.Action
         {
             Id = entity.Id,
+            PublicId = entity.PublicId,
             Title = entity.Title,
             Description = entity.Description,
             Category = entity.Category,

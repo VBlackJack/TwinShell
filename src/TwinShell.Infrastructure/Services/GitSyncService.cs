@@ -12,6 +12,7 @@ namespace TwinShell.Infrastructure.Services;
 /// <summary>
 /// Service for Git-based synchronization of TwinShell data.
 /// Uses LibGit2Sharp for Git operations with retry logic and detailed progress.
+/// Thread-safe: uses SemaphoreSlim to prevent concurrent sync operations.
 /// </summary>
 public class GitSyncService : IGitSyncService
 {
@@ -25,11 +26,20 @@ public class GitSyncService : IGitSyncService
     private const int MaxRetryAttempts = 3;
     private static readonly int[] RetryDelaysMs = { 1000, 2000, 4000 };
 
+    // Sync operation lock to prevent concurrent operations
+    private readonly SemaphoreSlim _syncLock = new(1, 1);
+    private volatile bool _isOperationInProgress;
+
+    // Cancellation support
+    private CancellationTokenSource? _currentCancellationTokenSource;
+
     private string _statusMessage = "Not configured";
     private SyncPhase _currentPhase = SyncPhase.Idle;
 
     public bool IsConfigured => !string.IsNullOrWhiteSpace(Settings?.GitRemoteUrl)
                                 && !string.IsNullOrWhiteSpace(Settings?.GitRepositoryPath);
+
+    public bool IsOperationInProgress => _isOperationInProgress;
 
     public string StatusMessage
     {
@@ -68,6 +78,74 @@ public class GitSyncService : IGitSyncService
     /// Gets a formatted localized string
     /// </summary>
     private string LF(string key, params object[] args) => _localization.GetFormattedString(key, args);
+
+    /// <summary>
+    /// Executes a sync operation with locking to prevent concurrent operations.
+    /// Returns an error result if another operation is already in progress.
+    /// Supports cancellation via CancelOperation().
+    /// </summary>
+    private async Task<GitOperationResult> ExecuteWithLockAsync(
+        Func<CancellationToken, Task<GitOperationResult>> operation,
+        string operationName)
+    {
+        if (!await _syncLock.WaitAsync(TimeSpan.Zero))
+        {
+            _logger.LogWarning("Sync operation '{Operation}' blocked - another operation is in progress", operationName);
+            return GitOperationResult.Fail(
+                "A sync operation is already in progress. Please wait for it to complete.",
+                GitSyncErrorCode.Unknown,
+                "Concurrent sync operations are not allowed.");
+        }
+
+        // Create new cancellation token source for this operation
+        _currentCancellationTokenSource?.Dispose();
+        _currentCancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = _currentCancellationTokenSource.Token;
+
+        try
+        {
+            _isOperationInProgress = true;
+            return await operation(cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation("Sync operation '{Operation}' was cancelled", operationName);
+            RaiseStatusChanged("Operation cancelled", SyncPhase.Idle);
+            return GitOperationResult.Fail(
+                "Operation was cancelled.",
+                GitSyncErrorCode.Cancelled,
+                "The sync operation was cancelled by user request.");
+        }
+        finally
+        {
+            _isOperationInProgress = false;
+            _currentCancellationTokenSource?.Dispose();
+            _currentCancellationTokenSource = null;
+            _syncLock.Release();
+        }
+    }
+
+    /// <summary>
+    /// Overload for operations that don't need cancellation token
+    /// </summary>
+    private Task<GitOperationResult> ExecuteWithLockAsync(
+        Func<Task<GitOperationResult>> operation,
+        string operationName)
+    {
+        return ExecuteWithLockAsync(async _ => await operation(), operationName);
+    }
+
+    /// <summary>
+    /// Cancels any currently running sync operation.
+    /// </summary>
+    public void CancelOperation()
+    {
+        if (_currentCancellationTokenSource != null && !_currentCancellationTokenSource.IsCancellationRequested)
+        {
+            _logger.LogInformation("Cancellation requested for current sync operation");
+            _currentCancellationTokenSource.Cancel();
+        }
+    }
 
     /// <summary>
     /// Logs a sync operation to the history repository
@@ -236,7 +314,12 @@ public class GitSyncService : IGitSyncService
         return GitSyncErrorCode.Unknown;
     }
 
-    public async Task<GitOperationResult> InitializeRepositoryAsync()
+    public Task<GitOperationResult> InitializeRepositoryAsync()
+    {
+        return ExecuteWithLockAsync(InitializeRepositoryInternalAsync, "initialize");
+    }
+
+    private async Task<GitOperationResult> InitializeRepositoryInternalAsync()
     {
         var startedAt = DateTime.UtcNow;
 
@@ -251,6 +334,17 @@ public class GitSyncService : IGitSyncService
 
         var localPath = Settings!.GitRepositoryPath!;
         var remoteUrl = Settings.GitRemoteUrl!;
+
+        // SECURITY: Validate repository path
+        if (!IsValidRepositoryPath(localPath))
+        {
+            var failResult = GitOperationResult.Fail(
+                "Invalid repository path",
+                GitSyncErrorCode.InvalidConfiguration,
+                "Repository path contains invalid characters or path traversal attempts.");
+            await LogSyncOperationAsync(failResult, SyncOperationType.Initialize, startedAt);
+            return failResult;
+        }
 
         try
         {
@@ -326,7 +420,12 @@ public class GitSyncService : IGitSyncService
         }
     }
 
-    public async Task<GitOperationResult> PullAndImportAsync()
+    public Task<GitOperationResult> PullAndImportAsync()
+    {
+        return ExecuteWithLockAsync(PullAndImportInternalAsync, "pull");
+    }
+
+    private async Task<GitOperationResult> PullAndImportInternalAsync()
     {
         var startedAt = DateTime.UtcNow;
 
@@ -339,9 +438,21 @@ public class GitSyncService : IGitSyncService
 
         var localPath = Settings!.GitRepositoryPath!;
 
+        // SECURITY: Validate repository path
+        if (!IsValidRepositoryPath(localPath))
+        {
+            var failResult = GitOperationResult.Fail(
+                "Invalid repository path",
+                GitSyncErrorCode.InvalidConfiguration,
+                "Repository path contains invalid characters or path traversal attempts.");
+            await LogSyncOperationAsync(failResult, SyncOperationType.Pull, startedAt);
+            return failResult;
+        }
+
         if (!Repository.IsValid(localPath))
         {
-            var initResult = await InitializeRepositoryAsync();
+            // Use internal method to avoid deadlock (we already hold the lock)
+            var initResult = await InitializeRepositoryInternalAsync();
             if (!initResult.Success)
             {
                 return initResult;
@@ -466,7 +577,12 @@ public class GitSyncService : IGitSyncService
         }
     }
 
-    public async Task<GitOperationResult> ExportAndPushAsync(string? commitMessage = null)
+    public Task<GitOperationResult> ExportAndPushAsync(string? commitMessage = null)
+    {
+        return ExecuteWithLockAsync(() => ExportAndPushInternalAsync(commitMessage), "push");
+    }
+
+    private async Task<GitOperationResult> ExportAndPushInternalAsync(string? commitMessage = null)
     {
         var startedAt = DateTime.UtcNow;
 
@@ -478,6 +594,17 @@ public class GitSyncService : IGitSyncService
         }
 
         var localPath = Settings!.GitRepositoryPath!;
+
+        // SECURITY: Validate repository path
+        if (!IsValidRepositoryPath(localPath))
+        {
+            var failResult = GitOperationResult.Fail(
+                "Invalid repository path",
+                GitSyncErrorCode.InvalidConfiguration,
+                "Repository path contains invalid characters or path traversal attempts.");
+            await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+            return failResult;
+        }
 
         if (!Repository.IsValid(localPath))
         {
@@ -613,12 +740,17 @@ public class GitSyncService : IGitSyncService
         }
     }
 
-    public async Task<GitOperationResult> FullSyncAsync()
+    public Task<GitOperationResult> FullSyncAsync()
+    {
+        return ExecuteWithLockAsync(FullSyncInternalAsync, "full-sync");
+    }
+
+    private async Task<GitOperationResult> FullSyncInternalAsync()
     {
         _logger.LogInformation("Starting full sync operation");
 
-        // First pull and import
-        var pullResult = await PullAndImportAsync();
+        // First pull and import (use internal method to avoid deadlock)
+        var pullResult = await PullAndImportInternalAsync();
         if (!pullResult.Success)
         {
             _logger.LogWarning("Full sync aborted - pull failed with error code {ErrorCode}: {Message}",
@@ -629,7 +761,8 @@ public class GitSyncService : IGitSyncService
         // Then export and push (if auto-push enabled)
         if (Settings?.GitAutoPush == true)
         {
-            var pushResult = await ExportAndPushAsync();
+            // Use internal method to avoid deadlock
+            var pushResult = await ExportAndPushInternalAsync();
 
             // Consider sync successful if pull succeeded, even if push had issues
             // (push failures are usually credential issues, not data issues)
@@ -660,7 +793,12 @@ public class GitSyncService : IGitSyncService
         return pullResult;
     }
 
-    public async Task<GitOperationResult> TestConnectionAsync()
+    public Task<GitOperationResult> TestConnectionAsync()
+    {
+        return ExecuteWithLockAsync(TestConnectionInternalAsync, "test-connection");
+    }
+
+    private async Task<GitOperationResult> TestConnectionInternalAsync()
     {
         var startedAt = DateTime.UtcNow;
 
@@ -803,5 +941,31 @@ public class GitSyncService : IGitSyncService
         var name = Settings?.GitUserName ?? "TwinShell User";
         var email = Settings?.GitUserEmail ?? "twinshell@local";
         return new Signature(name, email, DateTimeOffset.Now);
+    }
+
+    /// <summary>
+    /// Validates a repository path for security
+    /// </summary>
+    private static bool IsValidRepositoryPath(string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return false;
+        }
+
+        // SECURITY: Check for path traversal attempts
+        if (path.Contains("..") || !Path.IsPathFullyQualified(path))
+        {
+            return false;
+        }
+
+        // Ensure path doesn't contain dangerous characters
+        var invalidChars = Path.GetInvalidPathChars();
+        if (path.Any(c => invalidChars.Contains(c)))
+        {
+            return false;
+        }
+
+        return true;
     }
 }
