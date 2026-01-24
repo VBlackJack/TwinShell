@@ -388,6 +388,15 @@ public class JsonSyncService : ISyncService
                 }
 
                 var json = await File.ReadAllTextAsync(filePath);
+
+                // SECURITY: Validate JSON against schema before processing
+                var validationResult = JsonSchemaValidator.ValidateCategory(json);
+                if (!validationResult.IsValid)
+                {
+                    result.Warnings.Add($"Schema validation failed for '{Path.GetFileName(filePath)}': {string.Join("; ", validationResult.Errors.Take(3))}");
+                    continue;
+                }
+
                 var model = JsonSerializer.Deserialize<CategoryModel>(json, _jsonOptions);
 
                 if (model == null || model.Id == Guid.Empty)
@@ -453,6 +462,15 @@ public class JsonSyncService : ISyncService
                 }
 
                 var json = await File.ReadAllTextAsync(filePath);
+
+                // SECURITY: Validate JSON against schema before processing
+                var validationResult = JsonSchemaValidator.ValidateTemplate(json);
+                if (!validationResult.IsValid)
+                {
+                    result.Warnings.Add($"Schema validation failed for '{Path.GetFileName(filePath)}': {string.Join("; ", validationResult.Errors.Take(3))}");
+                    continue;
+                }
+
                 var model = JsonSerializer.Deserialize<TemplateModel>(json, _jsonOptions);
 
                 if (model == null || model.Id == Guid.Empty)
@@ -529,6 +547,15 @@ public class JsonSyncService : ISyncService
                 }
 
                 var json = await File.ReadAllTextAsync(filePath);
+
+                // SECURITY: Validate JSON against schema before processing
+                var validationResult = JsonSchemaValidator.ValidateAction(json);
+                if (!validationResult.IsValid)
+                {
+                    result.Warnings.Add($"Schema validation failed for '{Path.GetFileName(filePath)}': {string.Join("; ", validationResult.Errors.Take(3))}");
+                    continue;
+                }
+
                 var model = JsonSerializer.Deserialize<ActionModel>(json, _jsonOptions);
 
                 if (model == null || model.Id == Guid.Empty)
@@ -655,6 +682,15 @@ public class JsonSyncService : ISyncService
                 }
 
                 var json = await File.ReadAllTextAsync(filePath);
+
+                // SECURITY: Validate JSON against schema before processing
+                var validationResult = JsonSchemaValidator.ValidateBatch(json);
+                if (!validationResult.IsValid)
+                {
+                    result.Warnings.Add($"Schema validation failed for '{Path.GetFileName(filePath)}': {string.Join("; ", validationResult.Errors.Take(3))}");
+                    continue;
+                }
+
                 var model = JsonSerializer.Deserialize<BatchModel>(json, _jsonOptions);
 
                 if (model == null || model.Id == Guid.Empty)

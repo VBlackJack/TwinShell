@@ -137,6 +137,9 @@ public class GitOperationResult
     public List<string> Warnings { get; set; } = new();
     public List<SyncConflict> Conflicts { get; set; } = new();
 
+    /// <summary>List of files with Git merge conflicts</summary>
+    public List<string> ConflictedFiles { get; set; } = new();
+
     public static GitOperationResult Ok(string message = "Operation completed successfully")
         => new() { Success = true, Message = message, ErrorCode = GitSyncErrorCode.None };
 
@@ -144,7 +147,7 @@ public class GitOperationResult
         => new() { Success = false, Message = message, ErrorCode = errorCode, ErrorDetails = details };
 
     /// <summary>
-    /// Creates a result indicating conflicts were detected
+    /// Creates a result indicating data conflicts were detected
     /// </summary>
     public static GitOperationResult WithConflicts(string message, List<SyncConflict> conflicts)
         => new()
@@ -154,6 +157,19 @@ public class GitOperationResult
             ErrorCode = GitSyncErrorCode.DataConflict,
             ConflictsDetected = conflicts.Count,
             Conflicts = conflicts
+        };
+
+    /// <summary>
+    /// Creates a result indicating Git merge conflicts were detected
+    /// </summary>
+    public static GitOperationResult WithMergeConflicts(string message, List<string> conflictedFiles)
+        => new()
+        {
+            Success = false,
+            Message = message,
+            ErrorCode = GitSyncErrorCode.MergeConflict,
+            ConflictsDetected = conflictedFiles.Count,
+            ConflictedFiles = conflictedFiles
         };
 }
 

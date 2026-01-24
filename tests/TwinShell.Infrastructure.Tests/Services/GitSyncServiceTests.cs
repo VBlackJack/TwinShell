@@ -447,6 +447,29 @@ public class GitSyncServiceTests
         result.Conflicts.Should().HaveCount(1);
     }
 
+    [Fact]
+    public void GitOperationResult_WithMergeConflicts_CreatesMergeConflictResult()
+    {
+        // Arrange
+        var conflictedFiles = new List<string>
+        {
+            "actions/network/ping.yaml",
+            "templates/ssh.yaml",
+            "categories/network.yaml"
+        };
+
+        // Act
+        var result = GitOperationResult.WithMergeConflicts("Merge conflicts detected", conflictedFiles);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Message.Should().Be("Merge conflicts detected");
+        result.ErrorCode.Should().Be(GitSyncErrorCode.MergeConflict);
+        result.ConflictsDetected.Should().Be(3);
+        result.ConflictedFiles.Should().HaveCount(3);
+        result.ConflictedFiles.Should().Contain("actions/network/ping.yaml");
+    }
+
     #endregion
 
     #region SyncConflict Tests

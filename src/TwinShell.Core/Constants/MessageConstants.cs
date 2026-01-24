@@ -191,4 +191,5 @@ public static class MessageKeys
     public const string SyncValidationFailed = "Sync.ValidationFailed";
     public const string SyncFileTooLarge = "Sync.FileTooLarge";
     public const string SyncFileImportFailed = "Sync.FileImportFailed";
+    public const string SyncMergeConflict = "Sync.MergeConflict";
 }

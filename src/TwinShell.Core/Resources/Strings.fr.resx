@@ -544,4 +544,7 @@ Cela supprimera la catégorie de toutes les {1} action(s) qui l'utilisent.</valu
   <data name="Sync.FileImportFailed" xml:space="preserve">
     <value>Echec de l'import de {0} depuis '{1}': {2}</value>
   </data>
+  <data name="Sync.MergeConflict" xml:space="preserve">
+    <value>Conflits de fusion detectes dans {0} fichier(s)</value>
+  </data>
 </root>

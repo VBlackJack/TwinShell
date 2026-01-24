@@ -486,7 +486,10 @@ public class GitSyncService : IGitSyncService
 
             RaiseStatusChanged(L(MessageKeys.GitSyncMerging), SyncPhase.Merging, 30);
 
-            // Merge changes
+            // Merge changes and detect conflicts
+            List<string>? conflictedFiles = null;
+            bool hasConflicts = false;
+
             await Task.Run(() =>
             {
                 using var repo = new Repository(localPath);
@@ -504,8 +507,8 @@ public class GitSyncService : IGitSyncService
 
                     if (commitsMerged > 0)
                     {
-                        // Pull (fetch + merge)
-                        Commands.Pull(repo, signature, new PullOptions
+                        // Pull (fetch + merge) and capture result
+                        var mergeResult = Commands.Pull(repo, signature, new PullOptions
                         {
                             FetchOptions = new FetchOptions
                             {
@@ -513,12 +516,41 @@ public class GitSyncService : IGitSyncService
                             },
                             MergeOptions = new MergeOptions
                             {
-                                FastForwardStrategy = FastForwardStrategy.Default
+                                FastForwardStrategy = FastForwardStrategy.Default,
+                                // Don't fail on conflict, we'll handle it ourselves
+                                FailOnConflict = false
                             }
                         });
+
+                        // Check for merge conflicts
+                        if (mergeResult.Status == MergeStatus.Conflicts)
+                        {
+                            hasConflicts = true;
+                            conflictedFiles = repo.Index.Conflicts
+                                .Select(c => c.Ancestor?.Path ?? c.Ours?.Path ?? c.Theirs?.Path ?? "unknown")
+                                .Distinct()
+                                .ToList();
+
+                            _logger.LogWarning("Merge conflicts detected in {Count} files: {Files}",
+                                conflictedFiles.Count, string.Join(", ", conflictedFiles));
+                        }
                     }
                 }
             });
+
+            // If conflicts were detected, return with conflict information
+            if (hasConflicts && conflictedFiles != null && conflictedFiles.Count > 0)
+            {
+                RaiseStatusChanged(
+                    LF(MessageKeys.SyncMergeConflict, conflictedFiles.Count),
+                    SyncPhase.DetectingConflicts);
+
+                var conflictResult = GitOperationResult.WithMergeConflicts(
+                    $"Merge conflicts detected in {conflictedFiles.Count} file(s). Please resolve conflicts manually.",
+                    conflictedFiles);
+                await LogSyncOperationAsync(conflictResult, SyncOperationType.Pull, startedAt);
+                return conflictResult;
+            }
 
             // Import YAML files into database
             RaiseStatusChanged(L(MessageKeys.GitSyncImporting), SyncPhase.Importing, 50, entityType: "Actions");
