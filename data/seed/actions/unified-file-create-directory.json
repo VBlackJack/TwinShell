@@ -72,28 +72,8 @@
       "platform": 0
     },
     {
-      "command": "mkdir -p \"C:\\Logs\\app.log\"",
-      "description": "Exemple Linux pour Créer un répertoire",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -p /var/www/app/logs",
-      "description": "Créer avec parents",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -m 755 /opt/myapp",
-      "description": "Créer avec permissions",
-      "platform": 0
-    },
-    {
-      "command": "mkdir -v new_folder",
-      "description": "Mode verbose",
-      "platform": 0
-    },
-    {
-      "command": "mkdir project/{src,bin,lib,docs}",
-      "description": "Créer plusieurs dossiers",
+      "command": "New-Item -Path \"C:\\Projects\\src\",\"C:\\Projects\\bin\" -ItemType Directory -Force",
+      "description": "Cree plusieurs dossiers en une commande.",
       "platform": 0
     }
   ],

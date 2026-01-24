@@ -48,8 +48,8 @@
   ],
   "linuxExamples": [
     {
-      "command": "Get-Process -Name chrome | Stop-Process -Force",
-      "description": "Kill Switch : Ferme de force toutes les instances d'un processus spécifique. Utile pour nettoyer des processus zombies.",
+      "command": "ss -tulpn",
+      "description": "Liste les ports en ecoute avec les processus associes (alternative moderne a netstat).",
       "platform": 1
     },
     {

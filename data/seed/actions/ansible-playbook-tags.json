@@ -87,8 +87,13 @@
   ],
   "windowsExamples": [
     {
-      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --tags \"deploy,config\"",
-      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+      "command": "ansible-playbook site.yml --tags \"deploy,configure\"",
+      "description": "Execute uniquement les taches avec les tags deploy et configure.",
+      "platform": 0
+    },
+    {
+      "command": "ansible-playbook site.yml --skip-tags \"backup\"",
+      "description": "Execute toutes les taches sauf celles avec le tag backup.",
       "platform": 0
     }
   ],

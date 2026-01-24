@@ -87,8 +87,13 @@
   ],
   "windowsExamples": [
     {
-      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts --limit \"*.contoso.com\"",
-      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+      "command": "ansible-playbook site.yml -i hosts --limit \"webservers\"",
+      "description": "Execute uniquement sur le groupe webservers.",
+      "platform": 0
+    },
+    {
+      "command": "ansible-playbook deploy.yml --limit \"server1,server2\"",
+      "description": "Execute uniquement sur les hotes specifies.",
       "platform": 0
     }
   ],

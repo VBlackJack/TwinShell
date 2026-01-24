@@ -54,8 +54,13 @@
   ],
   "windowsExamples": [
     {
-      "command": "ansible-inventory --list -i /etc/ansible/hosts",
-      "description": "Exemple Windows utilisant ansible-inventory. Remplacez les paramètres entre <> par vos valeurs.",
+      "command": "ansible-inventory --list -i inventory.ini",
+      "description": "Liste l'inventaire au format JSON.",
+      "platform": 0
+    },
+    {
+      "command": "ansible-inventory --graph -i hosts",
+      "description": "Affiche l'inventaire sous forme d'arbre hierarchique.",
       "platform": 0
     }
   ],

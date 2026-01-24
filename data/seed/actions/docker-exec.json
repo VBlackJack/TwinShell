@@ -97,8 +97,8 @@
       "platform": 0
     },
     {
-      "command": "docker exec mycontainer ls /var/log",
-      "description": "Exécute une commande simple",
+      "command": "docker exec mycontainer dir",
+      "description": "Execute une commande simple (dir) dans le conteneur.",
       "platform": 0
     },
     {

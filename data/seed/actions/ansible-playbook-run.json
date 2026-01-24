@@ -71,8 +71,13 @@
   ],
   "windowsExamples": [
     {
-      "command": "ansible-playbook /etc/ansible/playbooks/deploy.yml -i /etc/ansible/hosts",
-      "description": "Exemple Windows utilisant ansible-playbook. Remplacez les paramètres entre <> par vos valeurs.",
+      "command": "ansible-playbook site.yml -i inventory.ini",
+      "description": "Execute un playbook avec un inventaire local.",
+      "platform": 0
+    },
+    {
+      "command": "ansible-playbook deploy.yml -i hosts --check",
+      "description": "Mode dry-run pour verifier les changements sans les appliquer.",
       "platform": 0
     }
   ],
