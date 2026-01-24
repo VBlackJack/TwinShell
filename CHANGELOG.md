@@ -5,6 +5,18 @@ All notable changes to TwinShell will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-01-24
+
+### Changed
+- **MainWindow Glass UI Application**: Applied Glass UI styles to main interface
+  - Search/Filters card now uses GlassCardStyle with semi-transparent background
+  - Categories panel uses GlassPanelStyle for glass-morphism sidebar effect
+  - Actions list panel uses GlassPanelStyle for visual consistency
+  - Action Details panel uses GlassPanelStyle for unified glass appearance
+  - Search TextBox uses GlassTextBoxStyle with reveal border on focus
+  - Buttons (Copy, Clear) use GlassButtonStyle with scale-down press effect
+  - TabControl now uses PageTransitionBehavior for smooth tab transitions (300ms fade + slide)
+
 ## [2.3.0] - 2026-01-24
 
 ### Added

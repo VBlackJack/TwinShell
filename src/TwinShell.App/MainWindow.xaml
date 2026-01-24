@@ -155,7 +155,7 @@
         <!-- UX: Main Content with cleaner layout (removed redundant header) -->
         <Grid Margin="{StaticResource Spacing.MD}">
         <!-- UX: Tabs with text-only headers (professional, accessible, language-unified) -->
-        <TabControl>
+        <TabControl behaviors:PageTransitionBehavior.IsEnabled="True">
             <TabItem Header="Actions">
                 <Grid Margin="0,16,0,0">
                     <Grid.RowDefinitions>
@@ -163,9 +163,9 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-        <!-- UI-007: Search and Filters with Fluent Card Style -->
+        <!-- UI-007: Search and Filters with Glass Card Style -->
         <Border Grid.Row="0"
-                Style="{DynamicResource FluentCardStyle}"
+                Style="{DynamicResource GlassCardStyle}"
                 Padding="{StaticResource Spacing.MD}"
                 Margin="0,0,0,16">
             <Grid>
@@ -184,7 +184,7 @@
                     <TextBox x:Name="SearchTextBox"
                              Grid.Column="0"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource ModernTextBoxStyle}"
+                             Style="{DynamicResource GlassTextBoxStyle}"
                              FontSize="{StaticResource FontSize.Base}"
                              TabIndex="1"
                              behaviors:TextBoxPlaceholderBehavior.Placeholder="Search actions by name, description, or category..."
@@ -199,7 +199,7 @@
                     <Button Grid.Column="1"
                             Content="✕"
                             Command="{Binding ClearFiltersCommand}"
-                            Style="{StaticResource PrimaryButtonStyle}"
+                            Style="{DynamicResource GlassButtonStyle}"
                             VerticalAlignment="Center"
                             Margin="8,0,0,0"
                             Padding="12,8"
@@ -273,10 +273,7 @@
 
             <!-- Categories Panel -->
             <Border Grid.Column="0"
-                    Background="{DynamicResource SurfaceBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource Radius.Base}">
+                    Style="{DynamicResource GlassPanelStyle}">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Top"
                                Text="Categories"
@@ -315,10 +312,7 @@
 
             <!-- Actions ListBox -->
             <Border Grid.Column="2"
-                    Background="{DynamicResource SurfaceBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource Radius.Base}">
+                    Style="{DynamicResource GlassPanelStyle}">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Top"
                                Text="{Binding FilteredActions.Count, StringFormat='Actions ({0})'}"
@@ -399,10 +393,7 @@
 
             <!-- Action Details and Command Generator -->
             <Border Grid.Column="4"
-                    Background="{DynamicResource SurfaceBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="{StaticResource Radius.Base}">
+                    Style="{DynamicResource GlassPanelStyle}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="{StaticResource Spacing.MD}" DataContext="{Binding SelectedAction}">
                         <!-- UX: Enhanced empty state with icon and better guidance -->
@@ -1006,7 +997,7 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource Spacing.Base}">
                                         <Button Content="Copy to Clipboard"
                                                 Command="{Binding CopyCommandCommand}"
-                                                Style="{StaticResource PrimaryButtonStyle}"
+                                                Style="{DynamicResource GlassButtonStyle}"
                                                 Padding="{StaticResource Spacing.MD}"
                                                 MinWidth="44"
                                                 MinHeight="44"
