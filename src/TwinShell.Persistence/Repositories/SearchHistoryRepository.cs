@@ -170,15 +170,18 @@ public class SearchHistoryRepository : ISearchHistoryRepository
 
     public async Task ClearAllAsync(string? userId = null)
     {
-        var query = _context.SearchHistories.AsQueryable();
-
+        // PERFORMANCE FIX: Use ExecuteDeleteAsync to delete in database without loading entities
+        // This prevents OOM issues with large search history and is 10-100x faster
         if (!string.IsNullOrEmpty(userId))
         {
-            query = query.Where(h => h.UserId == userId);
+            await _context.SearchHistories
+                .Where(h => h.UserId == userId)
+                .ExecuteDeleteAsync();
         }
-
-        _context.SearchHistories.RemoveRange(query);
-        await _context.SaveChangesAsync();
+        else
+        {
+            await _context.SearchHistories.ExecuteDeleteAsync();
+        }
     }
 
     public async Task DeleteOlderThanAsync(int daysToKeep)

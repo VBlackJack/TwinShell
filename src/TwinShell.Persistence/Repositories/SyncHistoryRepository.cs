@@ -83,14 +83,11 @@ public class SyncHistoryRepository : ISyncHistoryRepository
 
     public async Task<int> DeleteOldEntriesAsync(DateTime olderThan)
     {
-        var oldEntries = await _dbContext.SyncHistories
+        // PERFORMANCE FIX (TD-001): Use ExecuteDeleteAsync to delete in database without loading entities
+        // This prevents OOM issues with large sync history tables and is 10-100x faster
+        return await _dbContext.SyncHistories
             .Where(e => e.StartedAt < olderThan)
-            .ToListAsync();
-
-        _dbContext.SyncHistories.RemoveRange(oldEntries);
-        await _dbContext.SaveChangesAsync();
-
-        return oldEntries.Count;
+            .ExecuteDeleteAsync();
     }
 
     public async Task<int> GetCountAsync()

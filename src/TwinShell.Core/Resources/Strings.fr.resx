@@ -210,6 +210,31 @@ Raccourcis Clavier :
 
 Pour plus d'informations, consultez la documentation.</value>
   </data>
+  <data name="Help.KeyboardShortcuts.Title" xml:space="preserve">
+    <value>Raccourcis Clavier</value>
+  </data>
+  <data name="Help.KeyboardShortcuts.Content" xml:space="preserve">
+    <value>Raccourcis Clavier :
+
+Recherche &amp; Navigation :
+  Tab              - Naviguer entre les controles
+  Ctrl+F           - Focus sur la recherche
+  Entree           - Executer l'action selectionnee
+  Echap            - Effacer recherche/filtres
+
+Actions :
+  Ctrl+C           - Copier la commande
+  Ctrl+E           - Exporter la configuration
+  Ctrl+I           - Importer la configuration
+  F1               - Aide
+
+Categories :
+  Ctrl+M           - Gerer les categories
+
+General :
+  Ctrl+,           - Ouvrir les parametres
+  Alt+F4           - Quitter l'application</value>
+  </data>
 
   <!-- Messages de Statut -->
   <data name="Status.ActionsLoaded" xml:space="preserve">
@@ -546,5 +571,30 @@ Cela supprimera la catégorie de toutes les {1} action(s) qui l'utilisent.</valu
   </data>
   <data name="Sync.MergeConflict" xml:space="preserve">
     <value>Conflits de fusion detectes dans {0} fichier(s)</value>
+  </data>
+
+  <!-- Clipboard Messages -->
+  <data name="Clipboard.CommandCopied" xml:space="preserve">
+    <value>Commande copiee dans le presse-papiers</value>
+  </data>
+
+  <!-- History Messages -->
+  <data name="History.ClearAllConfirmation" xml:space="preserve">
+    <value>Etes-vous sur de vouloir effacer tout l'historique des commandes?</value>
+  </data>
+  <data name="History.ClearAllTitle" xml:space="preserve">
+    <value>Effacer l'historique</value>
+  </data>
+  <data name="History.ClearedSuccess" xml:space="preserve">
+    <value>Historique efface avec succes</value>
+  </data>
+  <data name="History.ClearError" xml:space="preserve">
+    <value>Erreur lors de l'effacement de l'historique</value>
+  </data>
+  <data name="History.DeletedSuccess" xml:space="preserve">
+    <value>Entree de l'historique supprimee</value>
+  </data>
+  <data name="History.DeleteError" xml:space="preserve">
+    <value>Erreur lors de la suppression de l'entree</value>
   </data>
 </root>

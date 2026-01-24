@@ -58,17 +58,20 @@ public partial class BatchViewModel : ObservableObject
     {
         try
         {
-            // BUGFIX: Removed ConfigureAwait(false) before Dispatcher calls
+            // UI-003: Null check for Dispatcher access
             var batches = await _batchService.GetAllBatchesAsync();
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+            var dispatcher = Application.Current?.Dispatcher;
+            if (dispatcher != null)
             {
-                Batches.Clear();
-                foreach (var batch in batches)
+                await dispatcher.InvokeAsync(() =>
                 {
-                    Batches.Add(batch);
-                }
-            });
+                    Batches.Clear();
+                    foreach (var batch in batches)
+                    {
+                        Batches.Add(batch);
+                    }
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -106,7 +109,9 @@ public partial class BatchViewModel : ObservableObject
                 timeoutSeconds: 60,
                 onProgressChanged: progress =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    // UI-003: Null check for Dispatcher access
+                    var dispatcher = Application.Current?.Dispatcher;
+                    dispatcher?.Invoke(() =>
                     {
                         ProgressPercentage = progress.ProgressPercentage;
                         ProgressMessage = $"Executing command {progress.CurrentCommandIndex + 1} of {progress.TotalCommands}";
@@ -124,7 +129,9 @@ public partial class BatchViewModel : ObservableObject
                 },
                 onOutputReceived: output =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+                    // UI-003: Null check for Dispatcher access
+                    var dispatcher = Application.Current?.Dispatcher;
+                    dispatcher?.Invoke(() =>
                     {
                         OutputLines.Add(new OutputLineViewModel
                         {

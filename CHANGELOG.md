@@ -5,6 +5,34 @@ All notable changes to TwinShell will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-01-24
+
+### Added
+- UI-004: Theme-aware console output colors (ConsoleOutputTextBrush, ConsoleOutputErrorBrush)
+- UI-005: Debouncing for search/filter operations to prevent race conditions
+
+### Fixed
+- UI-002: Added timeout to semaphore operations in MainViewModel and HistoryViewModel to prevent deadlocks
+- UI-003: Added null checks for Application.Current.Dispatcher in ExecutionViewModel and BatchViewModel
+- Extracted hardcoded colors from OutputPanel.xaml to theme resources
+
+### Changed
+- Improved filter performance with 150ms debounce on text input
+- Enhanced thread safety in async operations
+
+## [1.6.1] - 2026-01-24
+
+### Fixed
+- TD-001: Fixed SyncHistoryRepository memory leak - use ExecuteDeleteAsync instead of loading entities
+- TD-003: Localized hardcoded MessageBox confirmations in HistoryViewModel
+- TD-004: Localized keyboard shortcuts help dialog in MainWindow
+- TD-014: Localized clipboard notification message in MainViewModel
+- Fixed SearchHistoryRepository.ClearAllAsync to use ExecuteDeleteAsync pattern
+
+### Added
+- New localization keys for history and keyboard shortcuts messages
+- French translations for new localization keys
+
 ## [1.6.0] - 2026-01-24
 
 ### Added

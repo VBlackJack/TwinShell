@@ -2,7 +2,7 @@
 ; Requires Inno Setup 6.0 or later: https://jrsoftware.org/isinfo.php
 
 #define MyAppName "TwinShell"
-#define MyAppVersion "1.6.0"
+#define MyAppVersion "1.7.0"
 #define MyAppPublisher "TwinShell"
 #define MyAppURL "https://github.com/jbombled/TwinShell"
 #define MyAppExeName "TwinShell.App.exe"

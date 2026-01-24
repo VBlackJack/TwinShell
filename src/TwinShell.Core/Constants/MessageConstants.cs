@@ -73,6 +73,8 @@ public static class MessageKeys
     // Help messages
     public const string HelpTitle = "Help.Title";
     public const string HelpContent = "Help.Content";
+    public const string HelpKeyboardShortcutsTitle = "Help.KeyboardShortcuts.Title";
+    public const string HelpKeyboardShortcutsContent = "Help.KeyboardShortcuts.Content";
 
     // Status messages
     public const string ActionsLoaded = "Status.ActionsLoaded";
@@ -177,6 +179,17 @@ public static class MessageKeys
     public const string GitSyncConnectionTestFailed = "GitSync.ConnectionTestFailed";
     public const string GitSyncExportSucceededPushFailed = "GitSync.ExportSucceededPushFailed";
     public const string GitSyncFailedToExportAndPush = "GitSync.FailedToExportAndPush";
+
+    // Clipboard messages
+    public const string ClipboardCommandCopied = "Clipboard.CommandCopied";
+
+    // History messages
+    public const string HistoryClearAllConfirmation = "History.ClearAllConfirmation";
+    public const string HistoryClearAllTitle = "History.ClearAllTitle";
+    public const string HistoryClearedSuccess = "History.ClearedSuccess";
+    public const string HistoryClearError = "History.ClearError";
+    public const string HistoryDeletedSuccess = "History.DeletedSuccess";
+    public const string HistoryDeleteError = "History.DeleteError";
 
     // Sync messages (for JsonSyncService and YamlSyncService)
     public const string SyncExportFailed = "Sync.ExportFailed";

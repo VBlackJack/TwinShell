@@ -110,15 +110,16 @@
                 <ItemsControl ItemsSource="{Binding OutputLines}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
+                            <!-- UI-004: Use DynamicResource for theme-aware console colors -->
                             <TextBlock FontFamily="Consolas"
                                        FontSize="12"
                                        TextWrapping="Wrap">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#D4D4D4"/> <!-- Default light gray -->
+                                        <Setter Property="Foreground" Value="{DynamicResource ConsoleOutputTextBrush}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsError}" Value="True">
-                                                <Setter Property="Foreground" Value="#F48771"/> <!-- Error red -->
+                                                <Setter Property="Foreground" Value="{DynamicResource ConsoleOutputErrorBrush}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

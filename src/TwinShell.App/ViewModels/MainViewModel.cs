@@ -30,6 +30,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainViewModel> _logger;
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
+    // UI-005: Debouncing for filter operations
+    private CancellationTokenSource? _filterDebounceCts;
+    private const int FilterDebounceDelayMs = 150;
     private bool _disposed = false;
 
     private List<ActionModel> _allActions = new();
@@ -683,14 +686,17 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     partial void OnSearchTextChanged(string value)
     {
-        SafeExecuteAsync(ApplyFiltersAsync);
+        // UI-005: Debounce search text changes
+        DebouncedApplyFiltersAsync();
     }
 
     partial void OnSelectedCategoryChanged(string? value)
     {
+        // Category changes apply immediately (user intent is clear)
         SafeExecuteAsync(ApplyFiltersAsync);
     }
 
+    // UI-005: Filter checkbox changes apply immediately (clear user intent)
     partial void OnFilterWindowsChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
     partial void OnFilterLinuxChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
     partial void OnFilterBothChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
@@ -698,6 +704,38 @@ public partial class MainViewModel : ObservableObject, IDisposable
     partial void OnFilterRunChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
     partial void OnFilterDangerousChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
     partial void OnShowFavoritesOnlyChanged(bool value) => SafeExecuteAsync(ApplyFiltersAsync);
+
+    /// <summary>
+    /// UI-005: Debounced filter application to prevent race conditions during rapid typing
+    /// </summary>
+    private async void DebouncedApplyFiltersAsync()
+    {
+        try
+        {
+            // Cancel previous pending filter operation
+            _filterDebounceCts?.Cancel();
+            _filterDebounceCts = new CancellationTokenSource();
+            var token = _filterDebounceCts.Token;
+
+            // Wait for debounce delay
+            await Task.Delay(FilterDebounceDelayMs, token);
+
+            // If not cancelled, apply filters
+            if (!token.IsCancellationRequested)
+            {
+                await ApplyFiltersAsync();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when debounce is cancelled - no action needed
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in debounced filter operation");
+            StatusMessage = _localizationService.GetString(MessageKeys.CommonErrorProcessing);
+        }
+    }
 
     partial void OnSelectedActionChanged(ActionModel? value)
     {
@@ -724,8 +762,12 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     private async Task ApplyFiltersAsync()
     {
-        // Use semaphore to prevent concurrent filter operations
-        await _filterSemaphore.WaitAsync();
+        // UI-002: Use semaphore with timeout to prevent deadlock
+        if (!await _filterSemaphore.WaitAsync(TimeSpan.FromSeconds(5)))
+        {
+            _logger.LogWarning("Filter operation timed out waiting for semaphore");
+            return;
+        }
         try
         {
             var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -1024,8 +1066,9 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             _clipboardService.SetText(GeneratedCommand);
 
-            // Show success notification
-            _notificationService.ShowSuccess("✓ Command copied to clipboard");
+            // Show success notification (TD-014: Use localized message)
+            var message = _localizationService.GetString(MessageKeys.ClipboardCommandCopied);
+            _notificationService.ShowSuccess($"✓ {message}");
 
             // Save to history
             var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
@@ -1305,6 +1348,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
             {
                 // Dispose managed resources
                 _filterSemaphore?.Dispose();
+                _filterDebounceCts?.Cancel();
+                _filterDebounceCts?.Dispose();
             }
             _disposed = true;
         }

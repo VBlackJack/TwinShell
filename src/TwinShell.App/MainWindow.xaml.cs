@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TwinShell.App.Services;
 using TwinShell.App.ViewModels;
 using TwinShell.App.Views;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 
 namespace TwinShell.App;
@@ -96,24 +97,14 @@ public partial class MainWindow : Window
 
     private void KeyboardShortcuts_Click(object sender, RoutedEventArgs e)
     {
+        // TD-004: Use localized messages for keyboard shortcuts dialog
+        var localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
+        var content = localizationService.GetString(MessageKeys.HelpKeyboardShortcutsContent);
+        var title = localizationService.GetString(MessageKeys.HelpKeyboardShortcutsTitle);
+
         MessageBox.Show(
-            "Keyboard Shortcuts:\n\n" +
-            "Search & Navigation:\n" +
-            "  Tab              - Navigate between controls\n" +
-            "  Ctrl+F           - Focus search box\n" +
-            "  Enter            - Execute selected action\n" +
-            "  Esc              - Clear search/filters\n\n" +
-            "Actions:\n" +
-            "  Ctrl+C           - Copy command to clipboard\n" +
-            "  Ctrl+E           - Export configuration\n" +
-            "  Ctrl+I           - Import configuration\n" +
-            "  F1               - Help\n\n" +
-            "Categories:\n" +
-            "  Ctrl+M           - Manage categories\n\n" +
-            "General:\n" +
-            "  Ctrl+,           - Open settings\n" +
-            "  Alt+F4           - Exit application",
-            "Keyboard Shortcuts",
+            content,
+            title,
             MessageBoxButton.OK,
             MessageBoxImage.Information);
     }

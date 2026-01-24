@@ -103,6 +103,10 @@
     <SolidColorBrush x:Key="CodeBorderBrush" Color="#3E3E42"/>
     <SolidColorBrush x:Key="CodeTextBrush" Color="#EBEBEB"/>
 
+    <!-- Console Output Colors (UI-004: Extracted from hardcoded values) -->
+    <SolidColorBrush x:Key="ConsoleOutputTextBrush" Color="#D4D4D4"/><!-- Light gray for dark theme -->
+    <SolidColorBrush x:Key="ConsoleOutputErrorBrush" Color="#F48771"/><!-- Error red matching VS Code style -->
+
     <!-- Disabled States -->
     <SolidColorBrush x:Key="DisabledBrush" Color="#555555"/>
     <SolidColorBrush x:Key="DisabledTextBrush" Color="#707070"/>

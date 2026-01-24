@@ -15,8 +15,12 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 {
     private readonly ICommandHistoryService _historyService;
     private readonly IClipboardService _clipboardService;
+    private readonly ILocalizationService _localizationService;
     private readonly ILogger<HistoryViewModel> _logger;
     private readonly SemaphoreSlim _historyLock = new SemaphoreSlim(1, 1);
+    // UI-005: Debouncing for filter operations
+    private CancellationTokenSource? _filterDebounceCts;
+    private const int FilterDebounceDelayMs = 150;
     private bool _disposed;
 
     private List<CommandHistory> _allHistory = new();
@@ -69,10 +73,12 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
     public HistoryViewModel(
         ICommandHistoryService historyService,
         IClipboardService clipboardService,
+        ILocalizationService localizationService,
         ILogger<HistoryViewModel> logger)
     {
         _historyService = historyService;
         _clipboardService = clipboardService;
+        _localizationService = localizationService;
         _logger = logger;
     }
 
@@ -83,7 +89,40 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 
     partial void OnSearchTextChanged(string value)
     {
-        _ = ApplyFiltersAsync();
+        // UI-005: Debounce search text changes
+        DebouncedApplyFiltersAsync();
+    }
+
+    /// <summary>
+    /// UI-005: Debounced filter application to prevent race conditions during rapid typing
+    /// </summary>
+    private async void DebouncedApplyFiltersAsync()
+    {
+        try
+        {
+            // Cancel previous pending filter operation
+            _filterDebounceCts?.Cancel();
+            _filterDebounceCts = new CancellationTokenSource();
+            var token = _filterDebounceCts.Token;
+
+            // Wait for debounce delay
+            await Task.Delay(FilterDebounceDelayMs, token);
+
+            // If not cancelled, apply filters
+            if (!token.IsCancellationRequested)
+            {
+                await ApplyFiltersAsync();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when debounce is cancelled - no action needed
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error in debounced filter operation");
+            StatusMessage = "Error processing search";
+        }
     }
 
     partial void OnSelectedDateFilterChanged(string value)
@@ -152,8 +191,12 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 
     private async Task ApplyFiltersAsync()
     {
-        // Use semaphore to prevent concurrent filter operations
-        await _historyLock.WaitAsync();
+        // UI-002: Use semaphore with timeout to prevent deadlock
+        if (!await _historyLock.WaitAsync(TimeSpan.FromSeconds(5)))
+        {
+            _logger.LogWarning("History filter operation timed out waiting for semaphore");
+            return;
+        }
         try
         {
             // PERFORMANCE: Filtering is fast and synchronous - no need for Task.Run()
@@ -241,9 +284,13 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task ClearAllAsync()
     {
+        // TD-003: Use localized messages for confirmation dialogs
+        var message = _localizationService.GetString(MessageKeys.HistoryClearAllConfirmation);
+        var title = _localizationService.GetString(MessageKeys.HistoryClearAllTitle);
+
         var result = System.Windows.MessageBox.Show(
-            "Are you sure you want to clear all command history?",
-            "Clear All History",
+            message,
+            title,
             System.Windows.MessageBoxButton.YesNo,
             System.Windows.MessageBoxImage.Warning);
 
@@ -253,13 +300,13 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             {
                 await _historyService.ClearAllAsync();
                 await LoadHistoryAsync();
-                StatusMessage = "All history cleared successfully";
+                StatusMessage = _localizationService.GetString(MessageKeys.HistoryClearedSuccess);
             }
             catch (Exception ex)
             {
                 // SECURITY: Don't expose exception details to users
                 _logger.LogError(ex, "Error clearing history");
-                StatusMessage = "Error clearing history";
+                StatusMessage = _localizationService.GetString(MessageKeys.HistoryClearError);
             }
         }
     }
@@ -314,13 +361,13 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         {
             await _historyService.DeleteAsync(id);
             await LoadHistoryAsync();
-            StatusMessage = "History entry deleted";
+            StatusMessage = _localizationService.GetString(MessageKeys.HistoryDeletedSuccess);
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
             _logger.LogError(ex, "Error deleting history entry: {Id}", id);
-            StatusMessage = "Error deleting entry";
+            StatusMessage = _localizationService.GetString(MessageKeys.HistoryDeleteError);
         }
     }
 
@@ -333,6 +380,8 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             return;
 
         _historyLock?.Dispose();
+        _filterDebounceCts?.Cancel();
+        _filterDebounceCts?.Dispose();
         _disposed = true;
         GC.SuppressFinalize(this);
     }

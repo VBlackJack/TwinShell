@@ -102,11 +102,15 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
                 onOutputReceived: (outputLine) =>
                 {
                     _outputReceivedViaCallbacks = true;
-                    // Add output line to UI on UI thread (async to prevent deadlocks)
-                    Application.Current.Dispatcher.InvokeAsync(() =>
+                    // UI-003: Add output line to UI on UI thread with null check
+                    var dispatcher = Application.Current?.Dispatcher;
+                    if (dispatcher != null)
                     {
-                        AddOutputLine(outputLine.Text, outputLine.IsError);
-                    });
+                        dispatcher.InvokeAsync(() =>
+                        {
+                            AddOutputLine(outputLine.Text, outputLine.IsError);
+                        });
+                    }
                 });
 
             StopExecutionTimer();
@@ -171,10 +175,15 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     private void OnTimerElapsed(object? sender, System.Timers.ElapsedEventArgs e)
     {
         var elapsed = DateTime.Now - _executionStartTime;
-        Application.Current.Dispatcher.InvokeAsync(() =>
+        // UI-003: Null check for Application.Current before Dispatcher access
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher != null)
         {
-            ExecutionTime = $"{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
-        });
+            dispatcher.InvokeAsync(() =>
+            {
+                ExecutionTime = $"{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
+            });
+        }
     }
 
     /// <summary>
