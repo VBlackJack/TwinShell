@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using ActionModel = TwinShell.Core.Models.Action;
@@ -15,10 +16,7 @@ public class JsonSeedService : ISeedService
     private readonly IActionRepository _actionRepository;
     private readonly string _actionsDir;
 
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
+    private static JsonSerializerOptions JsonOptions => JsonOptionsHelper.CaseInsensitive;
 
     public JsonSeedService(IActionRepository actionRepository, string seedBasePath)
     {

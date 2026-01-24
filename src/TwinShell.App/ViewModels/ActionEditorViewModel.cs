@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -309,9 +310,9 @@ public partial class ActionEditorViewModel : ObservableObject
 
             DialogResult = true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ValidationError = $"Erreur lors de la sauvegarde: {ex.Message}";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorSaveError);
         }
     }
 
@@ -327,7 +328,7 @@ public partial class ActionEditorViewModel : ObservableObject
         WindowsParameters.Add(new ParameterEditorViewModel
         {
             Name = $"param{WindowsParameters.Count + 1}",
-            Label = "Nouveau paramètre",
+            Label = _localizationService.GetString(MessageKeys.ActionEditorNewParameter),
             Type = "string",
             Required = false
         });
@@ -345,7 +346,7 @@ public partial class ActionEditorViewModel : ObservableObject
         LinuxParameters.Add(new ParameterEditorViewModel
         {
             Name = $"param{LinuxParameters.Count + 1}",
-            Label = "Nouveau paramètre",
+            Label = _localizationService.GetString(MessageKeys.ActionEditorNewParameter),
             Type = "string",
             Required = false
         });
@@ -368,7 +369,7 @@ public partial class ActionEditorViewModel : ObservableObject
         Examples.Add(new ExampleEditorViewModel
         {
             Command = string.Empty,
-            Description = "Description de l'exemple",
+            Description = _localizationService.GetString(MessageKeys.ActionEditorExampleDescription),
             Platform = defaultPlatform
         });
         OnPropertyChanged(nameof(FilteredExamples));
@@ -391,40 +392,40 @@ public partial class ActionEditorViewModel : ObservableObject
         // Validate title
         if (string.IsNullOrWhiteSpace(Title))
         {
-            ValidationError = "Le titre est requis.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorTitleRequired);
             return false;
         }
 
         if (Title.Length > 200)
         {
-            ValidationError = "Le titre ne peut pas dépasser 200 caractères.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorTitleMaxLength);
             return false;
         }
 
         // Validate category
         if (string.IsNullOrWhiteSpace(Category))
         {
-            ValidationError = "La catégorie est requise.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorCategoryRequired);
             return false;
         }
 
         if (Category.Length > 100)
         {
-            ValidationError = "La catégorie ne peut pas dépasser 100 caractères.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorCategoryMaxLength);
             return false;
         }
 
         // Validate description length
         if (Description.Length > 2000)
         {
-            ValidationError = "La description ne peut pas dépasser 2000 caractères.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorDescriptionMaxLength);
             return false;
         }
 
         // Validate notes length
         if (Notes.Length > 5000)
         {
-            ValidationError = "Les notes ne peuvent pas dépasser 5000 caractères.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorNotesMaxLength);
             return false;
         }
 
@@ -433,13 +434,13 @@ public partial class ActionEditorViewModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(WindowsCommandPattern))
             {
-                ValidationError = "La commande Windows est requise pour cette plateforme.";
+                ValidationError = _localizationService.GetString(MessageKeys.ActionEditorWindowsCommandRequired);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(WindowsCommandName))
             {
-                ValidationError = "Le nom de la commande Windows est requis.";
+                ValidationError = _localizationService.GetString(MessageKeys.ActionEditorWindowsCommandNameRequired);
                 return false;
             }
         }
@@ -449,13 +450,13 @@ public partial class ActionEditorViewModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(LinuxCommandPattern))
             {
-                ValidationError = "La commande Linux est requise pour cette plateforme.";
+                ValidationError = _localizationService.GetString(MessageKeys.ActionEditorLinuxCommandRequired);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(LinuxCommandName))
             {
-                ValidationError = "Le nom de la commande Linux est requis.";
+                ValidationError = _localizationService.GetString(MessageKeys.ActionEditorLinuxCommandNameRequired);
                 return false;
             }
         }
@@ -465,14 +466,14 @@ public partial class ActionEditorViewModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(param.Name))
             {
-                ValidationError = "Tous les paramètres Windows doivent avoir un nom.";
+                ValidationError = _localizationService.GetString(MessageKeys.ActionEditorWindowsParameterNameRequired);
                 return false;
             }
         }
 
         if (WindowsParameters.GroupBy(p => p.Name).Any(g => g.Count() > 1))
         {
-            ValidationError = "Les noms de paramètres Windows doivent être uniques.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorWindowsParameterNameUnique);
             return false;
         }
 
@@ -480,14 +481,14 @@ public partial class ActionEditorViewModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(param.Name))
             {
-                ValidationError = "Tous les paramètres Linux doivent avoir un nom.";
+                ValidationError = _localizationService.GetString(MessageKeys.ActionEditorLinuxParameterNameRequired);
                 return false;
             }
         }
 
         if (LinuxParameters.GroupBy(p => p.Name).Any(g => g.Count() > 1))
         {
-            ValidationError = "Les noms de paramètres Linux doivent être uniques.";
+            ValidationError = _localizationService.GetString(MessageKeys.ActionEditorLinuxParameterNameUnique);
             return false;
         }
 

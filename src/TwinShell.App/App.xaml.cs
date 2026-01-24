@@ -98,11 +98,19 @@ public partial class App : Application
     private void ConfigureServices(IServiceCollection services)
     {
         // Logging infrastructure for enhanced observability
+        // SECURITY: Use Information level in production to avoid sensitive data in logs
         services.AddLogging(builder =>
         {
             builder.AddDebug();
+#if DEBUG
             builder.SetMinimumLevel(LogLevel.Debug);
+#else
+            builder.SetMinimumLevel(LogLevel.Information);
+#endif
         });
+
+        // Memory cache for repository caching
+        services.AddMemoryCache();
 
         // Database
         var dbPath = Path.Combine(
@@ -127,6 +135,7 @@ public partial class App : Application
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
         services.AddScoped<IBatchRepository, BatchRepository>();
         services.AddScoped<ISearchHistoryRepository, SearchHistoryRepository>();
+        services.AddScoped<ISyncHistoryRepository, SyncHistoryRepository>();
 
         // Core Services
         services.AddScoped<IActionService, ActionService>();

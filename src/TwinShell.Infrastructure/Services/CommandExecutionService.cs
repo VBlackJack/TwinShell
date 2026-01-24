@@ -126,9 +126,9 @@ public class CommandExecutionService : ICommandExecutionService
                         }
                     }
                 }
-                catch
+                catch (InvalidOperationException)
                 {
-                    // Ignore errors during kill
+                    // Process already exited - ignore
                 }
 
                 result.WasCancelled = cancellationToken.IsCancellationRequested;

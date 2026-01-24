@@ -46,4 +46,14 @@ public partial class SettingsWindow : Window
             viewModel.GitAccessToken = GitAccessTokenBox.Password;
         }
     }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        // Dispose ViewModel to unsubscribe from events
+        if (DataContext is SettingsViewModel viewModel)
+        {
+            viewModel.Dispose();
+        }
+        base.OnClosed(e);
+    }
 }

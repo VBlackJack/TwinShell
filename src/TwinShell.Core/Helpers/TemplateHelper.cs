@@ -60,4 +60,44 @@ public static class TemplateHelper
     {
         return template != null && !string.IsNullOrWhiteSpace(template.CommandPattern);
     }
+
+    /// <summary>
+    /// Determines if an action is cross-platform (supports both Windows and Linux with valid templates).
+    /// </summary>
+    /// <param name="action">The action to check</param>
+    /// <returns>True if the action has valid templates for both platforms</returns>
+    public static bool IsCrossPlatform(ActionModel? action)
+    {
+        return action != null &&
+               action.Platform == Platform.Both &&
+               action.WindowsCommandTemplate != null &&
+               action.LinuxCommandTemplate != null;
+    }
+
+    /// <summary>
+    /// Gets the appropriate template for the specified platform selection.
+    /// For cross-platform actions, returns the template matching the selected platform.
+    /// For single-platform actions, uses the default platform logic.
+    /// </summary>
+    /// <param name="action">The action containing templates</param>
+    /// <param name="selectedPlatform">The platform selected by the user</param>
+    /// <param name="isCrossPlatform">Whether the action is cross-platform</param>
+    /// <returns>The appropriate command template</returns>
+    public static CommandTemplate? GetTemplateForPlatform(
+        ActionModel? action,
+        Platform selectedPlatform,
+        bool isCrossPlatform)
+    {
+        if (action == null)
+            return null;
+
+        if (isCrossPlatform)
+        {
+            return selectedPlatform == Platform.Windows
+                ? action.WindowsCommandTemplate
+                : action.LinuxCommandTemplate;
+        }
+
+        return GetActiveTemplate(action);
+    }
 }

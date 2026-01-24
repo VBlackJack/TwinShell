@@ -2,8 +2,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -20,12 +20,7 @@ public class SettingsService : ISettingsService
     private readonly ILogger<SettingsService>? _logger;
     private UserSettings _currentSettings;
 
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        WriteIndented = true,
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
+    private static JsonSerializerOptions JsonOptions => JsonOptionsHelper.DefaultWithEnumConverter;
 
     public SettingsService(ILogger<SettingsService>? logger = null)
         : this(null, logger)
@@ -83,7 +78,7 @@ public class SettingsService : ISettingsService
                 // Try to decrypt (new format)
                 json = DecryptData(encrypted);
             }
-            catch
+            catch (CryptographicException)
             {
                 // If decryption fails, assume it's an old unencrypted file
                 // Read as plain text for backward compatibility

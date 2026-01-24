@@ -10,6 +10,8 @@ public static class CustomCategoryMapper
 {
     public static CustomCategory ToDomain(CustomCategoryEntity entity, IEnumerable<ActionCategoryMappingEntity>? mappings = null)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         var actionIds = mappings?.Where(m => m.CategoryId == entity.Id)
                                 .Select(m => m.ActionId)
                                 .ToList() ?? new List<string>();
@@ -32,6 +34,8 @@ public static class CustomCategoryMapper
 
     public static CustomCategoryEntity ToEntity(CustomCategory domain)
     {
+        ArgumentNullException.ThrowIfNull(domain);
+
         return new CustomCategoryEntity
         {
             Id = domain.Id,
@@ -49,6 +53,9 @@ public static class CustomCategoryMapper
 
     public static void UpdateEntity(CustomCategoryEntity entity, CustomCategory domain)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+        ArgumentNullException.ThrowIfNull(domain);
+
         entity.Name = domain.Name;
         entity.IconKey = domain.IconKey;
         entity.ColorHex = domain.ColorHex;

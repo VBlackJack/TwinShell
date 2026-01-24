@@ -1,7 +1,9 @@
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -12,14 +14,16 @@ namespace TwinShell.App.ViewModels;
 /// ViewModel for the Settings window.
 /// Manages user preferences including theme selection and GitOps synchronization.
 /// </summary>
-public partial class SettingsViewModel : ObservableObject
+public partial class SettingsViewModel : ObservableObject, IDisposable
 {
+    private bool _disposed;
     private readonly ISettingsService _settingsService;
     private readonly IThemeService _themeService;
     private readonly ISyncService _syncService;
     private readonly IGitSyncService _gitSyncService;
     private readonly IDialogService _dialogService;
     private readonly INotificationService _notificationService;
+    private readonly IServiceScopeFactory? _serviceScopeFactory;
     private UserSettings _originalSettings;
 
     [ObservableProperty]
@@ -83,6 +87,17 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private bool _isGitConfigured;
 
+    // --- Sync History Properties ---
+
+    [ObservableProperty]
+    private ObservableCollection<SyncHistoryEntry> _syncHistory = new();
+
+    [ObservableProperty]
+    private SyncHistoryEntry? _selectedHistoryEntry;
+
+    [ObservableProperty]
+    private bool _isLoadingHistory;
+
     public bool CanSync => !IsSyncing && !string.IsNullOrWhiteSpace(GitRepositoryPath);
     public bool CanTestConnection => !IsSyncing && !string.IsNullOrWhiteSpace(GitRemoteUrl);
 
@@ -95,7 +110,8 @@ public partial class SettingsViewModel : ObservableObject
         ISyncService syncService,
         IGitSyncService gitSyncService,
         IDialogService dialogService,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        IServiceScopeFactory? serviceScopeFactory = null)
     {
         _settingsService = settingsService;
         _themeService = themeService;
@@ -103,6 +119,7 @@ public partial class SettingsViewModel : ObservableObject
         _gitSyncService = gitSyncService;
         _dialogService = dialogService;
         _notificationService = notificationService;
+        _serviceScopeFactory = serviceScopeFactory;
         _originalSettings = _settingsService.CurrentSettings.Clone();
 
         // Subscribe to Git status changes
@@ -111,8 +128,9 @@ public partial class SettingsViewModel : ObservableObject
         // Load current settings
         LoadCurrentSettings();
 
-        // Refresh Git repository status
+        // Refresh Git repository status and load sync history
         _ = RefreshGitStatusAsync();
+        _ = LoadSyncHistoryAsync();
     }
 
     private void OnGitStatusChanged(object? sender, GitSyncStatusEventArgs e)
@@ -653,6 +671,7 @@ public partial class SettingsViewModel : ObservableObject
         {
             IsSyncing = false;
             await RefreshGitStatusAsync();
+            await LoadSyncHistoryAsync();
         }
     }
 
@@ -695,6 +714,7 @@ public partial class SettingsViewModel : ObservableObject
         {
             IsSyncing = false;
             await RefreshGitStatusAsync();
+            await LoadSyncHistoryAsync();
         }
     }
 
@@ -739,6 +759,7 @@ public partial class SettingsViewModel : ObservableObject
         {
             IsSyncing = false;
             await RefreshGitStatusAsync();
+            await LoadSyncHistoryAsync();
         }
     }
 
@@ -782,9 +803,126 @@ public partial class SettingsViewModel : ObservableObject
 
             GitRepositoryStatus = string.Join(" | ", statusParts);
         }
-        catch
+        catch (Exception)
         {
+            // Non-critical: Git status display failure doesn't affect functionality
             GitRepositoryStatus = "Unable to get status";
         }
+    }
+
+    // --- Sync History Methods ---
+
+    /// <summary>
+    /// Loads the sync history from the repository.
+    /// </summary>
+    [RelayCommand]
+    private async Task LoadSyncHistoryAsync()
+    {
+        if (_serviceScopeFactory == null)
+        {
+            return;
+        }
+
+        IsLoadingHistory = true;
+
+        try
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetService<ISyncHistoryRepository>();
+
+            if (repository == null)
+            {
+                return;
+            }
+
+            var entries = await repository.GetRecentAsync(50);
+
+            // Update on UI thread
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SyncHistory.Clear();
+                foreach (var entry in entries)
+                {
+                    SyncHistory.Add(entry);
+                }
+            });
+        }
+        catch (Exception)
+        {
+            // Non-critical: History loading failure doesn't affect core functionality
+        }
+        finally
+        {
+            IsLoadingHistory = false;
+        }
+    }
+
+    /// <summary>
+    /// Clears old sync history entries.
+    /// </summary>
+    [RelayCommand]
+    private async Task ClearOldHistoryAsync()
+    {
+        if (_serviceScopeFactory == null)
+        {
+            return;
+        }
+
+        var confirm = _dialogService.ShowQuestion(
+            "This will delete sync history entries older than 30 days. Continue?",
+            "Clear Old History");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        try
+        {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetService<ISyncHistoryRepository>();
+
+            if (repository == null)
+            {
+                return;
+            }
+
+            var cutoff = DateTime.UtcNow.AddDays(-30);
+            var deleted = await repository.DeleteOldEntriesAsync(cutoff);
+
+            _notificationService.ShowSuccess($"Deleted {deleted} old history entries", "History Cleared");
+
+            // Refresh the list
+            await LoadSyncHistoryAsync();
+        }
+        catch (Exception ex)
+        {
+            _dialogService.ShowError($"Failed to clear history: {ex.Message}", "Error");
+        }
+    }
+
+    /// <summary>
+    /// Disposes resources and unsubscribes from events to prevent memory leaks.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Protected implementation of Dispose pattern.
+    /// </summary>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+
+        if (disposing)
+        {
+            // Unsubscribe from events to prevent memory leaks
+            _gitSyncService.StatusChanged -= OnGitStatusChanged;
+        }
+
+        _disposed = true;
     }
 }

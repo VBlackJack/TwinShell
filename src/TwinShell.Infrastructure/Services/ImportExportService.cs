@@ -2,6 +2,7 @@ using System.IO;
 using System.Text.Json;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 using ActionModel = TwinShell.Core.Models.Action;
@@ -88,11 +89,7 @@ public class ImportExportService : IImportExportService
             };
 
             // Serialize to JSON with formatting
-            var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            var json = JsonSerializer.Serialize(exportData, JsonOptionsHelper.CamelCaseForExport);
 
             // Write to file
             await File.WriteAllTextAsync(filePath, json);
@@ -172,11 +169,7 @@ public class ImportExportService : IImportExportService
             };
 
             // Serialize to JSON with formatting
-            var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-            });
+            var json = JsonSerializer.Serialize(exportData, JsonOptionsHelper.IndentedIgnoreNull);
 
             // Write to file
             await File.WriteAllTextAsync(filePath, json);
@@ -214,13 +207,9 @@ public class ImportExportService : IImportExportService
                 };
             }
 
-            // Read and parse JSON
+            // Read and parse JSON with security limits
             var json = await File.ReadAllTextAsync(filePath);
-            var actionData = JsonSerializer.Deserialize<SingleActionImportData>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                MaxDepth = 32
-            });
+            var actionData = JsonSerializer.Deserialize<SingleActionImportData>(json, JsonOptionsHelper.SecureImport);
 
             if (actionData == null || string.IsNullOrWhiteSpace(actionData.Id) || string.IsNullOrWhiteSpace(actionData.Title))
             {
@@ -303,12 +292,7 @@ public class ImportExportService : IImportExportService
 
             // Read and parse JSON with security limits
             var json = await File.ReadAllTextAsync(filePath);
-            var importData = JsonSerializer.Deserialize<ImportData>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                // SECURITY: Limit JSON depth to prevent DoS via deeply nested objects
-                MaxDepth = 32
-            });
+            var importData = JsonSerializer.Deserialize<ImportData>(json, JsonOptionsHelper.SecureImport);
 
             if (importData?.Actions == null || importData.Actions.Count == 0)
             {
@@ -438,12 +422,7 @@ public class ImportExportService : IImportExportService
 
             // Parse JSON with security limits
             var json = await File.ReadAllTextAsync(filePath);
-            var importData = JsonSerializer.Deserialize<ImportData>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                // SECURITY: Limit JSON depth to prevent DoS via deeply nested objects
-                MaxDepth = 32
-            });
+            var importData = JsonSerializer.Deserialize<ImportData>(json, JsonOptionsHelper.SecureImport);
 
             if (importData?.Actions == null)
             {

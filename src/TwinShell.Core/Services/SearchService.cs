@@ -48,7 +48,7 @@ public class SearchService : ISearchService
         }
 
         // Use scoring search and extract just the actions
-        var searchResults = await SearchWithScoringAsync(actions, searchTerm);
+        var searchResults = await SearchWithScoringAsync(actions, searchTerm).ConfigureAwait(false);
         return searchResults.Select(r => r.Action);
     }
 
@@ -117,7 +117,7 @@ public class SearchService : ISearchService
         // Sort by score descending (highest relevance first)
         var sortedResults = searchResults.OrderByDescending(r => r.Score);
 
-        return await Task.FromResult(sortedResults);
+        return await Task.FromResult(sortedResults).ConfigureAwait(false);
     }
 
     /// <summary>

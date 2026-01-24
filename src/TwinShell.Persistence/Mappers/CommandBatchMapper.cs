@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Entities;
 
@@ -9,14 +10,12 @@ namespace TwinShell.Persistence.Mappers;
 /// </summary>
 public static class CommandBatchMapper
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        WriteIndented = false
-    };
+    private static JsonSerializerOptions JsonOptions => JsonOptionsHelper.CompactStorage;
 
     public static CommandBatchEntity ToEntity(CommandBatch batch)
     {
+        ArgumentNullException.ThrowIfNull(batch);
+
         return new CommandBatchEntity
         {
             Id = batch.Id,
@@ -34,6 +33,8 @@ public static class CommandBatchMapper
 
     public static CommandBatch ToModel(CommandBatchEntity entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         return new CommandBatch
         {
             Id = entity.Id,

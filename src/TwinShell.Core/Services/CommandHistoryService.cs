@@ -36,7 +36,7 @@ public class CommandHistoryService : ICommandHistoryService
             CreatedAt = DateTime.UtcNow
         };
 
-        await _repository.AddAsync(history);
+        await _repository.AddAsync(history).ConfigureAwait(false);
         return history.Id;
     }
 
@@ -46,20 +46,20 @@ public class CommandHistoryService : ICommandHistoryService
         TimeSpan duration,
         bool success)
     {
-        var history = await _repository.GetByIdAsync(historyId);
+        var history = await _repository.GetByIdAsync(historyId).ConfigureAwait(false);
         if (history != null)
         {
             history.IsExecuted = true;
             history.ExitCode = exitCode;
             history.ExecutionDuration = duration;
             history.ExecutionSuccess = success;
-            await _repository.UpdateAsync(history);
+            await _repository.UpdateAsync(history).ConfigureAwait(false);
         }
     }
 
     public async Task<IEnumerable<CommandHistory>> GetRecentAsync(int count = 50)
     {
-        return await _repository.GetRecentAsync(count);
+        return await _repository.GetRecentAsync(count).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<CommandHistory>> SearchAsync(
@@ -69,37 +69,37 @@ public class CommandHistoryService : ICommandHistoryService
         Platform? platform = null,
         string? category = null)
     {
-        return await _repository.SearchAsync(searchText, fromDate, toDate, platform, category);
+        return await _repository.SearchAsync(searchText, fromDate, toDate, platform, category).ConfigureAwait(false);
     }
 
     public async Task<CommandHistory?> GetByIdAsync(string id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await _repository.GetByIdAsync(id).ConfigureAwait(false);
     }
 
     public async Task DeleteAsync(string id)
     {
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id).ConfigureAwait(false);
     }
 
     public async Task DeleteRangeAsync(IEnumerable<string> ids)
     {
-        await _repository.DeleteRangeAsync(ids);
+        await _repository.DeleteRangeAsync(ids).ConfigureAwait(false);
     }
 
     public async Task CleanupOldEntriesAsync(int daysToKeep = 90)
     {
         var cutoffDate = DateTime.UtcNow.AddDays(-daysToKeep);
-        await _repository.DeleteOlderThanAsync(cutoffDate);
+        await _repository.DeleteOlderThanAsync(cutoffDate).ConfigureAwait(false);
     }
 
     public async Task<int> GetCountAsync()
     {
-        return await _repository.CountAsync();
+        return await _repository.CountAsync().ConfigureAwait(false);
     }
 
     public async Task ClearAllAsync()
     {
-        await _repository.ClearAllAsync();
+        await _repository.ClearAllAsync().ConfigureAwait(false);
     }
 }

@@ -488,6 +488,169 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Sync History Section -->
+                <TextBlock Text="Sync History" Style="{StaticResource SectionHeaderStyle}"/>
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="16"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <!-- History Actions -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Button Content="Refresh"
+                                    Command="{Binding LoadSyncHistoryCommand}"
+                                    Padding="12,8"
+                                    MinWidth="80"
+                                    MinHeight="36"
+                                    Margin="0,0,8,0"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextPrimaryBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    ToolTip="Refresh sync history"
+                                    AutomationProperties.Name="Refresh history">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Content="Clear Old"
+                                    Command="{Binding ClearOldHistoryCommand}"
+                                    Padding="12,8"
+                                    MinWidth="80"
+                                    MinHeight="36"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    Foreground="{DynamicResource TextSecondaryBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    Cursor="Hand"
+                                    ToolTip="Clear entries older than 30 days"
+                                    AutomationProperties.Name="Clear old history">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="4"
+                                                Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- History List -->
+                        <Border Background="{DynamicResource BackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                MaxHeight="200">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding SyncHistory}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Padding="12,8"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="0,0,0,1">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="24"/>
+                                                        <ColumnDefinition Width="80"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!-- Status Icon -->
+                                                    <TextBlock Grid.Column="0"
+                                                               Text="{Binding Success, Converter={StaticResource BoolToSuccessIconConverter}}"
+                                                               FontSize="14"
+                                                               VerticalAlignment="Center"/>
+
+                                                    <!-- Operation Type -->
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding OperationType}"
+                                                               FontWeight="Medium"
+                                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                                               VerticalAlignment="Center"/>
+
+                                                    <!-- Message -->
+                                                    <TextBlock Grid.Column="2"
+                                                               Text="{Binding Message}"
+                                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               VerticalAlignment="Center"
+                                                               Margin="8,0"/>
+
+                                                    <!-- Stats -->
+                                                    <StackPanel Grid.Column="3"
+                                                                Orientation="Horizontal"
+                                                                VerticalAlignment="Center"
+                                                                Margin="0,0,12,0">
+                                                        <TextBlock Text="↓"
+                                                                   Foreground="{DynamicResource SuccessBrush}"
+                                                                   FontSize="11"
+                                                                   VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding ItemsCreated}"
+                                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                                   FontSize="11"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="2,0,8,0"/>
+                                                        <TextBlock Text="↑"
+                                                                   Foreground="{DynamicResource PrimaryBrush}"
+                                                                   FontSize="11"
+                                                                   VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding ItemsExported}"
+                                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                                   FontSize="11"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="2,0,0,0"/>
+                                                    </StackPanel>
+
+                                                    <!-- Time -->
+                                                    <TextBlock Grid.Column="4"
+                                                               Text="{Binding RelativeTime}"
+                                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                                               FontSize="11"
+                                                               HorizontalAlignment="Right"
+                                                               VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+
+                        <!-- Empty State -->
+                        <TextBlock Text="No sync history yet. Perform a Git sync operation to see history here."
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontStyle="Italic"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,12,0,0"
+                                   Visibility="{Binding SyncHistory.Count, Converter={StaticResource ZeroToVisibilityConverter}}"/>
+
+                        <!-- Loading Indicator -->
+                        <TextBlock Text="Loading history..."
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontStyle="Italic"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"
+                                   Visibility="{Binding IsLoadingHistory, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </StackPanel>
+                </Border>
+
                 <!-- Validation Error Display -->
                 <Border Background="{DynamicResource DangerBackgroundBrush}"
                         BorderBrush="{DynamicResource DangerBrush}"

@@ -22,17 +22,17 @@ public class FavoritesService : IFavoritesService, IDisposable
     public async Task<(bool Success, string? ErrorMessage)> AddFavoriteAsync(string actionId, string? userId = null)
     {
         // Use lock to ensure atomicity of check and add operations
-        await _favoritesLock.WaitAsync();
+        await _favoritesLock.WaitAsync().ConfigureAwait(false);
         try
         {
             // Check if already favorited
-            if (await _repository.IsFavoriteAsync(actionId, userId))
+            if (await _repository.IsFavoriteAsync(actionId, userId).ConfigureAwait(false))
             {
                 return (false, "This action is already in your favorites.");
             }
 
             // Check limit
-            var currentCount = await _repository.GetCountAsync(userId);
+            var currentCount = await _repository.GetCountAsync(userId).ConfigureAwait(false);
             // BUGFIX: Use UIConstants.MaxFavoritesCount instead of local constant
             if (currentCount >= UIConstants.MaxFavoritesCount)
             {
@@ -49,7 +49,7 @@ public class FavoritesService : IFavoritesService, IDisposable
                 DisplayOrder = currentCount // Add at the end
             };
 
-            await _repository.AddAsync(favorite);
+            await _repository.AddAsync(favorite).ConfigureAwait(false);
             return (true, null);
         }
         finally
@@ -60,26 +60,26 @@ public class FavoritesService : IFavoritesService, IDisposable
 
     public async Task RemoveFavoriteAsync(string actionId, string? userId = null)
     {
-        await _repository.RemoveByActionIdAsync(actionId, userId);
+        await _repository.RemoveByActionIdAsync(actionId, userId).ConfigureAwait(false);
     }
 
     public async Task<bool> ToggleFavoriteAsync(string actionId, string? userId = null)
     {
         // Use lock to ensure atomicity of toggle operation
-        await _favoritesLock.WaitAsync();
+        await _favoritesLock.WaitAsync().ConfigureAwait(false);
         try
         {
-            var isFavorite = await _repository.IsFavoriteAsync(actionId, userId);
+            var isFavorite = await _repository.IsFavoriteAsync(actionId, userId).ConfigureAwait(false);
 
             if (isFavorite)
             {
-                await _repository.RemoveByActionIdAsync(actionId, userId);
+                await _repository.RemoveByActionIdAsync(actionId, userId).ConfigureAwait(false);
                 return false;
             }
             else
             {
                 // Check limit before adding
-                var currentCount = await _repository.GetCountAsync(userId);
+                var currentCount = await _repository.GetCountAsync(userId).ConfigureAwait(false);
                 if (currentCount >= UIConstants.MaxFavoritesCount)
                 {
                     return false;
@@ -94,7 +94,7 @@ public class FavoritesService : IFavoritesService, IDisposable
                     DisplayOrder = currentCount
                 };
 
-                await _repository.AddAsync(favorite);
+                await _repository.AddAsync(favorite).ConfigureAwait(false);
                 return true;
             }
         }
@@ -106,27 +106,27 @@ public class FavoritesService : IFavoritesService, IDisposable
 
     public async Task<bool> IsFavoriteAsync(string actionId, string? userId = null)
     {
-        return await _repository.IsFavoriteAsync(actionId, userId);
+        return await _repository.IsFavoriteAsync(actionId, userId).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<UserFavorite>> GetAllFavoritesAsync(string? userId = null)
     {
-        return await _repository.GetAllAsync(userId);
+        return await _repository.GetAllAsync(userId).ConfigureAwait(false);
     }
 
     public async Task<int> GetFavoriteCountAsync(string? userId = null)
     {
-        return await _repository.GetCountAsync(userId);
+        return await _repository.GetCountAsync(userId).ConfigureAwait(false);
     }
 
     public async Task ReorderFavoriteAsync(string favoriteId, int newOrder)
     {
-        await _repository.UpdateDisplayOrderAsync(favoriteId, newOrder);
+        await _repository.UpdateDisplayOrderAsync(favoriteId, newOrder).ConfigureAwait(false);
     }
 
     public async Task ClearAllFavoritesAsync(string? userId = null)
     {
-        await _repository.ClearAllAsync(userId);
+        await _repository.ClearAllAsync(userId).ConfigureAwait(false);
     }
 
     /// <summary>

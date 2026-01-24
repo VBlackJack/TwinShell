@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
@@ -12,17 +13,17 @@ namespace TwinShell.Persistence.Repositories;
 public class ActionRepository : IActionRepository
 {
     private readonly TwinShellDbContext _context;
+    private readonly IMemoryCache _cache;
     private readonly ILogger<ActionRepository> _logger;
 
-    // PERFORMANCE: Cache for categories (rarely change, queried frequently)
-    private static IReadOnlyList<string>? _categoriesCache;
-    private static DateTime _cacheExpiration = DateTime.MinValue;
-    private static readonly SemaphoreSlim _cacheLock = new(1, 1);
-    private const int CacheTtlMinutes = 5;
+    // Cache key for categories
+    private const string CategoriesCacheKey = "ActionRepository_Categories";
+    private static readonly TimeSpan CacheTtl = TimeSpan.FromMinutes(5);
 
-    public ActionRepository(TwinShellDbContext context, ILogger<ActionRepository> logger)
+    public ActionRepository(TwinShellDbContext context, IMemoryCache cache, ILogger<ActionRepository> logger)
     {
         _context = context;
+        _cache = cache;
         _logger = logger;
     }
 
@@ -65,47 +66,31 @@ public class ActionRepository : IActionRepository
 
     public async Task<IEnumerable<string>> GetAllCategoriesAsync()
     {
-        // PERFORMANCE: Return cached categories if still valid
-        if (_categoriesCache != null && DateTime.UtcNow < _cacheExpiration)
+        // PERFORMANCE: Use IMemoryCache with GetOrCreateAsync for thread-safe caching
+        var categories = await _cache.GetOrCreateAsync(CategoriesCacheKey, async entry =>
         {
-            return _categoriesCache;
-        }
+            entry.AbsoluteExpirationRelativeToNow = CacheTtl;
 
-        await _cacheLock.WaitAsync();
-        try
-        {
-            // Double-check after acquiring lock
-            if (_categoriesCache != null && DateTime.UtcNow < _cacheExpiration)
-            {
-                return _categoriesCache;
-            }
-
-            // Fetch from database and cache
-            var categories = await _context.Actions
+            // Fetch from database
+            var result = await _context.Actions
                 .AsNoTracking()
                 .Select(a => a.Category)
                 .Distinct()
                 .OrderBy(c => c)
                 .ToListAsync();
 
-            _categoriesCache = categories;
-            _cacheExpiration = DateTime.UtcNow.AddMinutes(CacheTtlMinutes);
+            return result.AsReadOnly();
+        });
 
-            return categories;
-        }
-        finally
-        {
-            _cacheLock.Release();
-        }
+        return categories ?? Enumerable.Empty<string>();
     }
 
     /// <summary>
     /// Invalidates the categories cache (call after add/update/delete operations that change categories)
     /// </summary>
-    public static void InvalidateCategoriesCache()
+    private void InvalidateCategoriesCache()
     {
-        _cacheExpiration = DateTime.MinValue;
-        _categoriesCache = null;
+        _cache.Remove(CategoriesCacheKey);
     }
 
     public async Task AddAsync(Core.Models.Action action)
@@ -256,6 +241,20 @@ public class ActionRepository : IActionRepository
     public async Task<int> CountAsync()
     {
         return await _context.Actions.CountAsync();
+    }
+
+    /// <summary>
+    /// PERFORMANCE: Efficiently counts actions in a category using database-level COUNT
+    /// This avoids loading all actions into memory just to count them
+    /// </summary>
+    public async Task<int> CountByCategoryAsync(string category)
+    {
+        if (string.IsNullOrWhiteSpace(category))
+            return 0;
+
+        return await _context.Actions
+            .Where(a => a.Category == category)
+            .CountAsync();
     }
 
     /// <summary>

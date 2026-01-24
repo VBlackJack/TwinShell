@@ -295,8 +295,9 @@ public partial class ActionFilterViewModel : ObservableObject, IDisposable
                 SearchSuggestions.Add(suggestion);
             }
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogDebug(ex, "Failed to update search suggestions");
             SearchSuggestions.Clear();
         }
     }

@@ -20,22 +20,22 @@ public class ActionService : IActionService
 
     public async Task<IEnumerable<ActionModel>> GetAllActionsAsync()
     {
-        return await _repository.GetAllAsync();
+        return await _repository.GetAllAsync().ConfigureAwait(false);
     }
 
     public async Task<ActionModel?> GetActionByIdAsync(string id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await _repository.GetByIdAsync(id).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<ActionModel>> GetActionsByCategoryAsync(string category)
     {
-        return await _repository.GetByCategoryAsync(category);
+        return await _repository.GetByCategoryAsync(category).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<string>> GetAllCategoriesAsync()
     {
-        return await _repository.GetAllCategoriesAsync();
+        return await _repository.GetAllCategoriesAsync().ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<ActionModel>> FilterActionsAsync(
@@ -57,7 +57,7 @@ public class ActionService : IActionService
             filtered = filtered.Where(a => a.Level == level.Value);
         }
 
-        return await Task.FromResult(filtered);
+        return await Task.FromResult(filtered).ConfigureAwait(false);
     }
 
     public async Task<ActionModel> CreateActionAsync(ActionModel action)
@@ -73,7 +73,7 @@ public class ActionService : IActionService
         action.UpdatedAt = DateTime.UtcNow;
         action.IsUserCreated = true;
 
-        await _repository.AddAsync(action);
+        await _repository.AddAsync(action).ConfigureAwait(false);
         return action;
     }
 
@@ -86,18 +86,18 @@ public class ActionService : IActionService
         }
 
         action.UpdatedAt = DateTime.UtcNow;
-        await _repository.UpdateAsync(action);
+        await _repository.UpdateAsync(action).ConfigureAwait(false);
     }
 
     public async Task DeleteActionAsync(string id)
     {
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id).ConfigureAwait(false);
     }
 
     public async Task<int> GetActionCountByCategoryAsync(string category)
     {
-        var actions = await _repository.GetByCategoryAsync(category);
-        return actions.Count();
+        // PERFORMANCE: Use database-level COUNT instead of loading all actions into memory
+        return await _repository.CountByCategoryAsync(category).ConfigureAwait(false);
     }
 
     public async Task<bool> RenameCategoryAsync(string oldName, string newName)
@@ -109,7 +109,7 @@ public class ActionService : IActionService
             return true; // Nothing to do
 
         // PERFORMANCE: Use batch update instead of N+1 individual updates
-        await _repository.UpdateCategoryForActionsAsync(oldName, newName);
+        await _repository.UpdateCategoryForActionsAsync(oldName, newName).ConfigureAwait(false);
         return true;
     }
 
@@ -120,7 +120,7 @@ public class ActionService : IActionService
 
         // PERFORMANCE: Use batch update instead of N+1 individual updates
         // Pass null to clear the category (sets to empty string)
-        await _repository.UpdateCategoryForActionsAsync(categoryName, null);
+        await _repository.UpdateCategoryForActionsAsync(categoryName, null).ConfigureAwait(false);
         return true;
     }
 

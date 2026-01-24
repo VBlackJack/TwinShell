@@ -1,6 +1,9 @@
 using System.IO;
 using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -8,14 +11,22 @@ namespace TwinShell.Infrastructure.Services;
 
 /// <summary>
 /// Service for Git-based synchronization of TwinShell data.
-/// Uses LibGit2Sharp for Git operations.
+/// Uses LibGit2Sharp for Git operations with retry logic and detailed progress.
 /// </summary>
 public class GitSyncService : IGitSyncService
 {
     private readonly ISettingsService _settingsService;
     private readonly ISyncService _yamlSyncService;
+    private readonly ILogger<GitSyncService> _logger;
+    private readonly ILocalizationService _localization;
+    private readonly IServiceScopeFactory? _serviceScopeFactory;
+
+    // Retry configuration
+    private const int MaxRetryAttempts = 3;
+    private static readonly int[] RetryDelaysMs = { 1000, 2000, 4000 };
 
     private string _statusMessage = "Not configured";
+    private SyncPhase _currentPhase = SyncPhase.Idle;
 
     public bool IsConfigured => !string.IsNullOrWhiteSpace(Settings?.GitRemoteUrl)
                                 && !string.IsNullOrWhiteSpace(Settings?.GitRepositoryPath);
@@ -26,11 +37,7 @@ public class GitSyncService : IGitSyncService
         private set
         {
             _statusMessage = value;
-            StatusChanged?.Invoke(this, new GitSyncStatusEventArgs
-            {
-                Status = value,
-                IsOperationInProgress = value.Contains("...")
-            });
+            RaiseStatusChanged(value);
         }
     }
 
@@ -38,17 +45,208 @@ public class GitSyncService : IGitSyncService
 
     private UserSettings? Settings => _settingsService.CurrentSettings;
 
-    public GitSyncService(ISettingsService settingsService, ISyncService yamlSyncService)
+    public GitSyncService(
+        ISettingsService settingsService,
+        ISyncService yamlSyncService,
+        ILogger<GitSyncService> logger,
+        ILocalizationService localization,
+        IServiceScopeFactory? serviceScopeFactory = null)
     {
         _settingsService = settingsService;
         _yamlSyncService = yamlSyncService;
+        _logger = logger;
+        _localization = localization;
+        _serviceScopeFactory = serviceScopeFactory;
+    }
+
+    /// <summary>
+    /// Gets a localized string for the given key
+    /// </summary>
+    private string L(string key) => _localization.GetString(key);
+
+    /// <summary>
+    /// Gets a formatted localized string
+    /// </summary>
+    private string LF(string key, params object[] args) => _localization.GetFormattedString(key, args);
+
+    /// <summary>
+    /// Logs a sync operation to the history repository
+    /// </summary>
+    private async Task LogSyncOperationAsync(
+        GitOperationResult result,
+        string operationType,
+        DateTime startedAt)
+    {
+        if (_serviceScopeFactory == null)
+        {
+            return;
+        }
+
+        try
+        {
+            // Create a scope to get a scoped repository instance
+            using var scope = _serviceScopeFactory.CreateScope();
+            var syncHistoryRepository = scope.ServiceProvider.GetService<ISyncHistoryRepository>();
+
+            if (syncHistoryRepository == null)
+            {
+                return;
+            }
+
+            var entry = SyncHistoryEntry.FromResult(
+                result,
+                operationType,
+                startedAt,
+                Settings?.GitRemoteUrl,
+                Settings?.GitBranch);
+
+            await syncHistoryRepository.AddAsync(entry);
+        }
+        catch (Exception ex)
+        {
+            // Don't let history logging failures break the sync operation
+            _logger.LogWarning(ex, "Failed to log sync operation to history");
+        }
+    }
+
+    /// <summary>
+    /// Raises StatusChanged event with detailed progress information
+    /// </summary>
+    private void RaiseStatusChanged(
+        string status,
+        SyncPhase? phase = null,
+        double? progress = null,
+        string? currentFile = null,
+        int totalFiles = 0,
+        int processedFiles = 0,
+        string? entityType = null)
+    {
+        if (phase.HasValue)
+        {
+            _currentPhase = phase.Value;
+        }
+
+        StatusChanged?.Invoke(this, new GitSyncStatusEventArgs
+        {
+            Status = status,
+            IsOperationInProgress = _currentPhase != SyncPhase.Idle &&
+                                    _currentPhase != SyncPhase.Completed &&
+                                    _currentPhase != SyncPhase.Failed,
+            Phase = _currentPhase,
+            Progress = progress,
+            CurrentFile = currentFile,
+            TotalFiles = totalFiles,
+            ProcessedFiles = processedFiles,
+            CurrentEntityType = entityType
+        });
+    }
+
+    /// <summary>
+    /// Executes an async operation with retry logic for transient failures
+    /// </summary>
+    private async Task<T> ExecuteWithRetryAsync<T>(
+        Func<Task<T>> operation,
+        string operationName,
+        Func<Exception, bool>? shouldRetry = null)
+    {
+        shouldRetry ??= IsTransientError;
+
+        for (int attempt = 0; attempt < MaxRetryAttempts; attempt++)
+        {
+            try
+            {
+                return await operation().ConfigureAwait(false);
+            }
+            catch (Exception ex) when (attempt < MaxRetryAttempts - 1 && shouldRetry(ex))
+            {
+                var delay = RetryDelaysMs[attempt];
+                _logger.LogWarning(ex,
+                    "Attempt {Attempt}/{MaxAttempts} for {Operation} failed, retrying in {Delay}ms",
+                    attempt + 1, MaxRetryAttempts, operationName, delay);
+
+                RaiseStatusChanged(
+                    LF(MessageKeys.GitSyncRetrying, operationName, attempt + 2, MaxRetryAttempts),
+                    phase: _currentPhase);
+
+                await Task.Delay(delay).ConfigureAwait(false);
+            }
+        }
+
+        // Final attempt without catch
+        return await operation().ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Determines if an exception represents a transient error worth retrying
+    /// </summary>
+    private static bool IsTransientError(Exception ex)
+    {
+        // Network-related transient errors
+        if (ex is LibGit2SharpException gitEx)
+        {
+            var message = gitEx.Message.ToLowerInvariant();
+            return message.Contains("network") ||
+                   message.Contains("connection") ||
+                   message.Contains("timeout") ||
+                   message.Contains("ssl") ||
+                   message.Contains("tls") ||
+                   message.Contains("socket") ||
+                   message.Contains("temporarily unavailable");
+        }
+
+        return ex is TimeoutException ||
+               ex is IOException ||
+               ex is System.Net.Http.HttpRequestException;
+    }
+
+    /// <summary>
+    /// Maps LibGit2Sharp exceptions to GitSyncErrorCode
+    /// </summary>
+    private static GitSyncErrorCode MapExceptionToErrorCode(Exception ex)
+    {
+        if (ex is NonFastForwardException)
+            return GitSyncErrorCode.PushRejected;
+
+        if (ex is LibGit2SharpException gitEx)
+        {
+            var message = gitEx.Message.ToLowerInvariant();
+
+            if (message.Contains("authentication") || message.Contains("401") || message.Contains("403"))
+                return GitSyncErrorCode.AuthenticationFailed;
+
+            if (message.Contains("not found") || message.Contains("404") || message.Contains("does not exist"))
+                return GitSyncErrorCode.RepositoryNotFound;
+
+            if (message.Contains("network") || message.Contains("connection") || message.Contains("timeout"))
+                return GitSyncErrorCode.NetworkError;
+
+            if (message.Contains("conflict") || message.Contains("merge"))
+                return GitSyncErrorCode.MergeConflict;
+        }
+
+        if (ex is IOException || ex is UnauthorizedAccessException)
+            return GitSyncErrorCode.FileSystemError;
+
+        if (ex is OperationCanceledException)
+            return GitSyncErrorCode.Cancelled;
+
+        if (ex is TimeoutException)
+            return GitSyncErrorCode.Timeout;
+
+        return GitSyncErrorCode.Unknown;
     }
 
     public async Task<GitOperationResult> InitializeRepositoryAsync()
     {
+        var startedAt = DateTime.UtcNow;
+
         if (!IsConfigured)
         {
-            return GitOperationResult.Fail("Git repository not configured. Please set remote URL and local path.");
+            var failResult = GitOperationResult.Fail(
+                L(MessageKeys.GitSyncNotConfigured),
+                GitSyncErrorCode.InvalidConfiguration);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Initialize, startedAt);
+            return failResult;
         }
 
         var localPath = Settings!.GitRepositoryPath!;
@@ -56,12 +254,14 @@ public class GitSyncService : IGitSyncService
 
         try
         {
+            RaiseStatusChanged(L(MessageKeys.GitSyncCheckingRepository), SyncPhase.Initializing, 0);
+
             // Check if directory exists and is a git repo
             if (Directory.Exists(localPath))
             {
                 if (Repository.IsValid(localPath))
                 {
-                    StatusMessage = "Repository already initialized";
+                    RaiseStatusChanged(L(MessageKeys.GitSyncRepositoryInitialized), SyncPhase.Completed, 100);
                     return GitOperationResult.Ok("Repository already exists and is valid.");
                 }
                 else
@@ -69,8 +269,10 @@ public class GitSyncService : IGitSyncService
                     // Directory exists but not a git repo - check if empty
                     if (Directory.GetFileSystemEntries(localPath).Length > 0)
                     {
+                        RaiseStatusChanged(L(MessageKeys.GitSyncInvalidDirectory), SyncPhase.Failed);
                         return GitOperationResult.Fail(
                             "Directory exists but is not a Git repository and is not empty.",
+                            GitSyncErrorCode.InvalidConfiguration,
                             "Please choose an empty directory or an existing Git repository.");
                     }
                 }
@@ -80,40 +282,59 @@ public class GitSyncService : IGitSyncService
                 Directory.CreateDirectory(localPath);
             }
 
-            // Clone the repository
-            StatusMessage = "Cloning repository...";
+            // Clone the repository with retry logic
+            RaiseStatusChanged(L(MessageKeys.GitSyncCloning), SyncPhase.Initializing, 25);
 
-            await Task.Run(() =>
+            await ExecuteWithRetryAsync(async () =>
             {
-                var options = new CloneOptions
+                await Task.Run(() =>
                 {
-                    BranchName = Settings.GitBranch
-                };
-                options.FetchOptions.CredentialsProvider = GetCredentialsHandler();
+                    var options = new CloneOptions
+                    {
+                        BranchName = Settings.GitBranch
+                    };
+                    options.FetchOptions.CredentialsProvider = GetCredentialsHandler();
 
-                Repository.Clone(remoteUrl, localPath, options);
-            });
+                    Repository.Clone(remoteUrl, localPath, options);
+                });
+                return true;
+            }, "clone");
 
-            StatusMessage = "Repository cloned successfully";
-            return GitOperationResult.Ok("Repository cloned successfully.");
+            RaiseStatusChanged(L(MessageKeys.GitSyncCloneSuccess), SyncPhase.Completed, 100);
+            _logger.LogInformation("Repository cloned successfully from {RemoteUrl} to {LocalPath}", remoteUrl, localPath);
+            var successResult = GitOperationResult.Ok(L(MessageKeys.GitSyncCloneSuccess));
+            await LogSyncOperationAsync(successResult, SyncOperationType.Initialize, startedAt);
+            return successResult;
         }
         catch (LibGit2SharpException ex)
         {
-            StatusMessage = "Clone failed";
-            return GitOperationResult.Fail("Failed to clone repository", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncCloneFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Failed to clone repository from {RemoteUrl}", remoteUrl);
+            var failResult = GitOperationResult.Fail("Failed to clone repository", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Initialize, startedAt);
+            return failResult;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Initialization failed";
-            return GitOperationResult.Fail("Failed to initialize repository", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncInitFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Failed to initialize repository at {LocalPath}", localPath);
+            var failResult = GitOperationResult.Fail("Failed to initialize repository", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Initialize, startedAt);
+            return failResult;
         }
     }
 
     public async Task<GitOperationResult> PullAndImportAsync()
     {
+        var startedAt = DateTime.UtcNow;
+
         if (!IsConfigured)
         {
-            return GitOperationResult.Fail("Git repository not configured.");
+            var failResult = GitOperationResult.Fail(L(MessageKeys.GitSyncNotConfigured), GitSyncErrorCode.InvalidConfiguration);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Pull, startedAt);
+            return failResult;
         }
 
         var localPath = Settings!.GitRepositoryPath!;
@@ -129,25 +350,38 @@ public class GitSyncService : IGitSyncService
 
         try
         {
-            StatusMessage = "Pulling changes...";
+            RaiseStatusChanged(L(MessageKeys.GitSyncFetching), SyncPhase.Fetching, 10);
 
             int commitsMerged = 0;
 
+            // Fetch with retry logic
+            await ExecuteWithRetryAsync(async () =>
+            {
+                await Task.Run(() =>
+                {
+                    using var repo = new Repository(localPath);
+
+                    // Fetch from remote
+                    var remote = repo.Network.Remotes["origin"];
+                    var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+
+                    Commands.Fetch(repo, remote.Name, refSpecs, new FetchOptions
+                    {
+                        CredentialsProvider = GetCredentialsHandler()
+                    }, "Fetching from origin");
+                });
+                return true;
+            }, "fetch");
+
+            RaiseStatusChanged(L(MessageKeys.GitSyncMerging), SyncPhase.Merging, 30);
+
+            // Merge changes
             await Task.Run(() =>
             {
                 using var repo = new Repository(localPath);
 
                 // Configure signature for merge commits
                 var signature = GetSignature();
-
-                // Fetch from remote
-                var remote = repo.Network.Remotes["origin"];
-                var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
-
-                Commands.Fetch(repo, remote.Name, refSpecs, new FetchOptions
-                {
-                    CredentialsProvider = GetCredentialsHandler()
-                }, "Fetching from origin");
 
                 // Get tracking branch
                 var trackingBranch = repo.Head.TrackedBranch;
@@ -160,7 +394,7 @@ public class GitSyncService : IGitSyncService
                     if (commitsMerged > 0)
                     {
                         // Pull (fetch + merge)
-                        var mergeResult = Commands.Pull(repo, signature, new PullOptions
+                        Commands.Pull(repo, signature, new PullOptions
                         {
                             FetchOptions = new FetchOptions
                             {
@@ -176,67 +410,103 @@ public class GitSyncService : IGitSyncService
             });
 
             // Import YAML files into database
-            StatusMessage = "Importing data...";
+            RaiseStatusChanged(L(MessageKeys.GitSyncImporting), SyncPhase.Importing, 50, entityType: "Actions");
             var importResult = await _yamlSyncService.ImportDataFromYamlAsync(localPath);
 
             if (importResult.Success)
             {
-                StatusMessage = $"Sync complete: {importResult.TotalCreated} created, {importResult.TotalUpdated} updated";
-                return new GitOperationResult
+                var totalImported = importResult.TotalCreated + importResult.TotalUpdated;
+                RaiseStatusChanged(
+                    LF(MessageKeys.GitSyncImportComplete, importResult.TotalCreated, importResult.TotalUpdated),
+                    SyncPhase.Completed, 100);
+                _logger.LogInformation(
+                    "Pull and import completed: {CommitsMerged} commits merged, {Created} created, {Updated} updated",
+                    commitsMerged, importResult.TotalCreated, importResult.TotalUpdated);
+
+                var successResult = new GitOperationResult
                 {
                     Success = true,
                     Message = $"Pull completed. {commitsMerged} commits merged.",
-                    ItemsImported = importResult.TotalCreated + importResult.TotalUpdated,
+                    ItemsImported = totalImported,
+                    ItemsUpdated = importResult.TotalUpdated,
                     CommitsMerged = commitsMerged
                 };
+                await LogSyncOperationAsync(successResult, SyncOperationType.Pull, startedAt);
+                return successResult;
             }
             else
             {
-                StatusMessage = "Import failed";
-                return GitOperationResult.Fail("Pull succeeded but import failed",
+                RaiseStatusChanged(L(MessageKeys.GitSyncImportFailed), SyncPhase.Failed);
+                _logger.LogWarning("Pull succeeded but import failed: {Errors}", string.Join(", ", importResult.Errors));
+                var failResult = GitOperationResult.Fail(
+                    "Pull succeeded but import failed",
+                    GitSyncErrorCode.ValidationError,
                     string.Join(", ", importResult.Errors));
+                await LogSyncOperationAsync(failResult, SyncOperationType.Pull, startedAt);
+                return failResult;
             }
         }
         catch (LibGit2SharpException ex)
         {
-            StatusMessage = "Pull failed";
-            return GitOperationResult.Fail("Failed to pull changes", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncPullFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Failed to pull changes from remote");
+            var failResult = GitOperationResult.Fail("Failed to pull changes", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Pull, startedAt);
+            return failResult;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Sync failed";
-            return GitOperationResult.Fail("Failed to sync", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncSyncFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Failed to sync repository");
+            var failResult = GitOperationResult.Fail("Failed to sync", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Pull, startedAt);
+            return failResult;
         }
     }
 
     public async Task<GitOperationResult> ExportAndPushAsync(string? commitMessage = null)
     {
+        var startedAt = DateTime.UtcNow;
+
         if (!IsConfigured)
         {
-            return GitOperationResult.Fail("Git repository not configured.");
+            var failResult = GitOperationResult.Fail(L(MessageKeys.GitSyncNotConfigured), GitSyncErrorCode.InvalidConfiguration);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+            return failResult;
         }
 
         var localPath = Settings!.GitRepositoryPath!;
 
         if (!Repository.IsValid(localPath))
         {
-            return GitOperationResult.Fail("Local repository not initialized. Please initialize first.");
+            var failResult = GitOperationResult.Fail(
+                L(MessageKeys.GitSyncRepositoryNotInitialized),
+                GitSyncErrorCode.RepositoryNotInitialized);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+            return failResult;
         }
 
         try
         {
             // Export database to YAML
-            StatusMessage = "Exporting data...";
+            RaiseStatusChanged(L(MessageKeys.GitSyncExporting), SyncPhase.Exporting, 10, entityType: "Actions");
             var exportResult = await _yamlSyncService.ExportDataToYamlAsync(localPath);
 
             if (!exportResult.Success)
             {
-                StatusMessage = "Export failed";
-                return GitOperationResult.Fail("Failed to export data",
+                RaiseStatusChanged(L(MessageKeys.GitSyncExportFailed), SyncPhase.Failed);
+                _logger.LogWarning("Failed to export data: {Errors}", string.Join(", ", exportResult.Errors));
+                var failResult = GitOperationResult.Fail(
+                    "Failed to export data",
+                    GitSyncErrorCode.FileSystemError,
                     string.Join(", ", exportResult.Errors));
+                await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+                return failResult;
             }
 
-            StatusMessage = "Committing changes...";
+            RaiseStatusChanged(L(MessageKeys.GitSyncStaging), SyncPhase.Staging, 40);
 
             bool hasChanges = false;
 
@@ -250,78 +520,109 @@ public class GitSyncService : IGitSyncService
                 // Check if there are changes to commit
                 var status = repo.RetrieveStatus();
                 hasChanges = status.IsDirty;
-
-                if (hasChanges)
-                {
-                    var signature = GetSignature();
-                    var message = commitMessage ?? $"TwinShell sync: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
-
-                    repo.Commit(message, signature, signature);
-                }
             });
 
             if (!hasChanges)
             {
-                StatusMessage = "No changes to push";
-                return new GitOperationResult
+                RaiseStatusChanged(L(MessageKeys.GitSyncNoChanges), SyncPhase.Completed, 100);
+                _logger.LogInformation("No changes to push - repository is up to date");
+                var noChangesResult = new GitOperationResult
                 {
                     Success = true,
                     Message = "No changes to push. Everything is up to date.",
                     ItemsExported = exportResult.TotalExported
                 };
+                await LogSyncOperationAsync(noChangesResult, SyncOperationType.Push, startedAt);
+                return noChangesResult;
             }
 
-            // Push to remote
-            StatusMessage = "Pushing to remote...";
+            RaiseStatusChanged(L(MessageKeys.GitSyncCommitting), SyncPhase.Committing, 60);
 
             await Task.Run(() =>
             {
                 using var repo = new Repository(localPath);
 
-                var remote = repo.Network.Remotes["origin"];
-                var pushRefSpec = $"refs/heads/{Settings.GitBranch}";
+                var signature = GetSignature();
+                var message = commitMessage ?? $"TwinShell sync: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
 
-                repo.Network.Push(remote, pushRefSpec, new PushOptions
-                {
-                    CredentialsProvider = GetCredentialsHandler()
-                });
+                repo.Commit(message, signature, signature);
             });
 
-            StatusMessage = $"Pushed {exportResult.TotalExported} items";
-            return new GitOperationResult
+            // Push to remote with retry logic
+            RaiseStatusChanged(L(MessageKeys.GitSyncPushing), SyncPhase.Pushing, 80);
+
+            await ExecuteWithRetryAsync(async () =>
+            {
+                await Task.Run(() =>
+                {
+                    using var repo = new Repository(localPath);
+
+                    var remote = repo.Network.Remotes["origin"];
+                    var pushRefSpec = $"refs/heads/{Settings.GitBranch}";
+
+                    repo.Network.Push(remote, pushRefSpec, new PushOptions
+                    {
+                        CredentialsProvider = GetCredentialsHandler()
+                    });
+                });
+                return true;
+            }, "push");
+
+            RaiseStatusChanged(LF(MessageKeys.GitSyncPushSuccess, exportResult.TotalExported), SyncPhase.Completed, 100);
+            _logger.LogInformation("Successfully pushed {ItemCount} items to remote", exportResult.TotalExported);
+            var successResult = new GitOperationResult
             {
                 Success = true,
                 Message = "Changes pushed successfully.",
                 ItemsExported = exportResult.TotalExported
             };
+            await LogSyncOperationAsync(successResult, SyncOperationType.Push, startedAt);
+            return successResult;
         }
-        catch (NonFastForwardException)
+        catch (NonFastForwardException ex)
         {
-            StatusMessage = "Push rejected - pull first";
-            return GitOperationResult.Fail(
+            RaiseStatusChanged(L(MessageKeys.GitSyncPushRejected), SyncPhase.Failed);
+            _logger.LogWarning(ex, "Push rejected - remote has changes that need to be pulled first");
+            var failResult = GitOperationResult.Fail(
                 "Push rejected. Remote has changes that need to be pulled first.",
+                GitSyncErrorCode.PushRejected,
                 "Please pull changes before pushing.");
+            await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+            return failResult;
         }
         catch (LibGit2SharpException ex)
         {
-            StatusMessage = "Push failed";
-            return GitOperationResult.Fail(
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncPushFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Export succeeded but push failed");
+            var failResult = GitOperationResult.Fail(
                 "Export succeeded but push failed. You can push manually with git push.",
+                errorCode,
                 ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+            return failResult;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Export/Push failed";
-            return GitOperationResult.Fail($"Failed to export and push: {ex.GetType().Name}", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncPushFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Failed to export and push");
+            var failResult = GitOperationResult.Fail($"Failed to export and push: {ex.GetType().Name}", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.Push, startedAt);
+            return failResult;
         }
     }
 
     public async Task<GitOperationResult> FullSyncAsync()
     {
+        _logger.LogInformation("Starting full sync operation");
+
         // First pull and import
         var pullResult = await PullAndImportAsync();
         if (!pullResult.Success)
         {
+            _logger.LogWarning("Full sync aborted - pull failed with error code {ErrorCode}: {Message}",
+                pullResult.ErrorCode, pullResult.Message);
             return pullResult;
         }
 
@@ -336,50 +637,80 @@ public class GitSyncService : IGitSyncService
                 ? $"Sync complete. {pullResult.ItemsImported} imported, {pushResult.ItemsExported} exported."
                 : $"Sync complete. {pullResult.ItemsImported} imported, {pushResult.ItemsExported} exported. Push failed: {pushResult.ErrorDetails}";
 
+            _logger.LogInformation(
+                "Full sync completed: {Imported} imported, {Exported} exported, {Merged} commits merged, push success: {PushSuccess}",
+                pullResult.ItemsImported, pushResult.ItemsExported, pullResult.CommitsMerged, pushResult.Success);
+
             return new GitOperationResult
             {
                 Success = true, // Pull and import succeeded, that's the important part
                 Message = message,
+                ErrorCode = pushResult.Success ? GitSyncErrorCode.None : pushResult.ErrorCode,
                 ErrorDetails = pushResult.Success ? null : pushResult.ErrorDetails,
                 ItemsImported = pullResult.ItemsImported,
+                ItemsUpdated = pullResult.ItemsUpdated,
                 ItemsExported = pushResult.ItemsExported,
-                CommitsMerged = pullResult.CommitsMerged
+                CommitsMerged = pullResult.CommitsMerged,
+                Warnings = pushResult.Success ? new List<string>() : new List<string> { pushResult.Message }
             };
         }
 
+        _logger.LogInformation("Full sync completed (pull only): {Imported} imported, {Merged} commits merged",
+            pullResult.ItemsImported, pullResult.CommitsMerged);
         return pullResult;
     }
 
     public async Task<GitOperationResult> TestConnectionAsync()
     {
+        var startedAt = DateTime.UtcNow;
+
         if (string.IsNullOrWhiteSpace(Settings?.GitRemoteUrl))
         {
-            return GitOperationResult.Fail("Remote URL not configured.");
+            var failResult = GitOperationResult.Fail(L(MessageKeys.GitSyncNotConfigured), GitSyncErrorCode.InvalidConfiguration);
+            await LogSyncOperationAsync(failResult, SyncOperationType.TestConnection, startedAt);
+            return failResult;
         }
 
         try
         {
-            StatusMessage = "Testing connection...";
+            RaiseStatusChanged(L(MessageKeys.GitSyncTestingConnection), SyncPhase.Validating, 50);
+            _logger.LogDebug("Testing connection to {RemoteUrl}", Settings.GitRemoteUrl);
 
-            await Task.Run(() =>
+            // Test connection with retry logic
+            await ExecuteWithRetryAsync(async () =>
             {
-                // Try to list remote references to test connection
-                var refs = Repository.ListRemoteReferences(Settings.GitRemoteUrl, GetCredentialsHandler());
-                var count = refs.Count();
-            });
+                await Task.Run(() =>
+                {
+                    // Try to list remote references to test connection
+                    var refs = Repository.ListRemoteReferences(Settings.GitRemoteUrl, GetCredentialsHandler());
+                    var count = refs.Count();
+                });
+                return true;
+            }, "connection test");
 
-            StatusMessage = "Connection successful";
-            return GitOperationResult.Ok("Connection to remote repository successful.");
+            RaiseStatusChanged(L(MessageKeys.GitSyncConnectionSuccess), SyncPhase.Completed, 100);
+            _logger.LogInformation("Connection test successful for {RemoteUrl}", Settings.GitRemoteUrl);
+            var successResult = GitOperationResult.Ok("Connection to remote repository successful.");
+            await LogSyncOperationAsync(successResult, SyncOperationType.TestConnection, startedAt);
+            return successResult;
         }
         catch (LibGit2SharpException ex)
         {
-            StatusMessage = "Connection failed";
-            return GitOperationResult.Fail("Failed to connect to remote repository", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncConnectionFailed), SyncPhase.Failed);
+            _logger.LogWarning(ex, "Failed to connect to remote repository {RemoteUrl}", Settings.GitRemoteUrl);
+            var failResult = GitOperationResult.Fail("Failed to connect to remote repository", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.TestConnection, startedAt);
+            return failResult;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Connection test failed";
-            return GitOperationResult.Fail("Connection test failed", ex.Message);
+            var errorCode = MapExceptionToErrorCode(ex);
+            RaiseStatusChanged(L(MessageKeys.GitSyncConnectionFailed), SyncPhase.Failed);
+            _logger.LogError(ex, "Connection test failed for {RemoteUrl}", Settings.GitRemoteUrl);
+            var failResult = GitOperationResult.Fail("Connection test failed", errorCode, ex.Message);
+            await LogSyncOperationAsync(failResult, SyncOperationType.TestConnection, startedAt);
+            return failResult;
         }
     }
 
@@ -392,6 +723,7 @@ public class GitSyncService : IGitSyncService
 
         if (!IsConfigured || string.IsNullOrWhiteSpace(Settings?.GitRepositoryPath))
         {
+            _logger.LogDebug("Repository not configured, returning empty status");
             return status;
         }
 
@@ -399,6 +731,7 @@ public class GitSyncService : IGitSyncService
 
         if (!Repository.IsValid(localPath))
         {
+            _logger.LogDebug("Repository at {LocalPath} is not valid, returning empty status", localPath);
             return status;
         }
 
@@ -415,6 +748,7 @@ public class GitSyncService : IGitSyncService
                 if (repo.Head.Tip != null)
                 {
                     status.LastCommitMessage = repo.Head.Tip.MessageShort;
+                    status.LastSyncTime = repo.Head.Tip.Author.When.DateTime;
                 }
 
                 var trackingBranch = repo.Head.TrackedBranch;
@@ -426,10 +760,15 @@ public class GitSyncService : IGitSyncService
                     status.CommitsBehind = divergence.BehindBy ?? 0;
                 }
             });
+
+            _logger.LogDebug(
+                "Repository status: Branch={Branch}, Ahead={Ahead}, Behind={Behind}, HasChanges={HasChanges}",
+                status.CurrentBranch, status.CommitsAhead, status.CommitsBehind, status.HasLocalChanges);
         }
-        catch
+        catch (LibGit2Sharp.LibGit2SharpException ex)
         {
-            // Ignore errors, return partial status
+            // Git operation failed - return partial status without divergence info
+            _logger.LogWarning(ex, "Failed to retrieve full repository status, returning partial status");
         }
 
         return status;

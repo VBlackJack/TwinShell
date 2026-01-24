@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using TwinShell.Core.Constants;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Helpers;
@@ -19,6 +20,8 @@ public partial class CommandGeneratorViewModel : ObservableObject
     private readonly ILocalizationService _localizationService;
     private readonly IClipboardService _clipboardService;
     private readonly ICommandHistoryService _commandHistoryService;
+    private readonly INotificationService _notificationService;
+    private readonly ILogger<CommandGeneratorViewModel> _logger;
 
     [ObservableProperty]
     private string _generatedCommand = string.Empty;
@@ -51,12 +54,16 @@ public partial class CommandGeneratorViewModel : ObservableObject
         ICommandGeneratorService commandGeneratorService,
         ILocalizationService localizationService,
         IClipboardService clipboardService,
-        ICommandHistoryService commandHistoryService)
+        ICommandHistoryService commandHistoryService,
+        INotificationService notificationService,
+        ILogger<CommandGeneratorViewModel> logger)
     {
         _commandGeneratorService = commandGeneratorService;
         _localizationService = localizationService;
         _clipboardService = clipboardService;
         _commandHistoryService = commandHistoryService;
+        _notificationService = notificationService;
+        _logger = logger;
     }
 
     /// <summary>
@@ -81,9 +88,7 @@ public partial class CommandGeneratorViewModel : ObservableObject
         _exampleCommandPattern = null;
 
         // Detect if this is a cross-platform command
-        IsCommandCrossPlatform = action.Platform == Platform.Both &&
-                                 action.WindowsCommandTemplate != null &&
-                                 action.LinuxCommandTemplate != null;
+        IsCommandCrossPlatform = TemplateHelper.IsCrossPlatform(action);
 
         LoadCommandTemplate();
         UpdateCurrentExamples();
@@ -106,17 +111,10 @@ public partial class CommandGeneratorViewModel : ObservableObject
         if (_currentAction == null) return;
 
         // Determine which template to use
-        CommandTemplate? template;
-        if (IsCommandCrossPlatform)
-        {
-            template = SelectedPlatformForGenerator == Platform.Windows
-                ? _currentAction.WindowsCommandTemplate
-                : _currentAction.LinuxCommandTemplate;
-        }
-        else
-        {
-            template = TemplateHelper.GetActiveTemplate(_currentAction);
-        }
+        var template = TemplateHelper.GetTemplateForPlatform(
+            _currentAction,
+            SelectedPlatformForGenerator,
+            IsCommandCrossPlatform);
 
         if (!TemplateHelper.IsValidTemplate(template))
         {
@@ -220,7 +218,7 @@ public partial class CommandGeneratorViewModel : ObservableObject
             _currentAction != null)
         {
             _clipboardService.SetText(GeneratedCommand);
-            Services.SnackBarService.Instance.ShowSuccess("✓ Command copied to clipboard");
+            _notificationService.ShowSuccess("✓ Command copied to clipboard");
 
             // Save to history
             var template = _currentAction.WindowsCommandTemplate ?? _currentAction.LinuxCommandTemplate;
@@ -245,7 +243,7 @@ public partial class CommandGeneratorViewModel : ObservableObject
         // Don't apply placeholder examples
         if (example.Command.Contains("<") && example.Command.Contains(">"))
         {
-            Services.SnackBarService.Instance.ShowWarning("Template example - fill parameters manually");
+            _notificationService.ShowWarning("Template example - fill parameters manually");
             return;
         }
 
@@ -258,7 +256,7 @@ public partial class CommandGeneratorViewModel : ObservableObject
         }
 
         ParseExampleAndCreateParameters(example.Command);
-        Services.SnackBarService.Instance.ShowSuccess("Example loaded - modify values as needed");
+        _notificationService.ShowSuccess("Example loaded - modify values as needed");
     }
 
     [RelayCommand]
@@ -394,8 +392,9 @@ public partial class CommandGeneratorViewModel : ObservableObject
             var values = CommandParameters.Select(p => p.Value).ToArray();
             GeneratedCommand = string.Format(_exampleCommandPattern, values);
         }
-        catch
+        catch (FormatException ex)
         {
+            _logger.LogDebug(ex, "Failed to format example command pattern");
             GeneratedCommand = _exampleCommandPattern;
         }
     }

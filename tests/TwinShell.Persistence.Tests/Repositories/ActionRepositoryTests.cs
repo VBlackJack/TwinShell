@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using TwinShell.Core.Enums;
@@ -12,6 +13,7 @@ namespace TwinShell.Persistence.Tests.Repositories;
 public class ActionRepositoryTests : IDisposable
 {
     private readonly TwinShellDbContext _context;
+    private readonly IMemoryCache _cache;
     private readonly ActionRepository _repository;
 
     public ActionRepositoryTests()
@@ -21,13 +23,15 @@ public class ActionRepositoryTests : IDisposable
             .Options;
 
         _context = new TwinShellDbContext(options);
-        _repository = new ActionRepository(_context, NullLogger<ActionRepository>.Instance);
+        _cache = new MemoryCache(new MemoryCacheOptions());
+        _repository = new ActionRepository(_context, _cache, NullLogger<ActionRepository>.Instance);
     }
 
     public void Dispose()
     {
         _context.Database.EnsureDeleted();
         _context.Dispose();
+        _cache.Dispose();
     }
 
     [Fact]

@@ -10,6 +10,8 @@ public static class SearchHistoryMapper
 {
     public static SearchHistoryEntity ToEntity(SearchHistory history)
     {
+        ArgumentNullException.ThrowIfNull(history);
+
         return new SearchHistoryEntity
         {
             Id = history.Id,
@@ -26,6 +28,8 @@ public static class SearchHistoryMapper
 
     public static SearchHistory ToModel(SearchHistoryEntity entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         return new SearchHistory
         {
             Id = entity.Id,

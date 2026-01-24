@@ -10,6 +10,8 @@ public static class AuditLogMapper
 {
     public static AuditLogEntity ToEntity(AuditLog log)
     {
+        ArgumentNullException.ThrowIfNull(log);
+
         return new AuditLogEntity
         {
             Id = log.Id,
@@ -29,6 +31,8 @@ public static class AuditLogMapper
 
     public static AuditLog ToModel(AuditLogEntity entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         return new AuditLog
         {
             Id = entity.Id,

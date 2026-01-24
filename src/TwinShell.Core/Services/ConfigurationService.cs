@@ -20,11 +20,7 @@ public class ConfigurationService : IConfigurationService
     private readonly ILogger<ConfigurationService> _logger;
     private readonly string _baseExportDirectory;
 
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        WriteIndented = true,
-        PropertyNameCaseInsensitive = true
-    };
+    private static JsonSerializerOptions JsonOptions => JsonOptionsHelper.Default;
 
     public ConfigurationService(
         IFavoritesRepository favoritesRepository,
@@ -77,7 +73,7 @@ public class ConfigurationService : IConfigurationService
             };
 
             // Export favorites
-            var favorites = await _favoritesRepository.GetAllAsync(userId);
+            var favorites = await _favoritesRepository.GetAllAsync(userId).ConfigureAwait(false);
             config.Favorites = favorites.Select(f => new FavoriteDto
             {
                 ActionId = f.ActionId,
@@ -88,7 +84,7 @@ public class ConfigurationService : IConfigurationService
             // Export history if requested
             if (includeHistory)
             {
-                var history = await _historyRepository.GetRecentAsync(ValidationConstants.DefaultHistoryLoadCount);
+                var history = await _historyRepository.GetRecentAsync(ValidationConstants.DefaultHistoryLoadCount).ConfigureAwait(false);
                 config.History = history.Select(h => new CommandHistoryDto
                 {
                     ActionId = h.ActionId,
@@ -116,7 +112,7 @@ public class ConfigurationService : IConfigurationService
             }
 
             var json = JsonSerializer.Serialize(config, JsonOptions);
-            await File.WriteAllTextAsync(filePath, json);
+            await File.WriteAllTextAsync(filePath, json).ConfigureAwait(false);
 
             return (true, null);
         }
@@ -154,7 +150,7 @@ public class ConfigurationService : IConfigurationService
             }
 
             // Read and parse JSON
-            var json = await File.ReadAllTextAsync(filePath);
+            var json = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
 
             // SECURITY: Validate JSON schema before deserialization
             if (!ValidateJsonSchema(json))
@@ -180,19 +176,19 @@ public class ConfigurationService : IConfigurationService
             int historyImported = 0;
 
             // PERFORMANCE: Load all valid action IDs once to avoid N+1 queries
-            var allActions = await _actionRepository.GetAllAsync();
+            var allActions = await _actionRepository.GetAllAsync().ConfigureAwait(false);
             var validActionIds = allActions.Select(a => a.Id).ToHashSet();
 
             // Get existing favorites if in merge mode
             HashSet<string> existingFavoriteActionIds = new();
             if (mergeMode)
             {
-                var existingFavorites = await _favoritesRepository.GetAllAsync(userId);
+                var existingFavorites = await _favoritesRepository.GetAllAsync(userId).ConfigureAwait(false);
                 existingFavoriteActionIds = existingFavorites.Select(f => f.ActionId).ToHashSet();
             }
 
             // PERFORMANCE: Get initial count once instead of in loop
-            var currentFavoritesCount = await _favoritesRepository.GetCountAsync(userId);
+            var currentFavoritesCount = await _favoritesRepository.GetCountAsync(userId).ConfigureAwait(false);
 
             // Import favorites
             // PERFORMANCE FIX: Collect all favorites and batch insert instead of N+1 queries
@@ -235,7 +231,7 @@ public class ConfigurationService : IConfigurationService
             // PERFORMANCE FIX: Batch insert all favorites at once
             if (favoritesToAdd.Any())
             {
-                await _favoritesRepository.AddRangeAsync(favoritesToAdd);
+                await _favoritesRepository.AddRangeAsync(favoritesToAdd).ConfigureAwait(false);
             }
 
             // Import history
@@ -276,7 +272,7 @@ public class ConfigurationService : IConfigurationService
             // PERFORMANCE FIX: Batch insert all history at once
             if (historyToAdd.Any())
             {
-                await _historyRepository.AddRangeAsync(historyToAdd);
+                await _historyRepository.AddRangeAsync(historyToAdd).ConfigureAwait(false);
             }
 
             return (true, null, favoritesImported, historyImported);
@@ -304,7 +300,7 @@ public class ConfigurationService : IConfigurationService
                 return (false, "File not found", null);
             }
 
-            var json = await File.ReadAllTextAsync(filePath);
+            var json = await File.ReadAllTextAsync(filePath).ConfigureAwait(false);
             var config = JsonSerializer.Deserialize<UserConfigurationDto>(json, JsonOptions);
 
             if (config == null)
@@ -384,8 +380,9 @@ public class ConfigurationService : IConfigurationService
                 return true;
             }
         }
-        catch
+        catch (JsonException)
         {
+            // Invalid JSON structure
             return false;
         }
     }

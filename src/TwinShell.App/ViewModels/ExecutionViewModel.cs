@@ -17,6 +17,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     private readonly ICommandExecutionService _commandExecutionService;
     private readonly ICommandHistoryService _commandHistoryService;
     private readonly ISettingsService _settingsService;
+    private readonly ILocalizationService _localizationService;
     // BUGFIX: Added lock object for thread-safe access to _executionCts and _executionTimer
     private readonly object _lock = new object();
     private CancellationTokenSource? _executionCts;
@@ -29,7 +30,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     private bool _isExecuting;
 
     [ObservableProperty]
-    private string _statusMessage = "Ready";
+    private string _statusMessage;
 
     [ObservableProperty]
     private double _executionProgress;
@@ -45,11 +46,14 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     public ExecutionViewModel(
         ICommandExecutionService commandExecutionService,
         ICommandHistoryService commandHistoryService,
-        ISettingsService settingsService)
+        ISettingsService settingsService,
+        ILocalizationService localizationService)
     {
         _commandExecutionService = commandExecutionService;
         _commandHistoryService = commandHistoryService;
         _settingsService = settingsService;
+        _localizationService = localizationService;
+        _statusMessage = _localizationService.GetString(MessageKeys.ExecutionReady);
     }
 
     /// <summary>
@@ -109,7 +113,9 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
             DisplayExecutionOutput(result);
             UpdateExecutionStatus(result);
 
-            StatusMessage = result.Success ? "Execution completed successfully" : "Execution failed";
+            StatusMessage = result.Success
+                ? _localizationService.GetString(MessageKeys.ExecutionSuccessStatus)
+                : _localizationService.GetString(MessageKeys.ExecutionFailedStatus);
             ExecutionProgress = 100;
 
             // Update command history with execution results
@@ -137,7 +143,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
             AddOutputLine("", false);
             // SECURITY: Don't expose exception details to users
             AddOutputLine($"[{DateTime.Now:HH:mm:ss}] ✗ ERROR: Command execution failed", true);
-            StatusMessage = "Execution error";
+            StatusMessage = _localizationService.GetString(MessageKeys.ExecutionErrorOccurred);
         }
         finally
         {
@@ -181,7 +187,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         {
             if (_executionCts != null && !_executionCts.IsCancellationRequested)
             {
-                AddOutputLine($"[{DateTime.Now:HH:mm:ss}] Cancelling execution...", true);
+                AddOutputLine($"[{DateTime.Now:HH:mm:ss}] {_localizationService.GetString(MessageKeys.ExecutionCancellingMessage)}", true);
                 _executionCts.Cancel();
             }
         }
@@ -194,7 +200,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     private void ClearOutput()
     {
         OutputLines.Clear();
-        StatusMessage = "Ready";
+        StatusMessage = _localizationService.GetString(MessageKeys.ExecutionReady);
         ExecutionTime = "00:00";
         ExecutionProgress = 0;
     }
@@ -219,7 +225,11 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     {
         if (string.IsNullOrWhiteSpace(command))
         {
-            MessageBox.Show("No command to execute", "Execution Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(
+                _localizationService.GetString(MessageKeys.ExecutionNoCommand),
+                _localizationService.GetString(MessageKeys.ExecutionNoCommandTitle),
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
             return false;
         }
         return true;
@@ -236,17 +246,15 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
         }
 
         var confirmResult = MessageBox.Show(
-            "⚠️ ATTENTION: This command may cause significant system changes.\n\n" +
-            $"Command: {parameter.Command}\n\n" +
-            "Are you sure you want to execute this command?",
-            "Dangerous Command Confirmation",
+            _localizationService.GetFormattedString(MessageKeys.ExecutionDangerousWarning, parameter.Command),
+            _localizationService.GetString(MessageKeys.ExecutionDangerousTitle),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning,
             MessageBoxResult.No);
 
         if (confirmResult != MessageBoxResult.Yes)
         {
-            AddOutputLine("Execution cancelled by user", true);
+            AddOutputLine(_localizationService.GetString(MessageKeys.ExecutionCancelledByUser), true);
             return false;
         }
 
@@ -260,7 +268,7 @@ public partial class ExecutionViewModel : ObservableObject, IDisposable
     {
         OutputLines.Clear();
         IsExecuting = true;
-        StatusMessage = "Executing...";
+        StatusMessage = _localizationService.GetString(MessageKeys.ExecutionExecuting);
         ExecutionProgress = 0;
         _outputReceivedViaCallbacks = false;
 

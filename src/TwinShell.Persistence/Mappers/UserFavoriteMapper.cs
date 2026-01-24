@@ -10,6 +10,8 @@ public static class UserFavoriteMapper
 {
     public static UserFavoriteEntity ToEntity(UserFavorite favorite)
     {
+        ArgumentNullException.ThrowIfNull(favorite);
+
         return new UserFavoriteEntity
         {
             Id = favorite.Id,
@@ -22,6 +24,8 @@ public static class UserFavoriteMapper
 
     public static UserFavorite ToModel(UserFavoriteEntity entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         var favorite = new UserFavorite
         {
             Id = entity.Id,

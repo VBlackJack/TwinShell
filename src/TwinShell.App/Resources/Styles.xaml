@@ -16,6 +16,8 @@
     <converters:PlatformToVisibilityMultiConverter x:Key="PlatformToVisibilityMultiConverter"/>
     <converters:NullablePlatformToBoolConverter x:Key="NullablePlatformToBoolConverter"/>
     <converters:EqualityConverter x:Key="EqualityConverter"/>
+    <converters:BoolToSuccessIconConverter x:Key="BoolToSuccessIconConverter"/>
+    <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
 
     <!-- Note: Colors and Styles are now defined in Themes/LightTheme.xaml and Themes/DarkTheme.xaml -->
     <!-- The active theme is merged at runtime by ThemeService -->

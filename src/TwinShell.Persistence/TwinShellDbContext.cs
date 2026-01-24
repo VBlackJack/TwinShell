@@ -101,6 +101,7 @@ public class TwinShellDbContext : DbContext
     public DbSet<AuditLogEntity> AuditLogs => Set<AuditLogEntity>();
     public DbSet<CommandBatchEntity> CommandBatches => Set<CommandBatchEntity>();
     public DbSet<SearchHistoryEntity> SearchHistories => Set<SearchHistoryEntity>();
+    public DbSet<SyncHistoryEntity> SyncHistories => Set<SyncHistoryEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -116,5 +117,6 @@ public class TwinShellDbContext : DbContext
         modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
         modelBuilder.ApplyConfiguration(new CommandBatchConfiguration());
         modelBuilder.ApplyConfiguration(new SearchHistoryConfiguration());
+        modelBuilder.ApplyConfiguration(new SyncHistoryConfiguration());
     }
 }

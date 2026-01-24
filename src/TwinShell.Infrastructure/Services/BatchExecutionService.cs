@@ -101,10 +101,11 @@ public class BatchExecutionService : IBatchExecutionService
                 {
                     successCount++;
 
-                    // Log successful execution
+                    // Log successful execution with user tracking
                     await _auditLogService.AddLogAsync(new AuditLog
                     {
                         Timestamp = DateTime.UtcNow,
+                        UserId = Environment.UserName,
                         ActionId = command.ActionId ?? batch.Id,
                         Command = command.Command,
                         Platform = command.Platform,
@@ -120,10 +121,11 @@ public class BatchExecutionService : IBatchExecutionService
                 {
                     failureCount++;
 
-                    // Log to audit trail
+                    // Log to audit trail with user tracking
                     await _auditLogService.AddLogAsync(new AuditLog
                     {
                         Timestamp = DateTime.UtcNow,
+                        UserId = Environment.UserName,
                         ActionId = command.ActionId ?? batch.Id,
                         Command = command.Command,
                         Platform = command.Platform,

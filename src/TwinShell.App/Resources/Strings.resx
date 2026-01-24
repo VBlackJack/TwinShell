@@ -433,4 +433,108 @@ Consultez le fichier startup-error.log pour plus de détails.</value>
   <data name="DialogTitleInitializationError" xml:space="preserve">
     <value>Erreur d'initialisation</value>
   </data>
+
+  <!-- Settings Messages -->
+  <data name="Settings.SavedSuccess" xml:space="preserve">
+    <value>Settings saved successfully!</value>
+  </data>
+  <data name="Settings.SaveFailed" xml:space="preserve">
+    <value>Failed to save settings. Please try again.</value>
+  </data>
+  <data name="Settings.ResetConfirmation" xml:space="preserve">
+    <value>Are you sure you want to reset all settings to default values?</value>
+  </data>
+  <data name="Settings.ResetSuccess" xml:space="preserve">
+    <value>Settings reset to default values.</value>
+  </data>
+  <data name="Settings.ResetTitle" xml:space="preserve">
+    <value>Reset Settings</value>
+  </data>
+
+  <!-- Execution Messages (extended) -->
+  <data name="Execution.Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Execution.Executing" xml:space="preserve">
+    <value>Executing...</value>
+  </data>
+  <data name="Execution.CancellingMessage" xml:space="preserve">
+    <value>Cancelling execution...</value>
+  </data>
+  <data name="Execution.NoCommand" xml:space="preserve">
+    <value>No command to execute</value>
+  </data>
+  <data name="Execution.NoCommandTitle" xml:space="preserve">
+    <value>Execution Error</value>
+  </data>
+  <data name="Execution.DangerousWarning" xml:space="preserve">
+    <value>⚠️ ATTENTION: This command may cause significant system changes.
+
+Command: {0}
+
+Are you sure you want to execute this command?</value>
+  </data>
+  <data name="Execution.DangerousTitle" xml:space="preserve">
+    <value>Dangerous Command Confirmation</value>
+  </data>
+  <data name="Execution.CancelledByUser" xml:space="preserve">
+    <value>Execution cancelled by user</value>
+  </data>
+  <data name="Execution.SuccessStatus" xml:space="preserve">
+    <value>Execution completed successfully</value>
+  </data>
+  <data name="Execution.FailedStatus" xml:space="preserve">
+    <value>Execution failed</value>
+  </data>
+  <data name="Execution.TimedOutMessage" xml:space="preserve">
+    <value>Execution timed out</value>
+  </data>
+  <data name="Execution.ErrorOccurred" xml:space="preserve">
+    <value>Execution error</value>
+  </data>
+
+  <!-- Category Management Messages -->
+  <data name="Category.NameRequired" xml:space="preserve">
+    <value>Category name is required.</value>
+  </data>
+  <data name="Category.AlreadyExists" xml:space="preserve">
+    <value>A category with this name already exists.</value>
+  </data>
+  <data name="Category.ReadyToUse" xml:space="preserve">
+    <value>Category name '{0}' is ready to use.
+
+To use this category, edit an action and assign it to this category.</value>
+  </data>
+  <data name="Category.RegisteredTitle" xml:space="preserve">
+    <value>Category Registered</value>
+  </data>
+  <data name="Category.NameEmpty" xml:space="preserve">
+    <value>Category name cannot be empty.</value>
+  </data>
+  <data name="Category.RenamedSuccess" xml:space="preserve">
+    <value>Category renamed successfully!</value>
+  </data>
+  <data name="Category.RenameFailed" xml:space="preserve">
+    <value>Failed to rename category.</value>
+  </data>
+  <data name="Category.DeleteConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete the category '{0}'?
+
+This will remove the category from all {1} action(s) that use it.</value>
+  </data>
+  <data name="Category.DeleteConfirmTitle" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+  <data name="Category.DeletedSuccess" xml:space="preserve">
+    <value>Category deleted successfully!</value>
+  </data>
+  <data name="Category.ProcessingError" xml:space="preserve">
+    <value>An error occurred while processing the category</value>
+  </data>
+  <data name="Category.SaveError" xml:space="preserve">
+    <value>An error occurred while saving the category</value>
+  </data>
+  <data name="Category.DeleteError" xml:space="preserve">
+    <value>An error occurred while deleting the category</value>
+  </data>
 </root>

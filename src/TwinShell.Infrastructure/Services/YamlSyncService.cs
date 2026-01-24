@@ -1,7 +1,9 @@
 using System.IO;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using TwinShell.Core.Enums;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Persistence;
 using TwinShell.Persistence.Entities;
@@ -782,19 +784,18 @@ public class YamlSyncService : ISyncService
 
         try
         {
-            return System.Text.Json.JsonSerializer.Deserialize<T>(json,
-                new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<T>(json, JsonOptionsHelper.CaseInsensitive);
         }
-        catch
+        catch (JsonException)
         {
+            // Invalid JSON format - return null to indicate parse failure
             return null;
         }
     }
 
     private static string SerializeJson<T>(T obj)
     {
-        return System.Text.Json.JsonSerializer.Serialize(obj,
-            new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase });
+        return JsonSerializer.Serialize(obj, JsonOptionsHelper.CamelCaseForImport);
     }
 
     #endregion

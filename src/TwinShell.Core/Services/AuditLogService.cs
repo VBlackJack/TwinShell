@@ -20,17 +20,17 @@ public class AuditLogService : IAuditLogService
 
     public async Task AddLogAsync(AuditLog log)
     {
-        await _repository.AddAsync(log);
+        await _repository.AddAsync(log).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<AuditLog>> GetRecentAsync(int count = 100)
     {
-        return await _repository.GetRecentAsync(count);
+        return await _repository.GetRecentAsync(count).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<AuditLog>> GetByDateRangeAsync(DateTime from, DateTime to)
     {
-        return await _repository.GetByDateRangeAsync(from, to);
+        return await _repository.GetByDateRangeAsync(from, to).ConfigureAwait(false);
     }
 
     public async Task ExportToCsvAsync(string filePath, DateTime? from = null, DateTime? to = null)
@@ -43,7 +43,7 @@ public class AuditLogService : IAuditLogService
 
         var logs = await _repository.GetByDateRangeAsync(
             from ?? DateTime.UtcNow.AddYears(-1),
-            to ?? DateTime.UtcNow);
+            to ?? DateTime.UtcNow).ConfigureAwait(false);
 
         var csv = new StringBuilder();
 
@@ -64,18 +64,18 @@ public class AuditLogService : IAuditLogService
                           $"{log.WasDangerous}");
         }
 
-        await File.WriteAllTextAsync(filePath, csv.ToString());
+        await File.WriteAllTextAsync(filePath, csv.ToString()).ConfigureAwait(false);
     }
 
     public async Task<int> GetCountAsync()
     {
-        return await _repository.GetCountAsync();
+        return await _repository.GetCountAsync().ConfigureAwait(false);
     }
 
     public async Task CleanupOldLogsAsync(int retentionDays = 365)
     {
         var cutoffDate = DateTime.UtcNow.AddDays(-retentionDays);
-        await _repository.DeleteOlderThanAsync(cutoffDate);
+        await _repository.DeleteOlderThanAsync(cutoffDate).ConfigureAwait(false);
     }
 
     private string EscapeCsv(string value)
@@ -118,8 +118,9 @@ public class AuditLogService : IAuditLogService
 
             return true;
         }
-        catch
+        catch (Exception ex) when (ex is IOException or ArgumentException or UnauthorizedAccessException)
         {
+            // Path validation failed
             return false;
         }
     }

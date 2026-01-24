@@ -19,6 +19,13 @@ public interface IActionRepository
     Task<int> CountAsync();
 
     /// <summary>
+    /// Efficiently counts actions in a category using database-level COUNT
+    /// </summary>
+    /// <param name="category">Category to count</param>
+    /// <returns>Number of actions in the category</returns>
+    Task<int> CountByCategoryAsync(string category);
+
+    /// <summary>
     /// Batch update category for all actions in a category (prevents N+1 queries)
     /// </summary>
     /// <param name="oldCategory">Current category name</param>

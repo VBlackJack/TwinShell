@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Entities;
 
@@ -9,14 +10,12 @@ namespace TwinShell.Persistence.Mappers;
 /// </summary>
 public static class CommandHistoryMapper
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        WriteIndented = false
-    };
+    private static JsonSerializerOptions JsonOptions => JsonOptionsHelper.CompactStorage;
 
     public static CommandHistoryEntity ToEntity(CommandHistory history)
     {
+        ArgumentNullException.ThrowIfNull(history);
+
         return new CommandHistoryEntity
         {
             Id = history.Id,
@@ -37,6 +36,8 @@ public static class CommandHistoryMapper
 
     public static CommandHistory ToModel(CommandHistoryEntity entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         var history = new CommandHistory
         {
             Id = entity.Id,

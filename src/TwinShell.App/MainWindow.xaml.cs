@@ -35,9 +35,6 @@ public partial class MainWindow : Window
                 _mainViewModel.ExecutionViewModel = executionViewModel;
             }
 
-            // Initialize SnackBar Service for visual feedback
-            SnackBarService.Instance.Initialize(RootGrid);
-
             // BUGFIX: Extract async initialization to proper async method to prevent unhandled exceptions
             Loaded += MainWindow_Loaded;
 
@@ -133,5 +130,29 @@ public partial class MainWindow : Window
             Owner = this
         };
         aboutWindow.ShowDialog();
+    }
+
+    /// <summary>
+    /// Dispose all IDisposable ViewModels when the window closes to prevent resource leaks.
+    /// </summary>
+    protected override void OnClosed(EventArgs e)
+    {
+        // Dispose MainViewModel (contains SemaphoreSlim)
+        _mainViewModel?.Dispose();
+
+        // Dispose ExecutionViewModel if set
+        if (_mainViewModel?.ExecutionViewModel is IDisposable disposableExecution)
+        {
+            disposableExecution.Dispose();
+        }
+
+        // Dispose HistoryPanel's ViewModel if it implements IDisposable
+        if (HistoryTabContent.Content is HistoryPanel historyPanel &&
+            historyPanel.DataContext is IDisposable disposableHistory)
+        {
+            disposableHistory.Dispose();
+        }
+
+        base.OnClosed(e);
     }
 }

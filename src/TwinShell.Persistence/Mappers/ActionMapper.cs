@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Models;
 using TwinShell.Persistence.Entities;
 
@@ -9,14 +10,12 @@ namespace TwinShell.Persistence.Mappers;
 /// </summary>
 public static class ActionMapper
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        WriteIndented = false
-    };
+    private static JsonSerializerOptions JsonOptions => JsonOptionsHelper.CompactStorage;
 
     public static ActionEntity ToEntity(Core.Models.Action action)
     {
+        ArgumentNullException.ThrowIfNull(action);
+
         return new ActionEntity
         {
             Id = action.Id,
@@ -41,6 +40,8 @@ public static class ActionMapper
 
     public static Core.Models.Action ToModel(ActionEntity entity)
     {
+        ArgumentNullException.ThrowIfNull(entity);
+
         var action = new Core.Models.Action
         {
             Id = entity.Id,

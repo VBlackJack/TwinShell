@@ -33,12 +33,12 @@ public class SearchHistoryService : ISearchHistoryService
             UserId = userId
         };
 
-        await _repository.AddOrUpdateAsync(searchHistory);
+        await _repository.AddOrUpdateAsync(searchHistory).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<SearchHistory>> GetRecentSearchesAsync(int limit = 10, string? userId = null)
     {
-        return await _repository.GetRecentAsync(limit, userId);
+        return await _repository.GetRecentAsync(limit, userId).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<string>> GetSearchSuggestionsAsync(string partialTerm, int limit = 5, string? userId = null)
@@ -46,26 +46,26 @@ public class SearchHistoryService : ISearchHistoryService
         if (string.IsNullOrWhiteSpace(partialTerm))
         {
             // Return recent searches if no partial term provided
-            var recent = await _repository.GetRecentAsync(limit, userId);
+            var recent = await _repository.GetRecentAsync(limit, userId).ConfigureAwait(false);
             return recent.Select(h => h.SearchTerm);
         }
 
-        var matches = await _repository.SearchAsync(partialTerm, limit, userId);
+        var matches = await _repository.SearchAsync(partialTerm, limit, userId).ConfigureAwait(false);
         return matches.Select(h => h.SearchTerm);
     }
 
     public async Task ClearHistoryAsync(string? userId = null)
     {
-        await _repository.ClearAllAsync(userId);
+        await _repository.ClearAllAsync(userId).ConfigureAwait(false);
     }
 
     public async Task DeleteSearchAsync(string id)
     {
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<SearchHistory>> GetPopularSearchesAsync(int limit = 10, string? userId = null)
     {
-        return await _repository.GetPopularAsync(limit, userId);
+        return await _repository.GetPopularAsync(limit, userId).ConfigureAwait(false);
     }
 }

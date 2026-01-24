@@ -402,8 +402,9 @@ public class CommandGeneratorService : ICommandGeneratorService
 
             return isInAllowedDirectory;
         }
-        catch
+        catch (Exception ex) when (ex is IOException or ArgumentException or UnauthorizedAccessException)
         {
+            // Path validation failed - treat as invalid
             return false;
         }
     }

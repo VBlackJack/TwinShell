@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Core.Models;
 
@@ -11,17 +12,9 @@ public class BatchService : IBatchService
 {
     private readonly IBatchRepository _repository;
 
-    // PERFORMANCE: Static JsonSerializerOptions to avoid recreation on each call
-    private static readonly JsonSerializerOptions ExportJsonOptions = new()
-    {
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    };
-
-    private static readonly JsonSerializerOptions ImportJsonOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    };
+    // PERFORMANCE: Use centralized JsonSerializerOptions to avoid recreation
+    private static JsonSerializerOptions ExportJsonOptions => JsonOptionsHelper.CamelCaseForExport;
+    private static JsonSerializerOptions ImportJsonOptions => JsonOptionsHelper.CamelCaseForImport;
 
     public BatchService(IBatchRepository repository)
     {
@@ -30,12 +23,12 @@ public class BatchService : IBatchService
 
     public async Task<IEnumerable<CommandBatch>> GetAllBatchesAsync()
     {
-        return await _repository.GetAllAsync();
+        return await _repository.GetAllAsync().ConfigureAwait(false);
     }
 
     public async Task<CommandBatch?> GetBatchByIdAsync(string id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await _repository.GetByIdAsync(id).ConfigureAwait(false);
     }
 
     public async Task<CommandBatch> CreateBatchAsync(CommandBatch batch)
@@ -57,7 +50,7 @@ public class BatchService : IBatchService
             command.Order = i;
         }
 
-        await _repository.AddAsync(batch);
+        await _repository.AddAsync(batch).ConfigureAwait(false);
         return batch;
     }
 
@@ -71,22 +64,22 @@ public class BatchService : IBatchService
             batch.Commands[i].Order = i;
         }
 
-        await _repository.UpdateAsync(batch);
+        await _repository.UpdateAsync(batch).ConfigureAwait(false);
     }
 
     public async Task DeleteBatchAsync(string id)
     {
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<CommandBatch>> SearchBatchesAsync(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
-            return await GetAllBatchesAsync();
+            return await GetAllBatchesAsync().ConfigureAwait(false);
         }
 
-        return await _repository.SearchAsync(query);
+        return await _repository.SearchAsync(query).ConfigureAwait(false);
     }
 
     public string ExportBatchToJson(CommandBatch batch)

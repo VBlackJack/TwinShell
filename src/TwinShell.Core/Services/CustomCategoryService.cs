@@ -18,17 +18,17 @@ public class CustomCategoryService : ICustomCategoryService
 
     public async Task<IEnumerable<CustomCategory>> GetAllCategoriesAsync()
     {
-        return await _repository.GetAllAsync();
+        return await _repository.GetAllAsync().ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<CustomCategory>> GetVisibleCategoriesAsync()
     {
-        return await _repository.GetVisibleCategoriesAsync();
+        return await _repository.GetVisibleCategoriesAsync().ConfigureAwait(false);
     }
 
     public async Task<CustomCategory?> GetCategoryByIdAsync(string id)
     {
-        return await _repository.GetByIdAsync(id);
+        return await _repository.GetByIdAsync(id).ConfigureAwait(false);
     }
 
     public async Task<CustomCategory> CreateCategoryAsync(string name, string iconKey = "folder", string colorHex = "#2196F3", string? description = null)
@@ -41,12 +41,12 @@ public class CustomCategoryService : ICustomCategoryService
             throw new ArgumentException("Category name cannot exceed 100 characters", nameof(name));
 
         // Check uniqueness
-        var isUnique = await ValidateCategoryNameAsync(name);
+        var isUnique = await ValidateCategoryNameAsync(name).ConfigureAwait(false);
         if (!isUnique)
             throw new InvalidOperationException($"A category with the name '{name}' already exists");
 
         // Check category count limit - PERFORMANCE: Use CountAsync instead of GetAllAsync
-        var categoryCount = await _repository.GetCountAsync();
+        var categoryCount = await _repository.GetCountAsync().ConfigureAwait(false);
         if (categoryCount >= ValidationConstants.MaxCustomCategories)
             throw new InvalidOperationException($"Maximum number of categories ({ValidationConstants.MaxCustomCategories}) reached");
 
@@ -60,17 +60,17 @@ public class CustomCategoryService : ICustomCategoryService
             Description = description,
             IsSystemCategory = false,
             IsHidden = false,
-            DisplayOrder = await _repository.GetNextDisplayOrderAsync(),
+            DisplayOrder = await _repository.GetNextDisplayOrderAsync().ConfigureAwait(false),
             CreatedAt = DateTime.UtcNow
         };
 
-        return await _repository.CreateAsync(category);
+        return await _repository.CreateAsync(category).ConfigureAwait(false);
     }
 
     public async Task<bool> UpdateCategoryAsync(CustomCategory category)
     {
         // Check if category exists
-        var existing = await _repository.GetByIdAsync(category.Id);
+        var existing = await _repository.GetByIdAsync(category.Id).ConfigureAwait(false);
         if (existing == null)
             return false;
 
@@ -79,45 +79,45 @@ public class CustomCategoryService : ICustomCategoryService
             throw new InvalidOperationException("System categories cannot be modified");
 
         // Validate name uniqueness (excluding current category)
-        var isUnique = await ValidateCategoryNameAsync(category.Name, category.Id);
+        var isUnique = await ValidateCategoryNameAsync(category.Name, category.Id).ConfigureAwait(false);
         if (!isUnique)
             throw new InvalidOperationException($"A category with the name '{category.Name}' already exists");
 
-        await _repository.UpdateAsync(category);
+        await _repository.UpdateAsync(category).ConfigureAwait(false);
         return true;
     }
 
     public async Task<bool> DeleteCategoryAsync(string id)
     {
         // Check if category exists and is not a system category
-        var isSystem = await _repository.IsCategorySystemAsync(id);
+        var isSystem = await _repository.IsCategorySystemAsync(id).ConfigureAwait(false);
         if (isSystem)
             throw new InvalidOperationException("System categories cannot be deleted");
 
-        var category = await _repository.GetByIdAsync(id);
+        var category = await _repository.GetByIdAsync(id).ConfigureAwait(false);
         if (category == null)
             return false;
 
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id).ConfigureAwait(false);
         return true;
     }
 
     public async Task<bool> ToggleCategoryVisibilityAsync(string id)
     {
-        var category = await _repository.GetByIdAsync(id);
+        var category = await _repository.GetByIdAsync(id).ConfigureAwait(false);
         if (category == null)
             return false;
 
         category.IsHidden = !category.IsHidden;
         category.ModifiedAt = DateTime.UtcNow;
 
-        await _repository.UpdateAsync(category);
+        await _repository.UpdateAsync(category).ConfigureAwait(false);
         return true;
     }
 
     public async Task ReorderCategoriesAsync(IEnumerable<string> categoryIdsInOrder)
     {
-        var categories = await _repository.GetAllAsync();
+        var categories = await _repository.GetAllAsync().ConfigureAwait(false);
         var categoryDict = categories.ToDictionary(c => c.Id);
 
         // PERFORMANCE: Batch update instead of N individual updates
@@ -135,7 +135,7 @@ public class CustomCategoryService : ICustomCategoryService
 
         if (categoriesToUpdate.Count > 0)
         {
-            await _repository.UpdateBatchAsync(categoriesToUpdate);
+            await _repository.UpdateBatchAsync(categoriesToUpdate).ConfigureAwait(false);
         }
     }
 
@@ -144,17 +144,17 @@ public class CustomCategoryService : ICustomCategoryService
         if (string.IsNullOrEmpty(actionId) || string.IsNullOrEmpty(categoryId))
             throw new ArgumentException("ActionId and CategoryId cannot be empty");
 
-        await _repository.AddActionToCategoryAsync(actionId, categoryId);
+        await _repository.AddActionToCategoryAsync(actionId, categoryId).ConfigureAwait(false);
     }
 
     public async Task RemoveActionFromCategoryAsync(string actionId, string categoryId)
     {
-        await _repository.RemoveActionFromCategoryAsync(actionId, categoryId);
+        await _repository.RemoveActionFromCategoryAsync(actionId, categoryId).ConfigureAwait(false);
     }
 
     public async Task<IEnumerable<string>> GetActionsInCategoryAsync(string categoryId)
     {
-        return await _repository.GetActionIdsForCategoryAsync(categoryId);
+        return await _repository.GetActionIdsForCategoryAsync(categoryId).ConfigureAwait(false);
     }
 
     public async Task<bool> ValidateCategoryNameAsync(string name, string? excludeCategoryId = null)
@@ -163,7 +163,7 @@ public class CustomCategoryService : ICustomCategoryService
             return false;
 
         // PERFORMANCE: Use ExistsByNameAsync instead of loading all categories
-        var exists = await _repository.ExistsByNameAsync(name, excludeCategoryId);
+        var exists = await _repository.ExistsByNameAsync(name, excludeCategoryId).ConfigureAwait(false);
         return !exists;
     }
 }

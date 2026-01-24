@@ -111,8 +111,9 @@ public class PackageManagerService : IPackageManagerService
             var output = await ExecuteCommandAsync("winget", "--version", timeoutSeconds: 5);
             return !string.IsNullOrWhiteSpace(output);
         }
-        catch
+        catch (Exception)
         {
+            // Winget not available or command failed
             return false;
         }
     }
@@ -124,8 +125,9 @@ public class PackageManagerService : IPackageManagerService
             var output = await ExecuteCommandAsync("choco", "--version", timeoutSeconds: 5);
             return !string.IsNullOrWhiteSpace(output);
         }
-        catch
+        catch (Exception)
         {
+            // Chocolatey not available or command failed
             return false;
         }
     }

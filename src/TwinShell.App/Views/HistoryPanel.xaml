@@ -307,7 +307,7 @@
             </TextBlock>
         </StackPanel>
 
-        <!-- Status Bar -->
+        <!-- Pagination and Status Bar -->
         <Border Grid.Row="2"
                 Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
@@ -315,9 +315,78 @@
                 CornerRadius="8"
                 Padding="12"
                 Margin="0,16,0,0">
-            <TextBlock Text="{Binding StatusMessage}"
-                       FontSize="12"
-                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Status Message -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding StatusMessage}"
+                           FontSize="12"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+
+                <!-- Pagination Controls -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <!-- Page Info -->
+                    <TextBlock VerticalAlignment="Center"
+                               Margin="0,0,16,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}">
+                        <Run Text="Page "/>
+                        <Run Text="{Binding CurrentPage, Mode=OneWay}"/>
+                        <Run Text=" of "/>
+                        <Run Text="{Binding TotalPages, Mode=OneWay}"/>
+                    </TextBlock>
+
+                    <!-- First Page -->
+                    <Button Content="⏮"
+                            Command="{Binding GoToFirstPageCommand}"
+                            ToolTip="Go to first page"
+                            Padding="8,4"
+                            MinWidth="32"
+                            MinHeight="32"
+                            Margin="0,0,4,0"
+                            AutomationProperties.Name="Go to first page"
+                            AutomationProperties.HelpText="Navigate to the first page of history"/>
+
+                    <!-- Previous Page -->
+                    <Button Content="◀"
+                            Command="{Binding GoToPreviousPageCommand}"
+                            ToolTip="Previous page"
+                            Padding="8,4"
+                            MinWidth="32"
+                            MinHeight="32"
+                            Margin="0,0,4,0"
+                            AutomationProperties.Name="Go to previous page"
+                            AutomationProperties.HelpText="Navigate to the previous page of history"/>
+
+                    <!-- Next Page -->
+                    <Button Content="▶"
+                            Command="{Binding GoToNextPageCommand}"
+                            ToolTip="Next page"
+                            Padding="8,4"
+                            MinWidth="32"
+                            MinHeight="32"
+                            Margin="0,0,4,0"
+                            AutomationProperties.Name="Go to next page"
+                            AutomationProperties.HelpText="Navigate to the next page of history"/>
+
+                    <!-- Last Page -->
+                    <Button Content="⏭"
+                            Command="{Binding GoToLastPageCommand}"
+                            ToolTip="Go to last page"
+                            Padding="8,4"
+                            MinWidth="32"
+                            MinHeight="32"
+                            AutomationProperties.Name="Go to last page"
+                            AutomationProperties.HelpText="Navigate to the last page of history"/>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

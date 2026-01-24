@@ -1,9 +1,9 @@
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using TwinShell.Core.Enums;
+using TwinShell.Core.Helpers;
 using TwinShell.Core.Interfaces;
 using TwinShell.Persistence;
 using TwinShell.Persistence.Entities;
@@ -31,14 +31,7 @@ public class JsonSyncService : ISyncService
     public JsonSyncService(TwinShellDbContext dbContext)
     {
         _dbContext = dbContext;
-
-        _jsonOptions = new JsonSerializerOptions
-        {
-            WriteIndented = true,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            PropertyNameCaseInsensitive = true
-        };
+        _jsonOptions = JsonOptionsHelper.SyncService;
     }
 
     #region Export
@@ -189,7 +182,8 @@ public class JsonSyncService : ISyncService
                     LinuxExamples = DeserializeJson<List<ExampleModel>>(action.LinuxExamplesJson) ?? new(),
                     Notes = action.Notes,
                     Links = DeserializeJson<List<LinkModel>>(action.LinksJson) ?? new(),
-                    IsUserCreated = action.IsUserCreated
+                    IsUserCreated = action.IsUserCreated,
+                    UpdatedAt = action.UpdatedAt
                 };
 
                 var fileName = SanitizeFileName(action.Title) + ".json";
@@ -227,7 +221,8 @@ public class JsonSyncService : ISyncService
                     ExecutionMode = batch.ExecutionMode.ToString(),
                     Tags = DeserializeJson<List<string>>(batch.TagsJson) ?? new(),
                     Commands = commands,
-                    IsUserCreated = batch.IsUserCreated
+                    IsUserCreated = batch.IsUserCreated,
+                    UpdatedAt = batch.UpdatedAt
                 };
 
                 var fileName = SanitizeFileName(batch.Name) + ".json";
@@ -487,7 +482,27 @@ public class JsonSyncService : ISyncService
 
                 if (existing != null)
                 {
-                    // Update existing
+                    // Conflict detection: check if local is newer than remote
+                    var remoteUpdatedAt = model.UpdatedAt ?? DateTime.MinValue;
+                    if (existing.UpdatedAt > remoteUpdatedAt)
+                    {
+                        // Local is newer - this is a conflict
+                        result.Conflicts.Add(new SyncEntityConflict
+                        {
+                            EntityType = "Action",
+                            EntityId = model.Id,
+                            EntityName = model.Title,
+                            FilePath = filePath,
+                            LocalUpdatedAt = existing.UpdatedAt,
+                            RemoteUpdatedAt = remoteUpdatedAt,
+                            Resolution = SyncConflictResolution.KeepLocal
+                        });
+                        result.ActionsSkipped++;
+                        result.Warnings.Add($"Conflict: Action '{model.Title}' - local is newer, kept local version");
+                        continue;
+                    }
+
+                    // Update existing (remote is newer or same)
                     existing.Title = model.Title;
                     existing.Description = model.Description;
                     existing.Category = model.Category;
@@ -502,7 +517,7 @@ public class JsonSyncService : ISyncService
                     existing.Notes = model.Notes;
                     existing.LinksJson = linksJson;
                     existing.IsUserCreated = model.IsUserCreated;
-                    existing.UpdatedAt = DateTime.UtcNow;
+                    existing.UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow;
                     result.ActionsUpdated++;
                 }
                 else
@@ -527,7 +542,7 @@ public class JsonSyncService : ISyncService
                         LinksJson = linksJson,
                         IsUserCreated = model.IsUserCreated,
                         CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow
                     };
                     _dbContext.Actions.Add(entity);
                     result.ActionsCreated++;
@@ -576,14 +591,34 @@ public class JsonSyncService : ISyncService
 
                 if (existing != null)
                 {
-                    // Update existing
+                    // Conflict detection: check if local is newer than remote
+                    var remoteUpdatedAt = model.UpdatedAt ?? DateTime.MinValue;
+                    if (existing.UpdatedAt > remoteUpdatedAt)
+                    {
+                        // Local is newer - this is a conflict
+                        result.Conflicts.Add(new SyncEntityConflict
+                        {
+                            EntityType = "Batch",
+                            EntityId = model.Id,
+                            EntityName = model.Name,
+                            FilePath = filePath,
+                            LocalUpdatedAt = existing.UpdatedAt,
+                            RemoteUpdatedAt = remoteUpdatedAt,
+                            Resolution = SyncConflictResolution.KeepLocal
+                        });
+                        result.BatchesSkipped++;
+                        result.Warnings.Add($"Conflict: Batch '{model.Name}' - local is newer, kept local version");
+                        continue;
+                    }
+
+                    // Update existing (remote is newer or same)
                     existing.Name = model.Name;
                     existing.Description = model.Description;
                     existing.ExecutionMode = executionMode;
                     existing.CommandsJson = commandsJson;
                     existing.TagsJson = tagsJson;
                     existing.IsUserCreated = model.IsUserCreated;
-                    existing.UpdatedAt = DateTime.UtcNow;
+                    existing.UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow;
                     result.BatchesUpdated++;
                 }
                 else
@@ -600,7 +635,7 @@ public class JsonSyncService : ISyncService
                         TagsJson = tagsJson,
                         IsUserCreated = model.IsUserCreated,
                         CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
+                        UpdatedAt = model.UpdatedAt ?? DateTime.UtcNow
                     };
                     _dbContext.CommandBatches.Add(entity);
                     result.BatchesCreated++;
@@ -768,19 +803,18 @@ public class JsonSyncService : ISyncService
 
         try
         {
-            return JsonSerializer.Deserialize<T>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<T>(json, JsonOptionsHelper.CaseInsensitive);
         }
-        catch
+        catch (JsonException)
         {
+            // Invalid JSON format - return null to indicate parse failure
             return null;
         }
     }
 
     private static string SerializeJson<T>(T obj)
     {
-        return JsonSerializer.Serialize(obj,
-            new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        return JsonSerializer.Serialize(obj, JsonOptionsHelper.CamelCaseForImport);
     }
 
     #endregion
@@ -835,6 +869,8 @@ public class JsonSyncService : ISyncService
         public string? Notes { get; set; }
         public List<LinkModel>? Links { get; set; }
         public bool IsUserCreated { get; set; }
+        /// <summary>Timestamp for conflict detection during sync</summary>
+        public DateTime? UpdatedAt { get; set; }
     }
 
     private class ExampleModel
@@ -859,6 +895,8 @@ public class JsonSyncService : ISyncService
         public List<string>? Tags { get; set; }
         public List<BatchCommandModel>? Commands { get; set; }
         public bool IsUserCreated { get; set; }
+        /// <summary>Timestamp for conflict detection during sync</summary>
+        public DateTime? UpdatedAt { get; set; }
     }
 
     private class BatchCommandModel

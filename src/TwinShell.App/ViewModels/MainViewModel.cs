@@ -26,6 +26,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly IDialogService _dialogService;
     private readonly ILocalizationService _localizationService;
     private readonly IImportExportService _importExportService;
+    private readonly INotificationService _notificationService;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainViewModel> _logger;
     private readonly SemaphoreSlim _filterSemaphore = new SemaphoreSlim(1, 1);
@@ -137,7 +138,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         // Don't apply placeholder examples (e.g., "<domainName> <recordType>")
         if (example.Command.Contains("<") && example.Command.Contains(">"))
         {
-            Services.SnackBarService.Instance.ShowWarning("Template example - fill parameters manually");
+            _notificationService.ShowWarning("Template example - fill parameters manually");
             return;
         }
 
@@ -153,7 +154,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         ParseExampleAndCreateParameters(example.Command);
 
         // Show feedback
-        Services.SnackBarService.Instance.ShowSuccess("Example loaded - modify values as needed");
+        _notificationService.ShowSuccess("Example loaded - modify values as needed");
     }
 
 
@@ -562,9 +563,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
             var values = CommandParameters.Select(p => p.Value).ToArray();
             GeneratedCommand = string.Format(_exampleCommandPattern, values);
         }
-        catch
+        catch (FormatException ex)
         {
             // If format fails, just show the pattern
+            _logger.LogDebug(ex, "Failed to format command pattern with provided parameters");
             GeneratedCommand = _exampleCommandPattern;
         }
     }
@@ -623,6 +625,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         IDialogService dialogService,
         ILocalizationService localizationService,
         IImportExportService importExportService,
+        INotificationService notificationService,
         IServiceProvider serviceProvider,
         ILogger<MainViewModel> logger)
     {
@@ -637,6 +640,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         _dialogService = dialogService;
         _localizationService = localizationService;
         _importExportService = importExportService;
+        _notificationService = notificationService;
         _serviceProvider = serviceProvider;
         _logger = logger;
     }
@@ -658,13 +662,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     private async Task LoadActionsAsync()
     {
-        _allActions = (await _actionService.GetAllActionsAsync()).ToList();
+        // PERFORMANCE: Parallelize independent database queries for faster initial load
+        var actionsTask = _actionService.GetAllActionsAsync();
+        var favoritesTask = _favoritesService.GetAllFavoritesAsync();
+        var categoriesTask = _actionService.GetAllCategoriesAsync();
 
-        // Load favorites
-        var favorites = await _favoritesService.GetAllFavoritesAsync();
-        _favoriteActionIds = favorites.Select(f => f.ActionId).ToHashSet();
+        await Task.WhenAll(actionsTask, favoritesTask, categoriesTask).ConfigureAwait(false);
 
-        var categories = (await _actionService.GetAllCategoriesAsync()).ToList();
+        _allActions = actionsTask.Result.ToList();
+        _favoriteActionIds = favoritesTask.Result.Select(f => f.ActionId).ToHashSet();
+        var categories = categoriesTask.Result.ToList();
 
         // Add special categories at the beginning
         categories.Insert(0, UIConstants.FavoritesCategoryDisplay);
@@ -850,9 +857,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 SearchSuggestions.Add(suggestion);
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Silently ignore errors to not disrupt user experience
+            // Log error but don't disrupt user experience
+            _logger.LogDebug(ex, "Failed to update search suggestions");
             SearchSuggestions.Clear();
         }
     }
@@ -917,24 +925,13 @@ public partial class MainViewModel : ObservableObject, IDisposable
         }
 
         // Detect if this is a cross-platform command (platform: 2 / Both)
-        IsCommandCrossPlatform = SelectedAction.Platform == Platform.Both &&
-                                 SelectedAction.WindowsCommandTemplate != null &&
-                                 SelectedAction.LinuxCommandTemplate != null;
+        IsCommandCrossPlatform = TemplateHelper.IsCrossPlatform(SelectedAction);
 
         // Determine which template to use
-        CommandTemplate? template;
-        if (IsCommandCrossPlatform)
-        {
-            // Use the selected platform for cross-platform commands
-            template = SelectedPlatformForGenerator == Platform.Windows
-                ? SelectedAction.WindowsCommandTemplate
-                : SelectedAction.LinuxCommandTemplate;
-        }
-        else
-        {
-            // Use the default logic for single-platform commands
-            template = TemplateHelper.GetActiveTemplate(SelectedAction);
-        }
+        var template = TemplateHelper.GetTemplateForPlatform(
+            SelectedAction,
+            SelectedPlatformForGenerator,
+            IsCommandCrossPlatform);
 
         if (!TemplateHelper.IsValidTemplate(template))
         {
@@ -991,17 +988,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         // BUGFIX: Use the same template selection logic as LoadCommandGenerator
         // to respect platform selection for cross-platform commands
-        CommandTemplate? template;
-        if (IsCommandCrossPlatform)
-        {
-            template = SelectedPlatformForGenerator == Platform.Windows
-                ? SelectedAction.WindowsCommandTemplate
-                : SelectedAction.LinuxCommandTemplate;
-        }
-        else
-        {
-            template = TemplateHelper.GetActiveTemplate(SelectedAction);
-        }
+        var template = TemplateHelper.GetTemplateForPlatform(
+            SelectedAction,
+            SelectedPlatformForGenerator,
+            IsCommandCrossPlatform);
 
         if (!TemplateHelper.IsValidTemplate(template))
         {
@@ -1035,7 +1025,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
             _clipboardService.SetText(GeneratedCommand);
 
             // Show success notification
-            Services.SnackBarService.Instance.ShowSuccess("✓ Command copied to clipboard");
+            _notificationService.ShowSuccess("✓ Command copied to clipboard");
 
             // Save to history
             var template = SelectedAction.WindowsCommandTemplate ?? SelectedAction.LinuxCommandTemplate;
@@ -1342,7 +1332,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 await LoadActionsAsync();
                 var successMessage = $"✓ {_localizationService.GetString("MessageActionCreated")}";
                 StatusMessage = successMessage;
-                Services.SnackBarService.Instance.ShowSuccess(successMessage);
+                _notificationService.ShowSuccess(successMessage);
             }
         }
         catch (Exception ex)
@@ -1379,7 +1369,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 await LoadActionsAsync();
                 var successMessage = $"✓ {_localizationService.GetString("MessageActionUpdated")}";
                 StatusMessage = successMessage;
-                Services.SnackBarService.Instance.ShowSuccess(successMessage);
+                _notificationService.ShowSuccess(successMessage);
             }
         }
         catch (Exception ex)
@@ -1414,7 +1404,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 await LoadActionsAsync();
                 var successMessage = $"✓ {_localizationService.GetString("MessageActionDeleted")}";
                 StatusMessage = successMessage;
-                Services.SnackBarService.Instance.ShowSuccess(successMessage);
+                _notificationService.ShowSuccess(successMessage);
             }
             catch (Exception ex)
             {

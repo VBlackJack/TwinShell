@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Windows;
+using TwinShell.Core.Constants;
 using TwinShell.Core.Interfaces;
 
 namespace TwinShell.App.ViewModels;
@@ -13,6 +14,7 @@ namespace TwinShell.App.ViewModels;
 public partial class CategoryManagementViewModel : ObservableObject
 {
     private readonly IActionService _actionService;
+    private readonly ILocalizationService _localizationService;
     private readonly ILogger<CategoryManagementViewModel> _logger;
 
     [ObservableProperty]
@@ -35,9 +37,11 @@ public partial class CategoryManagementViewModel : ObservableObject
 
     public CategoryManagementViewModel(
         IActionService actionService,
+        ILocalizationService localizationService,
         ILogger<CategoryManagementViewModel> logger)
     {
         _actionService = actionService;
+        _localizationService = localizationService;
         _logger = logger;
     }
 
@@ -92,7 +96,7 @@ public partial class CategoryManagementViewModel : ObservableObject
 
             if (string.IsNullOrWhiteSpace(NewCategoryName))
             {
-                ErrorMessage = "Category name is required.";
+                ErrorMessage = _localizationService.GetString(MessageKeys.CategoryNameRequired);
                 return;
             }
 
@@ -100,14 +104,14 @@ public partial class CategoryManagementViewModel : ObservableObject
             var existingCategories = await _actionService.GetAllCategoriesAsync();
             if (existingCategories.Any(c => c.Equals(NewCategoryName, StringComparison.OrdinalIgnoreCase)))
             {
-                ErrorMessage = "A category with this name already exists.";
+                ErrorMessage = _localizationService.GetString(MessageKeys.CategoryAlreadyExists);
                 return;
             }
 
             IsAddMode = false;
             MessageBox.Show(
-                $"Category name '{NewCategoryName}' is ready to use.\n\nTo use this category, edit an action and assign it to this category.",
-                "Category Registered",
+                _localizationService.GetFormattedString(MessageKeys.CategoryReadyToUse, NewCategoryName),
+                _localizationService.GetString(MessageKeys.CategoryRegisteredTitle),
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
 
@@ -117,7 +121,7 @@ public partial class CategoryManagementViewModel : ObservableObject
         {
             // SECURITY: Don't expose exception details to users
             _logger.LogError(ex, "Error in SaveNewAsync for category: {CategoryName}", NewCategoryName);
-            ErrorMessage = "An error occurred while processing the category";
+            ErrorMessage = _localizationService.GetString(MessageKeys.CategoryProcessingError);
         }
     }
 
@@ -161,7 +165,7 @@ public partial class CategoryManagementViewModel : ObservableObject
 
             if (string.IsNullOrWhiteSpace(SelectedCategory.Name))
             {
-                ErrorMessage = "Category name cannot be empty.";
+                ErrorMessage = _localizationService.GetString(MessageKeys.CategoryNameEmpty);
                 return;
             }
 
@@ -171,7 +175,7 @@ public partial class CategoryManagementViewModel : ObservableObject
                 var existingCategories = await _actionService.GetAllCategoriesAsync();
                 if (existingCategories.Any(c => c.Equals(SelectedCategory.Name, StringComparison.OrdinalIgnoreCase)))
                 {
-                    ErrorMessage = "A category with this name already exists.";
+                    ErrorMessage = _localizationService.GetString(MessageKeys.CategoryAlreadyExists);
                     return;
                 }
             }
@@ -183,18 +187,22 @@ public partial class CategoryManagementViewModel : ObservableObject
                 await LoadCategoriesAsync();
                 IsEditMode = false;
                 SelectedCategory = null;
-                MessageBox.Show("Category renamed successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(
+                    _localizationService.GetString(MessageKeys.CategoryRenamedSuccess),
+                    _localizationService.GetString(MessageKeys.Success),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             }
             else
             {
-                ErrorMessage = "Failed to rename category.";
+                ErrorMessage = _localizationService.GetString(MessageKeys.CategoryRenameFailed);
             }
         }
         catch (Exception ex)
         {
             // SECURITY: Don't expose exception details to users
             _logger.LogError(ex, "Error in SaveEditAsync for category: {CategoryName}", SelectedCategory?.Name);
-            ErrorMessage = "An error occurred while saving the category";
+            ErrorMessage = _localizationService.GetString(MessageKeys.CategorySaveError);
         }
     }
 
@@ -208,8 +216,8 @@ public partial class CategoryManagementViewModel : ObservableObject
             return;
 
         var result = MessageBox.Show(
-            $"Are you sure you want to delete the category '{SelectedCategory.Name}'?\n\nThis will remove the category from all {SelectedCategory.ActionCount} action(s) that use it.",
-            "Confirm Delete",
+            _localizationService.GetFormattedString(MessageKeys.CategoryDeleteConfirmation, SelectedCategory.Name, SelectedCategory.ActionCount),
+            _localizationService.GetString(MessageKeys.CategoryDeleteConfirmTitle),
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
@@ -222,14 +230,18 @@ public partial class CategoryManagementViewModel : ObservableObject
                 {
                     await LoadCategoriesAsync();
                     SelectedCategory = null;
-                    MessageBox.Show("Category deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(
+                        _localizationService.GetString(MessageKeys.CategoryDeletedSuccess),
+                        _localizationService.GetString(MessageKeys.Success),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
             {
                 // SECURITY: Don't expose exception details to users
                 _logger.LogError(ex, "Error in DeleteAsync for category: {CategoryName}", SelectedCategory?.Name);
-                ErrorMessage = "An error occurred while deleting the category";
+                ErrorMessage = _localizationService.GetString(MessageKeys.CategoryDeleteError);
             }
         }
     }
