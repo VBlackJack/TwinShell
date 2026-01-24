@@ -1,0 +1,22 @@
+<UserControl x:Class="TwinShell.App.Controls.GlassCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behaviors="clr-namespace:TwinShell.App.Behaviors"
+             x:Name="GlassCardRoot"
+             Focusable="True"
+             FocusVisualStyle="{StaticResource FocusVisual}">
+
+    <Border x:Name="CardBorder"
+            CornerRadius="{StaticResource Radius.Base}"
+            BorderThickness="1"
+            behaviors:RevealHighlightBehavior.IsEnabled="{Binding EnableReveal, ElementName=GlassCardRoot}"
+            behaviors:RevealHighlightBehavior.Intensity="{Binding RevealIntensity, ElementName=GlassCardRoot}"
+            behaviors:RevealBorderBehavior.IsEnabled="{Binding EnableRevealBorder, ElementName=GlassCardRoot}"
+            behaviors:RevealBorderBehavior.Intensity="{Binding BorderRevealIntensity, ElementName=GlassCardRoot}">
+        <Border.RenderTransform>
+            <TranslateTransform X="0" Y="0"/>
+        </Border.RenderTransform>
+        <ContentPresenter Content="{Binding Content, ElementName=GlassCardRoot}"
+                          Margin="{Binding Padding, ElementName=GlassCardRoot}"/>
+    </Border>
+</UserControl>

@@ -97,6 +97,12 @@ public class UserSettings
     public string? GitUserEmail { get; set; }
 
     /// <summary>
+    /// Accessibility: Reduce motion and animations (WCAG 2.3.3).
+    /// When enabled, theme transitions and other animations are disabled.
+    /// </summary>
+    public bool ReducedMotion { get; set; } = false;
+
+    /// <summary>
     /// Creates a new instance with default values.
     /// </summary>
     public UserSettings()
@@ -125,7 +131,8 @@ public class UserSettings
             GitSyncOnStartup = this.GitSyncOnStartup,
             GitAutoPush = this.GitAutoPush,
             GitUserName = this.GitUserName,
-            GitUserEmail = this.GitUserEmail
+            GitUserEmail = this.GitUserEmail,
+            ReducedMotion = this.ReducedMotion
         };
     }
 

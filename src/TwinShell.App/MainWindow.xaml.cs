@@ -1,9 +1,11 @@
 using System.Windows;
+using System.Windows.Interop;
 using Microsoft.Extensions.DependencyInjection;
 using TwinShell.App.Services;
 using TwinShell.App.ViewModels;
 using TwinShell.App.Views;
 using TwinShell.Core.Constants;
+using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 
 namespace TwinShell.App;
@@ -13,6 +15,7 @@ public partial class MainWindow : Window
     private readonly IServiceProvider _serviceProvider;
     private readonly MainViewModel _mainViewModel;
     private readonly StartupLogger _logger = StartupLogger.Instance;
+    private IBackdropEffectService? _backdropEffectService;
 
     public MainWindow(MainViewModel viewModel, HistoryPanel historyPanel, OutputPanel outputPanel, IServiceProvider serviceProvider)
     {
@@ -63,6 +66,9 @@ public partial class MainWindow : Window
             var settings = await settingsService.LoadSettingsAsync();
             themeService.ApplyTheme(settings.Theme);
 
+            // Apply Mica backdrop effect (Windows 11 only)
+            ApplyBackdropEffect(settings.Theme);
+
             await _mainViewModel.InitializeAsync();
         }
         catch (Exception ex)
@@ -76,6 +82,76 @@ public partial class MainWindow : Window
             var title = localization?.GetString("DialogTitleInitializationError") ?? "Initialization Error";
 
             MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    /// <summary>
+    /// Applies Windows 11 Mica backdrop effect to the main window.
+    /// Falls back gracefully on unsupported systems or when accessibility settings disable transparency.
+    /// </summary>
+    private void ApplyBackdropEffect(Theme currentTheme)
+    {
+        try
+        {
+            _backdropEffectService = _serviceProvider.GetService<IBackdropEffectService>();
+            if (_backdropEffectService == null || !_backdropEffectService.IsBackdropEffectSupported)
+            {
+                _logger.LogInfo("Mica backdrop not supported or service unavailable");
+                return;
+            }
+
+            var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd == IntPtr.Zero)
+            {
+                _logger.LogInfo("Window handle not available for Mica effect");
+                return;
+            }
+
+            // Determine if dark mode based on effective theme
+            var themeService = _serviceProvider.GetService<IThemeService>();
+            var effectiveTheme = themeService?.GetEffectiveTheme(currentTheme) ?? currentTheme;
+            bool isDarkMode = effectiveTheme == Theme.Dark || effectiveTheme == Theme.HighContrast;
+
+            // Apply Mica effect
+            bool success = _backdropEffectService.ApplyMica(hwnd, isDarkMode);
+            if (success)
+            {
+                // Set window background to transparent to show Mica effect
+                Background = System.Windows.Media.Brushes.Transparent;
+                _logger.LogInfo($"Mica backdrop applied successfully (dark mode: {isDarkMode})");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to apply Mica backdrop", ex);
+            // Silently fall back to solid colors
+        }
+    }
+
+    /// <summary>
+    /// Updates the Mica backdrop effect when the theme changes.
+    /// Called from ThemeService when themes are switched.
+    /// </summary>
+    public void OnThemeChanged(Theme newTheme)
+    {
+        if (_backdropEffectService == null || !_backdropEffectService.IsBackdropEffectSupported)
+            return;
+
+        try
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd == IntPtr.Zero)
+                return;
+
+            var themeService = _serviceProvider.GetService<IThemeService>();
+            var effectiveTheme = themeService?.GetEffectiveTheme(newTheme) ?? newTheme;
+            bool isDarkMode = effectiveTheme == Theme.Dark || effectiveTheme == Theme.HighContrast;
+
+            _backdropEffectService.ApplyMica(hwnd, isDarkMode);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Failed to update Mica backdrop on theme change", ex);
         }
     }
 

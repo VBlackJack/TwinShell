@@ -191,6 +191,10 @@ public static class MessageKeys
     public const string HistoryDeletedSuccess = "History.DeletedSuccess";
     public const string HistoryDeleteError = "History.DeleteError";
 
+    // Accessibility messages
+    public const string AccessibilityReducedMotionEnabled = "Accessibility.ReducedMotion.Enabled";
+    public const string AccessibilityReducedMotionDisabled = "Accessibility.ReducedMotion.Disabled";
+
     // Sync messages (for JsonSyncService and YamlSyncService)
     public const string SyncExportFailed = "Sync.ExportFailed";
     public const string SyncImportFailed = "Sync.ImportFailed";

@@ -16,10 +16,12 @@
     <FontFamily x:Key="FontFamily.Monospace">Cascadia Mono, Cascadia Code, Consolas, monospace</FontFamily>
 
     <!-- Font Sizes - Modular Scale (base: 14px, ratio: 1.25) -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.2XS">11</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XS">10</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.SM">12</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.Base">14</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.MD">16</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.2XL">18</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.LG">20</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XL">24</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="FontSize.XXL">32</system:Double>
@@ -203,5 +205,71 @@
 
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="TouchTarget.Minimum">44</system:Double>
     <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="TouchTarget.Comfortable">48</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- GLASS UI SYSTEM - Opacity & Blur Tokens                         -->
+    <!-- Windows 11 Fluent Design glass-morphism effects                 -->
+    <!-- ================================================================ -->
+
+    <!-- Glass Opacity Levels - For semi-transparent surfaces -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Opacity.Subtle">0.50</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Opacity.Light">0.65</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Opacity.Medium">0.80</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Opacity.Strong">0.90</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Opacity.Solid">1.0</system:Double>
+
+    <!-- Glass Blur Levels - For backdrop blur intensity -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Blur.Subtle">2</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Blur.Light">4</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Blur.Medium">8</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Blur.Strong">16</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Glass.Blur.Heavy">24</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- REVEAL EFFECT TOKENS                                             -->
+    <!-- Light-following cursor effect for interactive elements          -->
+    <!-- ================================================================ -->
+
+    <!-- Reveal Highlight Radius - Size of the light spot -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Radius">120</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Radius.SM">80</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Radius.LG">160</system:Double>
+
+    <!-- Reveal Intensity - Opacity of the light effect -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Intensity.Subtle">0.05</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Intensity.Normal">0.10</system:Double>
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Intensity.Strong">0.20</system:Double>
+
+    <!-- Reveal Border Intensity - Glow intensity for borders -->
+    <system:Double xmlns:system="clr-namespace:System;assembly=mscorlib" x:Key="Reveal.Border.Intensity">0.40</system:Double>
+
+    <!-- ================================================================ -->
+    <!-- GLASS SHADOW EFFECTS                                             -->
+    <!-- Softer shadows for glass surfaces                               -->
+    <!-- ================================================================ -->
+
+    <!-- Glass Shadow - Default card shadow -->
+    <DropShadowEffect x:Key="Glass.Shadow"
+                      ShadowDepth="0"
+                      BlurRadius="8"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.15"/>
+
+    <!-- Glass Shadow Elevated - Hover state shadow -->
+    <DropShadowEffect x:Key="Glass.Shadow.Elevated"
+                      ShadowDepth="4"
+                      BlurRadius="16"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.20"/>
+
+    <!-- Glass Shadow Floating - Dialog/popup shadow -->
+    <DropShadowEffect x:Key="Glass.Shadow.Floating"
+                      ShadowDepth="8"
+                      BlurRadius="32"
+                      Direction="270"
+                      Color="#000000"
+                      Opacity="0.25"/>
 
 </ResourceDictionary>

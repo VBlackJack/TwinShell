@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using TwinShell.Core.Enums;
@@ -7,19 +8,18 @@ namespace TwinShell.App.Converters;
 
 public class CriticalityToColorConverter : IValueConverter
 {
-    // PERFORMANCE: Reuse static brush instances instead of creating new ones on each conversion
-    private static readonly SolidColorBrush InfoBrush = new(Color.FromRgb(33, 150, 243));      // Blue
-    private static readonly SolidColorBrush RunBrush = new(Color.FromRgb(76, 175, 80));        // Green
-    private static readonly SolidColorBrush DangerousBrush = new(Color.FromRgb(244, 67, 54));  // Red
-    private static readonly SolidColorBrush DefaultBrush = new(Colors.Gray);
+    // Fallback brushes in case theme resources are not available
+    private static readonly SolidColorBrush FallbackInfoBrush = new(Color.FromRgb(33, 150, 243));
+    private static readonly SolidColorBrush FallbackRunBrush = new(Color.FromRgb(76, 175, 80));
+    private static readonly SolidColorBrush FallbackDangerousBrush = new(Color.FromRgb(244, 67, 54));
+    private static readonly SolidColorBrush FallbackDefaultBrush = new(Colors.Gray);
 
     static CriticalityToColorConverter()
     {
-        // Freeze brushes for better performance
-        InfoBrush.Freeze();
-        RunBrush.Freeze();
-        DangerousBrush.Freeze();
-        DefaultBrush.Freeze();
+        FallbackInfoBrush.Freeze();
+        FallbackRunBrush.Freeze();
+        FallbackDangerousBrush.Freeze();
+        FallbackDefaultBrush.Freeze();
     }
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -28,13 +28,25 @@ public class CriticalityToColorConverter : IValueConverter
         {
             return level switch
             {
-                CriticalityLevel.Info => InfoBrush,
-                CriticalityLevel.Run => RunBrush,
-                CriticalityLevel.Dangerous => DangerousBrush,
-                _ => DefaultBrush
+                CriticalityLevel.Info => GetThemeBrush("InfoBrush", FallbackInfoBrush),
+                CriticalityLevel.Run => GetThemeBrush("SuccessBrush", FallbackRunBrush),
+                CriticalityLevel.Dangerous => GetThemeBrush("DangerBrush", FallbackDangerousBrush),
+                _ => GetThemeBrush("TextSecondaryBrush", FallbackDefaultBrush)
             };
         }
-        return DefaultBrush;
+        return GetThemeBrush("TextSecondaryBrush", FallbackDefaultBrush);
+    }
+
+    /// <summary>
+    /// Gets a brush from the current theme resources, with fallback.
+    /// </summary>
+    private static Brush GetThemeBrush(string resourceKey, Brush fallback)
+    {
+        if (Application.Current?.Resources[resourceKey] is Brush brush)
+        {
+            return brush;
+        }
+        return fallback;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

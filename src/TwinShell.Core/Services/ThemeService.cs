@@ -17,7 +17,9 @@ public class ThemeService : IThemeService, IDisposable
     private Theme _currentTheme = Theme.Light;
     private const string LightThemeUri = "/TwinShell.App;component/Themes/LightTheme.xaml";
     private const string DarkThemeUri = "/TwinShell.App;component/Themes/DarkTheme.xaml";
+    private const string HighContrastThemeUri = "/TwinShell.App;component/Themes/HighContrastTheme.xaml";
     private readonly ILogger<ThemeService>? _logger;
+    private readonly ISettingsService? _settingsService;
 
     // UI-008: Theme transition animation settings
     private const int ThemeTransitionDurationMs = 150;
@@ -26,9 +28,10 @@ public class ThemeService : IThemeService, IDisposable
     /// <summary>
     /// Initializes the ThemeService and subscribes to Windows theme changes.
     /// </summary>
-    public ThemeService(ILogger<ThemeService>? logger = null)
+    public ThemeService(ILogger<ThemeService>? logger = null, ISettingsService? settingsService = null)
     {
         _logger = logger;
+        _settingsService = settingsService;
         _logger?.LogInformation("ThemeService initialized");
 
         // BUGFIX: Subscribe to Windows theme changes to support dynamic System theme switching
@@ -62,6 +65,15 @@ public class ThemeService : IThemeService, IDisposable
             if (_isFirstThemeApplication)
             {
                 _isFirstThemeApplication = false;
+                ApplyThemeInternal(theme, effectiveTheme);
+                return;
+            }
+
+            // WCAG 2.3.3: Check for Reduced Motion accessibility setting
+            var reducedMotion = _settingsService?.CurrentSettings?.ReducedMotion ?? false;
+            if (reducedMotion)
+            {
+                _logger?.LogDebug("Reduced motion enabled, skipping theme transition animation");
                 ApplyThemeInternal(theme, effectiveTheme);
                 return;
             }
@@ -129,7 +141,12 @@ public class ThemeService : IThemeService, IDisposable
         RemoveExistingTheme();
 
         // Get the appropriate theme URI
-        var themeUri = effectiveTheme == Theme.Dark ? DarkThemeUri : LightThemeUri;
+        var themeUri = effectiveTheme switch
+        {
+            Theme.Dark => DarkThemeUri,
+            Theme.HighContrast => HighContrastThemeUri,
+            _ => LightThemeUri
+        };
         _logger?.LogDebug($"Loading theme from: {themeUri}");
 
         // Load and merge the new theme ResourceDictionary
@@ -150,6 +167,7 @@ public class ThemeService : IThemeService, IDisposable
             return DetectSystemTheme();
         }
 
+        // HighContrast is its own effective theme
         return theme;
     }
 
@@ -201,7 +219,8 @@ public class ThemeService : IThemeService, IDisposable
         var themesToRemove = Application.Current.Resources.MergedDictionaries
             .Where(d => d.Source != null &&
                        (d.Source.OriginalString.Contains("/Themes/LightTheme.xaml") ||
-                        d.Source.OriginalString.Contains("/Themes/DarkTheme.xaml")))
+                        d.Source.OriginalString.Contains("/Themes/DarkTheme.xaml") ||
+                        d.Source.OriginalString.Contains("/Themes/HighContrastTheme.xaml")))
             .ToList();
 
         _logger?.LogDebug($"Removing {themesToRemove.Count} existing theme dictionary/dictionaries");

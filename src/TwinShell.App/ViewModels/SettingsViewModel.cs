@@ -276,8 +276,10 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
 
         if (success)
         {
+            var themeChanged = SelectedTheme != _originalSettings.Theme;
+
             // Apply theme if it changed
-            if (SelectedTheme != _originalSettings.Theme)
+            if (themeChanged)
             {
                 _themeService.ApplyTheme(SelectedTheme);
             }
@@ -285,11 +287,40 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             _originalSettings = newSettings.Clone();
             HasChanges = false;
 
+            // If theme changed, offer to restart for full effect
+            if (themeChanged)
+            {
+                var result = MessageBox.Show(
+                    "Theme changed. Restart the application to apply all changes?\n\nSome UI elements may not update correctly until restart.",
+                    "Restart Required",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    RestartApplication();
+                    return;
+                }
+            }
+
             MessageBox.Show("Settings saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         else
         {
             MessageBox.Show("Failed to save settings. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    /// <summary>
+    /// Restarts the application to apply theme changes.
+    /// </summary>
+    private static void RestartApplication()
+    {
+        var exePath = Environment.ProcessPath;
+        if (!string.IsNullOrEmpty(exePath))
+        {
+            System.Diagnostics.Process.Start(exePath);
+            System.Windows.Application.Current.Shutdown();
         }
     }
 
@@ -310,7 +341,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
     private async Task ResetToDefaultAsync()
     {
         var result = MessageBox.Show(
-            "Are you sure you want to reset all settings to default values?",
+            "Are you sure you want to reset all settings to default values?\n\nThe application will restart to apply changes.",
             "Reset Settings",
             MessageBoxButton.YesNo,
             MessageBoxImage.Question);
@@ -321,7 +352,8 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             _themeService.ApplyTheme(defaultSettings.Theme);
             LoadCurrentSettings();
 
-            MessageBox.Show("Settings reset to default values.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Restart to apply all theme changes
+            RestartApplication();
         }
     }
 

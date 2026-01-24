@@ -14,14 +14,8 @@
         MinHeight="450" MinWidth="600">
 
     <Window.Resources>
-        <!-- ComboBox Style -->
-        <Style TargetType="ComboBox">
-            <Setter Property="Padding" Value="8"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-        </Style>
+        <!-- Use global theme styles for ComboBox and CheckBox -->
+        <!-- Removed local overrides to allow DarkTheme.xaml styles to apply -->
 
         <!-- TextBox for numbers -->
         <Style x:Key="NumberTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
@@ -29,37 +23,31 @@
             <Setter Property="HorizontalAlignment" Value="Left"/>
         </Style>
 
-        <!-- CheckBox Style -->
-        <Style TargetType="CheckBox">
-            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-            <Setter Property="Margin" Value="0,4"/>
-        </Style>
-
         <!-- Section Header Style -->
         <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.2XL}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
-            <Setter Property="Margin" Value="0,16,0,8"/>
+            <Setter Property="Margin" Value="{StaticResource Spacing.MD}"/>
         </Style>
 
         <!-- Label Style -->
         <Style x:Key="SettingsLabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-            <Setter Property="Margin" Value="0,8,0,4"/>
+            <Setter Property="Margin" Value="{StaticResource Spacing.SM}"/>
             <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
         <!-- Description Style -->
         <Style x:Key="DescriptionStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.2XS}"/>
+            <Setter Property="Margin" Value="{StaticResource Spacing.SM}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
     </Window.Resources>
 
-    <Grid Margin="24">
+    <Grid Margin="{StaticResource Spacing.XL}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -73,7 +61,7 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="{StaticResource Radius.SM}"
                         Padding="16"
                         Margin="0,0,0,16">
                     <StackPanel>
@@ -113,7 +101,7 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="{StaticResource Radius.SM}"
                         Padding="16"
                         Margin="0,0,0,16">
                     <StackPanel>
@@ -153,7 +141,7 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="{StaticResource Radius.SM}"
                         Padding="16"
                         Margin="0,0,0,16">
                     <StackPanel>
@@ -190,7 +178,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -232,7 +220,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -313,7 +301,7 @@
                         <Border Background="{DynamicResource BackgroundBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="4"
+                                CornerRadius="{StaticResource Radius.SM}"
                                 Padding="12"
                                 Margin="0,16,0,0">
                             <Grid>
@@ -352,7 +340,7 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="{StaticResource Radius.SM}"
                         Padding="16"
                         Margin="0,0,0,16">
                     <StackPanel>
@@ -388,7 +376,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -411,7 +399,7 @@
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -444,7 +432,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -470,7 +458,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -493,7 +481,7 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="{StaticResource Radius.SM}"
                         Padding="16"
                         Margin="0,0,0,16">
                     <StackPanel>
@@ -517,7 +505,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -541,7 +529,7 @@
                                         <Border Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                                CornerRadius="4"
+                                                CornerRadius="{StaticResource Radius.SM}"
                                                 Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
@@ -554,7 +542,7 @@
                         <Border Background="{DynamicResource BackgroundBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="4"
+                                CornerRadius="{StaticResource Radius.SM}"
                                 MaxHeight="200">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <ItemsControl ItemsSource="{Binding SyncHistory}">
@@ -655,7 +643,7 @@
                 <Border Background="{DynamicResource DangerBackgroundBrush}"
                         BorderBrush="{DynamicResource DangerBrush}"
                         BorderThickness="1"
-                        CornerRadius="4"
+                        CornerRadius="{StaticResource Radius.SM}"
                         Padding="12"
                         Margin="0,0,0,16"
                         Visibility="{Binding ValidationError, Converter={StaticResource BoolToVisibilityConverter}}"
@@ -702,7 +690,7 @@
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="4"
+                                CornerRadius="{StaticResource Radius.SM}"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center"
                                             VerticalAlignment="Center"/>
@@ -753,7 +741,7 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
+                                CornerRadius="{StaticResource Radius.SM}"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center"
                                             VerticalAlignment="Center"/>

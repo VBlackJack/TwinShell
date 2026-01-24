@@ -18,5 +18,10 @@ public enum Theme
     /// <summary>
     /// Follows the system theme preference (Windows theme).
     /// </summary>
-    System = 2
+    System = 2,
+
+    /// <summary>
+    /// High contrast theme for accessibility (WCAG AAA+ compliant, 10:1+ contrast).
+    /// </summary>
+    HighContrast = 3
 }

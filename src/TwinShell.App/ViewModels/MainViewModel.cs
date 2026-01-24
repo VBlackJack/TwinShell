@@ -1722,6 +1722,55 @@ public partial class MainViewModel : ObservableObject, IDisposable
         await settingsService.SaveSettingsAsync(settings);
     }
 
+    /// <summary>
+    /// Switch to system theme (follows Windows theme)
+    /// </summary>
+    [RelayCommand]
+    private async Task SetSystemTheme()
+    {
+        var themeService = _serviceProvider.GetRequiredService<IThemeService>();
+        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+
+        themeService.ApplyTheme(Theme.System);
+
+        var settings = await settingsService.LoadSettingsAsync();
+        settings.Theme = Theme.System;
+        await settingsService.SaveSettingsAsync(settings);
+    }
+
+    /// <summary>
+    /// Switch to high contrast theme for accessibility (WCAG AAA+)
+    /// </summary>
+    [RelayCommand]
+    private async Task SetHighContrastTheme()
+    {
+        var themeService = _serviceProvider.GetRequiredService<IThemeService>();
+        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+
+        themeService.ApplyTheme(Theme.HighContrast);
+
+        var settings = await settingsService.LoadSettingsAsync();
+        settings.Theme = Theme.HighContrast;
+        await settingsService.SaveSettingsAsync(settings);
+    }
+
+    /// <summary>
+    /// Toggle reduced motion accessibility setting (WCAG 2.3.3)
+    /// </summary>
+    [RelayCommand]
+    private async Task ToggleReducedMotion()
+    {
+        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
+        var settings = await settingsService.LoadSettingsAsync();
+        settings.ReducedMotion = !settings.ReducedMotion;
+        await settingsService.SaveSettingsAsync(settings);
+
+        var message = settings.ReducedMotion
+            ? _localizationService.GetString(MessageKeys.AccessibilityReducedMotionEnabled)
+            : _localizationService.GetString(MessageKeys.AccessibilityReducedMotionDisabled);
+        _notificationService.ShowSuccess(message);
+    }
+
 }
 
 public partial class ParameterViewModel : ObservableObject

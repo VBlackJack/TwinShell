@@ -15,7 +15,7 @@
     <Window.Resources>
         <!-- Title Style -->
         <Style x:Key="TitleStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.XXL}"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -23,7 +23,7 @@
 
         <!-- Subtitle Style -->
         <Style x:Key="SubtitleStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.MD}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -31,15 +31,15 @@
 
         <!-- Section Header Style -->
         <Style x:Key="SectionHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.MD}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
-            <Setter Property="Margin" Value="0,16,0,8"/>
+            <Setter Property="Margin" Value="{StaticResource Spacing.MD}"/>
         </Style>
 
         <!-- Info Style -->
         <Style x:Key="InfoStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
             <Setter Property="Margin" Value="0,4"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -47,21 +47,21 @@
 
         <!-- Feature Style -->
         <Style x:Key="FeatureStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.SM}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
             <Setter Property="Margin" Value="0,3"/>
         </Style>
 
         <!-- Copyright Style -->
         <Style x:Key="CopyrightStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontSize" Value="{StaticResource FontSize.2XS}"/>
             <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,8,0,0"/>
+            <Setter Property="Margin" Value="{StaticResource Spacing.SM}"/>
         </Style>
     </Window.Resources>
 
-    <Grid Margin="32">
+    <Grid Margin="{StaticResource Spacing.XXL}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -72,8 +72,8 @@
         <StackPanel Grid.Row="0">
             <!-- App Icon/Logo -->
             <Border Width="100" Height="100"
-                    Margin="0,0,0,16"
-                    CornerRadius="20"
+                    Margin="{StaticResource Spacing.MD}"
+                    CornerRadius="{StaticResource Radius.LG}"
                     HorizontalAlignment="Center">
                 <Border.Clip>
                     <RectangleGeometry Rect="0,0,100,100" RadiusX="20" RadiusY="20"/>
@@ -86,10 +86,10 @@
 
             <TextBlock Text="TwinShell" Style="{StaticResource TitleStyle}"/>
             <TextBlock x:Name="VersionText"
-                       FontSize="14"
+                       FontSize="{StaticResource FontSize.Base}"
                        Foreground="{DynamicResource TextSecondaryBrush}"
                        HorizontalAlignment="Center"
-                       Margin="0,4,0,8"/>
+                       Margin="{StaticResource Spacing.SM}"/>
             <TextBlock Text="PowerShell &amp; Bash Command Manager"
                        Style="{StaticResource SubtitleStyle}"
                        Margin="0,0,0,4"/>
@@ -98,15 +98,15 @@
         </StackPanel>
 
         <!-- Content Section -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="{StaticResource Spacing.MD}">
             <StackPanel>
                 <!-- Description -->
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="16"
-                        Margin="0,0,0,12">
+                        CornerRadius="{StaticResource Radius.Base}"
+                        Padding="{StaticResource Spacing.MD}"
+                        Margin="{StaticResource Spacing.Base}">
                     <TextBlock Style="{StaticResource InfoStyle}">
                         <Run Text="TwinShell is a professional tool designed to simplify system command management and execution. Whether you work on Windows or Linux, TwinShell centralizes your frequent commands and lets you execute them quickly."/>
                     </TextBlock>
@@ -117,9 +117,9 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="16"
-                        Margin="0,0,0,12">
+                        CornerRadius="{StaticResource Radius.Base}"
+                        Padding="{StaticResource Spacing.MD}"
+                        Margin="{StaticResource Spacing.Base}">
                     <StackPanel>
                         <TextBlock Style="{StaticResource InfoStyle}">
                             <Run Text="Author: " FontWeight="SemiBold"/>
@@ -133,11 +133,11 @@
                 <Border Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="16">
+                        CornerRadius="{StaticResource Radius.Base}"
+                        Padding="{StaticResource Spacing.MD}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,3">
-                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="{StaticResource FontSize.SM}" Foreground="{DynamicResource SuccessBrush}" Margin="{StaticResource Spacing.SM}"/>
                             <TextBlock Text="PowerShell and Bash command library" Style="{StaticResource FeatureStyle}" Margin="0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,3">
@@ -178,16 +178,16 @@
         </ScrollViewer>
 
         <!-- Footer Section -->
-        <StackPanel Grid.Row="2" Margin="0,16,0,0">
+        <StackPanel Grid.Row="2" Margin="{StaticResource Spacing.MD}">
             <TextBlock Text="© 2026 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
-            <TextBlock Text="All rights reserved" Style="{StaticResource CopyrightStyle}" Margin="0,2,0,16"/>
+            <TextBlock Text="All rights reserved" Style="{StaticResource CopyrightStyle}" Margin="{StaticResource Spacing.MD}"/>
 
             <!-- Close Button -->
             <Button Content="Close"
                     Click="CloseButton_Click"
                     Style="{StaticResource PrimaryButtonStyle}"
                     HorizontalAlignment="Center"
-                    Padding="12,10"
+                    Padding="{StaticResource Spacing.Base}"
                     MinWidth="120"
                     MinHeight="44"/>
         </StackPanel>

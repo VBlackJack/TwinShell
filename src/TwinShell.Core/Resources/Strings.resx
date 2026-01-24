@@ -493,4 +493,12 @@ General:
   <data name="History.DeleteError" xml:space="preserve">
     <value>Error deleting entry</value>
   </data>
+
+  <!-- Accessibility Messages -->
+  <data name="Accessibility.ReducedMotion.Enabled" xml:space="preserve">
+    <value>Reduced motion enabled</value>
+  </data>
+  <data name="Accessibility.ReducedMotion.Disabled" xml:space="preserve">
+    <value>Reduced motion disabled</value>
+  </data>
 </root>

@@ -597,4 +597,12 @@ Cela supprimera la catégorie de toutes les {1} action(s) qui l'utilisent.</valu
   <data name="History.DeleteError" xml:space="preserve">
     <value>Erreur lors de la suppression de l'entree</value>
   </data>
+
+  <!-- Messages d'accessibilite -->
+  <data name="Accessibility.ReducedMotion.Enabled" xml:space="preserve">
+    <value>Mouvement reduit active</value>
+  </data>
+  <data name="Accessibility.ReducedMotion.Disabled" xml:space="preserve">
+    <value>Mouvement reduit desactive</value>
+  </data>
 </root>

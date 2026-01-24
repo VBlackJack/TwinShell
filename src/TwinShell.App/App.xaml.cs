@@ -20,6 +20,11 @@ public partial class App : Application
     private ServiceProvider? _serviceProvider;
     private readonly StartupLogger _logger = StartupLogger.Instance;
 
+    /// <summary>
+    /// Provides access to the application's service provider for dependency resolution.
+    /// </summary>
+    public static IServiceProvider? ServiceProvider => ((App)Current)._serviceProvider;
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -177,6 +182,9 @@ public partial class App : Application
         services.AddSingleton<IHealthCheckService, HealthCheckService>();
         services.AddSingleton<IBackupService, BackupService>();
         services.AddSingleton<ICorrelationService, CorrelationService>();
+
+        // Windows 11 Mica/Acrylic Backdrop Effect Service
+        services.AddSingleton<IBackdropEffectService, BackdropEffectService>();
 
         // Seed Service
         // ARCHITECTURE FIX: Use AppData for seed files to avoid Program Files read-only issues
