@@ -426,3 +426,11 @@ Setup-*.exe
 # Claude Code
 CLAUDE.md
 .claude/
+
+# BMAD Method - AI-driven development framework
+# These folders contain local AI agent outputs and should not be versioned
+.bmad/
+_bmad/
+_bmad-output/
+bmad-output/
+*.bmad.bak
