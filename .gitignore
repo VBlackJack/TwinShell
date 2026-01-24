@@ -422,3 +422,7 @@ Setup-*.exe
 
 # IDE/Tool specific
 .claude/
+
+# Claude Code
+CLAUDE.md
+.claude/

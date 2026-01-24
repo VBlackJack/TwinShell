@@ -179,7 +179,7 @@
 
         <!-- Footer Section -->
         <StackPanel Grid.Row="2" Margin="0,16,0,0">
-            <TextBlock Text="© 2025 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
+            <TextBlock Text="© 2026 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
             <TextBlock Text="All rights reserved" Style="{StaticResource CopyrightStyle}" Margin="0,2,0,16"/>
 
             <!-- Close Button -->

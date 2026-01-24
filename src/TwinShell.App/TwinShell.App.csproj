@@ -9,13 +9,13 @@
     <ApplicationIcon>Assets\twinshell-icon.ico</ApplicationIcon>
 
     <!-- Version Information -->
-    <Version>1.5.1</Version>
-    <AssemblyVersion>1.5.1.0</AssemblyVersion>
-    <FileVersion>1.5.1.0</FileVersion>
+    <Version>1.6.0</Version>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
+    <FileVersion>1.6.0.0</FileVersion>
     <Company>TwinShell</Company>
     <Product>TwinShell - PowerShell Command Library</Product>
     <Description>A comprehensive PowerShell command library for Windows system administrators</Description>
-    <Copyright>Copyright © 2025 TwinShell</Copyright>
+    <Copyright>Copyright © 2026 TwinShell</Copyright>
 
     <!-- Publishing Settings -->
     <PublishSingleFile>false</PublishSingleFile>
@@ -28,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <!-- LibGit2Sharp native binaries must be referenced from the main executable project -->
@@ -52,6 +53,13 @@
   <ItemGroup>
     <Resource Include="Assets\twinshell-icon.png" />
     <Resource Include="Assets\twinshell-icon.ico" />
+  </ItemGroup>
+
+  <!-- Application Configuration -->
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <Target Name="CopySeedData" AfterTargets="Build">

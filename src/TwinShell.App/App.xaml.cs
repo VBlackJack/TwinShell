@@ -1,6 +1,7 @@
 using System.IO;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TwinShell.Core.Interfaces;
@@ -97,16 +98,20 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
-        // Logging infrastructure for enhanced observability
+        // Load configuration from appsettings.json
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+        services.AddSingleton<IConfiguration>(configuration);
+
+        // Logging infrastructure with configurable log levels from appsettings.json
         // SECURITY: Use Information level in production to avoid sensitive data in logs
         services.AddLogging(builder =>
         {
+            builder.AddConfiguration(configuration.GetSection("Logging"));
             builder.AddDebug();
-#if DEBUG
-            builder.SetMinimumLevel(LogLevel.Debug);
-#else
-            builder.SetMinimumLevel(LogLevel.Information);
-#endif
         });
 
         // Memory cache for repository caching
@@ -166,6 +171,12 @@ public partial class App : Application
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ISyncService, JsonSyncService>();
         services.AddSingleton<IGitSyncService, GitSyncService>();
+
+        // Resilience and Recovery Services
+        services.AddSingleton<ResilienceService>();
+        services.AddSingleton<IHealthCheckService, HealthCheckService>();
+        services.AddSingleton<IBackupService, BackupService>();
+        services.AddSingleton<ICorrelationService, CorrelationService>();
 
         // Seed Service
         // ARCHITECTURE FIX: Use AppData for seed files to avoid Program Files read-only issues
