@@ -163,12 +163,9 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-        <!-- Search and Filters -->
+        <!-- UI-007: Search and Filters with Fluent Card Style -->
         <Border Grid.Row="0"
-                Background="{DynamicResource SurfaceBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="8"
+                Style="{DynamicResource FluentCardStyle}"
                 Padding="16"
                 Margin="0,0,0,16">
             <Grid>

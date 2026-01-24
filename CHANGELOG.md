@@ -5,6 +5,18 @@ All notable changes to TwinShell will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-01-24
+
+### Added
+- UI-006: SearchViewModel extracted for better separation of concerns (SRP)
+- UI-007: FluentCardStyle and FluentPanelStyle with layered elevation effects
+- UI-008: Smooth 150ms fade transition when switching themes
+
+### Changed
+- Search/filter panel now uses FluentCardStyle with enhanced hover effects
+- OutputPanel header uses FluentPanelStyle for visual consistency
+- Theme transitions are now animated for better UX
+
 ## [1.7.0] - 2026-01-24
 
 ### Added

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using System.Windows;
+using System.Windows.Media.Animation;
 using TwinShell.Core.Enums;
 using TwinShell.Core.Interfaces;
 
@@ -17,6 +18,10 @@ public class ThemeService : IThemeService, IDisposable
     private const string LightThemeUri = "/TwinShell.App;component/Themes/LightTheme.xaml";
     private const string DarkThemeUri = "/TwinShell.App;component/Themes/DarkTheme.xaml";
     private readonly ILogger<ThemeService>? _logger;
+
+    // UI-008: Theme transition animation settings
+    private const int ThemeTransitionDurationMs = 150;
+    private bool _isFirstThemeApplication = true;
 
     /// <summary>
     /// Initializes the ThemeService and subscribes to Windows theme changes.
@@ -45,9 +50,6 @@ public class ThemeService : IThemeService, IDisposable
             _logger?.LogInformation($"Applying theme: {theme}");
 
             var effectiveTheme = GetEffectiveTheme(theme);
-            _currentTheme = theme;
-
-            _logger?.LogDebug($"Effective theme: {effectiveTheme}");
 
             // Validation: Ensure Application.Current is available
             if (Application.Current == null)
@@ -56,27 +58,88 @@ public class ThemeService : IThemeService, IDisposable
                 throw new InvalidOperationException("Application.Current is null. Theme can only be applied after Application initialization.");
             }
 
-            // Remove existing theme ResourceDictionaries
-            RemoveExistingTheme();
-
-            // Get the appropriate theme URI
-            var themeUri = effectiveTheme == Theme.Dark ? DarkThemeUri : LightThemeUri;
-            _logger?.LogDebug($"Loading theme from: {themeUri}");
-
-            // Load and merge the new theme ResourceDictionary
-            var themeResourceDictionary = new ResourceDictionary
+            // UI-008: Skip animation on first application (startup)
+            if (_isFirstThemeApplication)
             {
-                Source = new Uri(themeUri, UriKind.Relative)
-            };
+                _isFirstThemeApplication = false;
+                ApplyThemeInternal(theme, effectiveTheme);
+                return;
+            }
 
-            Application.Current.Resources.MergedDictionaries.Add(themeResourceDictionary);
-            _logger?.LogInformation($"Theme applied successfully: {theme} (effective: {effectiveTheme})");
+            // UI-008: Apply theme with smooth transition animation
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow != null)
+            {
+                ApplyThemeWithTransition(mainWindow, theme, effectiveTheme);
+            }
+            else
+            {
+                // Fallback: Apply without animation if no main window
+                ApplyThemeInternal(theme, effectiveTheme);
+            }
         }
         catch (Exception ex)
         {
             _logger?.LogError(ex, $"Failed to apply theme: {theme}");
             throw;
         }
+    }
+
+    /// <summary>
+    /// UI-008: Applies theme with a smooth fade transition animation.
+    /// </summary>
+    private void ApplyThemeWithTransition(Window window, Theme theme, Theme effectiveTheme)
+    {
+        _logger?.LogDebug("Applying theme with transition animation");
+
+        var duration = TimeSpan.FromMilliseconds(ThemeTransitionDurationMs);
+
+        // Create fade out animation
+        var fadeOut = new DoubleAnimation(1.0, 0.85, duration)
+        {
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+        };
+
+        // When fade out completes, switch theme and fade back in
+        fadeOut.Completed += (s, e) =>
+        {
+            ApplyThemeInternal(theme, effectiveTheme);
+
+            // Create fade in animation
+            var fadeIn = new DoubleAnimation(0.85, 1.0, duration)
+            {
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            window.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+        };
+
+        window.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+    }
+
+    /// <summary>
+    /// Internal method that performs the actual theme switch.
+    /// </summary>
+    private void ApplyThemeInternal(Theme theme, Theme effectiveTheme)
+    {
+        _currentTheme = theme;
+        _logger?.LogDebug($"Effective theme: {effectiveTheme}");
+
+        // Remove existing theme ResourceDictionaries
+        RemoveExistingTheme();
+
+        // Get the appropriate theme URI
+        var themeUri = effectiveTheme == Theme.Dark ? DarkThemeUri : LightThemeUri;
+        _logger?.LogDebug($"Loading theme from: {themeUri}");
+
+        // Load and merge the new theme ResourceDictionary
+        var themeResourceDictionary = new ResourceDictionary
+        {
+            Source = new Uri(themeUri, UriKind.Relative)
+        };
+
+        Application.Current.Resources.MergedDictionaries.Add(themeResourceDictionary);
+        _logger?.LogInformation($"Theme applied successfully: {theme} (effective: {effectiveTheme})");
     }
 
     /// <inheritdoc/>

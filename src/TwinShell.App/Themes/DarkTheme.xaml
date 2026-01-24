@@ -146,6 +146,30 @@
         <Setter Property="Effect" Value="{StaticResource Elevation.1}"/>
     </Style>
 
+    <!-- UI-007: Fluent Card Style with enhanced elevation -->
+    <Style x:Key="FluentCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Base}"/>
+        <Setter Property="Effect" Value="{StaticResource LayeredElevation2}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" Value="{StaticResource LayeredElevation3}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource BorderHoverBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- UI-007: Fluent Panel Style (for sidebars and headers) -->
+    <Style x:Key="FluentPanelStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Base}"/>
+        <Setter Property="Effect" Value="{StaticResource Elevation.1}"/>
+    </Style>
+
     <!-- Focus Visual Style - WCAG 2.4.7 (AAA) - More visible in dark mode -->
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
