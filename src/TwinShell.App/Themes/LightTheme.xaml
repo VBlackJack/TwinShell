@@ -755,7 +755,7 @@
     <!-- ListBox Item Style with Elevation -->
     <Style x:Key="ActionListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="Padding" Value="{StaticResource Spacing.Base}"/>
-        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="Margin" Value="4,2"/>
         <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="Template">
@@ -763,8 +763,8 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border x:Name="BorderElement"
                             Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="Transparent"
+                            BorderThickness="2"
                             CornerRadius="{StaticResource Radius.Base}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter TextElement.Foreground="{TemplateBinding Foreground}"/>
@@ -777,7 +777,6 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource SelectedBackgroundBrush}"/>
                             <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
-                            <Setter TargetName="BorderElement" Property="BorderThickness" Value="{StaticResource BorderThickness.Medium}"/>
                             <Setter TargetName="BorderElement" Property="Effect" Value="{StaticResource Elevation.3}"/>
                             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
                         </Trigger>
