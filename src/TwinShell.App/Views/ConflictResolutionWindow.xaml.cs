@@ -18,6 +18,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
+using Microsoft.Extensions.DependencyInjection;
 using TwinShell.Core.Interfaces;
 
 namespace TwinShell.App.Views;
@@ -56,6 +59,22 @@ public partial class ConflictResolutionWindow : Window
         _mergeConflicts = (mergeConflicts ?? Enumerable.Empty<string>()).ToList();
 
         SetupUI();
+        Loaded += (s, e) => ApplyAcrylicBackdrop();
+    }
+
+    private void ApplyAcrylicBackdrop()
+    {
+        var backdropService = App.ServiceProvider?.GetService<IBackdropEffectService>();
+        if (backdropService?.IsBackdropEffectSupported == true)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            var isDark = Application.Current.Resources["BackgroundBrush"] is SolidColorBrush brush
+                         && brush.Color.R < 128;
+            if (backdropService.ApplyAcrylic(hwnd, isDark))
+            {
+                Background = Brushes.Transparent;
+            }
+        }
     }
 
     private void SetupUI()
@@ -115,6 +134,11 @@ public partial class ConflictResolutionWindow : Window
         DialogResult = false;
         Close();
     }
+
+    // Custom Title Bar Button Handlers
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 }
 
 /// <summary>

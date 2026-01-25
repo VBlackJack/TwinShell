@@ -13,6 +13,15 @@
         ResizeMode="CanResize"
         MinHeight="600" MinWidth="800">
 
+    <!-- Custom Window Chrome for Glass Title Bar -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="-1"
+                      CornerRadius="8"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <!-- Label Style -->
         <Style x:Key="LabelTextStyle" TargetType="TextBlock">
@@ -40,21 +49,56 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="24">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="36"/><!-- Custom Title Bar -->
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <TextBlock Grid.Row="0"
-                   Text="Action Information"
-                   FontSize="20"
-                   FontWeight="SemiBold"
-                   Foreground="{DynamicResource PrimaryBrush}"
-                   Margin="0,0,0,16"/>
+        <!-- Custom Glass Title Bar -->
+        <Grid Grid.Row="0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="Action Editor"
+                       FontSize="12"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       VerticalAlignment="Center"
+                       Margin="12,0,0,0"
+                       Opacity="0.9"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button x:Name="MinimizeButton" Click="MinimizeButton_Click" Style="{DynamicResource WindowButtonStyle}" ToolTip="Minimize">
+                    <Path Data="M 0 0 H 10" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1" VerticalAlignment="Center"/>
+                </Button>
+                <Button x:Name="MaximizeButton" Click="MaximizeButton_Click" Style="{DynamicResource WindowButtonStyle}" ToolTip="Maximize">
+                    <Path Data="M 0 0 H 10 V 10 H 0 Z" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1" Fill="Transparent"/>
+                </Button>
+                <Button x:Name="CloseButton" Click="CloseButton_Click" Style="{DynamicResource WindowCloseButtonStyle}" ToolTip="Close">
+                    <Path Data="M 0 0 L 10 10 M 0 10 L 10 0" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="24,12,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <TextBlock Grid.Row="0"
+                       Text="Action Information"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource PrimaryBrush}"
+                       Margin="0,0,0,16"/>
 
         <!-- Content - TabControl -->
         <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
@@ -480,21 +524,22 @@
             </StackPanel>
         </Border>
 
-        <!-- Footer Buttons -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal"
-                    HorizontalAlignment="Right">
-            <Button Content="Cancel"
-                    Command="{Binding CancelCommand}"
-                    Width="100"
-                    Margin="0,0,12,0"
-                    Padding="12,10"
-                    MinHeight="44"/>
-            <Button Content="Save"
-                    Command="{Binding SaveCommand}"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Width="120"
-                    Padding="12,10"
-                    MinHeight="44"/>
-        </StackPanel>
+            <!-- Footer Buttons -->
+            <StackPanel Grid.Row="3" Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Content="Cancel"
+                        Command="{Binding CancelCommand}"
+                        Width="100"
+                        Margin="0,0,12,0"
+                        Padding="12,10"
+                        MinHeight="44"/>
+                <Button Content="Save"
+                        Command="{Binding SaveCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Width="120"
+                        Padding="12,10"
+                        MinHeight="44"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

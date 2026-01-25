@@ -9,8 +9,11 @@
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource BackgroundBrush}"
         Icon="/Assets/twinshell-icon.png"
-        ResizeMode="NoResize"
-        WindowStyle="SingleBorderWindow">
+        ResizeMode="NoResize">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36" ResizeBorderThickness="0" GlassFrameThickness="-1" CornerRadius="8" UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
         <!-- Title Style -->
@@ -61,14 +64,34 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="{StaticResource Spacing.XXL}">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="36"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Section -->
+        <!-- Custom Glass Title Bar -->
+        <Grid Grid.Row="0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="About TwinShell" FontSize="12" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="12,0,0,0" Opacity="0.9"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button x:Name="CloseButton" Click="CloseButton_Click" Style="{DynamicResource WindowCloseButtonStyle}" ToolTip="Close">
+                    <Path Data="M 0 0 L 10 10 M 0 10 L 10 0" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="{StaticResource Spacing.XXL}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header Section -->
         <StackPanel Grid.Row="0">
             <!-- App Icon/Logo -->
             <Border Width="100" Height="100"
@@ -177,19 +200,20 @@
             </StackPanel>
         </ScrollViewer>
 
-        <!-- Footer Section -->
-        <StackPanel Grid.Row="2" Margin="{StaticResource Spacing.MD}">
-            <TextBlock Text="© 2026 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
-            <TextBlock Text="All rights reserved" Style="{StaticResource CopyrightStyle}" Margin="{StaticResource Spacing.MD}"/>
+            <!-- Footer Section -->
+            <StackPanel Grid.Row="2" Margin="{StaticResource Spacing.MD}">
+                <TextBlock Text="© 2026 TwinShell Project" Style="{StaticResource CopyrightStyle}"/>
+                <TextBlock Text="All rights reserved" Style="{StaticResource CopyrightStyle}" Margin="{StaticResource Spacing.MD}"/>
 
-            <!-- Close Button -->
-            <Button Content="Close"
-                    Click="CloseButton_Click"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    HorizontalAlignment="Center"
-                    Padding="{StaticResource Spacing.Base}"
-                    MinWidth="120"
-                    MinHeight="44"/>
-        </StackPanel>
+                <!-- Close Button -->
+                <Button Content="Close"
+                        Click="CloseButton_Click"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        HorizontalAlignment="Center"
+                        Padding="{StaticResource Spacing.Base}"
+                        MinWidth="120"
+                        MinHeight="44"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

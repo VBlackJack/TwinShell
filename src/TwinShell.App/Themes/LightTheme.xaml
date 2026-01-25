@@ -119,26 +119,28 @@
     <SolidColorBrush x:Key="AcrylicBackgroundBrush" Color="#CCF5F5F5"/><!-- Semi-transparent surface -->
 
     <!-- ================================================================ -->
-    <!-- GLASS UI SYSTEM - Semi-transparent surfaces & reveal effects    -->
-    <!-- Windows 11 Fluent Design glass-morphism color palette           -->
+    <!-- GLASS UI SYSTEM - Windows 11 Fluent Design Mica/Acrylic         -->
+    <!-- True glass-morphism with transparency and subtle borders        -->
     <!-- ================================================================ -->
 
-    <!-- Glass Surface Colors -->
+    <!-- Glass Surface Colors - White base for light theme -->
     <Color x:Key="Glass.Surface.Color">#FFFFFF</Color>
     <Color x:Key="Glass.Surface.Elevated.Color">#FAFAFA</Color>
-    <Color x:Key="Glass.Border.Color">#E0E0E0</Color>
+    <Color x:Key="Glass.Border.Color">#000000</Color>
 
-    <!-- Glass Brushes with opacity -->
-    <SolidColorBrush x:Key="Glass.Surface.Brush" Color="#FFFFFF" Opacity="0.80"/>
-    <SolidColorBrush x:Key="Glass.Surface.Subtle.Brush" Color="#FFFFFF" Opacity="0.50"/>
-    <SolidColorBrush x:Key="Glass.Surface.Strong.Brush" Color="#FFFFFF" Opacity="0.90"/>
-    <SolidColorBrush x:Key="Glass.Border.Brush" Color="#E0E0E0" Opacity="0.60"/>
+    <!-- Glass Brushes - More transparent for true glass effect -->
+    <SolidColorBrush x:Key="Glass.Surface.Brush" Color="#FFFFFF" Opacity="0.65"/>
+    <SolidColorBrush x:Key="Glass.Surface.Subtle.Brush" Color="#FFFFFF" Opacity="0.45"/>
+    <SolidColorBrush x:Key="Glass.Surface.Strong.Brush" Color="#FFFFFF" Opacity="0.80"/>
+    <SolidColorBrush x:Key="Glass.Border.Brush" Color="#000000" Opacity="0.06"/>
+    <SolidColorBrush x:Key="Glass.Border.Light.Brush" Color="#000000" Opacity="0.10"/>
+    <SolidColorBrush x:Key="Glass.Border.Focus.Brush" Color="#000000" Opacity="0.15"/>
 
-    <!-- Reveal Effect Colors -->
+    <!-- Reveal Effect Colors - Subtle dark effects for light theme -->
     <Color x:Key="Reveal.Light.Color">#000000</Color>
-    <Color x:Key="Reveal.Border.Color">#40000000</Color>
-    <SolidColorBrush x:Key="Reveal.Highlight.Brush" Color="#000000" Opacity="0.05"/>
-    <SolidColorBrush x:Key="Reveal.Border.Brush" Color="#000000" Opacity="0.20"/>
+    <Color x:Key="Reveal.Border.Color">#20000000</Color>
+    <SolidColorBrush x:Key="Reveal.Highlight.Brush" Color="#000000" Opacity="0.04"/>
+    <SolidColorBrush x:Key="Reveal.Border.Brush" Color="#000000" Opacity="0.10"/>
 
     <!-- Disabled States -->
     <SolidColorBrush x:Key="DisabledBrush" Color="#BDBDBD"/>
@@ -182,6 +184,32 @@
     <Storyboard x:Key="DialogEntryStoryboard">
         <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
                          From="30" To="0" Duration="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Page Exit Animation - Fade out when leaving -->
+    <Storyboard x:Key="PageExitStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0" Duration="0:0:0.15">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+
+    <!-- Slide In From Right Animation -->
+    <Storyboard x:Key="SlideInFromRightStoryboard">
+        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                         From="40" To="0" Duration="0:0:0.25">
             <DoubleAnimation.EasingFunction>
                 <CubicEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -281,59 +309,59 @@
 
     <!-- ================================================================ -->
     <!-- GLASS CARD STYLES - Windows 11 Fluent Design Glass-morphism     -->
+    <!-- Modern, clean, truly transparent glass surfaces                 -->
     <!-- ================================================================ -->
 
-    <!-- GlassCardStyle - Semi-transparent card with glass effect -->
+    <!-- GlassCardStyle - Semi-transparent card with subtle glass effect -->
     <Style x:Key="GlassCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="{StaticResource Radius.Base}"/>
         <Setter Property="Effect" Value="{StaticResource Glass.Shadow}"/>
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform X="0" Y="0"/>
-            </Setter.Value>
-        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Effect" Value="{StaticResource Glass.Shadow.Elevated}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource Reveal.Border.Brush}"/>
-                <Trigger.EnterActions>
-                    <BeginStoryboard Storyboard="{StaticResource LiftAnimationStoryboard}"/>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <BeginStoryboard Storyboard="{StaticResource LowerAnimationStoryboard}"/>
-                </Trigger.ExitActions>
+                <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- GlassCardStyle.Subtle - Lower opacity glass card -->
+    <!-- GlassCardStyle.Subtle - More transparent glass card -->
     <Style x:Key="GlassCardStyle.Subtle" TargetType="Border" BasedOn="{StaticResource GlassCardStyle}">
         <Setter Property="Background" Value="{StaticResource Glass.Surface.Subtle.Brush}"/>
     </Style>
 
-    <!-- GlassCardStyle.Strong - Higher opacity glass card -->
+    <!-- GlassCardStyle.Strong - Less transparent glass card -->
     <Style x:Key="GlassCardStyle.Strong" TargetType="Border" BasedOn="{StaticResource GlassCardStyle}">
         <Setter Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
     </Style>
 
-    <!-- GlassPanelStyle - Full-height glass panel for sidebars -->
+    <!-- GlassPanelStyle - Glass panel with subtle top light border -->
     <Style x:Key="GlassPanelStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
+        <Setter Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
-        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Base}"/>
         <Setter Property="Effect" Value="{StaticResource Glass.Shadow}"/>
     </Style>
 
-    <!-- GlassButtonStyle - Glass-morphism button with reveal effects -->
-    <Style x:Key="GlassButtonStyle" TargetType="Button">
+    <!-- GlassPanelStyle.Header - Panel with integrated header styling -->
+    <Style x:Key="GlassPanelStyle.Header" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Base}"/>
+        <Setter Property="Effect" Value="{StaticResource Glass.Shadow}"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <!-- GlassButtonStyle - Clean, minimal glass button -->
+    <Style x:Key="GlassButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource Glass.Surface.Subtle.Brush}"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="{StaticResource Spacing.MD}"/>
+        <Setter Property="Padding" Value="16,10"/>
         <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
         <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
         <Setter Property="FontWeight" Value="{StaticResource FontWeight.Medium}"/>
@@ -347,29 +375,18 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{StaticResource Radius.Base}"
-                            Padding="{TemplateBinding Padding}"
-                            Effect="{StaticResource Glass.Shadow}"
-                            RenderTransformOrigin="0.5,0.5">
-                        <Border.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Border.RenderTransform>
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource Reveal.Border.Brush}"/>
-                            <Setter TargetName="BorderElement" Property="Effect" Value="{StaticResource Glass.Shadow.Elevated}"/>
+                            <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="BorderElement" Property="RenderTransform">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter TargetName="BorderElement" Property="Effect" Value="{StaticResource Glass.Shadow}"/>
+                            <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
@@ -383,7 +400,124 @@
         </Setter>
     </Style>
 
-    <!-- GlassTextBoxStyle - Glass-morphism text input with reveal border -->
+    <!-- GlassButtonStyle.Primary - Accent colored glass button -->
+    <Style x:Key="GlassButtonStyle.Primary" TargetType="Button" BasedOn="{StaticResource GlassButtonStyle}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="#0078D4" Opacity="0.10"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#0078D4" Opacity="0.20"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- GlassComboBoxStyle - Glass-styled dropdown -->
+    <Style x:Key="GlassComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="32"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="Border"
+                                Grid.ColumnSpan="2"
+                                Background="{StaticResource Glass.Surface.Subtle.Brush}"
+                                BorderBrush="{StaticResource Glass.Border.Brush}"
+                                BorderThickness="1"
+                                CornerRadius="6"/>
+                        <Path x:Name="Arrow"
+                              Grid.Column="1"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Data="M 0 0 L 4 4 L 8 0 Z"
+                              Fill="{StaticResource TextPrimaryBrush}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Glass.Border.Focus.Brush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+                            <Setter TargetName="Arrow" Property="Fill" Value="{StaticResource DisabledTextBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="GlassComboBoxStyle" TargetType="{x:Type ComboBox}">
+        <Setter Property="Background" Value="{StaticResource Glass.Surface.Subtle.Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="MinHeight" Value="{StaticResource TouchTarget.Minimum}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ComboBox}">
+                    <Grid>
+                        <ToggleButton x:Name="ToggleButton"
+                                      Style="{StaticResource GlassComboBoxToggleButton}"
+                                      Focusable="False"
+                                      ClickMode="Press"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <ContentPresenter x:Name="ContentSite"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                          Margin="12,4,32,4"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          TextElement.Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <Popup x:Name="PART_Popup"
+                               Placement="Bottom"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               PopupAnimation="Fade">
+                            <Grid x:Name="DropDown"
+                                  SnapsToDevicePixels="True"
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <Border x:Name="DropDownBorder"
+                                        Background="{StaticResource Glass.Surface.Strong.Brush}"
+                                        BorderBrush="{StaticResource Glass.Border.Brush}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Margin="0,4,0,0">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="4" Opacity="0.15" BlurRadius="16"/>
+                                    </Border.Effect>
+                                    <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource DisabledTextBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- GlassTextBoxStyle - Clean, minimal glass text input -->
     <Style x:Key="GlassTextBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="{StaticResource Glass.Surface.Subtle.Brush}"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
@@ -391,7 +525,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CaretBrush" Value="{StaticResource TextPrimaryBrush}"/>
         <Setter Property="SelectionBrush" Value="{StaticResource PrimaryBrush}"/>
-        <Setter Property="Padding" Value="{StaticResource Spacing.SM}"/>
+        <Setter Property="Padding" Value="12,10"/>
         <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
         <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -403,19 +537,17 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{StaticResource Radius.Base}"
-                            Effect="{StaticResource Glass.Shadow}">
+                            CornerRadius="6">
                         <ScrollViewer x:Name="PART_ContentHost"
                                       Margin="{TemplateBinding Padding}"
                                       VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource Reveal.Border.Brush}"/>
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
-                            <Setter TargetName="BorderElement" Property="BorderThickness" Value="2"/>
+                            <Setter TargetName="BorderElement" Property="BorderBrush" Value="{StaticResource Glass.Border.Focus.Brush}"/>
                             <Setter TargetName="BorderElement" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
@@ -665,14 +797,25 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Border x:Name="ThumbBorder"
-                            Background="#BDBDBD"
-                            CornerRadius="4"/>
+                            CornerRadius="4">
+                        <Border.Background>
+                            <SolidColorBrush Color="{StaticResource ScrollBar.Thumb.Light}"/>
+                        </Border.Background>
+                    </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ThumbBorder" Property="Background" Value="#9E9E9E"/>
+                            <Setter TargetName="ThumbBorder" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource ScrollBar.Thumb.Light.Hover}"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="IsDragging" Value="True">
-                            <Setter TargetName="ThumbBorder" Property="Background" Value="#757575"/>
+                            <Setter TargetName="ThumbBorder" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource ScrollBar.Thumb.Light.Dragging}"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -694,7 +837,11 @@
     <!-- Vertical ScrollBar -->
     <Style x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
         <Setter Property="Width" Value="12"/>
-        <Setter Property="Background" Value="#F5F5F5"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource ScrollBar.Track.Light}"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -721,7 +868,11 @@
     <!-- Horizontal ScrollBar -->
     <Style x:Key="HorizontalScrollBar" TargetType="{x:Type ScrollBar}">
         <Setter Property="Height" Value="12"/>
-        <Setter Property="Background" Value="#F5F5F5"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource ScrollBar.Track.Light}"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ScrollBar}">
@@ -792,43 +943,45 @@
     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource ModernTextBoxStyle}"/>
 
     <!-- ================================================================ -->
-    <!-- TAB CONTROL STYLES - Light Mode                                  -->
+    <!-- TAB CONTROL STYLES - Glass Tab Bar                               -->
     <!-- ================================================================ -->
 
-    <!-- TabItem Style -->
+    <!-- TabItem Style - Glass pill-style tabs -->
     <Style TargetType="{x:Type TabItem}">
-        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1,1,1,0"/>
-        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="16,8"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
         <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
         <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
                     <Border x:Name="Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="4,4,0,0"
-                            Margin="0,0,2,0">
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}"
+                            Margin="{TemplateBinding Margin}">
                         <ContentPresenter x:Name="ContentSite"
                                         ContentSource="Header"
-                                        Margin="{TemplateBinding Padding}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource HoverBackgroundBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Subtle.Brush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource BackgroundBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
                             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
-                            <Setter TargetName="Border" Property="BorderThickness" Value="1,2,1,0"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -836,10 +989,10 @@
         </Setter>
     </Style>
 
-    <!-- TabControl Style -->
+    <!-- TabControl Style - Glass container -->
     <Style TargetType="{x:Type TabControl}">
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">
@@ -851,12 +1004,10 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
-                                Background="{StaticResource SurfaceBrush}"
-                                BorderBrush="{StaticResource BorderBrush}"
-                                BorderThickness="0,0,0,1">
+                                Background="Transparent"
+                                Padding="0,4,0,8">
                             <TabPanel x:Name="HeaderPanel"
                                     IsItemsHost="True"
-                                    Margin="4,4,4,0"
                                     Background="Transparent"/>
                         </Border>
                         <Border Grid.Row="1"
@@ -1135,6 +1286,275 @@
                             <Setter Property="Foreground" Value="{StaticResource DisabledTextBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!-- WINDOW CHROME BUTTON STYLES - Custom Title Bar Buttons           -->
+    <!-- ================================================================ -->
+
+    <!-- Window Control Button Base Style -->
+    <Style x:Key="WindowButtonStyle" TargetType="Button">
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Window Close Button Style (Red on hover) -->
+    <Style x:Key="WindowCloseButtonStyle" TargetType="Button" BasedOn="{StaticResource WindowButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0">
+                        <ContentPresenter x:Name="Content" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource WindowButton.Close.Hover}"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource WindowButton.Close.Pressed}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!-- CONTEXT MENU STYLES - Glass Context Menu                         -->
+    <!-- ================================================================ -->
+
+    <!-- ContextMenu Style - Glass popup -->
+    <Style TargetType="{x:Type ContextMenu}">
+        <Setter Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="4" BlurRadius="16" Opacity="0.2" Direction="270"/>
+                        </Border.Effect>
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!-- MENU STYLES - Glass Menu Bar                                     -->
+    <!-- ================================================================ -->
+
+    <!-- Menu Bar - Glass transparent background -->
+    <Style TargetType="{x:Type Menu}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
+        <Setter Property="Padding" Value="4,2"/>
+    </Style>
+
+    <!-- Top-level MenuItem (in menu bar) -->
+    <Style TargetType="{x:Type MenuItem}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize.Base}"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MenuItem}">
+                    <Grid>
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="Transparent"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter x:Name="Icon"
+                                                  Grid.Column="0"
+                                                  ContentSource="Icon"
+                                                  VerticalAlignment="Center"
+                                                  Width="16"
+                                                  Height="16"
+                                                  Margin="0,0,6,0"/>
+                                <ContentPresenter Grid.Column="1"
+                                                  ContentSource="Header"
+                                                  RecognizesAccessKey="True"
+                                                  VerticalAlignment="Center"/>
+                                <TextBlock x:Name="InputGestureText"
+                                           Grid.Column="2"
+                                           Text="{TemplateBinding InputGestureText}"
+                                           Margin="24,0,0,0"
+                                           Foreground="{StaticResource TextTertiaryBrush}"
+                                           VerticalAlignment="Center"/>
+                                <Path x:Name="SubMenuArrow"
+                                      Grid.Column="3"
+                                      Data="M 0 0 L 4 4 L 0 8 Z"
+                                      Fill="{StaticResource TextSecondaryBrush}"
+                                      VerticalAlignment="Center"
+                                      Margin="8,0,0,0"
+                                      Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="PART_Popup"
+                               IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                               Placement="Bottom"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               PopupAnimation="Fade">
+                            <Border x:Name="SubMenuBorder"
+                                    Background="{StaticResource Glass.Surface.Strong.Brush}"
+                                    BorderBrush="{StaticResource Glass.Border.Brush}"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
+                                    Margin="0,2,8,8"
+                                    Padding="4">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="4" BlurRadius="16" Opacity="0.15" Direction="270"/>
+                                </Border.Effect>
+                                <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Show arrow for items with submenus -->
+                        <Trigger Property="Role" Value="TopLevelHeader">
+                            <Setter TargetName="SubMenuArrow" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="TopLevelItem">
+                            <Setter TargetName="SubMenuArrow" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter TargetName="SubMenuArrow" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Right"/>
+                        </Trigger>
+                        <!-- Hide icon placeholder if no icon -->
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <!-- Hover state -->
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
+                        </Trigger>
+                        <!-- Pressed/Open state -->
+                        <Trigger Property="IsSubmenuOpen" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Glass.Surface.Brush}"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Glass.Border.Light.Brush}"/>
+                        </Trigger>
+                        <!-- Disabled state -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource TextDisabledBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!-- TOOLTIP STYLES - Glass Tooltip                                   -->
+    <!-- ================================================================ -->
+
+    <!-- GlassToolTipStyle - Glass-styled tooltip -->
+    <Style x:Key="GlassToolTipStyle" TargetType="{x:Type ToolTip}">
+        <Setter Property="Background" Value="{StaticResource Glass.Surface.Strong.Brush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Glass.Border.Brush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamily.Primary}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSize.SM}"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToolTip}">
+                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" BlurRadius="12" Opacity="0.15" Direction="270"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Default ToolTip Style - Apply glass style globally -->
+    <Style TargetType="{x:Type ToolTip}" BasedOn="{StaticResource GlassToolTipStyle}"/>
+
+    <!-- Separator in menus -->
+    <Style TargetType="{x:Type Separator}">
+        <Setter Property="Background" Value="{StaticResource Glass.Border.Brush}"/>
+        <Setter Property="Margin" Value="8,4"/>
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Separator}">
+                    <Border Background="{TemplateBinding Background}"
+                            Height="{TemplateBinding Height}"
+                            Margin="{TemplateBinding Margin}"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -13,6 +13,15 @@
         ResizeMode="CanResize"
         MinHeight="450" MinWidth="600">
 
+    <!-- Custom Window Chrome for Glass Title Bar -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="-1"
+                      CornerRadius="8"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <!-- Use global theme styles for ComboBox and CheckBox -->
         <!-- Removed local overrides to allow DarkTheme.xaml styles to apply -->
@@ -47,7 +56,33 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="{StaticResource Spacing.XL}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Custom Glass Title Bar -->
+        <Grid Grid.Row="0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Settings" FontSize="12" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="12,0,0,0" Opacity="0.9"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button x:Name="MinimizeButton" Click="MinimizeButton_Click" Style="{DynamicResource WindowButtonStyle}" ToolTip="Minimize">
+                    <Path Data="M 0 0 H 10" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1" VerticalAlignment="Center"/>
+                </Button>
+                <Button x:Name="MaximizeButton" Click="MaximizeButton_Click" Style="{DynamicResource WindowButtonStyle}" ToolTip="Maximize">
+                    <Path Data="M 0 0 H 10 V 10 H 0 Z" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1" Fill="Transparent"/>
+                </Button>
+                <Button x:Name="CloseButton" Click="CloseButton_Click" Style="{DynamicResource WindowCloseButtonStyle}" ToolTip="Close">
+                    <Path Data="M 0 0 L 10 10 M 0 10 L 10 0" Stroke="{DynamicResource TextPrimaryBrush}" StrokeThickness="1"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="{StaticResource Spacing.XL}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -758,6 +793,7 @@
                     </Style>
                 </Button.Style>
             </Button>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

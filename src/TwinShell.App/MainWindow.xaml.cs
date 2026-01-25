@@ -199,6 +199,29 @@ public partial class MainWindow : Window
         aboutWindow.ShowDialog();
     }
 
+    // Custom Title Bar Button Handlers
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            WindowState = WindowState.Normal;
+        }
+        else
+        {
+            WindowState = WindowState.Maximized;
+        }
+    }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
     /// <summary>
     /// Dispose all IDisposable ViewModels when the window closes to prevent resource leaks.
     /// </summary>
